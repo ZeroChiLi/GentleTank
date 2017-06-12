@@ -4,138 +4,101 @@ namespace Complete
 {
     public class TankMovement : MonoBehaviour
     {
-        public int m_PlayerNumber = 1;              // Used to identify which tank belongs to which player.  This is set by this tank's manager.
-        public float m_Speed = 12f;                 // How fast the tank moves forward and back.
-        public float m_TurnSpeed = 180f;            // How fast the tank turns in degrees per second.
-        public AudioSource m_MovementAudio;         // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
-        public AudioClip m_EngineIdling;            // Audio to play when the tank isn't moving.
-        public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
-		public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
+        public int m_PlayerNumber = 1;              // 玩家编号
+        public float m_Speed = 12f;                 // 移动速度
+        public float m_TurnSpeed = 180f;            // 旋转速度
+        public AudioSource m_MovementAudio;         // 当前音效
+        public AudioClip m_EngineIdling;            // 引擎闲置声音
+        public AudioClip m_EngineDriving;           // 引擎移动声音
+        public float m_PitchRange = 0.2f;           // 音调浮动范围
 
-        private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
-        private string m_TurnAxisName;              // The name of the input axis for turning.
-        private Rigidbody m_Rigidbody;              // Reference used to move the tank.
-        private float m_MovementInputValue;         // The current value of the movement input.
-        private float m_TurnInputValue;             // The current value of the turn input.
-        private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
-        private ParticleSystem[] m_particleSystems; // References to all the particles systems used by the Tanks
+        private string m_MovementAxisName;          // 移动输入轴名
+        private string m_TurnAxisName;              // 旋转输入轴名
+        private Rigidbody m_Rigidbody;              // 刚体
+        private float m_MovementInputValue;         // 当前移动值
+        private float m_TurnInputValue;             // 当前旋转值
+        private float m_OriginalPitch;              // 初始音调值
+        private ParticleSystem[] m_particleSystems; // 坦克的所有粒子系统（尾气）
 
-        private void Awake ()
+        private void Awake()
         {
-            m_Rigidbody = GetComponent<Rigidbody> ();
+            m_Rigidbody = GetComponent<Rigidbody>();
         }
 
-
-        private void OnEnable ()
+        private void OnEnable()
         {
-            // When the tank is turned on, make sure it's not kinematic.
             m_Rigidbody.isKinematic = false;
-
-            // Also reset the input values.
             m_MovementInputValue = 0f;
             m_TurnInputValue = 0f;
 
-            // We grab all the Particle systems child of that Tank to be able to Stop/Play them on Deactivate/Activate
-            // It is needed because we move the Tank when spawning it, and if the Particle System is playing while we do that
-            // it "think" it move from (0,0,0) to the spawn point, creating a huge trail of smoke
             m_particleSystems = GetComponentsInChildren<ParticleSystem>();
             for (int i = 0; i < m_particleSystems.Length; ++i)
-            {
                 m_particleSystems[i].Play();
-            }
         }
 
-
-        private void OnDisable ()
+        private void OnDisable()
         {
-            // When the tank is turned off, set it to kinematic so it stops moving.
             m_Rigidbody.isKinematic = true;
 
-            // Stop all particle system so it "reset" it's position to the actual one instead of thinking we moved when spawning
-            for(int i = 0; i < m_particleSystems.Length; ++i)
-            {
+            for (int i = 0; i < m_particleSystems.Length; ++i)
                 m_particleSystems[i].Stop();
-            }
         }
 
-
-        private void Start ()
+        private void Start()
         {
-            // The axes names are based on player number.
+            //输入名要在Player Setting 设置
             m_MovementAxisName = "Vertical" + m_PlayerNumber;
             m_TurnAxisName = "Horizontal" + m_PlayerNumber;
 
-            // Store the original pitch of the audio source.
             m_OriginalPitch = m_MovementAudio.pitch;
         }
 
-
-        private void Update ()
+        private void Update()
         {
-            // Store the value of both input axes.
-            m_MovementInputValue = Input.GetAxis (m_MovementAxisName);
-            m_TurnInputValue = Input.GetAxis (m_TurnAxisName);
+            m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+            m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
 
-            EngineAudio ();
+            EngineAudio();
         }
 
-
-        private void EngineAudio ()
+        // 移动、旋转
+        private void FixedUpdate()
         {
-            // If there is no input (the tank is stationary)...
-            if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f)
-            {
-                // ... and if the audio source is currently playing the driving clip...
-                if (m_MovementAudio.clip == m_EngineDriving)
-                {
-                    // ... change the clip to idling and play it.
-                    m_MovementAudio.clip = m_EngineIdling;
-                    m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-                    m_MovementAudio.Play ();
-                }
-            }
-            else
-            {
-                // Otherwise if the tank is moving and if the idling clip is currently playing...
-                if (m_MovementAudio.clip == m_EngineIdling)
-                {
-                    // ... change the clip to driving and play.
-                    m_MovementAudio.clip = m_EngineDriving;
-                    m_MovementAudio.pitch = Random.Range(m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-                    m_MovementAudio.Play();
-                }
-            }
+            Move();
+            Turn();
         }
 
-
-        private void FixedUpdate ()
+        // 坦克引擎声音
+        private void EngineAudio()
         {
-            // Adjust the rigidbodies position and orientation in FixedUpdate.
-            Move ();
-            Turn ();
+            // 如果从移动变化到静止状态（包括旋转），关掉移动音效，开启闲置音效
+            if (Mathf.Abs(m_MovementInputValue) < 0.1f && Mathf.Abs(m_TurnInputValue) < 0.1f && m_MovementAudio.clip == m_EngineDriving)
+                ChangeAudioClipAndPlay(m_EngineIdling);
+            else if (m_MovementAudio.clip == m_EngineIdling)
+                ChangeAudioClipAndPlay(m_EngineDriving);
         }
 
-
-        private void Move ()
+        // 改变音效
+        private void ChangeAudioClipAndPlay(AudioClip audioClip)
         {
-            // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
+            m_MovementAudio.clip = audioClip;
+            m_MovementAudio.pitch = Random.Range(m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
+            m_MovementAudio.Play();
+        }
+
+        //移动
+        private void Move()
+        {
             Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
-
-            // Apply this movement to the rigidbody's position.
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
         }
 
-
-        private void Turn ()
+        //旋转
+        private void Turn()
         {
-            // Determine the number of degrees to be turned based on the input, speed and time between frames.
             float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
-
-            // Make this into a rotation in the y axis.
-            Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);
-
-            // Apply this rotation to the rigidbody's rotation.
-            m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
+            Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+            m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
         }
     }
 }

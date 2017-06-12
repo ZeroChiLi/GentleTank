@@ -5,106 +5,102 @@ namespace Complete
 {
     public class TankShooting : MonoBehaviour
     {
-        public int m_PlayerNumber = 1;              // Used to identify the different players.
-        public Rigidbody m_Shell;                   // Prefab of the shell.
-        public Transform m_FireTransform;           // A child of the tank where the shells are spawned.
-        public Slider m_AimSlider;                  // A child of the tank that displays the current launch force.
-        public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
-        public AudioClip m_ChargingClip;            // Audio that plays when each shot is charging up.
-        public AudioClip m_FireClip;                // Audio that plays when each shot is fired.
-        public float m_MinLaunchForce = 15f;        // The force given to the shell if the fire button is not held.
-        public float m_MaxLaunchForce = 30f;        // The force given to the shell if the fire button is held for the max charge time.
-        public float m_MaxChargeTime = 0.75f;       // How long the shell can charge for before it is fired at max force.
+        public int m_PlayerNumber = 1;              // 玩家编号
+        public Rigidbody m_Shell;                   // 子弹刚体
+        public Transform m_FireTransform;           // 发射子弹的位置
+        public Slider m_AimSlider;                  // 发射时显示黄色箭头
+        public AudioSource m_ShootingAudio;         // 当前射击音效
+        public AudioClip m_ChargingClip;            // 射击力度距离变化声音
+        public AudioClip m_FireClip;                // 射击时声音
+        public float fireInterval = 0.8f;             // 发射间隔
+        public float m_MinLaunchForce = 15f;        // 最小发射力度
+        public float m_MaxLaunchForce = 30f;        // 最大发射力度
+        public float m_MaxChargeTime = 0.75f;       // 最大发射蓄力时间
 
 
-        private string m_FireButton;                // The input axis that is used for launching shells.
-        private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
-        private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
-        private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
-		private float nextFireTime;
+        private string m_FireButton;                // 发射子弹按钮是名字
+        private float m_CurrentLaunchForce;         // 当前发射力度
+        private float m_ChargeSpeed;                // 力度变化速度（最小到最大力度 / 最大蓄力时间）
+        private bool m_Fired = true;                // 是否发射了
+        private float nextFireTime;                 // 下一发最早时间
 
         private void OnEnable()
         {
-            // When the tank is turned on, reset the launch force and the UI
             m_CurrentLaunchForce = m_MinLaunchForce;
             m_AimSlider.value = m_MinLaunchForce;
         }
 
-
-        private void Start ()
+        private void Start()
         {
-            // The fire axis is based on the player number.
+            //在Player Setting中设置
             m_FireButton = "Fire" + m_PlayerNumber;
 
-            // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         }
 
-
-        private void Update ()
+        private void Update()
         {
-            // The slider should have a default value of the minimum launch force.
-            m_AimSlider.value = m_MinLaunchForce;
+            if (!CanFire())
+                return;
 
-            // If the max force has been exceeded and the shell hasn't yet been launched...
+            // 一直按着到超过最大力度，自动发射
             if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
             {
-                // ... use the max force and launch the shell.
                 m_CurrentLaunchForce = m_MaxLaunchForce;
-				Fire (m_CurrentLaunchForce, 1);
+                Fire(m_CurrentLaunchForce, 1);
             }
-            // Otherwise, if the fire button has just started being pressed...
-            else if (Input.GetButtonDown (m_FireButton))
+            // 如果开始按下攻击键，开始射击力度，开始射击变化音效
+            else if (Input.GetButtonDown(m_FireButton))
             {
-                // ... reset the fired flag and reset the launch force.
                 m_Fired = false;
                 m_CurrentLaunchForce = m_MinLaunchForce;
 
-                // Change the clip to the charging clip and start it playing.
                 m_ShootingAudio.clip = m_ChargingClip;
-                m_ShootingAudio.Play ();
-            }
-            // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
-            else if (Input.GetButton (m_FireButton) && !m_Fired)
-            {
-                // Increment the launch force and update the slider.
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
+                m_ShootingAudio.Play();
 
+                m_AimSlider.value = m_MinLaunchForce;
+            }
+            // 按着攻击键中，增强射击力度
+            else if (Input.GetButton(m_FireButton) && !m_Fired)
+            {
+                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
                 m_AimSlider.value = m_CurrentLaunchForce;
             }
-            // Otherwise, if the fire button is released and the shell hasn't been launched yet...
-            else if (Input.GetButtonUp (m_FireButton) && !m_Fired)
+            // 松开攻击键，Fire In The Hole!!
+            else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
             {
-                // ... launch the shell.
-				Fire (m_CurrentLaunchForce, 1);
-			
+                Fire(m_CurrentLaunchForce, 1);
+                m_AimSlider.value = m_MinLaunchForce;
             }
         }
 
-
-		public void Fire (float launchForce, float fireRate)
+        //发射子弹
+        public void Fire(float launchForce, float fireRate)
         {
-			if (Time.time > nextFireTime) 
-			{
-				nextFireTime = Time.time + fireRate;
-				// Set the fired flag so only Fire is only called once.
-				m_Fired = true;
+            if (!CanFire())
+                return;
 
-				// Create an instance of the shell and store a reference to it's rigidbody.
-				Rigidbody shellInstance =
-					Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+            nextFireTime = Time.time + fireInterval;
 
-				// Set the shell's velocity to the launch force in the fire position's forward direction.
-				shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; 
+            //创建子弹并获取刚体
+            Rigidbody shellInstance =
+                Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
 
-				// Change the clip to the firing clip and play it.
-				m_ShootingAudio.clip = m_FireClip;
-				m_ShootingAudio.Play ();
+            shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
-				// Reset the launch force.  This is a precaution in case of missing button events.
-				m_CurrentLaunchForce = m_MinLaunchForce;
-			}
+            m_ShootingAudio.clip = m_FireClip;
+            m_ShootingAudio.Play();
 
+            m_CurrentLaunchForce = m_MinLaunchForce;
         }
+
+        //是否可以攻击
+        private bool CanFire()
+        {
+            if (Time.time > nextFireTime)
+                return true;
+            return false;
+        }
+
     }
 }

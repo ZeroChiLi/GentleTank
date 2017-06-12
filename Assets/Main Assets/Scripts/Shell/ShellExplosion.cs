@@ -4,89 +4,68 @@ namespace Complete
 {
     public class ShellExplosion : MonoBehaviour
     {
-        public LayerMask m_TankMask;                        // Used to filter what the explosion affects, this should be set to "Players".
-        public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
-        public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
-        public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
-        public float m_ExplosionForce = 1000f;              // The amount of force added to a tank at the centre of the explosion.
-        public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
-        public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
-
+        public LayerMask layerMask;                         // 坦克遮罩（"Leve"）
+        public ParticleSystem explosionParticles;           // 爆炸粒子
+        public AudioSource explosionAudio;                  // 爆炸声音
+        public float maxDamage = 100f;                      // 最大伤害
+        public float explosionForce = 1000f;                // 爆炸中心的能量
+        public float maxLifeTime = 2f;                      // 炸弹最大生存时间
+        public float explosionRadius = 5f;                  // 爆炸半径
 
         private void Start ()
         {
-            // If it isn't destroyed by then, destroy the shell after it's lifetime.
-            Destroy (gameObject, m_MaxLifeTime);
+            Destroy (gameObject, maxLifeTime);
         }
 
-
+        // 当碰到任何物体
         private void OnTriggerEnter (Collider other)
         {
-			// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
-            Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_TankMask);
+			// 获取爆炸范围内所有
+            Collider[] colliders = Physics.OverlapSphere (transform.position, explosionRadius, layerMask);
 
-            // Go through all the colliders...
             for (int i = 0; i < colliders.Length; i++)
             {
-                // ... and find their rigidbody.
                 Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
-
-                // If they don't have a rigidbody, go on to the next collider.
                 if (!targetRigidbody)
                     continue;
 
-                // Add an explosion force.
-                targetRigidbody.AddExplosionForce (m_ExplosionForce, transform.position, m_ExplosionRadius);
+                // 给一个爆炸力
+                targetRigidbody.AddExplosionForce (explosionForce, transform.position, explosionRadius);
 
-                // Find the TankHealth script associated with the rigidbody.
+                // 获取目标的血条，计算扣血量并给给扣血。
                 TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth> ();
-
-                // If there is no TankHealth script attached to the gameobject, go on to the next collider.
                 if (!targetHealth)
                     continue;
-
-                // Calculate the amount of damage the target should take based on it's distance from the shell.
                 float damage = CalculateDamage (targetRigidbody.position);
-
-                // Deal this damage to the tank.
                 targetHealth.TakeDamage (damage);
             }
 
-            // Unparent the particles from the shell.
-            m_ExplosionParticles.transform.parent = null;
+            // 显示爆炸粒子
+            explosionParticles.transform.parent = null;
+            explosionParticles.Play();
 
-            // Play the particle system.
-            m_ExplosionParticles.Play();
+            // 开启爆炸音效
+            explosionAudio.Play();
 
-            // Play the explosion sound effect.
-            m_ExplosionAudio.Play();
-
-            // Once the particles have finished, destroy the gameobject they are on.
-            ParticleSystem.MainModule mainModule = m_ExplosionParticles.main;
-            Destroy (m_ExplosionParticles.gameObject, mainModule.duration);
-
-            // Destroy the shell.
+            ParticleSystem.MainModule mainModule = explosionParticles.main;
+            Destroy (explosionParticles.gameObject, mainModule.duration);
             Destroy (gameObject);
         }
 
-
+        // 根据距离计算伤害
         private float CalculateDamage (Vector3 targetPosition)
         {
-            // Create a vector from the shell to the target.
+            // 计算爆炸中心距离和自己的距离
             Vector3 explosionToTarget = targetPosition - transform.position;
-
-            // Calculate the distance from the shell to the target.
             float explosionDistance = explosionToTarget.magnitude;
 
-            // Calculate the proportion of the maximum distance (the explosionRadius) the target is away.
-            float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
+            // 转换成比例
+            float relativeDistance = (explosionRadius - explosionDistance) / explosionRadius;
 
-            // Calculate damage as this proportion of the maximum possible damage.
-            float damage = relativeDistance * m_MaxDamage;
+            // 根据比例计算伤害
+            float damage = relativeDistance * maxDamage;
 
-            // Make sure that the minimum damage is always 0.
             damage = Mathf.Max (0f, damage);
-
             return damage;
         }
     }
