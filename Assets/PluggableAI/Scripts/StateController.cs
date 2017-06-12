@@ -6,11 +6,11 @@ using Complete;
 
 public class StateController : MonoBehaviour
 {
-
     public State currentState;                      //当前状态
     public EnemyStats enemyStats;                   //敌人状态
     public Transform eyes;                          //眼睛：拿来观察状态变化
     public State remainState;                       //保持当前状态
+    public Rigidbody aiRigidbody;                     //AI的刚体
 
     [HideInInspector]
     public NavMeshAgent navMeshAgent;               //导航组件
@@ -58,6 +58,7 @@ public class StateController : MonoBehaviour
         else
             navMeshAgent.enabled = false;
     }
+
     private void OnDrawGizmos()
     {
         if (currentState != null && eyes != null)

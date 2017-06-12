@@ -164,7 +164,7 @@ namespace Complete
             if (roundWinner != null)
                 message = roundWinner.coloredPlayerText + " WINS THE ROUND!";
 
-            message += "\n\n\n\n";
+            message += "\n\n";
 
             // 添加所有玩家获胜次数
             for (int i = 0; i < tankManagerArray.Length; i++)

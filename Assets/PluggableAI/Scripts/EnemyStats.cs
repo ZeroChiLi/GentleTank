@@ -9,7 +9,8 @@ public class EnemyStats : ScriptableObject {
 	public float lookRange = 40f;
 	public float lookSphereCastRadius = 1f;
 
-	public float attackRange = 1f;
+    public float attackMinRange = 4f;
+	public float attackMaxRange = 40f;
 	public float attackRate = 1f;
 	public float attackForce = 15f;
 	public int attackDamage = 50;
