@@ -8,6 +8,8 @@ public class EnemyStats : ScriptableObject
     public float moveSpeed = 1;                 //移动速度
     public float lookRange = 40f;               //检测敌人距离
     public float lookSphereCastRadius = 1f;     //射出检测射线的射线半径
+    public float lookAngle = 45;                //射出射线角度
+    public float lookAccurate = 1;              //射出射线数量
 
     public float attackMinRange = 5f;           //攻击最小距离
     public float attackMaxRange = 40f;          //攻击最大距离

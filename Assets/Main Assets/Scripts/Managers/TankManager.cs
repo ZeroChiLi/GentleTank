@@ -10,8 +10,8 @@ namespace Complete
         public GameObject tankPerfab;                           // 坦克预设
         public bool isAI;                                       // 是否是AI
         public Color playerColor;                               // 渲染颜色
-        public Transform spawnPoint;                            // 出生点
 
+        [HideInInspector] public Transform spawnPoint;          // 出生点
         [HideInInspector] public int playerNumber;              // 玩家编号
         [HideInInspector] public string coloredPlayerText;      // 表示玩家颜色的HTML格式颜色
         [HideInInspector] public GameObject instance;           // 玩家实例

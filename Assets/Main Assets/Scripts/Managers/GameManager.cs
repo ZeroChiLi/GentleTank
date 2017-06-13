@@ -16,7 +16,9 @@ namespace Complete
         public Text messageText;                    // UI文本（玩家获胜等）
         public TankManager[] tankManagerArray;      // 坦克管理器
         public List<Transform> wayPointsList;       // AI的巡逻点列表
+        public List<Transform> spawnPointsList;     // 坦克出生点
 
+        private List<bool> spawnPointsValid;        // 对应坦克出生点是否有效
         private int roundNumber;                    // 当前回合数
         private WaitForSeconds startWait;           // 开始回合延时
         private WaitForSeconds endWait;             // 结束回合延时
@@ -31,6 +33,7 @@ namespace Complete
 
         private void Start()
         {
+            InitSpawnPointsValidList();
             SpawnAllTanks();
             SetCameraTargets();
 
@@ -45,12 +48,51 @@ namespace Complete
         {
             for (int i = 0; i < tankManagerArray.Length; i++)
             {
-                tankManagerArray[i].instance =
-                    Instantiate(tankManagerArray[i].tankPerfab, tankManagerArray[i].spawnPoint.position, tankManagerArray[i].spawnPoint.rotation) as GameObject;
+                //获取有效随机出生点，且每个坦克位置不一样
+                Transform spawnPoint = GetRandomSpawnPoint(false);
+                if (spawnPoint == null)
+                    continue;
+
+                tankManagerArray[i].instance = Instantiate(tankManagerArray[i].tankPerfab, spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
                 tankManagerArray[i].playerNumber = i + 1;
+                tankManagerArray[i].spawnPoint = spawnPoint;
 
                 tankManagerArray[i].SetupTank(tankManagerArray[i].isAI, wayPointsList);
             }
+        }
+
+        // 初始化所有出生点
+        private void InitSpawnPointsValidList()
+        {
+            spawnPointsValid = new List<bool>();
+            for (int i = 0; i < spawnPointsList.Count; i++)
+                spawnPointsValid.Add(true);
+        }
+
+        // 获取随机为使用过的产生点，是否可以重复点
+        private Transform GetRandomSpawnPoint(bool canSame)
+        {
+            if (canSame)
+                return spawnPointsList[Random.Range(0, spawnPointsList.Count)].transform;
+
+            bool haveSpawnPoint = false;
+            List<int> validPoints = new List<int>();        // 存放有效出生点对应出生点索引
+
+            for (int i = 0; i < spawnPointsList.Count; i++)
+                if (spawnPointsValid[i])
+                {
+                    haveSpawnPoint = true;
+                    validPoints.Add(i);
+                }
+
+            if (haveSpawnPoint)
+            {
+                int spawnIndex = Random.Range(0, validPoints.Count);
+                spawnPointsValid[validPoints[spawnIndex]] = false;  // 设置出生点无效（已经使用过）
+                return spawnPointsList[validPoints[spawnIndex]].transform;
+            }
+
+            return null;
         }
 
         // 给相机添加所有坦克
@@ -86,12 +128,12 @@ namespace Complete
             ResetAllTanks();                                // 重置所有坦克
             DisableTankControl();                           // 并且锁定他们的控制权
 
-            cameraControl.SetStartPositionAndSize();      // 重置相机
+            cameraControl.SetStartPositionAndSize();        // 重置相机
 
-            ++roundNumber;                                // 回合数增加                
+            ++roundNumber;                                  // 回合数增加                
             messageText.text = "ROUND " + roundNumber;
 
-            yield return startWait;                       // 延时一段时间再开始
+            yield return startWait;                         // 延时一段时间再开始
         }
 
         // 回合中
@@ -99,7 +141,7 @@ namespace Complete
         {
             EnableTankControl();                            // 解锁玩家控制权
 
-            messageText.text = string.Empty;              // 清空显示信息
+            messageText.text = string.Empty;                // 清空显示信息
 
             while (!OneTankLeft())                          // 只剩一个坦克才结束该协程
                 yield return null;
@@ -110,12 +152,12 @@ namespace Complete
         {
             DisableTankControl();                           // 锁定玩家控制权
 
-            roundWinner = GetRoundWinner();               // 获取回合胜利的玩家
+            roundWinner = GetRoundWinner();                 // 获取回合胜利的玩家
 
-            if (roundWinner != null)                      // 不为空就给胜出玩家加获胜次数
+            if (roundWinner != null)                        // 不为空就给胜出玩家加获胜次数
                 roundWinner.winsTime++;
 
-            gameWinner = GetGameWinner();                 // 获取最终获胜玩家
+            gameWinner = GetGameWinner();                   // 获取最终获胜玩家
 
             string message = EndMessage();                  // 获取结束信息并显示之
             messageText.text = message;
@@ -180,8 +222,16 @@ namespace Complete
         // 重置所有坦克
         private void ResetAllTanks()
         {
+            InitSpawnPointsValidList();                     // 初始化出生点
             for (int i = 0; i < tankManagerArray.Length; i++)
+            {
+                //获取有效随机出生点，且每个坦克位置不一样
+                Transform spawnPoint = GetRandomSpawnPoint(false);
+                if (spawnPoint == null)
+                    continue;
+                tankManagerArray[i].spawnPoint = spawnPoint;
                 tankManagerArray[i].Reset();
+            }
         }
 
         // 锁定所有玩家控制权

@@ -70,7 +70,6 @@ namespace Complete
             else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
             {
                 Fire(m_CurrentLaunchForce, 1);
-                m_AimSlider.value = m_MinLaunchForce;
             }
         }
 
@@ -92,6 +91,7 @@ namespace Complete
             m_ShootingAudio.Play();
 
             m_CurrentLaunchForce = m_MinLaunchForce;
+            m_AimSlider.value = m_MinLaunchForce;
         }
 
         //是否可以攻击
