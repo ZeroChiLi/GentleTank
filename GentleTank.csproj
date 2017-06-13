@@ -98,10 +98,10 @@
     <Compile Include="Assets\PluggableAI\Scripts\Decision\LookDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\EnemyStats.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\State\EnemyStats.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\StateController.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Transition.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\State\StateController.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />

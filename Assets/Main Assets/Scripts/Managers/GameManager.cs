@@ -210,7 +210,7 @@ namespace Complete
 
             // 添加所有玩家获胜次数
             for (int i = 0; i < tankManagerArray.Length; i++)
-                message += tankManagerArray[i].coloredPlayerText + ": " + tankManagerArray[i].winsTime + " WINS\n";
+                message += tankManagerArray[i].coloredPlayerText + " : " + tankManagerArray[i].winsTime + " WINS\n";
 
             // 添加最后获胜玩家
             if (gameWinner != null)
