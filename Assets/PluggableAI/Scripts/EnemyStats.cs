@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu (menuName = "PluggableAI/EnemyStats")]
-public class EnemyStats : ScriptableObject {
+[CreateAssetMenu(menuName = "PluggableAI/EnemyStats")]
+public class EnemyStats : ScriptableObject
+{
+    public float moveSpeed = 1;                 //移动速度
+    public float lookRange = 40f;               //检测敌人距离
+    public float lookSphereCastRadius = 1f;     //射出检测射线的射线半径
 
-	public float moveSpeed = 1;
-	public float lookRange = 40f;
-	public float lookSphereCastRadius = 1f;
+    public float attackMinRange = 5f;           //攻击最小距离
+    public float attackMaxRange = 40f;          //攻击最大距离
+    public float attackRate = 1f;               //攻击周期
+    public float attackForce = 15f;             //攻击发射力度
+    public int attackDamage = 50;               //攻击伤害
 
-    public float attackMinRange = 4f;
-	public float attackMaxRange = 40f;
-	public float attackRate = 1f;
-	public float attackForce = 15f;
-	public int attackDamage = 50;
+    public float searchDuration = 4f;           //查找持续时间
+    public float searchingTurnSpeed = 120f;     //查找时旋转速度
 
-	public float searchDuration = 4f;
-	public float searchingTurnSpeed = 120f;
+    public float chaseMaxRange = 80f;           //最大追逐距离
+
 }

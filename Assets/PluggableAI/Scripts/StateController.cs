@@ -59,14 +59,6 @@ public class StateController : MonoBehaviour
             navMeshAgent.enabled = false;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (currentState != null && eyes != null)
-        {
-            Gizmos.color = currentState.sceneGizmoColor;
-            Gizmos.DrawWireSphere(eyes.position, enemyStats.lookSphereCastRadius);
-        }
-    }
 
     //转换到下一个状态
     public void TransitionToState(State nextState)
@@ -85,9 +77,18 @@ public class StateController : MonoBehaviour
         return (stateTimeElapsed >= duration);
     }
 
+    //退出改变状态时调用
     private void OnExitState()
     {
         stateTimeElapsed = 0;
     }
 
+    private void OnDrawGizmos()
+    {
+        if (currentState != null && eyes != null)
+        {
+            Gizmos.color = currentState.sceneGizmoColor;
+            Gizmos.DrawWireSphere(eyes.position, enemyStats.lookSphereCastRadius);
+        }
+    }
 }
