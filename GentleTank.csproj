@@ -95,6 +95,7 @@
     <Compile Include="Assets\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\Decision.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Decision\HurtDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\LookDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI/Decisions/Patrol")]
+[CreateAssetMenu(menuName = "PluggableAI/Decisions/Look")]
 public class LookDecision : Decision
 {
     public override bool Decide(StateController controller)

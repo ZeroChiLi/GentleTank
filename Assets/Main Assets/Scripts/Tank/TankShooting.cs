@@ -5,35 +5,35 @@ namespace Complete
 {
     public class TankShooting : MonoBehaviour
     {
-        public int m_PlayerNumber = 1;              // 玩家编号
-        public Rigidbody m_Shell;                   // 子弹刚体
-        public Transform m_FireTransform;           // 发射子弹的位置
-        public Slider m_AimSlider;                  // 发射时显示黄色箭头
-        public AudioSource m_ShootingAudio;         // 当前射击音效
-        public AudioClip m_ChargingClip;            // 射击力度距离变化声音
-        public AudioClip m_FireClip;                // 射击时声音
-        public float fireInterval = 0.8f;             // 发射间隔
-        public float m_MinLaunchForce = 15f;        // 最小发射力度
-        public float m_MaxLaunchForce = 30f;        // 最大发射力度
-        public float m_MaxChargeTime = 0.75f;       // 最大发射蓄力时间
+        public int playerNumber = 1;                // 玩家编号
+        public Rigidbody shellRigidbody;            // 子弹刚体
+        public Transform fireTransform;             // 发射子弹的位置
+        public Slider aimSlider;                    // 发射时显示黄色箭头
+        public AudioSource shootingAudio;           // 当前射击音效
+        public AudioClip chargingClip;              // 射击力度距离变化声音
+        public AudioClip fireClip;                  // 射击时声音
+        public float fireInterval = 0.8f;           // 发射间隔
+        public float minLaunchForce = 15f;          // 最小发射力度
+        public float maxLaunchForce = 30f;          // 最大发射力度
+        public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
 
 
-        private string m_FireButton;                // 发射子弹按钮是名字
-        private float m_CurrentLaunchForce;         // 当前发射力度
-        private float m_ChargeSpeed;                // 力度变化速度（最小到最大力度 / 最大蓄力时间）
-        private bool m_Fired = true;                // 是否发射了
+        private string fireButton;                  // 发射子弹按钮是名字
+        private float currentLaunchForce;           // 当前发射力度
+        private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
+        private bool fired = true;                  // 是否发射了
         private float nextFireTime;                 // 下一发最早时间
 
         private void OnEnable()
         {
 
-            m_CurrentLaunchForce = m_MinLaunchForce;
-            m_AimSlider.value = m_MinLaunchForce;
+            currentLaunchForce = minLaunchForce;
+            aimSlider.value = minLaunchForce;
         }
 
         private void Start()
         {
-            m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+            chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
         }
 
         private void Update()
@@ -42,32 +42,32 @@ namespace Complete
                 return;
 
             // 一直按着到超过最大力度，自动发射
-            if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
+            if (currentLaunchForce >= maxLaunchForce && !fired)
             {
-                m_CurrentLaunchForce = m_MaxLaunchForce;
-                Fire(m_CurrentLaunchForce, 1);
+                currentLaunchForce = maxLaunchForce;
+                Fire(currentLaunchForce, 1);
             }
             // 如果开始按下攻击键，开始射击力度，开始射击变化音效
-            else if (Input.GetButtonDown(m_FireButton))
+            else if (Input.GetButtonDown(fireButton))
             {
-                m_Fired = false;
-                m_CurrentLaunchForce = m_MinLaunchForce;
+                fired = false;
+                currentLaunchForce = minLaunchForce;
 
-                m_ShootingAudio.clip = m_ChargingClip;
-                m_ShootingAudio.Play();
+                shootingAudio.clip = chargingClip;
+                shootingAudio.Play();
 
-                m_AimSlider.value = m_MinLaunchForce;
+                aimSlider.value = minLaunchForce;
             }
             // 按着攻击键中，增强射击力度
-            else if (Input.GetButton(m_FireButton) && !m_Fired)
+            else if (Input.GetButton(fireButton) && !fired)
             {
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-                m_AimSlider.value = m_CurrentLaunchForce;
+                currentLaunchForce += chargeSpeed * Time.deltaTime;
+                aimSlider.value = currentLaunchForce;
             }
             // 松开攻击键，Fire In The Hole!!
-            else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
+            else if (Input.GetButtonUp(fireButton) && !fired)
             {
-                Fire(m_CurrentLaunchForce, 1);
+                Fire(currentLaunchForce, 1);
             }
         }
 
@@ -75,8 +75,8 @@ namespace Complete
         public void SetPlayerNumber(int number)
         {
             //在Player Setting中设置
-            m_PlayerNumber = number;
-            m_FireButton = "Fire" + m_PlayerNumber;
+            playerNumber = number;
+            fireButton = "Fire" + playerNumber;
         }
 
         //发射子弹
@@ -89,15 +89,15 @@ namespace Complete
 
             //创建子弹并获取刚体
             Rigidbody shellInstance =
-                Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+                Instantiate(shellRigidbody, fireTransform.position, fireTransform.rotation) as Rigidbody;
 
-            shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+            shellInstance.velocity = currentLaunchForce * fireTransform.forward;
 
-            m_ShootingAudio.clip = m_FireClip;
-            m_ShootingAudio.Play();
+            shootingAudio.clip = fireClip;
+            shootingAudio.Play();
 
-            m_CurrentLaunchForce = m_MinLaunchForce;
-            m_AimSlider.value = m_MinLaunchForce;
+            currentLaunchForce = minLaunchForce;
+            aimSlider.value = minLaunchForce;
         }
 
         //是否可以攻击

@@ -5,17 +5,18 @@ namespace Complete
 {
     public class TankHealth : MonoBehaviour
     {
-        public float startingHealth = 100f;               // 起始血量
-        public Slider slider;                             // 血量滑动条
-        public Image fillImage;                           // 代表血量的图片
-        public Color fullHealthColor = Color.green;       // 满血颜色
-        public Color zeroHealthColor = Color.red;         // 没血颜色
-        public GameObject explosionPrefab;                // 爆炸特性
+        public float startingHealth = 100f;                 // 起始血量
+        public Slider slider;                               // 血量滑动条
+        public Image fillImage;                             // 代表血量的图片
+        public Color fullHealthColor = Color.green;         // 满血颜色
+        public Color zeroHealthColor = Color.red;           // 没血颜色
+        public GameObject explosionPrefab;                  // 爆炸特性
+        public bool getHurt = false;                        // 是否受伤
 
-        private AudioSource explosionAudio;               // 爆炸声音
-        private ParticleSystem explosionParticles;        // 玩家爆炸粒子
-        private float currentHealth;                      // 当前血量
-        private bool dead;                                // 是否死掉
+        private AudioSource explosionAudio;                 // 爆炸声音
+        private ParticleSystem explosionParticles;          // 玩家爆炸粒子
+        private float currentHealth;                        // 当前血量
+        private bool dead;                                  // 是否死掉
 
         private void Awake()
         {
@@ -27,25 +28,26 @@ namespace Complete
         private void OnEnable()
         {
             currentHealth = startingHealth;
+            getHurt = false;
             dead = false;
-
             SetHealthUI();
         }
 
         // 受伤害
         public void TakeDamage(float amount)
         {
+            getHurt = true;
             currentHealth -= amount;
             SetHealthUI();
             if (currentHealth <= 0f && !dead)
                 OnDeath();
         }
 
+
         // 修改血条长度，颜色
         private void SetHealthUI()
         {
             slider.value = currentHealth;
-
             fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, currentHealth / startingHealth);
         }
 

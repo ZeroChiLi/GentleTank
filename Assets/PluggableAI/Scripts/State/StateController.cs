@@ -14,18 +14,20 @@ public class StateController : MonoBehaviour
     public Rigidbody aiRigidbody;                           //AI的刚体
 
     [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
-    [HideInInspector] public TankShooting tankShooting;     //射击
     [HideInInspector] public List<Transform> wayPointList;  //所有巡逻点
     [HideInInspector] public int nextWayPoint;              //下一个巡逻点
     [HideInInspector] public Transform chaseTarget;         //追踪目标
     [HideInInspector] public float stateTimeElapsed;        //状态变化时间间隔
 
+    private TankShooting tankShooting;                      //射击
+    private TankHealth tankHealth;                          //判断是否受伤
     private bool aiActive;                                  //AI是否有效
     private State startState;                               //初始状态，每次复活后重置
 
     private void Awake()
     {
         tankShooting = GetComponent<TankShooting>();
+        tankHealth = GetComponent<TankHealth>();
         startState = currentState;
         SetupNavigation();
     }
@@ -77,6 +79,13 @@ public class StateController : MonoBehaviour
         }
     }
 
+    //退出改变状态时调用
+    private void OnExitState()
+    {
+        stateTimeElapsed = 0;
+        SetHurt(false);
+    }
+
     //返回是否过了时间间隔
     public bool CheckIfCountDownElapsed(float duration)
     {
@@ -84,10 +93,22 @@ public class StateController : MonoBehaviour
         return (stateTimeElapsed >= duration);
     }
 
-    //退出改变状态时调用
-    private void OnExitState()
+    //开火
+    public void Fire()
     {
-        stateTimeElapsed = 0;
+        tankShooting.Fire(enemyStats.attackForce, enemyStats.attackRate);
+    }
+
+    //是否被攻击了
+    public bool GetHurt()
+    {
+        return tankHealth.getHurt;
+    }
+
+    //设置再感受到伤害
+    public void SetHurt(bool hurt)
+    {
+        tankHealth.getHurt = hurt;
     }
 
     private void OnDrawGizmos()

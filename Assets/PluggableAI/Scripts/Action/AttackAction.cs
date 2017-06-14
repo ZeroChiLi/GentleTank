@@ -21,7 +21,7 @@ public class AttackAction : Action
         DebugDraw(controller, startLeft, startRight, Quaternion.Euler(0, 0, 0));
         if (LookAround(controller, controller.eyes.forward) && controller.CheckIfCountDownElapsed(controller.enemyStats.attackRate))
         {
-            controller.tankShooting.Fire(controller.enemyStats.attackForce, controller.enemyStats.attackRate);
+            controller.Fire();
             return;
         }
 
@@ -38,7 +38,7 @@ public class AttackAction : Action
 
             if (LookAround(controller, eulerAngerLeft * controller.eyes.forward) || LookAround(controller, eulerAngerRight * controller.eyes.forward))
             {
-                controller.tankShooting.Fire(controller.enemyStats.attackForce, controller.enemyStats.attackRate);
+                controller.Fire();
                 return;
             }
         }
