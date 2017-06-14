@@ -27,6 +27,7 @@ namespace Complete
 
         private void OnEnable()
         {
+
             m_Rigidbody.isKinematic = false;
             m_MovementInputValue = 0f;
             m_TurnInputValue = 0f;
@@ -46,19 +47,25 @@ namespace Complete
 
         private void Start()
         {
-            //输入名要在Player Setting 设置
-            m_MovementAxisName = "Vertical" + m_PlayerNumber;
-            m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-
             m_OriginalPitch = m_MovementAudio.pitch;
         }
 
+        // 获取移动、旋转值
         private void Update()
         {
             m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
             m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
 
             EngineAudio();
+        }
+
+        //设置编号
+        public void SetPlayerNumber(int number)
+        {
+            //输入名要在Player Setting 设置
+            m_PlayerNumber = number;
+            m_MovementAxisName = "Vertical" + number;
+            m_TurnAxisName = "Horizontal" + number;
         }
 
         // 移动、旋转

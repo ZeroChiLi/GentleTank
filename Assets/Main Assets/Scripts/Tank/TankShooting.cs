@@ -26,15 +26,13 @@ namespace Complete
 
         private void OnEnable()
         {
+
             m_CurrentLaunchForce = m_MinLaunchForce;
             m_AimSlider.value = m_MinLaunchForce;
         }
 
         private void Start()
         {
-            //在Player Setting中设置
-            m_FireButton = "Fire" + m_PlayerNumber;
-
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         }
 
@@ -71,6 +69,14 @@ namespace Complete
             {
                 Fire(m_CurrentLaunchForce, 1);
             }
+        }
+
+        //设置编号
+        public void SetPlayerNumber(int number)
+        {
+            //在Player Setting中设置
+            m_PlayerNumber = number;
+            m_FireButton = "Fire" + m_PlayerNumber;
         }
 
         //发射子弹
