@@ -16,7 +16,7 @@ public class ScanDecision : Decision
     private bool Scan(StateController controller)
     {
         controller.navMeshAgent.isStopped = true;
-        controller.transform.Rotate(0, controller.enemyStats.searchingTurnSpeed * Time.deltaTime, 0);
+        controller.transform.Rotate(0, controller.enemyStats.navAngularSpeed * Time.deltaTime, 0);
         return controller.CheckIfCountDownElapsed(controller.enemyStats.searchDuration);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 namespace Complete
 {
@@ -20,64 +21,96 @@ namespace Complete
 
         private TankMovement movement;                          // 移动脚本
         private TankShooting shooting;                          // 攻击脚本
-        private GameObject canvasGameObject;                    // 显示玩家信息UI（血量）
+        private GameObject hpCanvas;                            // 显示玩家信息UI（血量）
 		private StateController stateController;				// AI状态控制器
 
         // 配置坦克
-		public void SetupTank(bool isAI, List<Transform> wayPointList)
+		public void SetupTank()
         {
-            if(isAI)
-            {
-                //是AI就添加巡逻点
-                stateController = instance.GetComponent<StateController>();
-                stateController.SetupAI(true, wayPointList);
-            }
+            SetupComponent();
+
+            if (isAI)
+                SetupStateController();
             else
-            {
-                //不是AI就设置控制输入
-                movement = instance.GetComponent<TankMovement> ();
-                movement.m_PlayerNumber = playerNumber;
-            }
+                SetupTankMovement();
 
-            shooting = instance.GetComponent<TankShooting> ();
+            RenderPlayerColor();
+        }
+
+        // 配置所有要用到的私有组件
+        private void SetupComponent()
+        {
+            movement = instance.GetComponent<TankMovement>();
+            shooting = instance.GetComponent<TankShooting>();
             shooting.m_PlayerNumber = playerNumber;
+            hpCanvas = instance.GetComponentInChildren<Canvas>().gameObject;
+            stateController = instance.GetComponent<StateController>();
+        }
 
-            canvasGameObject = instance.GetComponentInChildren<Canvas> ().gameObject;
+        // AI操控，设置状态控制器,激活 StateController ，关闭 TankMovement
+        private void SetupStateController()
+        {
+            if (stateController == null)
+            {
+                Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
+                return;
+            }
+            stateController.enabled = true;
+            stateController.SetupAI(true, wayPointList);
+            if (movement != null)
+                movement.enabled = false;
+        }
 
+        // 人为操控，设置控制输入，激活TankMovement，关闭 StateController、导航
+        private void SetupTankMovement()
+        {
+            movement = instance.GetComponent<TankMovement>();
+            if (movement == null)
+            {
+                Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");
+                return;
+            }
+            movement.enabled = true;
+            movement.m_PlayerNumber = playerNumber;
+            if (stateController != null)
+                stateController.enabled = false;
+            var nav = instance.GetComponent<NavMeshAgent>();
+            if (nav != null)
+                nav.enabled = false;
+        }
+
+        // 为所有带Mesh Render的子组件染色，包括自己的名字UI
+        private void RenderPlayerColor()
+        {
+            //玩家名字，并加上颜色
             coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
 
             // 获取所有网眼渲染，并设置颜色。
-            MeshRenderer[] renderers = instance.GetComponentsInChildren<MeshRenderer> ();
+            MeshRenderer[] renderers = instance.GetComponentsInChildren<MeshRenderer>();
             for (int i = 0; i < renderers.Length; i++)
                 renderers[i].material.color = playerColor;
         }
 
-        // 锁定控制权（玩家移动控制权、AI状态控制权、攻击权）
-        public void DisableControl()
+        // 设置控制权激活状态
+        public void SetControlEnable(bool enable)
         {
-			if (movement != null)
-            movement.enabled = false;
+            if (isAI)
+            {
+                if (movement != null)
+                    movement.enabled = false;
+                if (stateController != null)
+                    stateController.enabled = enable;
+            }
+            else
+            {
+                if (movement != null)
+                    movement.enabled = enable;
+                if (stateController != null)
+                    stateController.enabled = false;
+            }
 
-			if (stateController != null)
-				stateController.enabled = false;
-
-            shooting.enabled = false;
-
-            canvasGameObject.SetActive(false);
-        }
-
-        // 解锁控制权
-        public void EnableControl()
-        {
-			if (movement != null)
-            movement.enabled = true;
-
-			if (stateController != null)
-				stateController.enabled = true;
-
-            shooting.enabled = true;
-
-            canvasGameObject.SetActive (true);
+            shooting.enabled = enable;
+            hpCanvas.SetActive(enable);
         }
 
         // 重置（位置，角度，Active）

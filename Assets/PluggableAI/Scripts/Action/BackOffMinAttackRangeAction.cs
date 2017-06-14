@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "PluggableAI/Actions/BackOffMinAttackRange")]
 public class BackOffMinAttackRangeAction : Action
@@ -16,7 +15,7 @@ public class BackOffMinAttackRangeAction : Action
             return;
         Vector3 direction = controller.chaseTarget.position - controller.transform.position;
         if (direction.magnitude < controller.enemyStats.attackMinRange)
-            controller.aiRigidbody.position += -1 * direction.normalized * controller.enemyStats.moveSpeed * Time.deltaTime;
+            controller.aiRigidbody.position += -1 * direction.normalized * controller.enemyStats.navSpeed / 1.5f * Time.deltaTime;
     }
 
 }

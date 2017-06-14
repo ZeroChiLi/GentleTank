@@ -5,7 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PluggableAI/EnemyStats")]
 public class EnemyStats : ScriptableObject
 {
-    public float moveSpeed = 1;                 //移动速度
+    public float navSpeed = 3.5f;               //移动速度
+    public float navAngularSpeed = 120f;        //旋转速度
+    public float navAcceleration = 8f;          //加速度
+    public float navStopDistance = 10f;         //抵达停止距离
+    public float navRadius = 2f;                //导航物体半径
+    public float navHeight = 10f;               //导航物体高度
+
     public float lookRange = 40f;               //检测敌人距离
     public float lookSphereCastRadius = 0f;     //射出检测射线的射线半径，越小性能越好
     public float lookAngle = 90f;               //射出射线角度
@@ -20,7 +26,6 @@ public class EnemyStats : ScriptableObject
     public int attackDamage = 50;               //攻击伤害
 
     public float searchDuration = 4f;           //查找持续时间
-    public float searchingTurnSpeed = 120f;     //查找时旋转速度
 
     public float chaseMaxRange = 80f;           //最大追逐距离
 

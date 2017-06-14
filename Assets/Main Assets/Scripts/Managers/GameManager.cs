@@ -56,8 +56,8 @@ namespace Complete
                 tankManagerArray[i].instance = Instantiate(tankManagerArray[i].tankPerfab, spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
                 tankManagerArray[i].playerNumber = i + 1;
                 tankManagerArray[i].spawnPoint = spawnPoint;
-
-                tankManagerArray[i].SetupTank(tankManagerArray[i].isAI, wayPointsList);
+                tankManagerArray[i].wayPointList = wayPointsList;
+                tankManagerArray[i].SetupTank();
             }
         }
 
@@ -238,14 +238,14 @@ namespace Complete
         private void EnableTankControl()
         {
             for (int i = 0; i < tankManagerArray.Length; i++)
-                tankManagerArray[i].EnableControl();
+                tankManagerArray[i].SetControlEnable(true);
         }
 
         // 解锁所有玩家控制权
         private void DisableTankControl()
         {
             for (int i = 0; i < tankManagerArray.Length; i++)
-                tankManagerArray[i].DisableControl();
+                tankManagerArray[i].SetControlEnable(false);
         }
     }
 }

@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.AI;
 using Complete;
 
+[RequireComponent (typeof(NavMeshAgent))]
 public class StateController : MonoBehaviour
 {
     public State currentState;                      //当前状态
+    public State remainState;                       //保持当前状态
     public EnemyStats enemyStats;                   //敌人状态
     public Transform eyes;                          //眼睛：拿来观察状态变化
-    public State remainState;                       //保持当前状态
-    public Rigidbody aiRigidbody;                     //AI的刚体
+    public Rigidbody aiRigidbody;                   //AI的刚体
 
     [HideInInspector]
     public NavMeshAgent navMeshAgent;               //导航组件
     [HideInInspector]
-    public Complete.TankShooting tankShooting;      //射击
+    public TankShooting tankShooting;      //射击
     [HideInInspector]
     public List<Transform> wayPointList;            //所有巡逻点
     [HideInInspector]
@@ -30,9 +31,9 @@ public class StateController : MonoBehaviour
 
     private void Awake()
     {
-        tankShooting = GetComponent<Complete.TankShooting>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        tankShooting = GetComponent<TankShooting>();
         startState = currentState;
+        SetupNavigation();
     }
 
     private void Update()
@@ -48,6 +49,19 @@ public class StateController : MonoBehaviour
         nextWayPoint = Random.Range(0, wayPointList.Count);     //随即巡逻点
     }
 
+    //初始化导航的变量
+    private void SetupNavigation()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.enabled = true;
+        navMeshAgent.speed = enemyStats.navSpeed;
+        navMeshAgent.angularSpeed = enemyStats.navAngularSpeed;
+        navMeshAgent.acceleration = enemyStats.navAcceleration;
+        navMeshAgent.stoppingDistance = enemyStats.navStopDistance;
+        navMeshAgent.radius = enemyStats.navRadius;
+        navMeshAgent.height = enemyStats.navHeight;
+    }
+
     //设置巡逻点还有是否设置AI并且是否激活导航
     public void SetupAI(bool aiActivationFromTankManager, List<Transform> wayPointsFromTankManager)
     {
@@ -58,7 +72,6 @@ public class StateController : MonoBehaviour
         else
             navMeshAgent.enabled = false;
     }
-
 
     //转换到下一个状态
     public void TransitionToState(State nextState)
