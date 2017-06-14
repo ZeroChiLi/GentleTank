@@ -13,11 +13,16 @@ public class StateController : MonoBehaviour
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody aiRigidbody;                           //AI的刚体
 
-    [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
-    [HideInInspector] public List<Transform> wayPointList;  //所有巡逻点
-    [HideInInspector] public int nextWayPoint;              //下一个巡逻点
-    [HideInInspector] public Transform chaseTarget;         //追踪目标
-    [HideInInspector] public float stateTimeElapsed;        //状态变化时间间隔
+    [HideInInspector]
+    public NavMeshAgent navMeshAgent;     //导航组件
+    [HideInInspector]
+    public List<Transform> wayPointList;  //所有巡逻点
+    [HideInInspector]
+    public int nextWayPoint;              //下一个巡逻点
+    [HideInInspector]
+    public Transform chaseTarget;         //追踪目标
+    [HideInInspector]
+    public float stateTimeElapsed;        //状态变化时间间隔
 
     private TankShooting tankShooting;                      //射击
     private TankHealth tankHealth;                          //判断是否受伤
@@ -40,8 +45,6 @@ public class StateController : MonoBehaviour
 
     private void Update()
     {
-        if (!aiActive)
-            return;
         currentState.UpdateState(this);                     //更新状态
     }
 
@@ -59,14 +62,10 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点还有是否设置AI并且是否激活导航
-    public void SetupAI(bool aiActivationFromTankManager, List<Transform> wayPointsFromTankManager)
+    public void SetupAI(List<Transform> wayPointsFromTankManager)
     {
         wayPointList = wayPointsFromTankManager;
-        aiActive = aiActivationFromTankManager;
-        if (aiActive)
-            navMeshAgent.enabled = true;
-        else
-            navMeshAgent.enabled = false;
+        navMeshAgent.enabled = true;
     }
 
     //转换到下一个状态
@@ -91,6 +90,19 @@ public class StateController : MonoBehaviour
     {
         stateTimeElapsed += Time.deltaTime;
         return (stateTimeElapsed >= duration);
+    }
+
+    //获取下一个随机巡逻点的索引，参数为是否允许重叠
+    public int GetNextRandomWayPoint()
+    {
+        if (wayPointList.Count <= 1)
+            return 0;
+        int randomPoint;
+        do
+        {
+            randomPoint = Random.Range(0, wayPointList.Count);
+        } while (randomPoint == nextWayPoint);
+        return randomPoint;
     }
 
     //开火

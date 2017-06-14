@@ -11,14 +11,10 @@ public class HurtDecision : Decision
         return Hurt(controller);
     }
 
+    //是否受到伤害
     private bool Hurt(StateController controller)
     {
-        if(controller.GetHurt())
-        {
-            controller.SetHurt(false);
-            return true;
-        }
-        return false;
+        return controller.GetHurt();
     }
 
 }

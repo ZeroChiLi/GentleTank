@@ -54,7 +54,7 @@ namespace Complete
                 if (stateController != null)
                 {
                     stateController.enabled = enable;
-                    stateController.SetupAI(true, wayPointList);
+                    stateController.SetupAI(wayPointList);
                 }
                 else
                     Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
