@@ -18,7 +18,7 @@ public class TurnWhenTooCloseAction : Action
             Vector3 direction = controller.chaseTarget.position - controller.transform.position;
             direction.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            controller.aiRigidbody.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, controller.enemyStats.navAngularSpeed * Time.deltaTime);
+            controller.aiRigidbody.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, controller.defaultStats.navAngularSpeed * Time.deltaTime);
         }
     }
 

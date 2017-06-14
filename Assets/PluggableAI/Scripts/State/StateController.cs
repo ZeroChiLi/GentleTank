@@ -9,7 +9,7 @@ public class StateController : MonoBehaviour
 {
     public State currentState;                              //当前状态
     public State remainState;                               //保持当前状态
-    public EnemyStats enemyStats;                           //敌人状态
+    public DefaultStats defaultStats;                       //默认状态信息
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody aiRigidbody;                           //AI的刚体
 
@@ -53,12 +53,12 @@ public class StateController : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.enabled = true;
-        navMeshAgent.speed = enemyStats.navSpeed;
-        navMeshAgent.angularSpeed = enemyStats.navAngularSpeed;
-        navMeshAgent.acceleration = enemyStats.navAcceleration;
-        navMeshAgent.stoppingDistance = enemyStats.navStopDistance;
-        navMeshAgent.radius = enemyStats.navRadius;
-        navMeshAgent.height = enemyStats.navHeight;
+        navMeshAgent.speed = defaultStats.navSpeed;
+        navMeshAgent.angularSpeed = defaultStats.navAngularSpeed;
+        navMeshAgent.acceleration = defaultStats.navAcceleration;
+        navMeshAgent.stoppingDistance = defaultStats.navStopDistance;
+        navMeshAgent.radius = defaultStats.navRadius;
+        navMeshAgent.height = defaultStats.navHeight;
     }
 
     //设置巡逻点还有是否设置AI并且是否激活导航
@@ -108,7 +108,7 @@ public class StateController : MonoBehaviour
     //开火
     public void Fire()
     {
-        tankShooting.Fire(enemyStats.attackForce, enemyStats.attackRate);
+        tankShooting.Fire(defaultStats.attackForce, defaultStats.attackRate);
     }
 
     //是否被攻击了
@@ -123,12 +123,12 @@ public class StateController : MonoBehaviour
         tankHealth.getHurt = hurt;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (currentState != null && eyes != null)
-        {
-            Gizmos.color = currentState.sceneGizmoColor;
-            Gizmos.DrawWireSphere(eyes.position, enemyStats.lookSphereCastRadius);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (currentState != null && eyes != null)
+    //    {
+    //        Gizmos.color = currentState.sceneGizmoColor;
+    //        Gizmos.DrawWireSphere(eyes.position, 1);
+    //    }
+    //}
 }

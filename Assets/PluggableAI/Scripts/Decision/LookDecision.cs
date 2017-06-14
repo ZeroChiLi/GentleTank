@@ -14,15 +14,15 @@ public class LookDecision : Decision
     //放射线检测
     private bool Look(StateController controller)
     {
-        var enemyStats = controller.enemyStats;
+        var defaultStats = controller.defaultStats;
 
         //一条向前的射线
         if (LookAround(controller, Quaternion.identity, Color.green))
             return true;
 
         //多一个精确度就多两条对称的射线,每条射线夹角是总角度除与精度
-        float subAngle = (enemyStats.lookAngle / 2) / enemyStats.lookAccurate;
-        for (int i = 0; i < enemyStats.lookAccurate; i++)
+        float subAngle = (defaultStats.lookAngle / 2) / defaultStats.lookAccurate;
+        for (int i = 0; i < defaultStats.lookAccurate; i++)
         {
             if (LookAround(controller, Quaternion.Euler(0, -1 * subAngle * (i + 1), 0), Color.green) 
                 || LookAround(controller, Quaternion.Euler(0, subAngle * (i + 1), 0), Color.green))
@@ -35,21 +35,15 @@ public class LookDecision : Decision
     //射出射线检测是否有Player
     static public bool LookAround(StateController controller, Quaternion eulerAnger,Color DebugColor)
     {
-        DebugDraw(controller,eulerAnger, DebugColor);
-        
+        Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * controller.defaultStats.lookRange, DebugColor);
+
         RaycastHit hit;
-        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, controller.enemyStats.lookRange) && hit.collider.CompareTag("Player"))
+        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, controller.defaultStats.lookRange) && hit.collider.CompareTag("Player"))
         {
             controller.chaseTarget = hit.transform;
             return true;
         }
         return false;
-    }
-
-    //调试信息：绘制两条射线代表扫描的范围，两线之内都会检测到
-    static public void DebugDraw(StateController controller, Quaternion eulerAnger, Color DebugColor)
-    {
-        Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * controller.enemyStats.lookRange, DebugColor);
     }
 
 }

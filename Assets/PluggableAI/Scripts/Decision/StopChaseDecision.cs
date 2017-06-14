@@ -16,7 +16,7 @@ public class StopChaseDecision : Decision
     {
         if (controller.chaseTarget == null)
             return true;
-        if ((controller.transform.position - controller.chaseTarget.position).magnitude > controller.enemyStats.chaseMaxRange)
+        if ((controller.transform.position - controller.chaseTarget.position).magnitude > controller.defaultStats.chaseMaxRange)
         {
             controller.chaseTarget = null;
             //controller.navMeshAgent.isStopped = true;

@@ -14,8 +14,8 @@ public class BackOffMinAttackRangeAction : Action
         if (controller.chaseTarget == null)
             return;
         Vector3 direction = controller.chaseTarget.position - controller.transform.position;
-        if (direction.magnitude < controller.enemyStats.attackMinRange)
-            controller.aiRigidbody.position += -1 * controller.transform.forward.normalized * controller.enemyStats.navSpeed / 1.5f * Time.deltaTime;
+        if (direction.magnitude < controller.defaultStats.attackMinRange)
+            controller.aiRigidbody.position += -1 * controller.transform.forward.normalized * controller.defaultStats.navSpeed / 1.5f * Time.deltaTime;
     }
 
 }
