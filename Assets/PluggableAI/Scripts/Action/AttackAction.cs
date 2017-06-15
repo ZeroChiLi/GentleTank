@@ -5,34 +5,18 @@ public class AttackAction : Action
 {
     public override void Act(StateController controller) { Attack(controller); }
 
-    [Range(0,360)]
-    public float angle = 15f;
-    [Range(0, 180)]
-    public float accurate = 2f;
+    public Color debugColor;
+
+    [Range(0, 360)]
+    public float angle = 15f;                       //检测前方角度范围
     [Range(0, 100)]
-    public float distance = 25f;
+    public float distance = 25f;                    //检测距离
+    public float rotatePerSecond = 90f;             //每秒旋转角度
 
     private void Attack(StateController controller)
     {
-        var defaultStats = controller.defaultStats;
-
-        //一条向前的射线
-        if (LookDecision.LookAround(controller, Quaternion.Euler(0, 0, 0),distance, Color.red))
-        {
+        if (LookDecision.LookAround(controller, Quaternion.Euler(0, -angle / 2 + Mathf.Repeat(rotatePerSecond * Time.time, angle), 0), distance, debugColor))
             controller.Fire();
-            return;
-        }
-
-        float subAngle = (angle / 2) / accurate;
-        for (int i = 0; i < accurate; i++)
-        {
-            if (LookDecision.LookAround(controller, Quaternion.Euler(0, -1 * subAngle * (i + 1), 0), distance, Color.red)
-                || LookDecision.LookAround(controller, Quaternion.Euler(0, subAngle * (i + 1), 0), distance, Color.red))
-            {
-                controller.Fire();
-                return;
-            }
-        }
     }
 
 }

@@ -5,7 +5,7 @@ public class TurnWhenTooCloseAction : Action
 {
     public override void Act(StateController controller) { TurnWhenTooClose(controller); }
 
-    public float rotateSpeed = 120f;            //旋转速度
+    public float rotatePerSecond = 120f;            //旋转速度
 
     //如果当前距离在停止距离内，旋转到目标
     private void TurnWhenTooClose(StateController controller)
@@ -17,7 +17,7 @@ public class TurnWhenTooCloseAction : Action
             Vector3 direction = controller.chaseTarget.position - controller.transform.position;
             direction.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            controller.rigidbodySelf.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+            controller.rigidbodySelf.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, rotatePerSecond * Time.deltaTime);
         }
     }
 

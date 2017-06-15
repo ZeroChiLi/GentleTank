@@ -5,29 +5,19 @@ public class LookDecision : Decision
 {
     public override bool Decide(StateController controller) { return Look(controller); }
 
+    public Color debugColor;
+
     [Range(0, 360)]
-    public float angle = 90f;
-    [Range(0, 180)]
-    public float accurate = 6f;
+    public float angle = 90f;                       //检测前方角度范围
     [Range(0, 100)]
-    public float distance = 25f;
+    public float distance = 25f;                    //检测距离
+    public float rotatePerSecond = 90f;             //每秒旋转角度
 
     //放射线检测
     private bool Look(StateController controller)
     {
-        //一条向前的射线
-        if (LookAround(controller, Quaternion.identity,distance, Color.green))
+        if (LookAround(controller, Quaternion.Euler(0, -angle / 2 + Mathf.Repeat(rotatePerSecond * Time.time, angle), 0), distance, debugColor))
             return true;
-
-        //多一个精确度就多两条对称的射线,每条射线夹角是总角度除与精度
-        float subAngle = (angle / 2) / accurate;
-        for (int i = 0; i < accurate; i++)
-        {
-            if (LookAround(controller, Quaternion.Euler(0, -1 * subAngle * (i + 1), 0), distance, Color.green)
-                || LookAround(controller, Quaternion.Euler(0, subAngle * (i + 1), 0), distance, Color.green))
-                return true;
-        }
-
         return false;
     }
 
