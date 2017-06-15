@@ -12,6 +12,7 @@ public class StateController : MonoBehaviour
     public DefaultStats defaultStats;                       //默认状态信息
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody aiRigidbody;                           //AI的刚体
+    public Collider colliderSelf;                           //自己的Collider
 
     [HideInInspector] public NavMeshAgent navMeshAgent;       //导航组件
     [HideInInspector] public PointList wayPointList;          //所有巡逻点
@@ -21,7 +22,6 @@ public class StateController : MonoBehaviour
 
     private TankShooting tankShooting;                      //射击
     private TankHealth tankHealth;                          //判断是否受伤
-    private bool aiActive;                                  //AI是否有效
     private State startState;                               //初始状态，每次复活后重置
 
     private void Awake()

@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -80,10 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Main Assets\Points\Scripts\Point.cs" />
-    <Compile Include="Assets\Main Assets\Points\Scripts\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\ShellExplosion.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankArray.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
@@ -100,9 +98,11 @@
     <Compile Include="Assets\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\Decision.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Decision\DelayDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\HurtDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\LookDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Decision\SensitiveDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\DefaultStats.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
