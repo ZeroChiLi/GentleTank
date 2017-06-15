@@ -6,21 +6,21 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int numRoundsToWin = 5;              // 赢得游戏需要赢的回合数
-    public float startDelay = 3f;               // 开始延时时间
-    public float endDelay = 3f;                 // 结束延时时间
-    public CameraControl cameraControl;         // 相机控制脚本
-    public CameraFollowTarget followCamera;     // 跟踪相机，用于小地图
-    public Text messageText;                    // UI文本（玩家获胜等）
-    public PointList spawnPointList;            // 坦克出生点
-    public PointList wayPointList;              // AI的巡逻点列表
-    public TankArray tankArray;                 // 坦克管理器数组
+    public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
+    public float startDelay = 3f;                   // 开始延时时间
+    public float endDelay = 3f;                     // 结束延时时间
+    public CameraControl cameraControl;             // 相机控制脚本
+    public MinimapCameraController minimapCamera;   // 跟踪相机，用于小地图
+    public Text messageText;                        // UI文本（玩家获胜等）
+    public PointList spawnPointList;                // 坦克出生点
+    public PointList wayPointList;                  // AI的巡逻点列表
+    public TankArray tankArray;                     // 坦克管理器数组
 
-    private int roundNumber;                    // 当前回合数
-    private WaitForSeconds startWait;           // 开始回合延时
-    private WaitForSeconds endWait;             // 结束回合延时
-    private TankManager roundWinner;            // 当前回合获胜玩家
-    private TankManager gameWinner;             // 最终获胜玩家
+    private int roundNumber;                        // 当前回合数
+    private WaitForSeconds startWait;               // 开始回合延时
+    private WaitForSeconds endWait;                 // 结束回合延时
+    private TankManager roundWinner;                // 当前回合获胜玩家
+    private TankManager gameWinner;                 // 最终获胜玩家
 
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         SpawnAllTanks();
         SetCameraTargets();
 
-        followCamera.SetTarget(tankArray[0].instance);     //设置小地图跟随目标为第一个玩家
+        minimapCamera.SetTarget(tankArray[0].Instance);     //设置小地图跟随目标为第一个玩家
 
         // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
@@ -50,10 +50,7 @@ public class GameManager : MonoBehaviour
             if (spawnPoint == null)
                 continue;
 
-            tankArray[i].instance = Instantiate(tankArray[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation)) as GameObject;
-            tankArray[i].playerNumber = i + 1;
-            tankArray[i].spawnPoint = spawnPoint;
-            tankArray[i].wayPointList = wayPointList;
+            tankArray[i].InitTank(Instantiate(tankArray[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation)) as GameObject, i + 1, 0, spawnPoint, wayPointList);
             tankArray[i].SetupTank();
         }
     }
@@ -64,7 +61,7 @@ public class GameManager : MonoBehaviour
         Transform[] targets = new Transform[tankArray.Length];
 
         for (int i = 0; i < targets.Length; i++)
-            targets[i] = tankArray[i].instance.transform;
+            targets[i] = tankArray[i].Instance.transform;
 
         cameraControl.targets = targets;
     }
@@ -118,7 +115,7 @@ public class GameManager : MonoBehaviour
         roundWinner = GetRoundWinner();                 // 获取回合胜利的玩家
 
         if (roundWinner != null)                        // 不为空就给胜出玩家加获胜次数
-            roundWinner.winsTime++;
+            roundWinner.Win();
 
         gameWinner = GetGameWinner();                   // 获取最终获胜玩家
 
@@ -134,7 +131,7 @@ public class GameManager : MonoBehaviour
         int numTanksLeft = 0;
 
         for (int i = 0; i < tankArray.Length; i++)
-            if (tankArray[i].instance.activeSelf)
+            if (tankArray[i].Instance.activeSelf)
                 numTanksLeft++;
 
         return numTanksLeft <= 1;
@@ -144,7 +141,7 @@ public class GameManager : MonoBehaviour
     private TankManager GetRoundWinner()
     {
         for (int i = 0; i < tankArray.Length; i++)
-            if (tankArray[i].instance.activeSelf)
+            if (tankArray[i].Instance.activeSelf)
                 return tankArray[i];
 
         return null;
@@ -154,7 +151,7 @@ public class GameManager : MonoBehaviour
     private TankManager GetGameWinner()
     {
         for (int i = 0; i < tankArray.Length; i++)
-            if (tankArray[i].winsTime == numRoundsToWin)
+            if (tankArray[i].WinTimes == numRoundsToWin)
                 return tankArray[i];
 
         return null;
@@ -167,17 +164,17 @@ public class GameManager : MonoBehaviour
 
         // 添加获胜玩家的带颜色的玩家名字字符串
         if (roundWinner != null)
-            message = roundWinner.coloredPlayerText + " WINS THE ROUND!";
+            message = roundWinner.PlayerName + " WINS THE ROUND!";
 
         message += "\n\n";
 
         // 添加所有玩家获胜次数
         for (int i = 0; i < tankArray.Length; i++)
-            message += tankArray[i].coloredPlayerText + " : " + tankArray[i].winsTime + " WINS\n";
+            message += tankArray[i].PlayerName + " : " + tankArray[i].WinTimes + " WINS\n";
 
         // 添加最后获胜玩家
         if (gameWinner != null)
-            message = gameWinner.coloredPlayerText + " WINS THE GAME!";
+            message = gameWinner.PlayerName + " WINS THE GAME!";
 
         return message;
     }
@@ -192,8 +189,7 @@ public class GameManager : MonoBehaviour
             Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
             if (spawnPoint == null)
                 continue;
-            tankArray[i].spawnPoint = spawnPoint;
-            tankArray[i].Reset();
+            tankArray[i].Reset(spawnPoint);
         }
     }
 

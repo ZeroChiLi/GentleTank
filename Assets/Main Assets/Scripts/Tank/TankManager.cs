@@ -4,29 +4,37 @@ using UnityEngine.AI;
 [System.Serializable]
 public class TankManager
 {
-    public GameObject tankPerfab;                           // 坦克预设
     public bool isAI;                                       // 是否是AI
-    [ColorUsage(false)]                                
-    public Color playerColor;                               // 渲染颜色
+    public GameObject tankPerfab;                           // 坦克预设
+    [ColorUsage(false)] public Color playerColor;           // 渲染颜色
 
-    [HideInInspector]
-    public GameObject instance;           // 玩家实例
-    [HideInInspector]
-    public int playerNumber;              // 玩家编号
-    [HideInInspector]
-    public string coloredPlayerText;      // 表示玩家颜色的HTML格式颜色
-    [HideInInspector]
-    public int winsTime;                  // 玩家回合获胜次数
-    [HideInInspector]
-    public Point spawnPoint;              // 出生点
-    [HideInInspector]
-    public PointList wayPointList;  // AI巡逻点
+    public GameObject Instance { get { return instance; } }         // 获取坦克的实例
+    public string PlayerName { get { return coloredPlayerName; } }  // 获取带颜色的玩家名
+    public int WinTimes { get { return winTimes; } }                // 获取玩家获胜次数
+
+    private int playerNumber;                               // 玩家编号
+    private GameObject instance;                            // 玩家实例
+    private string coloredPlayerName;                       // 带颜色的玩家名
+    private int winTimes;                                   // 玩家回合获胜次数
+    private Point spawnPoint;                               // 出生点
+    private PointList wayPointList;                         // AI巡逻点
 
     private TankMovement movement;                          // 移动脚本
     private TankShooting shooting;                          // 攻击脚本
     private GameObject hpCanvas;                            // 显示玩家信息UI（血量）
     private StateController stateController;                // AI状态控制器
     private NavMeshAgent navMeshAgent;                      // AI导航
+
+
+    // 初始化坦克
+    public void InitTank(GameObject instance, int playerNumber, int winTimes, Point spawnPoint, PointList wayPointList)
+    {
+        this.instance = instance;
+        this.playerNumber = playerNumber;
+        this.winTimes = winTimes;
+        this.spawnPoint = spawnPoint;
+        this.wayPointList = wayPointList;
+    }
 
     // 配置坦克
     public void SetupTank()
@@ -87,7 +95,7 @@ public class TankManager
     private void RenderPlayerColor()
     {
         //玩家名字，并加上颜色
-        coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
+        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
 
         // 获取所有网眼渲染，并设置颜色。
         MeshRenderer[] renderers = instance.GetComponentsInChildren<MeshRenderer>();
@@ -96,13 +104,20 @@ public class TankManager
     }
 
     // 重置（位置，角度，Active）
-    public void Reset()
+    public void Reset(Point spawnPoint)
     {
+        this.spawnPoint = spawnPoint;
         instance.transform.position = spawnPoint.position;
         instance.transform.rotation = Quaternion.Euler(spawnPoint.rotation);
 
         //先设置False，因为如果获胜了的玩家本身就是true，重置就会调用OnEnable函数。
         instance.SetActive(false);
         instance.SetActive(true);
+    }
+
+    // 获胜
+    public void Win()
+    {
+        ++winTimes;
     }
 }

@@ -13,16 +13,11 @@ public class StateController : MonoBehaviour
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody aiRigidbody;                           //AI的刚体
 
-    [HideInInspector]
-    public NavMeshAgent navMeshAgent;       //导航组件
-    [HideInInspector]
-    public PointList wayPointList;          //所有巡逻点
-    [HideInInspector]
-    public Point nextWayPoint;              //下一个巡逻点
-    [HideInInspector]
-    public Transform chaseTarget;           //追踪目标
-    [HideInInspector]
-    public float stateTimeElapsed;          //状态变化时间间隔
+    [HideInInspector] public NavMeshAgent navMeshAgent;       //导航组件
+    [HideInInspector] public PointList wayPointList;          //所有巡逻点
+    [HideInInspector] public Point nextWayPoint;              //下一个巡逻点
+    [HideInInspector] public Transform chaseTarget;           //追踪目标
+    [HideInInspector] public float stateTimeElapsed;          //状态变化时间间隔
 
     private TankShooting tankShooting;                      //射击
     private TankHealth tankHealth;                          //判断是否受伤

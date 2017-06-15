@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CameraFollowTarget : MonoBehaviour 
+public class MinimapCameraController : MonoBehaviour 
 {
     public Vector3 distance = new Vector3(0, 50, 0);
     public GameObject target;
