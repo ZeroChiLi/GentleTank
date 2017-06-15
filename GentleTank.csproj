@@ -90,9 +90,10 @@
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapCameraController.cs" />
+    <Compile Include="Assets\PluggableAI\Configure\DefaultStats.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\Action.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\AttackAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\BackOffMinAttackRangeAction.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Action\BackOff.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\ChaseAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
@@ -104,7 +105,6 @@
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\SensitiveDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\State\DefaultStats.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\StateController.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />

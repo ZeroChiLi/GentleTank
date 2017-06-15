@@ -1,13 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "PluggableAI/Actions/Chase")]
 public class ChaseAction : Action
 {
-    public override void Act(StateController controller)
-    {
-        Chase(controller);
-    }
+    public override void Act(StateController controller) { Chase(controller); }
 
     //追踪目标
     private void Chase(StateController controller)

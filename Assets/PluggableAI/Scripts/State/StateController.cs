@@ -11,21 +11,25 @@ public class StateController : MonoBehaviour
     public State remainState;                               //保持当前状态
     public DefaultStats defaultStats;                       //默认状态信息
     public Transform eyes;                                  //眼睛：拿来观察状态变化
-    public Rigidbody aiRigidbody;                           //AI的刚体
+    public Rigidbody rigidbodySelf;                         //AI的刚体
     public Collider colliderSelf;                           //自己的Collider
 
-    [HideInInspector] public NavMeshAgent navMeshAgent;       //导航组件
-    [HideInInspector] public PointList wayPointList;          //所有巡逻点
-    [HideInInspector] public Point nextWayPoint;              //下一个巡逻点
-    [HideInInspector] public Transform chaseTarget;           //追踪目标
-    [HideInInspector] public float stateTimeElapsed;          //状态变化时间间隔
+    [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
+    [HideInInspector] public Transform chaseTarget;         //追踪目标
 
-    private TankShooting tankShooting;                      //射击
-    private TankHealth tankHealth;                          //判断是否受伤
+    private Point nextWayPoint;                             //下一个巡逻点
+    public Point NextWayPouint { get { return nextWayPoint; } }
+
+    private PointList wayPointList;                         //所有巡逻点
     private State startState;                               //初始状态，每次复活后重置
+    private TankShooting tankShooting;                      //用来攻击
+    private TankHealth tankHealth;                          //用来判断是否受伤
+    private float stateTimeElapsed;                         //计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
     private void Awake()
     {
+        rigidbodySelf = GetComponent<Rigidbody>();
+        colliderSelf = GetComponent<BoxCollider>();
         tankShooting = GetComponent<TankShooting>();
         tankHealth = GetComponent<TankHealth>();
         startState = currentState;
@@ -55,12 +59,12 @@ public class StateController : MonoBehaviour
         navMeshAgent.height = defaultStats.navHeight;
     }
 
-    //设置巡逻点还有是否设置AI并且是否激活导航
+    //设置巡逻点
     public void SetupAI(PointList wayPoints)
     {
         navMeshAgent.enabled = true;
         wayPointList = wayPoints;
-        nextWayPoint = wayPointList.GetRandomPoint(true, true);
+        GetNewRandomNextWayPoint();
     }
 
     //转换到下一个状态
@@ -85,6 +89,13 @@ public class StateController : MonoBehaviour
     {
         stateTimeElapsed += Time.deltaTime;
         return (stateTimeElapsed >= duration);
+    }
+
+    //获取下一个目标巡逻点
+    public Point GetNewRandomNextWayPoint()
+    {
+        nextWayPoint = wayPointList.GetRandomPoint(true, true);
+        return nextWayPoint;
     }
 
     //开火
