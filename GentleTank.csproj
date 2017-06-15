@@ -78,11 +78,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Main Assets\Points\Scripts\Point.cs" />
+    <Compile Include="Assets\Main Assets\Points\Scripts\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\TankManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\ShellExplosion.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Tank\TankArray.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Tank\TankManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankMovement.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
@@ -99,7 +102,7 @@
     <Compile Include="Assets\PluggableAI\Scripts\Decision\LookDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\State\EnemyStats.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\State\DefaultStats.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\StateController.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />
