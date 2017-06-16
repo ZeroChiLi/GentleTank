@@ -17,6 +17,7 @@ public class TankHealth : MonoBehaviour
 
     private void OnEnable()
     {
+        slider.maxValue = startingHealth;
         currentHealth = startingHealth;
         getHurt = false;
         dead = false;
@@ -47,7 +48,7 @@ public class TankHealth : MonoBehaviour
         dead = true;
         
         //获取爆炸特效，并显示之
-        tankExplosionPool.SetNextObjectActive(gameObject.transform);
+        tankExplosionPool.GetNextObjectActive(gameObject.transform);
 
         gameObject.SetActive(false);
     }

@@ -15,7 +15,7 @@ public class Shell : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 从爆炸池中获取对象，并设置位置，显示之
-        shellExplosionPool.SetNextObjectActive(transform);
+        shellExplosionPool.GetNextObjectActive(transform);
 
         // 获取爆炸范围内所有碰撞体
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);

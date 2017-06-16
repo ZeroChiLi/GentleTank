@@ -80,8 +80,10 @@
   <ItemGroup>
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Effects\Explosion.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\DebugShow.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPoolCreate.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\Shell.cs" />
@@ -97,7 +99,8 @@
     <Compile Include="Assets\PluggableAI\Scripts\Action\AttackAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\BackOff.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\ChaseAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolAction.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />
+    <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\Decision\Decision.cs" />

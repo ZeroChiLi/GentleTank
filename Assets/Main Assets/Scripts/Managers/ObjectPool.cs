@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Configure/Object Pool")]
 public class ObjectPool : ScriptableObject 
 {
+    [Header("Before Using It.")]
+    [Header("Please Call 'CrateObjectPool()' Function.")]
+    [Space(20)]
     public GameObject objectPerfab;             //预设
     public int objectCount = 10;                //数量
     public bool autoIncrease = true;            //如果需要自动增加
@@ -60,7 +63,7 @@ public class ObjectPool : ScriptableObject
             }
         }
         if (autoIncrease)
-            return AddOneMoreShell();
+            return AddOneMoreObject();
         return null;
     }
 
@@ -69,7 +72,7 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     /// <param name="transform">位置</param>
     /// <returns>放回这个对象</returns>
-    public GameObject SetNextObjectActive(Transform transform)
+    public GameObject GetNextObjectActive(Transform transform)
     {
         GameObject obj = GetNextObject();
         obj.transform.position = transform.position;
@@ -82,12 +85,13 @@ public class ObjectPool : ScriptableObject
     /// 增加一个对象
     /// </summary>
     /// <returns>返回新增的对象</returns>
-    public GameObject AddOneMoreShell()
+    public GameObject AddOneMoreObject()
     {
         GameObject obj = Instantiate(objectPerfab);
         objectPool.Add(obj);
-        ++objectCount;
+        objectCount = objectPool.Count;
         currentIndex = objectPool.Count - 1;         //用-1也行
         return obj;
     }
+    
 }

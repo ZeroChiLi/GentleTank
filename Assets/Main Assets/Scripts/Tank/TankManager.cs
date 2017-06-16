@@ -17,23 +17,22 @@ public class TankManager
     private string coloredPlayerName;                       // 带颜色的玩家名
     private int winTimes;                                   // 玩家回合获胜次数
     private Point spawnPoint;                               // 出生点
-    private PointList wayPointList;                         // AI巡逻点
 
     private TankMovement movement;                          // 移动脚本
     private TankShooting shooting;                          // 攻击脚本
     private GameObject hpCanvas;                            // 显示玩家信息UI（血量）
+
     private StateController stateController;                // AI状态控制器
     private NavMeshAgent navMeshAgent;                      // AI导航
 
 
     // 初始化坦克
-    public void InitTank(GameObject instance, int playerNumber, int winTimes, Point spawnPoint, PointList wayPointList)
+    public void InitTank(GameObject instance, int playerNumber, int winTimes, Point spawnPoint)
     {
         this.instance = instance;
         this.playerNumber = playerNumber;
         this.winTimes = winTimes;
         this.spawnPoint = spawnPoint;
-        this.wayPointList = wayPointList;
     }
 
     // 配置坦克
@@ -65,7 +64,7 @@ public class TankManager
             if (stateController != null)
             {
                 stateController.enabled = enable;
-                stateController.SetupAI(wayPointList);
+                stateController.SetupAI();
             }
             else
                 Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
@@ -120,4 +119,5 @@ public class TankManager
     {
         ++winTimes;
     }
+    
 }

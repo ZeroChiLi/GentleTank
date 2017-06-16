@@ -21,11 +21,11 @@ public class TankMovement : MonoBehaviour
     private void Awake()
     {
         tankRigidbody = GetComponent<Rigidbody>();
+        originalPitch = movementAudio.pitch;
     }
 
     private void OnEnable()
     {
-
         tankRigidbody.isKinematic = false;
         movementInputValue = 0f;
         turnInputValue = 0f;
@@ -41,11 +41,6 @@ public class TankMovement : MonoBehaviour
 
         for (int i = 0; i < particleSystems.Length; ++i)
             particleSystems[i].Stop();
-    }
-
-    private void Start()
-    {
-        originalPitch = movementAudio.pitch;
     }
 
     // 获取移动、旋转值

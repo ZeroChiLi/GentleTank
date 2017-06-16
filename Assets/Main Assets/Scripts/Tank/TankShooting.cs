@@ -21,14 +21,10 @@ public class TankShooting : MonoBehaviour
     private bool fired = true;                  // 是否发射了
     private float nextFireTime;                 // 下一发最早时间
 
-    private void OnEnable()
+    private void Start()
     {
         currentLaunchForce = minLaunchForce;
         aimSlider.value = minLaunchForce;
-    }
-
-    private void Start()
-    {
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
     }
 
@@ -81,7 +77,8 @@ public class TankShooting : MonoBehaviour
         if (!CanFire())
             return;
 
-        CreateShell();
+        //获取炮弹，并发射
+        shellPool.GetNextObjectActive(shellSpawn).GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
 
         shootingAudio.clip = fireClip;
         shootingAudio.Play();
@@ -90,16 +87,6 @@ public class TankShooting : MonoBehaviour
         aimSlider.value = minLaunchForce;
 
         nextFireTime = Time.time + fireInterval;
-    }
-
-    //创建炮弹
-    public void CreateShell()
-    {
-        GameObject shell = shellPool.GetNextObject();
-        shell.SetActive(true);
-        shell.transform.position = shellSpawn.position;
-        shell.transform.rotation = shellSpawn.rotation;
-        shell.GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
     }
 
     //是否可以攻击

@@ -13,14 +13,14 @@ public class StateController : MonoBehaviour
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody rigidbodySelf;                         //AI的刚体
     public Collider colliderSelf;                           //自己的Collider
+    public PointList wayPointList;                          //所有巡逻点
 
     [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
     [HideInInspector] public Transform chaseTarget;         //追踪目标
 
-    private Point nextWayPoint;                             //下一个巡逻点
-    public Point NextWayPoint { get { return nextWayPoint; } }
+    private int nextWayPointIndex;                          //下一个巡逻点
+    public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
-    private PointList wayPointList;                         //所有巡逻点
     private State startState;                               //初始状态，每次复活后重置
     private TankShooting tankShooting;                      //用来攻击
     private TankHealth tankHealth;                          //用来判断是否受伤
@@ -60,11 +60,10 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点
-    public void SetupAI(PointList wayPoints)
+    public void SetupAI()
     {
         navMeshAgent.enabled = true;
-        wayPointList = wayPoints;
-        GetNewRandomNextWayPoint();
+        GetNewNextWayPoint(true);
     }
 
     //转换到下一个状态
@@ -92,10 +91,13 @@ public class StateController : MonoBehaviour
     }
 
     //获取下一个目标巡逻点
-    public Point GetNewRandomNextWayPoint()
+    public Point GetNewNextWayPoint(bool isRandom)
     {
-        nextWayPoint = wayPointList.GetRandomPoint(true, true);
-        return nextWayPoint;
+        if (isRandom)
+            nextWayPointIndex = wayPointList.GetRandomDifferenceIndex(nextWayPointIndex,0,wayPointList.Count);
+        else
+            nextWayPointIndex = (nextWayPointIndex + 1) % wayPointList.Count;
+        return wayPointList[nextWayPointIndex];
     }
 
     //开火

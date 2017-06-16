@@ -10,11 +10,16 @@ public class PointList : ScriptableObject
 
     private int currentIndex = -1;
 
+    public Point this[int index] { get { return pointList[index]; } }
+
+    public int Count { get { return pointList.Count; } }
+
     /// <summary>
     /// 激活所有点
     /// </summary>
     public void EnableAllPoints()
     {
+        sceneColor.a = 1;
         foreach (var item in pointList)
             item.enable = true;
     }
@@ -25,7 +30,7 @@ public class PointList : ScriptableObject
     /// <param name="allowDisable">是否允许获取使用过的点</param>
     /// <param name="isDifferent">是否是不同于当前的点</param>
     /// <returns></returns>
-    public Point GetRandomPoint(bool allowDisable = true,bool isDifferent = true)
+    public Point GetRandomPoint(bool allowDisable = true, bool isDifferent = true)
     {
         if (IsEmpty())
             return null;
@@ -122,7 +127,7 @@ public class PointList : ScriptableObject
     /// <param name="min">最小值</param>
     /// <param name="max">最大值</param>
     /// <returns>失败返回-1</returns>
-    private int GetRandomDifferenceIndex(int current, int min, int max)
+    public int GetRandomDifferenceIndex(int current, int min, int max)
     {
         if (current == min && min == max)
             return -1;

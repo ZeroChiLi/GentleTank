@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI/EnemyStats")]
+[CreateAssetMenu(menuName = "PluggableAI/AI Stats")]
 public class DefaultStats : ScriptableObject
 {
     [Header ("NavMeshAgent Setting")]
