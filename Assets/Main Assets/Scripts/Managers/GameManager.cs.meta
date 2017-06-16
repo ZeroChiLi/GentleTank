@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 54a000792783c934885973b761b3f96f
-timeCreated: 1497588418
+timeCreated: 1497597204
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
@@ -10,6 +10,8 @@ MonoImporter:
   - tankArray: {fileID: 11400000, guid: 3d8ab5a7eb7b7af4898c6b7e7a4a7694, type: 2}
   - shellPool: {fileID: 11400000, guid: 13c316b03ad02734fbc4c1f51089fafb, type: 2}
   - shellExplosionPool: {fileID: 11400000, guid: f21910672d6aeef41864d141be535f79,
+      type: 2}
+  - tankExplosionPool: {fileID: 11400000, guid: 840115a5299d8ff4294b5a0df1f58787,
       type: 2}
   - cameraControl: {fileID: 114312377303827606, guid: c51d89793b84cdc40bdbffcac3d81d1a,
       type: 2}

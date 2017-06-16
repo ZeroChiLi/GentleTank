@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ShellExplosion : MonoBehaviour 
+public class Explosion : MonoBehaviour 
 {
     public AudioSource explosionAudio;          //爆炸音效
     public ParticleSystem explosionParticle;    //爆炸粒子

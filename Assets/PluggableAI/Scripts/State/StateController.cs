@@ -110,7 +110,7 @@ public class StateController : MonoBehaviour
         return tankHealth.getHurt;
     }
 
-    //设置再感受到伤害
+    //设置是否感受到伤害
     public void SetHurt(bool hurt)
     {
         tankHealth.getHurt = hurt;

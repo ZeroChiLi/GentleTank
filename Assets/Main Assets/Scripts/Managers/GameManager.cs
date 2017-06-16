@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public PointList wayPointList;                  // AI的巡逻点列表
     public TankArray tankArray;                     // 坦克管理器数组
     public ObjectPool shellPool;                    // 炮弹池
-    public ObjectPool shellExplosionPool;           // 炮弹爆炸粒子池
+    public ObjectPool shellExplosionPool;           // 炮弹爆炸特效池
+    public ObjectPool tankExplosionPool;            // 坦克爆炸特效池
 
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         endWait = new WaitForSeconds(endDelay);
         shellPool.CreateObjectPool();
         shellExplosionPool.CreateObjectPool();
+        tankExplosionPool.CreateObjectPool();
     }
 
     private void Start()
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
     // 产生所有坦克，包括玩家和AI
     private void SpawnAllTanks()
     {
+        GameObject tanks = new GameObject("Tanks");
         for (int i = 0; i < tankArray.Length; i++)
         {
             //获取有效随机出生点，且每个坦克位置不一样
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviour
             if (spawnPoint == null)
                 continue;
 
-            tankArray[i].InitTank(Instantiate(tankArray[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation)) as GameObject, i + 1, 0, spawnPoint, wayPointList);
+            tankArray[i].InitTank(Instantiate(tankArray[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), i + 1, 0, spawnPoint, wayPointList);
             tankArray[i].SetupTank();
         }
     }

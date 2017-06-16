@@ -23,10 +23,12 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     public void CreateObjectPool()
     {
+        //创建一个空GameObject来存这些子对象
+        GameObject parent = new GameObject(objectPerfab.name + " Pool");
         objectPool = new List<GameObject>();
         for (int i = 0; i < objectCount; ++i)
         {
-            GameObject obj = Instantiate(objectPerfab);
+            GameObject obj = Instantiate(objectPerfab,parent.transform);
             objectPool.Add(obj);
             obj.SetActive(false);
         }
@@ -60,6 +62,20 @@ public class ObjectPool : ScriptableObject
         if (autoIncrease)
             return AddOneMoreShell();
         return null;
+    }
+
+    /// <summary>
+    /// 获取下一个可用对象被激活，以及设置位置，并返回该对象
+    /// </summary>
+    /// <param name="transform">位置</param>
+    /// <returns>放回这个对象</returns>
+    public GameObject SetNextObjectActive(Transform transform)
+    {
+        GameObject obj = GetNextObject();
+        obj.transform.position = transform.position;
+        obj.transform.rotation = transform.rotation;
+        obj.SetActive(true);
+        return obj;
     }
 
     /// <summary>

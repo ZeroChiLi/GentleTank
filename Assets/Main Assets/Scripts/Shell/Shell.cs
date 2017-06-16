@@ -14,6 +14,9 @@ public class Shell : MonoBehaviour
     // 当碰到任何物体
     private void OnTriggerEnter(Collider other)
     {
+        // 从爆炸池中获取对象，并设置位置，显示之
+        shellExplosionPool.SetNextObjectActive(transform);
+
         // 获取爆炸范围内所有碰撞体
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
 
@@ -33,8 +36,6 @@ public class Shell : MonoBehaviour
             targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));
         }
 
-        CreateExplosionEffect();
-
         gameObject.SetActive(false);
     }
 
@@ -50,15 +51,6 @@ public class Shell : MonoBehaviour
 
         // 根据比例计算伤害
         return Mathf.Max(0f, relativeDistance * maxDamage);
-    }
-
-    // 创建爆炸特效
-    private void CreateExplosionEffect()
-    {
-        GameObject explosionEffect = shellExplosionPool.GetNextObject();
-        explosionEffect.transform.position = gameObject.transform.position;
-        explosionEffect.transform.rotation = gameObject.transform.rotation;
-        explosionEffect.SetActive(true);
     }
 
 }

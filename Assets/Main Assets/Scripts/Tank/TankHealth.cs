@@ -8,20 +8,12 @@ public class TankHealth : MonoBehaviour
     public Image fillImage;                             // 代表血量的图片
     public Color fullHealthColor = Color.green;         // 满血颜色
     public Color zeroHealthColor = Color.red;           // 没血颜色
-    public GameObject explosionPrefab;                  // 爆炸特性
-    public bool getHurt = false;                        // 是否受伤
+    public ObjectPool tankExplosionPool;                // 坦克爆炸特效池
 
-    private AudioSource explosionAudio;                 // 爆炸声音
-    private ParticleSystem explosionParticles;          // 玩家爆炸粒子
+    [HideInInspector] public bool getHurt = false;      // 是否受伤
+
     private float currentHealth;                        // 当前血量
     private bool dead;                                  // 是否死掉
-
-    private void Awake()
-    {
-        explosionParticles = Instantiate(explosionPrefab).GetComponent<ParticleSystem>();
-        explosionParticles.gameObject.SetActive(false);
-        explosionAudio = explosionParticles.GetComponent<AudioSource>();
-    }
 
     private void OnEnable()
     {
@@ -53,12 +45,9 @@ public class TankHealth : MonoBehaviour
     private void OnDeath()
     {
         dead = true;
-
-        explosionParticles.transform.position = transform.position;
-        explosionParticles.gameObject.SetActive(true);
-        explosionParticles.Play();
-
-        explosionAudio.Play();
+        
+        //获取爆炸特效，并显示之
+        tankExplosionPool.SetNextObjectActive(gameObject.transform);
 
         gameObject.SetActive(false);
     }
