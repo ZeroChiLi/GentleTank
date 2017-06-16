@@ -4,7 +4,7 @@
 public class LookDecision : Decision
 {
     [ColorUsage(false)]
-    public Color debugColor;                        //调试颜色
+    public Color debugColor = Color.green;          //调试颜色
     [Range(0, 360)]
     public float angle = 90f;                       //检测前方角度范围
     [Range(1, 50)]
@@ -30,7 +30,7 @@ public class LookDecision : Decision
         Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
 
         RaycastHit hit;
-        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance) && hit.collider.CompareTag("Player") && hit.collider != controller.colliderSelf)
+        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider))
         {
             controller.chaseTarget = hit.transform;
             return true;

@@ -4,7 +4,7 @@
 public class AttackAction : Action
 {
     [ColorUsage(false)]
-    public Color debugColor;                        //调试颜色
+    public Color debugColor = Color.red;            //调试颜色
     [Range(0, 360)]
     public float angle = 15f;                       //检测前方角度范围
     [Range(0, 100)]

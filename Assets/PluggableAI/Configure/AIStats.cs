@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "PluggableAI/AI Stats")]
-public class DefaultStats : ScriptableObject
+public class AIStats : ScriptableObject
 {
     [Header ("NavMeshAgent Setting")]
     public float navSpeed = 3.5f;               //移动速度

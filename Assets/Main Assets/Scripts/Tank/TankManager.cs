@@ -4,19 +4,21 @@ using UnityEngine.AI;
 [System.Serializable]
 public class TankManager
 {
+    public int playerID;                                    // 玩家编号
     public bool isAI;                                       // 是否是AI
     public GameObject tankPerfab;                           // 坦克预设
-    [ColorUsage(false)] public Color playerColor;           // 渲染颜色
+    [ColorUsage(false)]
+    public Color playerColor = Color.white;                 // 渲染颜色
 
     public GameObject Instance { get { return instance; } }         // 获取坦克的实例
     public string PlayerName { get { return coloredPlayerName; } }  // 获取带颜色的玩家名
     public int WinTimes { get { return winTimes; } }                // 获取玩家获胜次数
 
-    private int playerNumber;                               // 玩家编号
     private GameObject instance;                            // 玩家实例
     private string coloredPlayerName;                       // 带颜色的玩家名
     private int winTimes;                                   // 玩家回合获胜次数
     private Point spawnPoint;                               // 出生点
+    private Color teamColor;
 
     private TankMovement movement;                          // 移动脚本
     private TankShooting shooting;                          // 攻击脚本
@@ -27,12 +29,12 @@ public class TankManager
 
 
     // 初始化坦克
-    public void InitTank(GameObject instance, int playerNumber, int winTimes, Point spawnPoint)
+    public void InitTank(GameObject instance, int winTimes, Point spawnPoint,Color teamColor)
     {
         this.instance = instance;
-        this.playerNumber = playerNumber;
         this.winTimes = winTimes;
         this.spawnPoint = spawnPoint;
+        this.teamColor = teamColor;
     }
 
     // 配置坦克
@@ -64,7 +66,7 @@ public class TankManager
             if (stateController != null)
             {
                 stateController.enabled = enable;
-                stateController.SetupAI();
+                stateController.SetupAI(playerID);
             }
             else
                 Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
@@ -79,27 +81,30 @@ public class TankManager
             if (movement != null)
             {
                 movement.enabled = enable;
-                movement.SetPlayerNumber(playerNumber);
+                movement.SetPlayerNumber(playerID);
             }
             else
                 Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");
         }
 
         shooting.enabled = enable;
-        shooting.SetPlayerNumber(playerNumber);
+        shooting.SetPlayerNumber(playerID);
         hpCanvas.SetActive(enable);
     }
 
-    // 为所有带Mesh Render的子组件染色，包括自己的名字UI
+    // 为所有带Mesh Render的子组件染色，包括自己的名字UI，包括团队灯光
     private void RenderPlayerColor()
     {
         //玩家名字，并加上颜色
-        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
+        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerID + "</color>";
 
         // 获取所有网眼渲染，并设置颜色。
         MeshRenderer[] renderers = instance.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = playerColor;
+
+        instance.GetComponentInChildren<Light>().color = teamColor;
+
     }
 
     // 重置（位置，角度，Active）

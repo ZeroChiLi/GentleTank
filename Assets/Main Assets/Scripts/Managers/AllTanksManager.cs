@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game Configure/Tank Array")]
-public class TankArray : ScriptableObject
+[CreateAssetMenu(menuName = "Game Configure/All Tanks Manager")]
+public class AllTanksManager : ScriptableObject
 {
     public TankManager[] tanks;
 

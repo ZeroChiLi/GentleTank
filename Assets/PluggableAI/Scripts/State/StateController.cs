@@ -1,20 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
-using Complete;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class StateController : MonoBehaviour
 {
     public State currentState;                              //当前状态
     public State remainState;                               //保持当前状态
-    public DefaultStats defaultStats;                       //默认状态信息
+    public AIStats defaultStats;                            //默认状态信息
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody rigidbodySelf;                         //AI的刚体
     public Collider colliderSelf;                           //自己的Collider
     public PointList wayPointList;                          //所有巡逻点
+    public AllTeamsManager allTeamsManager;                 //所有团队管理器
 
+    [HideInInspector] public int playerID;                  //玩家ID
     [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
     [HideInInspector] public Transform chaseTarget;         //追踪目标
 
@@ -60,8 +59,9 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点
-    public void SetupAI()
+    public void SetupAI(int playerID)
     {
+        this.playerID = playerID;
         navMeshAgent.enabled = true;
         GetNewNextWayPoint(true);
     }
@@ -116,6 +116,12 @@ public class StateController : MonoBehaviour
     public void SetHurt(bool hurt)
     {
         tankHealth.getHurt = hurt;
+    }
+
+    //通过碰撞体判断是否队友
+    public bool IsTeamMate(Collider collider)
+    {
+        return allTeamsManager.IsTeammate(playerID, collider.gameObject.GetComponent<StateController>().playerID);
     }
 
     //private void OnDrawGizmos()
