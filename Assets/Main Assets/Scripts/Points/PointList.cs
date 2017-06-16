@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PointList")]
+[CreateAssetMenu(menuName = "Game Configure/Point List")]
 public class PointList : ScriptableObject
 {
     [ColorUsage(false)]

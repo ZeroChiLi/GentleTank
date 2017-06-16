@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class TankShooting : MonoBehaviour
 {
     public int playerNumber = 1;                // 玩家编号
-    public Rigidbody shellRigidbody;            // 子弹刚体
-    public Transform fireTransform;             // 发射子弹的位置
+    public ObjectPool shellPool;                // 炮弹池
+    public Transform shellSpawn;                // 发射子弹的位置
     public Slider aimSlider;                    // 发射时显示黄色箭头
     public AudioSource shootingAudio;           // 当前射击音效
     public AudioClip chargingClip;              // 射击力度距离变化声音
@@ -15,7 +15,6 @@ public class TankShooting : MonoBehaviour
     public float maxLaunchForce = 30f;          // 最大发射力度
     public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
 
-
     private string fireButton;                  // 发射子弹按钮是名字
     private float currentLaunchForce;           // 当前发射力度
     private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
@@ -24,7 +23,6 @@ public class TankShooting : MonoBehaviour
 
     private void OnEnable()
     {
-
         currentLaunchForce = minLaunchForce;
         aimSlider.value = minLaunchForce;
     }
@@ -77,25 +75,31 @@ public class TankShooting : MonoBehaviour
         fireButton = "Fire" + playerNumber;
     }
 
-    //发射子弹
+    //发射炮弹
     public void Fire(float launchForce, float fireRate)
     {
         if (!CanFire())
             return;
 
-        nextFireTime = Time.time + fireInterval;
-
-        //创建子弹并获取刚体
-        Rigidbody shellInstance =
-            Instantiate(shellRigidbody, fireTransform.position, fireTransform.rotation) as Rigidbody;
-
-        shellInstance.velocity = currentLaunchForce * fireTransform.forward;
+        CreateShell();
 
         shootingAudio.clip = fireClip;
         shootingAudio.Play();
 
         currentLaunchForce = minLaunchForce;
         aimSlider.value = minLaunchForce;
+
+        nextFireTime = Time.time + fireInterval;
+    }
+
+    //创建炮弹
+    public void CreateShell()
+    {
+        GameObject shell = shellPool.GetNextObject();
+        shell.SetActive(true);
+        shell.transform.position = shellSpawn.position;
+        shell.transform.rotation = shellSpawn.rotation;
+        shell.GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
     }
 
     //是否可以攻击

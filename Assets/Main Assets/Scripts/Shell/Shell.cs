@@ -1,24 +1,20 @@
 using UnityEngine;
 
-public class ShellExplosion : MonoBehaviour
+public class Shell : MonoBehaviour
 {
-    public LayerMask layerMask;                         // 坦克遮罩（"Leve"）
-    public ParticleSystem explosionParticles;           // 爆炸粒子
-    public AudioSource explosionAudio;                  // 爆炸声音
+    public ObjectPool shellExplosionPool;               // 爆炸特性池
+
+    public LayerMask layerMask;                         // 坦克遮罩（"Level"）
     public float maxDamage = 100f;                      // 最大伤害
     public float explosionForce = 1000f;                // 爆炸中心的能量
     public float maxLifeTime = 2f;                      // 炸弹最大生存时间
     public float explosionRadius = 5f;                  // 爆炸半径
 
-    private void Start()
-    {
-        Destroy(gameObject, maxLifeTime);
-    }
 
     // 当碰到任何物体
     private void OnTriggerEnter(Collider other)
     {
-        // 获取爆炸范围内所有
+        // 获取爆炸范围内所有碰撞体
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
 
         for (int i = 0; i < colliders.Length; i++)
@@ -34,20 +30,12 @@ public class ShellExplosion : MonoBehaviour
             TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
             if (!targetHealth)
                 continue;
-            float damage = CalculateDamage(targetRigidbody.position);
-            targetHealth.TakeDamage(damage);
+            targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));
         }
 
-        // 显示爆炸粒子
-        explosionParticles.transform.parent = null;
-        explosionParticles.Play();
+        CreateExplosionEffect();
 
-        // 开启爆炸音效
-        explosionAudio.Play();
-
-        ParticleSystem.MainModule mainModule = explosionParticles.main;
-        Destroy(explosionParticles.gameObject, mainModule.duration);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     // 根据距离计算伤害
@@ -61,9 +49,16 @@ public class ShellExplosion : MonoBehaviour
         float relativeDistance = (explosionRadius - explosionDistance) / explosionRadius;
 
         // 根据比例计算伤害
-        float damage = relativeDistance * maxDamage;
-
-        damage = Mathf.Max(0f, damage);
-        return damage;
+        return Mathf.Max(0f, relativeDistance * maxDamage);
     }
+
+    // 创建爆炸特效
+    private void CreateExplosionEffect()
+    {
+        GameObject explosionEffect = shellExplosionPool.GetNextObject();
+        explosionEffect.transform.position = gameObject.transform.position;
+        explosionEffect.transform.rotation = gameObject.transform.rotation;
+        explosionEffect.SetActive(true);
+    }
+
 }

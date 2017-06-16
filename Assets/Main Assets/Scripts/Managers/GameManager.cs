@@ -6,15 +6,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public PointList spawnPointList;                // 坦克出生点
+    public PointList wayPointList;                  // AI的巡逻点列表
+    public TankArray tankArray;                     // 坦克管理器数组
+    public ObjectPool shellPool;                    // 炮弹池
+    public ObjectPool shellParticlesPool;           // 炮弹爆炸粒子池
+
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
     public CameraControl cameraControl;             // 相机控制脚本
     public MinimapCameraController minimapCamera;   // 跟踪相机，用于小地图
     public Text messageText;                        // UI文本（玩家获胜等）
-    public PointList spawnPointList;                // 坦克出生点
-    public PointList wayPointList;                  // AI的巡逻点列表
-    public TankArray tankArray;                     // 坦克管理器数组
 
     private int roundNumber;                        // 当前回合数
     private WaitForSeconds startWait;               // 开始回合延时
@@ -26,15 +29,15 @@ public class GameManager : MonoBehaviour
     {
         startWait = new WaitForSeconds(startDelay);
         endWait = new WaitForSeconds(endDelay);
+        shellPool.CreateObjectPool();
+        shellParticlesPool.CreateObjectPool();
     }
 
     private void Start()
     {
         spawnPointList.EnableAllPoints();
         SpawnAllTanks();
-        SetCameraTargets();
-
-        minimapCamera.SetTarget(tankArray[0].Instance);     //设置小地图跟随目标为第一个玩家
+        SetupCamera(0);
 
         // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
@@ -55,18 +58,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 给相机添加所有坦克
-    private void SetCameraTargets()
+    // 给主相机添加所有坦克，小地图相机添加追踪目标
+    private void SetupCamera(int targetIndex)
     {
-        Transform[] targets = new Transform[tankArray.Length];
-
-        for (int i = 0; i < targets.Length; i++)
-            targets[i] = tankArray[i].Instance.transform;
-
-        cameraControl.targets = targets;
+        cameraControl.targets = tankArray.GetTanksTransform();
+        minimapCamera.SetTarget(tankArray[targetIndex].Instance);     //设置小地图跟随目标为第一个玩家
     }
 
-    // 游戏的协程
+    // 游戏的循环协程
     private IEnumerator GameLoop()
     {
         yield return StartCoroutine(RoundStarting());           //回合开始，有一段延时

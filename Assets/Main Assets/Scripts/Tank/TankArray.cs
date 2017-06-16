@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TankArray")]
+[CreateAssetMenu(menuName = "Game Configure/Tank Array")]
 public class TankArray : ScriptableObject
 {
     public TankManager[] tanks;
@@ -15,4 +15,15 @@ public class TankArray : ScriptableObject
 
     public int Length { get { return tanks.Length; } }
 
+    /// <summary>
+    /// 获取坦克实例形状列表
+    /// </summary>
+    /// <returns>坦克实例形状列表</returns>
+    public Transform[] GetTanksTransform()
+    {
+        Transform[] instanceList = new Transform[tanks.Length];
+        for (int i = 0; i < tanks.Length; i++)
+            instanceList[i] = tanks[i].Instance.transform;
+        return instanceList;
+    }
 }
