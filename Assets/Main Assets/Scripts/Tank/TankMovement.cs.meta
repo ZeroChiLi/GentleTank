@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 6e4cc0827b572b5408b2cd8eb8b456b4
-timeCreated: 1426675706
-licenseType: Store
+timeCreated: 1497587196
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - movementAudio: {fileID: 8261418, guid: 35f9b00335d1a534d989d0f2a7cef78a, type: 2}
+  - engineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
+  - engineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

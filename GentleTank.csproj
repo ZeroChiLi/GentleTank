@@ -81,10 +81,10 @@
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Particles\ShellExplosion.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\Shell.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Shell\ShellExplosion.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankArray.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankManager.cs" />

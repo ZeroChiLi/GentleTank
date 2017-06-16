@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public PointList wayPointList;                  // AI的巡逻点列表
     public TankArray tankArray;                     // 坦克管理器数组
     public ObjectPool shellPool;                    // 炮弹池
-    public ObjectPool shellParticlesPool;           // 炮弹爆炸粒子池
+    public ObjectPool shellExplosionPool;           // 炮弹爆炸粒子池
 
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         startWait = new WaitForSeconds(startDelay);
         endWait = new WaitForSeconds(endDelay);
         shellPool.CreateObjectPool();
-        shellParticlesPool.CreateObjectPool();
+        shellExplosionPool.CreateObjectPool();
     }
 
     private void Start()

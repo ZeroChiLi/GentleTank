@@ -1,10 +1,21 @@
 fileFormatVersion: 2
 guid: 54a000792783c934885973b761b3f96f
-timeCreated: 1441706275
-licenseType: Store
+timeCreated: 1497588418
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - spawnPointList: {fileID: 11400000, guid: 8d33cc9bbec45f049b50ee8afe33b08a, type: 2}
+  - wayPointList: {fileID: 11400000, guid: 4a75516ce388a9844918db2009aed966, type: 2}
+  - tankArray: {fileID: 11400000, guid: 3d8ab5a7eb7b7af4898c6b7e7a4a7694, type: 2}
+  - shellPool: {fileID: 11400000, guid: 13c316b03ad02734fbc4c1f51089fafb, type: 2}
+  - shellExplosionPool: {fileID: 11400000, guid: f21910672d6aeef41864d141be535f79,
+      type: 2}
+  - cameraControl: {fileID: 114312377303827606, guid: c51d89793b84cdc40bdbffcac3d81d1a,
+      type: 2}
+  - minimapCamera: {fileID: 114441250603337532, guid: f7b81f3447d6b604e87229c62575a815,
+      type: 2}
+  - messageText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
