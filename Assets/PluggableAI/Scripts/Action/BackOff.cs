@@ -3,15 +3,13 @@
 [CreateAssetMenu(menuName = "PluggableAI/Actions/BackOff")]
 public class BackOff : Action
 {
-    public override void Act(StateController controller) { BackOffMinAttackRange(controller); }
-
     [Range(0,100)]
     public float keepDistance = 5f;         //保持的最小距离
     [Range(0, 20)]
     public float backOffSpeed = 2f;         //后退的速度
 
     //后退到指定距离
-    private void BackOffMinAttackRange(StateController controller)
+    public override void Act(StateController controller) 
     {
         if (controller.chaseTarget == null)
             return;

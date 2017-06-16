@@ -18,7 +18,7 @@ public class StateController : MonoBehaviour
     [HideInInspector] public Transform chaseTarget;         //追踪目标
 
     private Point nextWayPoint;                             //下一个巡逻点
-    public Point NextWayPouint { get { return nextWayPoint; } }
+    public Point NextWayPoint { get { return nextWayPoint; } }
 
     private PointList wayPointList;                         //所有巡逻点
     private State startState;                               //初始状态，每次复活后重置

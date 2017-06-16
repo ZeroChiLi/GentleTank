@@ -3,12 +3,11 @@
 [CreateAssetMenu(menuName = "PluggableAI/Actions/TurnWhenTooClose")]
 public class TurnWhenTooCloseAction : Action
 {
-    public override void Act(StateController controller) { TurnWhenTooClose(controller); }
-
+    [Range(0,1800f)]
     public float rotatePerSecond = 120f;            //旋转速度
 
     //如果当前距离在停止距离内，旋转到目标
-    private void TurnWhenTooClose(StateController controller)
+    public override void Act(StateController controller)
     {
         if (controller.chaseTarget == null)
             return;
