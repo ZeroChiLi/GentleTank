@@ -9,7 +9,6 @@ public class AllTanksManager : ScriptableObject
     public TankManager this[int index]
     {
         get { return tanks[index]; }
-
         set { tanks[index] = value; }
     }
 
@@ -26,4 +25,5 @@ public class AllTanksManager : ScriptableObject
             instanceList[i] = tanks[i].Instance.transform;
         return instanceList;
     }
+
 }

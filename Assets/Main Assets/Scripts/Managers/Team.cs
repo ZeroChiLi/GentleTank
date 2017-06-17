@@ -27,5 +27,23 @@ public class Team
         return playerIdList.Contains(playerID);
     }
 
+    /// <summary>
+    /// 添加玩家到该团队
+    /// </summary>
+    /// <param name="playerID">玩家ID</param>
+    public void Add(int playerID)
+    {
+        playerIdList.Add(playerID);
+    }
+
+    /// <summary>
+    /// 将玩家移除该团队
+    /// </summary>
+    /// <param name="playerID">玩家ID</param>
+    public void Remove(int playerID)
+    {
+        playerIdList.Remove(playerID);
+    }
+
 
 }

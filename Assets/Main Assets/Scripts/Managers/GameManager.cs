@@ -160,17 +160,17 @@ public class GameManager : MonoBehaviour
 
         // 添加获胜玩家的带颜色的玩家名字字符串
         if (roundWinner != null)
-            message = roundWinner.PlayerName + " WINS THE ROUND!";
+            message = roundWinner.PlayerNameColored + " WINS THE ROUND!";
 
         message += "\n\n";
 
         // 添加所有玩家获胜次数
         for (int i = 0; i < allTanksManager.Length; i++)
-            message += allTanksManager[i].PlayerName + " : " + allTanksManager[i].WinTimes + " WINS\n";
+            message += allTanksManager[i].PlayerNameColored + " : " + allTanksManager[i].WinTimes + " WINS\n";
 
         // 添加最后获胜玩家
         if (gameWinner != null)
-            message = gameWinner.PlayerName + " WINS THE GAME!";
+            message = gameWinner.PlayerNameColored + " WINS THE GAME!";
 
         return message;
     }

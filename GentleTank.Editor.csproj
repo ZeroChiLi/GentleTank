@@ -124,6 +124,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Main Assets\Editor\MoveSceneViewCamera.cs" />
+    <Compile Include="Assets\Main Assets\Editor\MyWindow.cs" />
+    <Compile Include="Assets\Main Assets\Editor\TanksToTeams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />

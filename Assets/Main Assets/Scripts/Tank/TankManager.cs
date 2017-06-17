@@ -5,13 +5,14 @@ using UnityEngine.AI;
 public class TankManager
 {
     public int playerID;                                    // 玩家编号
+    public string playerName;                               // 玩家名称
     public bool isAI;                                       // 是否是AI
     public GameObject tankPerfab;                           // 坦克预设
     [ColorUsage(false)]
     public Color playerColor = Color.white;                 // 渲染颜色
 
     public GameObject Instance { get { return instance; } }         // 获取坦克的实例
-    public string PlayerName { get { return coloredPlayerName; } }  // 获取带颜色的玩家名
+    public string PlayerNameColored { get { return coloredPlayerName; } }  // 获取带颜色的玩家名
     public int WinTimes { get { return winTimes; } }                // 获取玩家获胜次数
 
     private GameObject instance;                            // 玩家实例
