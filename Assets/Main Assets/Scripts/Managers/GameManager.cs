@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
             if (spawnPoint == null)
                 continue;
 
-            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), 0, spawnPoint, allTeamsManager.GetTeamColor(i));
+            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), 0, spawnPoint, allTeamsManager);
             allTanksManager[i].SetupTank();
         }
     }

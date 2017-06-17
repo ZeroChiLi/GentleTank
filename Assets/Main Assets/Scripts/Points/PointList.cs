@@ -5,10 +5,11 @@ using UnityEngine;
 public class PointList : ScriptableObject
 {
     [ColorUsage(false)]
-    public Color sceneColor;
-    public List<Point> pointList;
+    public Color sceneColor;            // 在场景中颜色
+    public bool showSceneColor;         // 是否显示到场景中
+    public List<Point> pointList;       // 所有点列表
 
-    private int currentIndex = -1;
+    private int currentIndex = -1;      // 当前索引
 
     public Point this[int index] { get { return pointList[index]; } }
 
@@ -145,6 +146,8 @@ public class PointList : ScriptableObject
     /// </summary>
     public void DebugDrawPoint()
     {
+        if (!showSceneColor)
+            return;
         Gizmos.color = sceneColor;
         for (int i = 0; i < pointList.Count; i++)
             Gizmos.DrawSphere(pointList[i].position, 1);

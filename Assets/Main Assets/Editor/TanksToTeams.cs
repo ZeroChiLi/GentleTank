@@ -55,13 +55,10 @@ public class TanksToTeams : EditorWindow
     // 坦克、团队操作
     private void TanksAndTeamsOperation()
     {
-        EditorGUILayout.BeginVertical("Box");
         EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.Length);
 
         for (int i = 0; i < tanksManager.Length; i++)
             TankOperation(i);
-
-        EditorGUILayout.EndVertical();
     }
 
     // 单个坦克管理
@@ -80,15 +77,17 @@ public class TanksToTeams : EditorWindow
             dropdownContent.text = playerTeam.TeamName;
         }
 
+        EditorGUILayout.BeginVertical("Box");
         Horizontal(true);
         EditorGUILayout.PrefixLabel("Select Player's Team : ");
-
         Vertical(true);
+
         ShowDropdown(dropdownContent, index);                       //显示下拉菜单
         ShowTeamInfo(playerTeam);                                   //显示选中团队信息
-        Vertical(false);
 
+        Vertical(false);
         Horizontal(false);
+        Vertical(false);
 
     }
 
@@ -96,12 +95,16 @@ public class TanksToTeams : EditorWindow
     private bool ShowPlayerTeamInfo(int index)
     {
         Horizontal(true);
-        string showText = " ID : " + tanksManager[index].playerID + "   Name : " + tanksManager[index].playerName;
+        string showText = " ID : " + tanksManager[index].playerID;
         tanksManagerShow[index] = EditorGUILayout.Foldout(tanksManagerShow[index], showText);
 
-        EditorGUI.BeginDisabledGroup(true);
-        EditorGUILayout.ColorField(tanksManager[index].playerColor,GUILayout.Width(100));
-        EditorGUI.EndDisabledGroup();
+        Label(" Name : " + tanksManager[index].playerName);
+
+        Label(" AI : ", GUILayout.Width(30));
+        tanksManager[index].isAI = EditorGUILayout.Toggle(tanksManager[index].isAI);
+
+        Label(" Color : ", GUILayout.Width(50));
+        tanksManager[index].playerColor = EditorGUILayout.ColorField(tanksManager[index].playerColor,GUILayout.Width(100));
 
         Horizontal(false);
         return tanksManagerShow[index];
@@ -130,7 +133,7 @@ public class TanksToTeams : EditorWindow
         }
     }
 
-    // 显示团队ID以及颜色
+    // 显示团队ID、人数以及颜色
     private void ShowTeamInfo(Team team)
     {
         if (team == null)
@@ -141,18 +144,17 @@ public class TanksToTeams : EditorWindow
 
         Horizontal(true);
         Label("Team ID : " + team.TeamID);
+        Label("Team Count : " + team.Count);
 
-        EditorGUI.BeginDisabledGroup(true);
-        EditorGUILayout.ColorField(team.TeamColor);
-        EditorGUI.EndDisabledGroup();
+        team.TeamColor = EditorGUILayout.ColorField(team.TeamColor);
 
         Horizontal(false);
     }
 
     // 标签。名称，长度
-    private void Label(string label)
+    private void Label(string label,params GUILayoutOption[] options)
     {
-        EditorGUILayout.LabelField(label);
+        EditorGUILayout.LabelField(label,options);
     }
 
     // 使用水平布局，参数是开始或结束

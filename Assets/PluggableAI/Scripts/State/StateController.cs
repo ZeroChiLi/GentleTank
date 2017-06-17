@@ -9,9 +9,7 @@ public class StateController : MonoBehaviour
     public AIStats defaultStats;                            //默认状态信息
     public Transform eyes;                                  //眼睛：拿来观察状态变化
     public Rigidbody rigidbodySelf;                         //AI的刚体
-    public Collider colliderSelf;                           //自己的Collider
     public PointList wayPointList;                          //所有巡逻点
-    public AllTeamsManager allTeamsManager;                 //所有团队管理器
 
     [HideInInspector] public int playerID;                  //玩家ID
     [HideInInspector] public NavMeshAgent navMeshAgent;     //导航组件
@@ -21,16 +19,12 @@ public class StateController : MonoBehaviour
     public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
     private State startState;                               //初始状态，每次复活后重置
-    private TankShooting tankShooting;                      //用来攻击
-    private TankHealth tankHealth;                          //用来判断是否受伤
+    private AllTeamsManager allTeamsManager;                //所有团队管理器
     private float stateTimeElapsed;                         //计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
     private void Awake()
     {
         rigidbodySelf = GetComponent<Rigidbody>();
-        colliderSelf = GetComponent<BoxCollider>();
-        tankShooting = GetComponent<TankShooting>();
-        tankHealth = GetComponent<TankHealth>();
         startState = currentState;
         SetupNavigation();
     }
@@ -59,9 +53,10 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点
-    public void SetupAI(int playerID)
+    public void SetupAI(int playerID,AllTeamsManager teamsManager)
     {
         this.playerID = playerID;
+        allTeamsManager = teamsManager;
         navMeshAgent.enabled = true;
         GetNewNextWayPoint(true);
     }
@@ -103,19 +98,19 @@ public class StateController : MonoBehaviour
     //开火
     public void Fire()
     {
-        tankShooting.Fire(defaultStats.attackForce, defaultStats.attackRate);
+        GetComponent<TankShooting>().Fire(defaultStats.attackForce, defaultStats.attackRate);
     }
 
     //是否被攻击了
     public bool GetHurt()
     {
-        return tankHealth.getHurt;
+        return GetComponent<TankHealth>().getHurt;
     }
 
     //设置是否感受到伤害
     public void SetHurt(bool hurt)
     {
-        tankHealth.getHurt = hurt;
+        GetComponent<TankHealth>().getHurt = hurt;
     }
 
     //通过碰撞体判断是否队友
