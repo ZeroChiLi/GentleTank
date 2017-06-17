@@ -58,7 +58,12 @@ public class TanksToTeams : EditorWindow
         EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.Length);
 
         for (int i = 0; i < tanksManager.Length; i++)
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginVertical("Box");
             TankOperation(i);
+            EditorGUILayout.EndVertical();
+        }
     }
 
     // 单个坦克管理
@@ -66,29 +71,23 @@ public class TanksToTeams : EditorWindow
     {
         if (!ShowPlayerTeamInfo(index))
             return;
+        GUILayout.Space(5);
 
         Team playerTeam = new Team();
 
         // 如果坦克已经有队伍了，获取信息到playerTeam和dropdownContent
-        GUIContent dropdownContent = new GUIContent();
         if (teamsManager.ContainsPlayer(tanksManager[index].playerID))
-        {
             playerTeam = teamsManager.GetTeamByPlayerID(tanksManager[index].playerID);
-            dropdownContent.text = playerTeam.TeamName;
-        }
 
-        EditorGUILayout.BeginVertical("Box");
         Horizontal(true);
         EditorGUILayout.PrefixLabel("Select Player's Team : ");
         Vertical(true);
 
-        ShowDropdown(dropdownContent, index);                       //显示下拉菜单
-        ShowTeamInfo(playerTeam);                                   //显示选中团队信息
+        ShowDropdown(playerTeam, index);                        //显示下拉菜单
+        ShowTeamInfo(playerTeam);                               //显示选中团队信息
 
         Vertical(false);
         Horizontal(false);
-        Vertical(false);
-
     }
 
     // 显示玩家信息，并返回是否显示团队选择信息
@@ -120,15 +119,24 @@ public class TanksToTeams : EditorWindow
         teamsManager.AddToTeam(tankIdTeamIndex.tankId, tankIdTeamIndex.teamId);
     }
 
-    // 显示团队下拉列表
-    private void ShowDropdown(GUIContent content,int currentIndex)
+    // 显示团队下拉列表，第一参数是如果当前玩家已经有队伍
+    private void ShowDropdown(Team team,int currentIndex)
     {
+        GUIContent content = new GUIContent();
+        //如果存在该队伍，直接显示在下拉菜单中
+        if (team !=null)
+            content.text = team.TeamName;
+
         //下拉菜单，显示可选择队伍，修改后对应也会修改teamsManager
-        if (EditorGUILayout.DropdownButton(content, FocusType.Passive))
+        if (EditorGUILayout.DropdownButton(new GUIContent(team.TeamName), FocusType.Passive))
         {
             GenericMenu menu = new GenericMenu();
             for (int i = 0; i < teamsManager.Length; i++)
+            {
+                if (team == teamsManager[i])        //跳过已经选中的队伍
+                    continue;
                 menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager[currentIndex].playerID, teamId = teamsManager[i].TeamID });
+            }
             menu.ShowAsContext();
         }
     }

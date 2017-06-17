@@ -98,14 +98,17 @@ public class TankManager
     // 为所有带Mesh Render的子组件染色，包括自己的名字UI，包括团队灯光
     private void RenderPlayerColor()
     {
-        //玩家名字，并加上颜色
-        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerID + "</color>";
-
         // 获取所有网眼渲染，并设置颜色。
-        MeshRenderer[] renderers = instance.GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] renderers = instance.gameObject.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = playerColor;
 
+        //玩家名字，并加上团队颜色
+        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
+
+        //设置显示出来的名字
+        instance.GetComponentInChildren<PlayerInfoUI>().SetNameText(coloredPlayerName);
+        //设置代表团队颜色灯光颜色
         instance.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
 
     }
