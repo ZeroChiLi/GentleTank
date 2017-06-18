@@ -23,17 +23,14 @@ public class GameManager : MonoBehaviour
     private TankManager roundWinner;                // 当前回合获胜玩家
     private TankManager gameWinner;                 // 最终获胜玩家
 
-    private void Awake()
+    private void Start()
     {
         startWait = new WaitForSeconds(startDelay);
         endWait = new WaitForSeconds(endDelay);
-    }
-
-    private void Start()
-    {
         spawnPointList.EnableAllPoints();
+
         SpawnAllTanks();
-        SetupCamera(0);
+        SetupCameraAndMinimap();
 
         // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
@@ -56,7 +53,7 @@ public class GameManager : MonoBehaviour
     }
 
     // 给主相机添加所有坦克，小地图相机添加追踪目标
-    private void SetupCamera(int targetIndex)
+    private void SetupCameraAndMinimap()
     {
         cameraControl.targets = allTanksManager.GetTanksTransform();
         minimapManager.SetupPlayerIconDic();
