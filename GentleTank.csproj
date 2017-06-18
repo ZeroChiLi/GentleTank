@@ -90,10 +90,13 @@
     <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\Shell.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Tank\TankColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankMovement.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByPlayerColor.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByTeamColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapCameraController.cs" />

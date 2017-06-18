@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private void SetupCamera(int targetIndex)
     {
         cameraControl.targets = allTanksManager.GetTanksTransform();
-        minimapCamera.SetTarget(allTanksManager[targetIndex].Instance);     //设置小地图跟随目标为第一个玩家
+        //minimapCamera.SetTarget(allTanksManager[targetIndex].Instance);     //设置小地图跟随目标为第一个玩家
     }
 
     // 游戏的循环协程

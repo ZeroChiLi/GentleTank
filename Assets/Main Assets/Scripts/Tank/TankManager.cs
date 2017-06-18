@@ -45,7 +45,7 @@ public class TankManager
     {
         SetupComponent();                                   // 获取私有组件
         SetControlEnable(true);                             // 激活相应的控制权
-        RenderPlayerColor();                                // 渲染颜色
+        RenderTankColor();                                // 渲染颜色
     }
 
     // 配置所有要用到的私有组件
@@ -58,59 +58,13 @@ public class TankManager
         navMeshAgent = instance.GetComponent<NavMeshAgent>();
     }
 
-    // 设置控制权激活状态
-    public void SetControlEnable(bool enable)
-    {
-        // AI操控，设置状态控制器,激活 StateController ，关闭 TankMovement
-        if (isAI)
-        {
-            if (movement != null)
-                movement.enabled = false;
-            if (stateController != null)
-            {
-                stateController.enabled = enable;
-                stateController.SetupAI(playerID,allTeamsManager);
-            }
-            else
-                Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
-        }
-        // 人为操控，设置控制输入，激活TankMovement，关闭 StateController、导航
-        else
-        {
-            if (stateController != null)
-                stateController.enabled = false;
-            if (navMeshAgent != null)
-                navMeshAgent.enabled = false;
-            if (movement != null)
-            {
-                movement.enabled = enable;
-                movement.SetPlayerNumber(playerID);
-            }
-            else
-                Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");
-        }
-
-        shooting.enabled = enable;
-        shooting.SetPlayerNumber(playerID);
-        hpCanvas.SetActive(enable);
-    }
-
     // 为所有带Mesh Render的子组件染色，包括自己的名字UI，包括团队灯光
-    private void RenderPlayerColor()
+    private void RenderTankColor()
     {
-        // 获取所有网眼渲染，并设置颜色。
-        MeshRenderer[] renderers = instance.gameObject.GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material.color = playerColor;
-
-        //玩家名字，并加上团队颜色
-        coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
-
-        //设置显示出来的名字
-        instance.GetComponentInChildren<PlayerInfoUI>().SetNameText(coloredPlayerName);
-        //设置代表团队颜色灯光颜色
-        instance.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
-
+        TankColor tankColor = instance.gameObject.GetComponent<TankColor>();
+        tankColor.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);
+        tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
+        tankColor.RenderPlayerInfo(PlayerNameColored);
     }
 
     // 重置（位置，角度，Active）
@@ -130,5 +84,48 @@ public class TankManager
     {
         ++winTimes;
     }
-    
+
+    // 设置控制权激活状态
+    public void SetControlEnable(bool enable)
+    {
+        if (isAI)
+            SetAIControlEnable(enable);
+        else
+            SetPlayerControlEnable(enable);
+
+        shooting.enabled = enable;
+        shooting.SetPlayerNumber(playerID);
+        hpCanvas.SetActive(enable);
+    }
+
+    // AI操控，设置状态控制器,激活 StateController ，关闭 TankMovement
+    private void SetAIControlEnable(bool enable)
+    {
+        if (movement != null)
+            movement.enabled = false;
+        if (stateController != null)
+        {
+            stateController.enabled = enable;
+            stateController.SetupAI(playerID, allTeamsManager);
+        }
+        else
+            Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
+    }
+
+    // 人为操控，设置控制输入，激活TankMovement，关闭 StateController、导航
+    private void SetPlayerControlEnable(bool enable)
+    {
+        if (stateController != null)
+            stateController.enabled = false;
+        if (navMeshAgent != null)
+            navMeshAgent.enabled = false;
+        if (movement != null)
+        {
+            movement.enabled = enable;
+            movement.SetPlayerNumber(playerID);
+        }
+        else
+            Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");
+    }
+
 }
