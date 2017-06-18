@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
     public CameraControl cameraControl;             // 相机控制脚本
-    public MinimapCameraController minimapCamera;   // 跟踪相机，用于小地图
+    public MinimapManager minimapManager;           // 跟踪相机，用于小地图
     public Text messageText;                        // UI文本（玩家获胜等）
 
     private int roundNumber;                        // 当前回合数
@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     private void SetupCamera(int targetIndex)
     {
         cameraControl.targets = allTanksManager.GetTanksTransform();
-        //minimapCamera.SetTarget(allTanksManager[targetIndex].Instance);     //设置小地图跟随目标为第一个玩家
+        minimapManager.SetupPlayerIconDic();
+        minimapManager.SetTarget(allTanksManager[0].Instance.transform);
     }
 
     // 游戏的循环协程

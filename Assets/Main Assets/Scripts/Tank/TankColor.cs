@@ -4,6 +4,17 @@ public class TankColor : MonoBehaviour
 {
 
     /// <summary>
+    /// 渲染玩家显示信息UI
+    /// </summary>
+    public void RenderPlayerInfo(string playerInfo)
+    {
+        PlayerInfoUI playerInfoUI = GetComponentInChildren<PlayerInfoUI>();
+        if (playerInfoUI == null)
+            return;
+        playerInfoUI.SetNameText(playerInfo);
+    }
+
+    /// <summary>
     /// 渲染所有带‘NeedRenderByPlayerColor’脚本的子组件们颜色
     /// </summary>
     /// <param name="color">渲染颜色</param>
@@ -14,17 +25,6 @@ public class TankColor : MonoBehaviour
             return;
         for (int i = 0; i < renderChildren.Length; i++)
             SetMeshRenderColor(renderChildren[i], color);
-    }
-
-    /// <summary>
-    /// 渲染玩家显示信息UI
-    /// </summary>
-    public void RenderPlayerInfo(string playerInfo)
-    {
-        PlayerInfoUI playerInfoUI = GetComponentInChildren<PlayerInfoUI>();
-        if (playerInfoUI == null)
-            return;
-        playerInfoUI.SetNameText(playerInfo);
     }
 
     /// <summary>

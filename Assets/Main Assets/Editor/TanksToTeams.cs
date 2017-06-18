@@ -104,6 +104,7 @@ public class TanksToTeams : EditorWindow
 
         Label(" Color : ", GUILayout.Width(50));
         tanksManager[index].playerColor = EditorGUILayout.ColorField(tanksManager[index].playerColor,GUILayout.Width(100));
+        tanksManager[index].playerColor.a = 1;
 
         Horizontal(false);
         return tanksManagerShow[index];
@@ -155,6 +156,7 @@ public class TanksToTeams : EditorWindow
         Label("Team Count : " + team.Count);
 
         team.TeamColor = EditorGUILayout.ColorField(team.TeamColor);
+        team.TeamColor.a = 1;
 
         Horizontal(false);
     }
