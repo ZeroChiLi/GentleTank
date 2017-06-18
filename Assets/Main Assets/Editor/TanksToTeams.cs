@@ -9,6 +9,7 @@ public class TanksToTeams : EditorWindow
     public AllTanksManager tanksManager;        // 坦克管理器
     public AllTeamsManager teamsManager;        // 团队管理器
 
+    private bool isSetupTeams;                  // 是否已经配置了团队管理器
     private bool[] tanksManagerShow;            // 对应坦克管理是否显示在面板
 
     // 坦克和选择的团队索引值，用来当回调函数参数用
@@ -24,7 +25,8 @@ public class TanksToTeams : EditorWindow
 
     private void OnGUI()
     {
-        GetTanksTeamsManager();
+        if (!GetTanksTeamsManager())
+            return;
         TanksAndTeamsOperation();
     }
 
