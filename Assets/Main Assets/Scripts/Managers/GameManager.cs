@@ -17,22 +17,22 @@ public class GameManager : MonoBehaviour
     public MinimapManager minimapManager;           // 跟踪相机，用于小地图
     public Text messageText;                        // UI文本（玩家获胜等）
 
-    private int roundNumber;                        // 当前回合数
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
-    private TankManager roundWinner;                // 当前回合获胜玩家
-    private TankManager gameWinner;                 // 最终获胜玩家
+    private GameRecord gameRecord;                  // 游戏记录，回合数，玩家获胜数
 
     private void Start()
     {
         startWait = new WaitForSeconds(startDelay);
         endWait = new WaitForSeconds(endDelay);
+        gameRecord = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager);
         spawnPointList.EnableAllPoints();
 
         SpawnAllTanks();
         SetupCameraAndMinimap();
 
         // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
+        gameRecord.StartGame();
         StartCoroutine(GameLoop());
     }
 
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(RoundEnding());             //回合结束
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合
-        if (gameWinner != null)
+        if (gameRecord.IsEndOfTheGame())
             SceneManager.LoadScene(0);
         else
             StartCoroutine(GameLoop());
@@ -84,8 +84,8 @@ public class GameManager : MonoBehaviour
 
         cameraControl.SetStartPositionAndSize();        // 重置相机
 
-        ++roundNumber;                                  // 回合数增加                
-        messageText.text = "ROUND " + roundNumber;
+        gameRecord.StartRound();
+        messageText.text = "ROUND " + gameRecord.CurrentRound;
 
         yield return startWait;                         // 延时一段时间再开始
     }
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
 
         messageText.text = string.Empty;                // 清空显示信息
 
-        while (!OneTankLeft())                          // 只剩一个坦克才结束该协程
+        while (!gameRecord.IsEndOfTheRound())           // 回合没结束就继续
             yield return null;
     }
 
@@ -106,12 +106,7 @@ public class GameManager : MonoBehaviour
     {
         DisableTankControl();                           // 锁定玩家控制权
 
-        roundWinner = GetRoundWinner();                 // 获取回合胜利的玩家
-
-        if (roundWinner != null)                        // 不为空就给胜出玩家加获胜次数
-            roundWinner.Win();
-
-        gameWinner = GetGameWinner();                   // 获取最终获胜玩家
+        gameRecord.UpdateWonData();
 
         string message = EndMessage();                  // 获取结束信息并显示之
         messageText.text = message;
@@ -119,56 +114,22 @@ public class GameManager : MonoBehaviour
         yield return endWait;
     }
 
-    // 返回是否小于等于一个坦克存活（0个说明是同归了）
-    private bool OneTankLeft()
-    {
-        int numTanksLeft = 0;
-
-        for (int i = 0; i < allTanksManager.Length; i++)
-            if (allTanksManager[i].Instance.activeSelf)
-                numTanksLeft++;
-
-        return numTanksLeft <= 1;
-    }
-
-    // 获取获胜的玩家，为空就是平局
-    private TankManager GetRoundWinner()
-    {
-        for (int i = 0; i < allTanksManager.Length; i++)
-            if (allTanksManager[i].Instance.activeSelf)
-                return allTanksManager[i];
-
-        return null;
-    }
-
-    // 获取最终胜利的玩家
-    private TankManager GetGameWinner()
-    {
-        for (int i = 0; i < allTanksManager.Length; i++)
-            if (allTanksManager[i].WinTimes == numRoundsToWin)
-                return allTanksManager[i];
-
-        return null;
-    }
-
     // 获取回合或总的游戏结束信息
     private string EndMessage()
     {
         string message = "DRAW!";                       // 默认平局
 
-        // 添加获胜玩家的带颜色的玩家名字字符串
-        if (roundWinner != null)
-            message = roundWinner.PlayerNameColored + " WINS THE ROUND!";
+        if (!gameRecord.IsDraw())
+            message = gameRecord.GetWinnerName() + " WINS THE ROUND!";
 
         message += "\n\n";
 
-        // 添加所有玩家获胜次数
-        for (int i = 0; i < allTanksManager.Length; i++)
-            message += allTanksManager[i].PlayerNameColored + " : " + allTanksManager[i].WinTimes + " WINS\n";
+        foreach (var item in gameRecord.playerWonTimes)
+            message += allTanksManager.GetTankByID(item.Key).ColoredPlayerName + " : " + item.Value + "WINS\n";
 
-        // 添加最后获胜玩家
-        if (gameWinner != null)
-            message = gameWinner.PlayerNameColored + " WINS THE GAME!";
+
+        if (gameRecord.IsEndOfTheGame())
+            message = gameRecord.GetWinnerName() + " WINS THE GAME!";
 
         return message;
     }

@@ -122,6 +122,13 @@ public class TanksToTeams : EditorWindow
         teamsManager.AddToTeam(tankIdTeamIndex.tankId, tankIdTeamIndex.teamId);
     }
 
+    // 退出团队回调函数
+    private void QuitTeam(object tankID)
+    {
+        teamsManager.RemoveFromTeam((int)tankID);
+    }
+
+
     // 显示团队下拉列表，第一参数是如果当前玩家已经有队伍
     private void ShowDropdown(Team team,int currentIndex)
     {
@@ -134,6 +141,8 @@ public class TanksToTeams : EditorWindow
         if (EditorGUILayout.DropdownButton(new GUIContent(team.TeamName), FocusType.Passive))
         {
             GenericMenu menu = new GenericMenu();
+            // 添加一条空的，就是可以不选择任何队伍
+            menu.AddItem(new GUIContent("None (No Team)"),false, QuitTeam, currentIndex);
             for (int i = 0; i < teamsManager.Length; i++)
             {
                 if (team == teamsManager[i])        //跳过已经选中的队伍
@@ -147,8 +156,9 @@ public class TanksToTeams : EditorWindow
     // 显示团队ID、人数以及颜色
     private void ShowTeamInfo(Team team)
     {
-        if (team == null)
+        if (team == null || team.TeamID == -1)
         {
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
             return;
         }

@@ -103,4 +103,15 @@ public class AllTeamsManager : ScriptableObject
         GetTeamByTeamID(teamID).Add(playerID);
     }
 
+    /// <summary>
+    /// 移除玩家出团队
+    /// </summary>
+    /// <param name="playerID">玩家ID</param>
+    public void RemoveFromTeam(int playerID)
+    {
+        Team team = GetTeamByPlayerID(playerID);
+        if (team != null && team.Contains(playerID))
+            team.Remove(playerID);
+    }
+
 }

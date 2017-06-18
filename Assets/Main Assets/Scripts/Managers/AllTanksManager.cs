@@ -26,4 +26,17 @@ public class AllTanksManager : ScriptableObject
         return instanceList;
     }
 
+    /// <summary>
+    /// 通过ID获取坦克
+    /// </summary>
+    /// <param name="id">坦克ID</param>
+    /// <returns>返回ID对应的坦克</returns>
+    public TankManager GetTankByID(int id)
+    {
+        for (int i = 0; i < tanks.Length; i++)
+            if (id == tanks[i].playerID)
+                return tanks[i];
+        return null;
+    }
+
 }

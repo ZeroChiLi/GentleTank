@@ -12,7 +12,7 @@ public class TankManager
     public Color playerColor = Color.white;                 // 渲染颜色
 
     public GameObject Instance { get { return instance; } }                 // 获取坦克的实例
-    public string PlayerNameColored { get { return coloredPlayerName; } }   // 获取带颜色的玩家名
+    public string ColoredPlayerName { get { return coloredPlayerName; } }   // 获取带颜色的玩家名
     public int WinTimes { get { return winTimes; } }                        // 获取玩家获胜次数
 
     private GameObject instance;                            // 玩家实例
@@ -69,7 +69,7 @@ public class TankManager
             coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
             tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
         }
-        tankColor.RenderPlayerInfo(PlayerNameColored);
+        tankColor.RenderPlayerInfo(ColoredPlayerName);
     }
 
     // 重置（位置，角度，Active）
