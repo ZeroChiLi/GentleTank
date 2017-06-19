@@ -8,10 +8,10 @@ public class MinimapManager : MonoBehaviour
     public float zoom = 1;                                  // 缩放大小
     public GameObject minimapContent;                       // 小地图内容
     public GameObject playerIcon;                           // 代表玩家图标
-    public AllTanksManager allTanksManager;                 // 所有坦克管理
-    public AllTeamsManager allTeamsManager;                 // 所有团队管理
 
     private bool isSetup = false;                           // 是否已经配置好
+    private AllTanksManager allTanksManager;                // 所有坦克管理
+    private AllTeamsManager allTeamsManager;                // 所有团队管理
     private Dictionary<Transform,GameObject> allPlayerIcon; // 所有玩家位置及对应图标
     private Transform target;                               // 追随目标
 
@@ -26,10 +26,12 @@ public class MinimapManager : MonoBehaviour
     }
 
     // 添加玩家图标列表
-    public void SetupPlayerIconDic()
+    public void SetupPlayerIconDic(AllTanksManager tanksManager, AllTeamsManager teamsManager)
     {
         isSetup = true;
         allPlayerIcon = new Dictionary<Transform, GameObject>();
+        allTanksManager = tanksManager;
+        allTeamsManager = teamsManager;
         for (int i = 0; i < allTanksManager.Length; i++)
         {
             GameObject icon = Instantiate(playerIcon, minimapContent.transform);

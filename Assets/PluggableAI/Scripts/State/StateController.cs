@@ -53,11 +53,11 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点
-    public void SetupAI(int playerID,AllTeamsManager teamsManager)
+    public void SetupAI(int playerID,bool aiEnable,AllTeamsManager teamsManager)
     {
         this.playerID = playerID;
         allTeamsManager = teamsManager;
-        navMeshAgent.enabled = true;
+        navMeshAgent.enabled = aiEnable;
         GetNewNextWayPoint(true);
     }
 

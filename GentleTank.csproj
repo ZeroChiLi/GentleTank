@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Effects\Explosion.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\ActiveForSeconds.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\AllTanksManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\AllTeamsManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\DebugShow.cs" />
@@ -87,15 +88,16 @@
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameRecord.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPoolCreate.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\TankManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\Team.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\Shell.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Tank\TankManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankMovement.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\UI\ArrowPopUp.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByPlayerColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByTeamColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />

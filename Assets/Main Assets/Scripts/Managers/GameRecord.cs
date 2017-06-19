@@ -87,12 +87,11 @@ public class GameRecord
         return true;
     }
 
-    // 判断是否结束游戏
+    // 判断是否结束游戏，只要判断获胜者的赢的次数就行了
     public bool IsEndOfTheGame()
     {
-        foreach (var item in playerWonTimes)
-            if (item.Value ==maxRound)
-                return true;
+        if (playerWonTimes[wonPlayerID] == maxRound)
+            return true;
         return false;
     }
 

@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             if (spawnPoint == null)
                 continue;
 
-            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), spawnPoint, allTeamsManager);
+            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), allTeamsManager);
             allTanksManager[i].SetupTank();
         }
     }
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     private void SetupCameraAndMinimap()
     {
         cameraControl.targets = allTanksManager.GetTanksTransform();
-        minimapManager.SetupPlayerIconDic();
+        minimapManager.SetupPlayerIconDic(allTanksManager,allTeamsManager);
         minimapManager.SetTarget(allTanksManager[0].Instance.transform);
     }
 
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator RoundStarting()
     {
         ResetAllTanks();                                // 重置所有坦克
-        DisableTankControl();                           // 并且锁定他们的控制权
+        SetTanksControlEnable(false);                   // 并且锁定他们的控制权
 
         cameraControl.SetStartPositionAndSize();        // 重置相机
 
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     // 回合中
     private IEnumerator RoundPlaying()
     {
-        EnableTankControl();                            // 解锁玩家控制权
+        SetTanksControlEnable(true);                    // 解锁玩家控制权
 
         messageText.text = string.Empty;                // 清空显示信息
 
@@ -104,12 +104,11 @@ public class GameManager : MonoBehaviour
     // 回合结束
     private IEnumerator RoundEnding()
     {
-        DisableTankControl();                           // 锁定玩家控制权
+        SetTanksControlEnable(false);                   // 锁定玩家控制权
 
-        gameRecord.UpdateWonData();
+        gameRecord.UpdateWonData();                     // 更新获胜次数
 
-        string message = EndMessage();                  // 获取结束信息并显示之
-        messageText.text = message;
+        messageText.text = EndMessage();                // 获取结束信息并显示之
 
         yield return endWait;
     }
@@ -119,18 +118,16 @@ public class GameManager : MonoBehaviour
     {
         string message = "DRAW!";                       // 默认平局
 
-        if (!gameRecord.IsDraw())
+        if (!gameRecord.IsDraw())                       // 不是平局，获取胜利者
             message = gameRecord.GetWinnerName() + " WINS THE ROUND!";
 
         message += "\n\n";
 
-        foreach (var item in gameRecord.playerWonTimes)
+        foreach (var item in gameRecord.playerWonTimes) // 获取所有玩家胜利信息
             message += allTanksManager.GetTankByID(item.Key).ColoredPlayerName + " : " + item.Value + "WINS\n";
 
-
-        if (gameRecord.IsEndOfTheGame())
+        if (gameRecord.IsEndOfTheGame())                // 如果是最后结束，输出最后赢最多的玩家
             message = gameRecord.GetWinnerName() + " WINS THE GAME!";
-
         return message;
     }
 
@@ -148,18 +145,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 锁定所有玩家控制权
-    private void EnableTankControl()
+    // 设置所有玩家控制权
+    private void SetTanksControlEnable(bool enable)
     {
         for (int i = 0; i < allTanksManager.Length; i++)
-            allTanksManager[i].SetControlEnable(true);
+            allTanksManager[i].SetControlEnable(enable);
     }
-
-    // 解锁所有玩家控制权
-    private void DisableTankControl()
-    {
-        for (int i = 0; i < allTanksManager.Length; i++)
-            allTanksManager[i].SetControlEnable(false);
-    }
-
 }

@@ -53,7 +53,7 @@ public class TankMovement : MonoBehaviour
     }
 
     //设置编号
-    public void SetPlayerNumber(int number)
+    public void SetPlayerID(int number)
     {
         //输入名要在Player Setting 设置
         playerNumber = number;

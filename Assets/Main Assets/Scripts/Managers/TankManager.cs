@@ -17,7 +17,6 @@ public class TankManager
     private int playerID;                                   // 玩家ID
     private GameObject instance;                            // 玩家实例
     private string coloredPlayerName;                       // 带颜色的玩家名
-    private Point spawnPoint;                               // 出生点
     private AllTeamsManager allTeamsManager;                // 所有团队管理
     private Team playerTeam;                                // 玩家所在团队
 
@@ -43,10 +42,9 @@ public class TankManager
     /// <param name="instance">坦克Perfab</param>
     /// <param name="spawnPoint">出生点</param>
     /// <param name="allTeamsManager">所有团队管理器</param>
-    public void InitTank(GameObject instance,Point spawnPoint, AllTeamsManager allTeamsManager)
+    public void InitTank(GameObject instance, AllTeamsManager allTeamsManager)
     {
         this.instance = instance;
-        this.spawnPoint = spawnPoint;
         this.allTeamsManager = allTeamsManager;
         playerTeam = allTeamsManager.GetTeamByPlayerID(PlayerID);
     }
@@ -97,7 +95,6 @@ public class TankManager
     /// <param name="spawnPoint">出生点</param>
     public void Reset(Point spawnPoint)
     {
-        this.spawnPoint = spawnPoint;
         instance.transform.position = spawnPoint.position;
         instance.transform.rotation = Quaternion.Euler(spawnPoint.rotation);
 
@@ -118,7 +115,7 @@ public class TankManager
             SetPlayerControlEnable(enable);
 
         shooting.enabled = enable;
-        shooting.SetPlayerNumber(PlayerID);
+        shooting.SetPlayerNumber(PlayerID,isAI);
         hpCanvas.SetActive(enable);
     }
 
@@ -133,7 +130,7 @@ public class TankManager
         if (stateController != null)
         {
             stateController.enabled = enable;
-            stateController.SetupAI(PlayerID, allTeamsManager);
+            stateController.SetupAI(PlayerID,enable, allTeamsManager);
         }
         else
             Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
@@ -152,7 +149,7 @@ public class TankManager
         if (movement != null)
         {
             movement.enabled = enable;
-            movement.SetPlayerNumber(PlayerID);
+            movement.SetPlayerID(PlayerID);
         }
         else
             Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");

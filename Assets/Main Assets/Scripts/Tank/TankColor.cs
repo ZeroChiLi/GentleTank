@@ -2,13 +2,14 @@
 
 public class TankColor : MonoBehaviour
 {
+    public PlayerInfoUI playerInfoUI;
 
     /// <summary>
     /// 渲染玩家显示信息UI
     /// </summary>
     public void RenderPlayerInfo(string playerInfo)
     {
-        PlayerInfoUI playerInfoUI = GetComponentInChildren<PlayerInfoUI>();
+        playerInfoUI.gameObject.SetActive(true);
         if (playerInfoUI == null)
             return;
         playerInfoUI.SetNameText(playerInfo);

@@ -15,6 +15,7 @@ public class TankShooting : MonoBehaviour
     public float maxLaunchForce = 30f;          // 最大发射力度
     public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
 
+    private bool isAI;                          // 是否是AI
     private string fireButton;                  // 发射子弹按钮是名字
     private float currentLaunchForce;           // 当前发射力度
     private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
@@ -32,7 +33,13 @@ public class TankShooting : MonoBehaviour
     {
         if (!CanFire())
             return;
+        if (!isAI)
+            CheckForceToFire();
+    }
 
+    //根据按键时长来发射炮弹
+    private void CheckForceToFire()
+    {
         // 一直按着到超过最大力度，自动发射
         if (currentLaunchForce >= maxLaunchForce && !fired)
         {
@@ -64,11 +71,12 @@ public class TankShooting : MonoBehaviour
     }
 
     //设置编号
-    public void SetPlayerNumber(int number)
+    public void SetPlayerNumber(int number,bool isAI = false)
     {
         //在Player Setting中设置
         playerNumber = number;
         fireButton = "Fire" + playerNumber;
+        this.isAI = isAI;
     }
 
     //发射炮弹
