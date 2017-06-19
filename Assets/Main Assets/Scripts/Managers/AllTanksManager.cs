@@ -34,7 +34,7 @@ public class AllTanksManager : ScriptableObject
     public TankManager GetTankByID(int id)
     {
         for (int i = 0; i < tanks.Length; i++)
-            if (id == tanks[i].playerID)
+            if (id == tanks[i].PlayerID)
                 return tanks[i];
         return null;
     }

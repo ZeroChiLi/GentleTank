@@ -9,7 +9,9 @@ public class TanksToTeams : EditorWindow
     public AllTanksManager tanksManager;        // 坦克管理器
     public AllTeamsManager teamsManager;        // 团队管理器
 
+    private bool resetID;                       // 是否已经重载ID
     private bool isSetupTeams;                  // 是否已经配置了团队管理器
+    private Vector2 scrollPos;                  // 滑动面板位置
     private bool[] tanksManagerShow;            // 对应坦克管理是否显示在面板
 
     // 坦克和选择的团队索引值，用来当回调函数参数用
@@ -27,7 +29,19 @@ public class TanksToTeams : EditorWindow
     {
         if (!GetTanksTeamsManager())
             return;
+        if (!resetID)
+            ResetTanksAndTeamsID();
         TanksAndTeamsOperation();
+    }
+
+    // 强制重置坦克和团队们的ID
+    private void ResetTanksAndTeamsID()
+    {
+        for (int i = 0; i < tanksManager.Length; i++)
+            tanksManager[i].SetPlayerID(i);
+        for (int i = 0; i < teamsManager.Length; i++)
+            teamsManager[i].SetTeamID(i);
+        resetID = true;
     }
 
     // 同时获取到坦克、团队管理器
@@ -58,7 +72,9 @@ public class TanksToTeams : EditorWindow
     private void TanksAndTeamsOperation()
     {
         EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.Length);
+        EditorGUILayout.LabelField("Teams Size ： " + teamsManager.Length);
 
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(300));
         for (int i = 0; i < tanksManager.Length; i++)
         {
             EditorGUILayout.Space();
@@ -66,6 +82,7 @@ public class TanksToTeams : EditorWindow
             TankOperation(i);
             EditorGUILayout.EndVertical();
         }
+        EditorGUILayout.EndScrollView();
     }
 
     // 单个坦克管理
@@ -78,8 +95,8 @@ public class TanksToTeams : EditorWindow
         Team playerTeam = new Team();
 
         // 如果坦克已经有队伍了，获取信息到playerTeam和dropdownContent
-        if (teamsManager.ContainsPlayer(tanksManager[index].playerID))
-            playerTeam = teamsManager.GetTeamByPlayerID(tanksManager[index].playerID);
+        if (teamsManager.ContainsPlayer(tanksManager[index].PlayerID))
+            playerTeam = teamsManager.GetTeamByPlayerID(tanksManager[index].PlayerID);
 
         Horizontal(true);
         EditorGUILayout.PrefixLabel("Select Player's Team : ");
@@ -96,7 +113,7 @@ public class TanksToTeams : EditorWindow
     private bool ShowPlayerTeamInfo(int index)
     {
         Horizontal(true);
-        string showText = " ID : " + tanksManager[index].playerID;
+        string showText = " ID : " + tanksManager[index].PlayerID;
         tanksManagerShow[index] = EditorGUILayout.Foldout(tanksManagerShow[index], showText);
 
         Label(" Name : " + tanksManager[index].playerName);
@@ -128,7 +145,6 @@ public class TanksToTeams : EditorWindow
         teamsManager.RemoveFromTeam((int)tankID);
     }
 
-
     // 显示团队下拉列表，第一参数是如果当前玩家已经有队伍
     private void ShowDropdown(Team team,int currentIndex)
     {
@@ -147,7 +163,7 @@ public class TanksToTeams : EditorWindow
             {
                 if (team == teamsManager[i])        //跳过已经选中的队伍
                     continue;
-                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager[currentIndex].playerID, teamId = teamsManager[i].TeamID });
+                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager[currentIndex].PlayerID, teamId = teamsManager[i].TeamID });
             }
             menu.ShowAsContext();
         }

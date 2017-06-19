@@ -41,11 +41,11 @@ public class GameRecord
         //没有队伍的加进去赋值-1,顺便初始化playerWonTimes
         for (int i = 0; i < allTanksManager.Length; i++)
         {
-            if (!tanksIdTeamsIdDic.ContainsKey(allTanksManager[i].playerID))
-                tanksIdTeamsIdDic[allTanksManager[i].playerID] = -1;
+            if (!tanksIdTeamsIdDic.ContainsKey(allTanksManager[i].PlayerID))
+                tanksIdTeamsIdDic[allTanksManager[i].PlayerID] = -1;
 
             //这里是初始化playerWonTimes，为了省一圈循环
-            playerWonTimes[allTanksManager[i].playerID] = 0;
+            playerWonTimes[allTanksManager[i].PlayerID] = 0;
         }
 
     }
@@ -71,11 +71,11 @@ public class GameRecord
         for (int i = 0; i < allTanksManager.Length; i++)
             if (allTanksManager[i].Instance.activeSelf)
             {
-                int playerTeamID = tanksIdTeamsIdDic[allTanksManager[i].playerID];
+                int playerTeamID = tanksIdTeamsIdDic[allTanksManager[i].PlayerID];
                 // 遍历获取第一个赢的人
                 if (!haveWinner)
                 {
-                    playerID = allTanksManager[i].playerID;
+                    playerID = allTanksManager[i].PlayerID;
                     haveWinner = true;
                 }
                 // 第二个赢得的人没有队伍或与第一个人队伍不同，也说明没结束
@@ -130,7 +130,7 @@ public class GameRecord
     {
         string message;
         if (IsTeamWon())
-            message = GetWonTeam().NameColored + " TEAM";
+            message = GetWonTeam().ColoredTeamName + " TEAM";
         else
             message = GetWonTank().ColoredPlayerName + " PLAYER";
         return message;

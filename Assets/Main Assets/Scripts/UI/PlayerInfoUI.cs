@@ -8,6 +8,7 @@ public class PlayerInfoUI : MonoBehaviour
         GetComponent<RectTransform>().rotation = Quaternion.LookRotation(-1 * GameObject.FindGameObjectWithTag("MainCamera").transform.position);
     }
 
+    // 设置显示到镜头玩家名字
     public void SetNameText(string name)
     {
         GetComponent<MeshRenderer>().material.color = Color.white;

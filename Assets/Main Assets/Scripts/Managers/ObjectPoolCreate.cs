@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//对象池的集中初始化创建
 public class ObjectPoolCreate : MonoBehaviour 
 {
     public ObjectPool[] objectPools;
