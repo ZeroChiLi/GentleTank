@@ -14,6 +14,7 @@ public class ObjectPool : ScriptableObject
 
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
+    private GameObject poolParent;                          //创建一个空GameObject来存这些子对象
 
     public GameObject this[int index]
     {
@@ -26,12 +27,11 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     public void CreateObjectPool()
     {
-        //创建一个空GameObject来存这些子对象
-        GameObject parent = new GameObject(objectPerfab.name + " Pool");
+        poolParent = new GameObject(objectPerfab.name + " Pool");
         objectPool = new List<GameObject>();
         for (int i = 0; i < objectCount; ++i)
         {
-            GameObject obj = Instantiate(objectPerfab,parent.transform);
+            GameObject obj = Instantiate(objectPerfab,poolParent.transform);
             objectPool.Add(obj);
             obj.SetActive(false);
         }
@@ -93,5 +93,14 @@ public class ObjectPool : ScriptableObject
         currentIndex = objectPool.Count - 1;         //用-1也行
         return obj;
     }
-    
+
+    /// <summary>
+    /// 获取存放所有对象的父对象
+    /// </summary>
+    /// <returns>返回存放所有对象的父对象</returns>
+    public GameObject GetPoolParent()
+    {
+        return poolParent;
+    }
+
 }

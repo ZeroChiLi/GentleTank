@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public PointList spawnPointList;                // 坦克出生点
     public AllTanksManager allTanksManager;         // 所有坦克管理器
     public AllTeamsManager allTeamsManager;         // 所有团队管理器
+    public ObjectPool arrowPopUpPool;               // 显示玩家箭头池   
 
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public CameraControl cameraControl;             // 相机控制脚本
     public MinimapManager minimapManager;           // 跟踪相机，用于小地图
     public Text messageText;                        // UI文本（玩家获胜等）
+    public GameObject groudCanvas;                      // 用来显示玩家箭头
 
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
             if (spawnPoint == null)
                 continue;
 
-            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation),tanks.transform), allTeamsManager);
+            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation), tanks.transform), allTeamsManager);
             allTanksManager[i].SetupTank();
         }
     }
@@ -56,7 +58,7 @@ public class GameManager : MonoBehaviour
     private void SetupCameraAndMinimap()
     {
         cameraControl.targets = allTanksManager.GetTanksTransform();
-        minimapManager.SetupPlayerIconDic(allTanksManager,allTeamsManager);
+        minimapManager.SetupPlayerIconDic(allTanksManager, allTeamsManager);
         minimapManager.SetTarget(allTanksManager[0].Instance.transform);
     }
 
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
     {
         ResetAllTanks();                                // 重置所有坦克
         SetTanksControlEnable(false);                   // 并且锁定他们的控制权
+        ShowTankArrow(groudCanvas);           // 显示玩家箭头
 
         cameraControl.SetStartPositionAndSize();        // 重置相机
 
@@ -150,5 +153,21 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < allTanksManager.Length; i++)
             allTanksManager[i].SetControlEnable(enable);
+    }
+
+    // 显示玩家控制的坦克箭头
+    private void ShowTankArrow(GameObject parent)
+    {
+        arrowPopUpPool.GetPoolParent().transform.parent = parent.transform;
+        for (int i = 0; i < allTanksManager.Length; i++)
+        {
+            if (allTanksManager[i].isAI)
+                continue;
+            GameObject arrowPopUp = arrowPopUpPool.GetNextObject();
+            arrowPopUp.SetActive(true);
+            arrowPopUp.GetComponent<ArrowPopUp>().Setposition(allTanksManager[i].Instance.transform.position);
+            arrowPopUp.GetComponent<ArrowPopUp>().SetColor(allTanksManager[i].playerColor);
+            arrowPopUp.GetComponent<ArrowPopUp>().SetText("P" + i);
+        }
     }
 }
