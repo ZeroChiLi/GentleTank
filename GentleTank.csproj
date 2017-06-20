@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -101,6 +103,7 @@
     <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByPlayerColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\NeedRenderByTeamColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\UI\SpawnAllPopUpArrow.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\PluggableAI\Configure\AIStats.cs" />

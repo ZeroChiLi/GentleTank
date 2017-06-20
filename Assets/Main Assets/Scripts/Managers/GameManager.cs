@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public PointList spawnPointList;                // 坦克出生点
     public AllTanksManager allTanksManager;         // 所有坦克管理器
     public AllTeamsManager allTeamsManager;         // 所有团队管理器
-    public ObjectPool arrowPopUpPool;               // 显示玩家箭头池   
 
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -17,48 +16,58 @@ public class GameManager : MonoBehaviour
     public Text messageText;                        // UI文本（玩家获胜等）
     public CameraControl cameraControl;             // 相机控制脚本
     public MinimapManager minimapManager;           // 小地图管理器
-    public GameObject groudCanvas;                  // 用来显示玩家箭头
+    public SpawnAllPopUpArrow spawnAllPopUpArrow;   // 用来显示玩家箭头
 
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
+    // 初始化游戏记录实例、产生所有坦克、设置相机目标、小地图初始化、开始游戏循环
     private void Start()
     {
         startWait = new WaitForSeconds(startDelay);
         endWait = new WaitForSeconds(endDelay);
         GameRecord.instance = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager);
-        spawnPointList.EnableAllPoints();
 
-        SpawnAllTanks();
-        SetupCameraAndMinimap();
+        SetupGame();                                // 配置游戏
 
         // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         GameRecord.instance.StartGame();
         StartCoroutine(GameLoop());
     }
 
-    // 产生所有坦克，包括玩家和AI
-    private void SpawnAllTanks()
+    // 产生所有坦克（包括玩家和AI）、设置镜头所有追踪目标、小地图初始化
+    private void SetupGame()
     {
         GameObject tanks = new GameObject("Tanks");
         for (int i = 0; i < allTanksManager.Length; i++)
+            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, tanks.transform), allTeamsManager);
+
+        cameraControl.targets = allTanksManager.GetTanksTransform();
+        cameraControl.SetStartPositionAndSize();
+
+        minimapManager.SetupPlayerIconDic(allTanksManager, allTeamsManager);
+        minimapManager.SetTarget(allTanksManager[0].Instance.transform);
+    }
+
+    // 重置所有坦克出生点
+    private void ResetAllTanksSpawnPoint()
+    {
+        spawnPointList.EnableAllPoints();                     // 初始化出生点
+        for (int i = 0; i < allTanksManager.Length; i++)
         {
             //获取有效随机出生点，且每个坦克位置不一样
-            Point spawnPoint = spawnPointList.GetRandomPoint(false);
+            Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
             if (spawnPoint == null)
                 continue;
-
-            allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, spawnPoint.position, Quaternion.Euler(spawnPoint.rotation), tanks.transform), allTeamsManager);
-            allTanksManager[i].SetupTank();
+            allTanksManager[i].Reset(spawnPoint);
         }
     }
 
-    // 给主相机添加所有坦克，小地图相机添加追踪目标
-    private void SetupCameraAndMinimap()
+    // 设置所有玩家控制权
+    private void SetTanksControlEnable(bool enable)
     {
-        cameraControl.targets = allTanksManager.GetTanksTransform();
-        minimapManager.SetupPlayerIconDic(allTanksManager, allTeamsManager);
-        minimapManager.SetTarget(allTanksManager[0].Instance.transform);
+        for (int i = 0; i < allTanksManager.Length; i++)
+            allTanksManager[i].SetControlEnable(enable);
     }
 
     // 游戏的循环协程
@@ -80,13 +89,11 @@ public class GameManager : MonoBehaviour
     // 回合开始
     private IEnumerator RoundStarting()
     {
-        ResetAllTanks();                                // 重置所有坦克
-        SetTanksControlEnable(false);                   // 并且锁定他们的控制权
-        ShowTankArrow(groudCanvas);           // 显示玩家箭头
-
-        cameraControl.SetStartPositionAndSize();        // 重置相机
-
+        SetTanksControlEnable(false);                   // 锁定坦克们的控制权
+        ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
+        spawnAllPopUpArrow.Spawn(allTanksManager);      // 显示玩家箭头
         GameRecord.instance.StartRound();
+
         messageText.text = "ROUND " + GameRecord.instance.CurrentRound;
 
         yield return startWait;                         // 延时一段时间再开始
@@ -106,67 +113,14 @@ public class GameManager : MonoBehaviour
     // 回合结束
     private IEnumerator RoundEnding()
     {
-        SetTanksControlEnable(false);                   // 锁定玩家控制权
+        SetTanksControlEnable(false);                               // 锁定玩家控制权
 
-        GameRecord.instance.UpdateWonData();                     // 更新获胜次数
+        GameRecord.instance.UpdateWonData();                        // 更新获胜次数
 
-        messageText.text = EndMessage();                // 获取结束信息并显示之
+        messageText.text = GameRecord.instance.GetEndingMessage();  // 获取结束信息并显示之
 
         yield return endWait;
     }
 
-    // 获取回合或总的游戏结束信息
-    private string EndMessage()
-    {
-        string message = "DRAW!";                       // 默认平局
 
-        if (!GameRecord.instance.IsDraw())                       // 不是平局，获取胜利者
-            message = GameRecord.instance.GetWinnerName() + " WINS THE ROUND!";
-
-        message += "\n\n";
-
-        foreach (var item in GameRecord.instance.playerWonTimes) // 获取所有玩家胜利信息
-            message += allTanksManager.GetTankByID(item.Key).ColoredPlayerName + " : " + item.Value + "WINS\n";
-
-        if (GameRecord.instance.IsEndOfTheGame())                // 如果是最后结束，输出最后赢最多的玩家
-            message = GameRecord.instance.GetWinnerName() + " WINS THE GAME!";
-        return message;
-    }
-
-    // 重置所有坦克
-    private void ResetAllTanks()
-    {
-        spawnPointList.EnableAllPoints();                     // 初始化出生点
-        for (int i = 0; i < allTanksManager.Length; i++)
-        {
-            //获取有效随机出生点，且每个坦克位置不一样
-            Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
-            if (spawnPoint == null)
-                continue;
-            allTanksManager[i].Reset(spawnPoint);
-        }
-    }
-
-    // 设置所有玩家控制权
-    private void SetTanksControlEnable(bool enable)
-    {
-        for (int i = 0; i < allTanksManager.Length; i++)
-            allTanksManager[i].SetControlEnable(enable);
-    }
-
-    // 显示玩家控制的坦克箭头
-    private void ShowTankArrow(GameObject parent)
-    {
-        arrowPopUpPool.GetPoolParent().transform.parent = parent.transform;
-        for (int i = 0; i < allTanksManager.Length; i++)
-        {
-            if (allTanksManager[i].isAI)
-                continue;
-            GameObject arrowPopUp = arrowPopUpPool.GetNextObject();
-            arrowPopUp.SetActive(true);
-            arrowPopUp.GetComponent<ArrowPopUp>().Setposition(allTanksManager[i].Instance.transform.position);
-            arrowPopUp.GetComponent<ArrowPopUp>().SetColor(allTanksManager[i].playerColor);
-            arrowPopUp.GetComponent<ArrowPopUp>().SetText("P" + i);
-        }
-    }
 }

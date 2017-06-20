@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TankShooting : MonoBehaviour
 {
-    public int playerNumber = 1;                // 玩家编号
+    public int playerID = 1;                // 玩家编号
     public ObjectPool shellPool;                // 炮弹池
     public Transform shellSpawn;                // 发射子弹的位置
     public Slider aimSlider;                    // 发射时显示黄色箭头
@@ -70,13 +70,13 @@ public class TankShooting : MonoBehaviour
         }
     }
 
-    //设置编号
-    public void SetPlayerNumber(int number,bool isAI = false)
+    //配置玩家属性
+    public void SetupPlayer(int playerID,bool isAI = false,bool enable = true)
     {
-        //在Player Setting中设置
-        playerNumber = number;
-        fireButton = "Fire" + playerNumber;
+        this.playerID = playerID;
+        fireButton = "Fire" + playerID;
         this.isAI = isAI;
+        enabled = enable;
     }
 
     //发射炮弹

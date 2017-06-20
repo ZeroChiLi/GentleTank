@@ -20,10 +20,9 @@ public class TankManager
     private AllTeamsManager allTeamsManager;                // 所有团队管理
     private Team playerTeam;                                // 玩家所在团队
 
-    private TankMovement movement;                          // 移动脚本
-    private TankShooting shooting;                          // 攻击脚本
-    private GameObject hpCanvas;                            // 显示玩家信息UI（血量）
-
+    private TankMovement tankMovement;                      // 移动
+    private TankShooting tankShooting;                      // 攻击
+    private TankHealth tankHealth;                          // 血量
     private StateController stateController;                // AI状态控制器
     private NavMeshAgent navMeshAgent;                      // AI导航
 
@@ -37,7 +36,7 @@ public class TankManager
     }
 
     /// <summary>
-    /// 初始化坦克
+    /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。
     /// </summary>
     /// <param name="instance">坦克Perfab</param>
     /// <param name="spawnPoint">出生点</param>
@@ -47,13 +46,7 @@ public class TankManager
         this.instance = instance;
         this.allTeamsManager = allTeamsManager;
         playerTeam = allTeamsManager.GetTeamByPlayerID(PlayerID);
-    }
 
-    /// <summary>
-    /// 配置坦克,包括获取实例的必要组件、激活控制权、渲染坦克颜色。
-    /// </summary>
-    public void SetupTank()
-    {
         SetupComponent();                               // 获取私有组件
         SetControlEnable(true);                         // 激活相应的控制权
         RenderTankColor();                              // 渲染颜色
@@ -64,9 +57,9 @@ public class TankManager
     /// </summary>
     private void SetupComponent()
     {
-        movement = instance.GetComponent<TankMovement>();
-        shooting = instance.GetComponent<TankShooting>();
-        hpCanvas = instance.GetComponentInChildren<Canvas>().gameObject;
+        tankMovement = instance.GetComponent<TankMovement>();
+        tankShooting = instance.GetComponent<TankShooting>();
+        tankHealth = instance.GetComponent<TankHealth>();
         stateController = instance.GetComponent<StateController>();
         navMeshAgent = instance.GetComponent<NavMeshAgent>();
     }
@@ -114,9 +107,8 @@ public class TankManager
         else
             SetPlayerControlEnable(enable);
 
-        shooting.enabled = enable;
-        shooting.SetPlayerNumber(PlayerID,isAI);
-        hpCanvas.SetActive(enable);
+        tankShooting.SetupPlayer(PlayerID,isAI,enable);
+        tankHealth.enabled = enable;
     }
 
     /// <summary>
@@ -125,8 +117,8 @@ public class TankManager
     /// <param name="enable">是否激活</param>
     private void SetAIControlEnable(bool enable)
     {
-        if (movement != null)
-            movement.enabled = false;
+        if (tankMovement != null)
+            tankMovement.enabled = false;
         if (stateController != null)
         {
             stateController.enabled = enable;
@@ -146,10 +138,10 @@ public class TankManager
             stateController.enabled = false;
         if (navMeshAgent != null)
             navMeshAgent.enabled = false;
-        if (movement != null)
+        if (tankMovement != null)
         {
-            movement.enabled = enable;
-            movement.SetPlayerID(PlayerID);
+            tankMovement.enabled = enable;
+            tankMovement.SetPlayerID(PlayerID);
         }
         else
             Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");

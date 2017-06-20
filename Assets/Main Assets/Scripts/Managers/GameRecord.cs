@@ -105,7 +105,7 @@ public class GameRecord
     /// <returns>是否结束游戏</returns>
     public bool IsEndOfTheGame()
     {
-        foreach (var item in tanksIdTeamsIdDic)
+        foreach (var item in playerWonTimes)
             if (item.Value == maxRound)
                 return true;
         return false;
@@ -152,7 +152,7 @@ public class GameRecord
     /// 获取获胜名字，团队加‘TEAM’，个人加‘PLAYER’
     /// </summary>
     /// <returns>返回获胜玩家（团队）字符串</returns>
-    public string GetWinnerName()
+    private string GetWinnerName()
     {
         string message;
         if (IsTeamWon())
@@ -166,7 +166,7 @@ public class GameRecord
     /// 获取获胜团队
     /// </summary>
     /// <returns>获胜团队</returns>
-    public Team GetWonTeam()
+    private Team GetWonTeam()
     {
         return allTeamsManager.GetTeamByPlayerID(wonPlayerID);
     }
@@ -175,9 +175,30 @@ public class GameRecord
     /// 获取个人获胜坦克ID
     /// </summary>
     /// <returns>获胜玩家</returns>
-    public TankManager GetWonTank()
+    private TankManager GetWonTank()
     {
         return allTanksManager.GetTankByID(wonPlayerID);
+    }
+
+    /// <summary>
+    /// 获取回合或总的游戏结束信息
+    /// </summary>
+    /// <returns></returns>
+    public string GetEndingMessage()
+    {
+        string message = "DRAW!";                       // 默认平局
+
+        if (!IsDraw())                                  // 不是平局，获取胜利者
+            message = GetWinnerName() + " WINS THE ROUND!";
+
+        message += "\n\n";
+
+        foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
+            message += allTanksManager.GetTankByID(item.Key).ColoredPlayerName + " : " + item.Value + "WINS\n";
+
+        if (IsEndOfTheGame())                           // 如果是最后结束，输出最后赢最多的玩家
+            message = GetWinnerName() + " WINS THE GAME!";
+        return message;
     }
 
 }

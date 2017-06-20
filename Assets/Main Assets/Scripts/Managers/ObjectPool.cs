@@ -14,7 +14,7 @@ public class ObjectPool : ScriptableObject
 
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
-    private GameObject poolParent;                          //创建一个空GameObject来存这些子对象
+    private GameObject poolParent;              //创建一个空GameObject来存这些子对象
 
     public GameObject this[int index]
     {
@@ -68,16 +68,19 @@ public class ObjectPool : ScriptableObject
     }
 
     /// <summary>
-    /// 获取下一个可用对象被激活，以及设置位置，并返回该对象
+    /// 获取下一个可用对象同时激活，以及设置位置，并返回该对象
     /// </summary>
     /// <param name="transform">位置</param>
     /// <returns>放回这个对象</returns>
-    public GameObject GetNextObjectActive(Transform transform)
+    public GameObject GetNextObjectActive(Transform transform = null)
     {
         GameObject obj = GetNextObject();
-        obj.transform.position = transform.position;
-        obj.transform.rotation = transform.rotation;
         obj.SetActive(true);
+        if (transform != null)
+        {
+            obj.transform.position = transform.position;
+            obj.transform.rotation = transform.rotation;
+        }
         return obj;
     }
 
