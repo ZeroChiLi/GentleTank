@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Configure/All Teams Manager")]
 public class AllTeamsManager : ScriptableObject
 {
-    [Header("Open 'Window/Tanks To Team' Window To Select Player's Team")]
+    [Header("Open 'Window/Tanks To Team',")]
+    [Header("And Select Player's Team.")]
     [Space()]
 
     public Team[] teamArray;                                // 所有团队

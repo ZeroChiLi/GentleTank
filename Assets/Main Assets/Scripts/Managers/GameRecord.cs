@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameRecord
 {
+    static public GameRecord instance;
+
     private AllTanksManager allTanksManager;
     private AllTeamsManager allTeamsManager;
     private Dictionary<int, int> tanksIdTeamsIdDic;             // 坦克ID对应团队ID，没队的-1
@@ -23,6 +25,7 @@ public class GameRecord
     /// <param name="teamsManager">团队管理器</param>
     public GameRecord(int maxRound, AllTanksManager tanksManager, AllTeamsManager teamsManager)
     {
+        instance = this;
         this.maxRound = maxRound;
         allTanksManager = tanksManager;
         allTeamsManager = teamsManager;
@@ -31,8 +34,10 @@ public class GameRecord
         InitTanksTeamsDic();
     }
 
-    // 初始化字典
-    public void InitTanksTeamsDic()
+    /// <summary>
+    /// 初始化坦克团队字典
+    /// </summary>
+    private void InitTanksTeamsDic()
     {
         //先从所有队伍里面填进去进去
         for (int i = 0; i < allTeamsManager.Length; i++)
@@ -50,20 +55,27 @@ public class GameRecord
 
     }
 
-    // 开始新游戏
+    /// <summary>
+    /// 开始新游戏，设置当前回合数为0
+    /// </summary>
     public void StartGame()
     {
         currentRound = 0;
     }
 
-    // 开始新局，初始化,返回当前回合数
+    /// <summary>
+    /// 开始新的回合，增加当前回合数，设置获胜玩家ID为-1
+    /// </summary>
     public void StartRound()
     {
         ++currentRound;
         wonPlayerID = -1;
     }
 
-    // 判断是否结束本局
+    /// <summary>
+    /// 判断是否结束回合，并设置获胜者ID，平局设置ID为-1
+    /// </summary>
+    /// <returns>是否结束回合</returns>
     public bool IsEndOfTheRound()
     {
         bool haveWinner = false;
@@ -87,27 +99,39 @@ public class GameRecord
         return true;
     }
 
-    // 判断是否结束游戏，只要判断获胜者的赢的次数就行了
+    /// <summary>
+    /// 判断是否结束游戏,遍历一遍所有坦克的获胜次数，有等于最大回合数就是结束游戏了
+    /// </summary>
+    /// <returns>是否结束游戏</returns>
     public bool IsEndOfTheGame()
     {
-        if (playerWonTimes[wonPlayerID] == maxRound)
-            return true;
+        foreach (var item in tanksIdTeamsIdDic)
+            if (item.Value == maxRound)
+                return true;
         return false;
     }
 
-    // 判断是否平局
+    /// <summary>
+    /// 判断是否平局，就是判断获胜玩家ID是否为-1
+    /// </summary>
+    /// <returns>是否平局</returns>
     public bool IsDraw()
     {
         return wonPlayerID == -1;
     }
 
-    // 是否团队获胜，否则个人获胜
+    /// <summary>
+    /// 判断是否是团队获胜，否则是个人获胜，就是判断玩家ID对应的团队ID
+    /// </summary>
+    /// <returns>是否团队获胜</returns>
     public bool IsTeamWon()
     {
         return tanksIdTeamsIdDic[wonPlayerID] != -1;
     }
 
-    // 更新获胜数据
+    /// <summary>
+    /// 更新获胜玩家们数据
+    /// </summary>
     public void UpdateWonData()
     {
         // 个人获胜，只加个人即可
@@ -124,7 +148,10 @@ public class GameRecord
 
     }
 
-    // 获取获胜名字，团队加‘TEAM’，个人加‘PLAYER’
+    /// <summary>
+    /// 获取获胜名字，团队加‘TEAM’，个人加‘PLAYER’
+    /// </summary>
+    /// <returns>返回获胜玩家（团队）字符串</returns>
     public string GetWinnerName()
     {
         string message;
@@ -135,13 +162,19 @@ public class GameRecord
         return message;
     }
 
-    // 获取获胜团队
+    /// <summary>
+    /// 获取获胜团队
+    /// </summary>
+    /// <returns>获胜团队</returns>
     public Team GetWonTeam()
     {
         return allTeamsManager.GetTeamByPlayerID(wonPlayerID);
     }
 
-    // 获取个人获胜坦克ID
+    /// <summary>
+    /// 获取个人获胜坦克ID
+    /// </summary>
+    /// <returns>获胜玩家</returns>
     public TankManager GetWonTank()
     {
         return allTanksManager.GetTankByID(wonPlayerID);
