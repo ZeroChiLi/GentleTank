@@ -4,6 +4,8 @@ using UnityEngine.AI;
 [System.Serializable]
 public class TankManager
 {
+    [HideInInspector , SerializeField]
+    private int playerID;                                   // 玩家ID
     public string playerName;                               // 玩家名称
     public bool isAI;                                       // 是否是AI
     public GameObject tankPerfab;                           // 坦克预设
@@ -14,7 +16,6 @@ public class TankManager
     public GameObject Instance { get { return instance; } }                 // 获取坦克的实例
     public string ColoredPlayerName { get { return coloredPlayerName; } }   // 获取带颜色的玩家名
 
-    private int playerID;                                   // 玩家ID
     private GameObject instance;                            // 玩家实例
     private string coloredPlayerName;                       // 带颜色的玩家名
     private AllTeamsManager allTeamsManager;                // 所有团队管理
@@ -23,6 +24,7 @@ public class TankManager
     private TankMovement tankMovement;                      // 移动
     private TankShooting tankShooting;                      // 攻击
     private TankHealth tankHealth;                          // 血量
+
     private StateController stateController;                // AI状态控制器
     private NavMeshAgent navMeshAgent;                      // AI导航
 

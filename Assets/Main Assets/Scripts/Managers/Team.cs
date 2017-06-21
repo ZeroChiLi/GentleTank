@@ -4,8 +4,9 @@ using UnityEngine;
 [System.Serializable]
 public class Team
 {
+    [HideInInspector, SerializeField]
+    public int teamID = -1;                                     //团队ID
     public string TeamName;                                     //团队名称
-    [HideInInspector] private int teamID = -1;                  //团队ID
     [ColorUsage(false)] public Color TeamColor = Color.white;   //团队颜色
     [HideInInspector] public List<int> playerIdList;            //成员列表ID
 

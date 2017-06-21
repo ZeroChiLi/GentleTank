@@ -21,7 +21,7 @@ public class TanksToTeams : EditorWindow
     static void Init()
     {
         EditorWindow window = GetWindow<TanksToTeams>();
-        window.minSize = new Vector2(500f, 400f);
+        window.minSize = new Vector2(500f, 300f);
         window.Show();
     }
 

@@ -21,7 +21,9 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
-    // 初始化游戏记录实例、产生所有坦克、设置相机目标、小地图初始化、开始游戏循环
+    /// <summary>
+    /// 初始化游戏记录实例、产生所有坦克、设置相机目标、小地图初始化、开始游戏循环
+    /// </summary>
     private void Start()
     {
         startWait = new WaitForSeconds(startDelay);
@@ -35,7 +37,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-    // 产生所有坦克（包括玩家和AI）、设置镜头所有追踪目标、小地图初始化
+    /// <summary>
+    /// 产生所有坦克（包括玩家和AI）、设置镜头所有追踪目标、小地图初始化
+    /// </summary>
     private void SetupGame()
     {
         GameObject tanks = new GameObject("Tanks");
@@ -49,7 +53,9 @@ public class GameManager : MonoBehaviour
         minimapManager.SetTarget(allTanksManager[0].Instance.transform);
     }
 
-    // 重置所有坦克出生点
+    /// <summary>
+    /// 重置所有坦克出生点
+    /// </summary>
     private void ResetAllTanksSpawnPoint()
     {
         spawnPointList.EnableAllPoints();                     // 初始化出生点
@@ -63,19 +69,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 设置所有玩家控制权
+    /// <summary>
+    /// 设置所有玩家控制权
+    /// </summary>
+    /// <param name="enable">激活状态</param>
     private void SetTanksControlEnable(bool enable)
     {
         for (int i = 0; i < allTanksManager.Length; i++)
             allTanksManager[i].SetControlEnable(enable);
     }
 
-    // 游戏的循环协程
+    /// <summary>
+    /// 游戏的循环协程
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator GameLoop()
     {
         yield return StartCoroutine(RoundStarting());           //回合开始，有一段延时
 
-        yield return StartCoroutine(RoundPlaying());            //回合中，多于一个坦克存活时一直在这里死循环
+        yield return StartCoroutine(RoundPlaying());            //回合中
 
         yield return StartCoroutine(RoundEnding());             //回合结束
 
@@ -86,7 +98,10 @@ public class GameManager : MonoBehaviour
             StartCoroutine(GameLoop());
     }
 
-    // 回合开始
+    /// <summary>
+    /// 回合开始
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RoundStarting()
     {
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
@@ -99,7 +114,10 @@ public class GameManager : MonoBehaviour
         yield return startWait;                         // 延时一段时间再开始
     }
 
-    // 回合中
+    /// <summary>
+    /// 回合中
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RoundPlaying()
     {
         SetTanksControlEnable(true);                    // 解锁玩家控制权
@@ -110,7 +128,10 @@ public class GameManager : MonoBehaviour
             yield return null;
     }
 
-    // 回合结束
+    /// <summary>
+    /// 回合结束
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RoundEnding()
     {
         SetTanksControlEnable(false);                               // 锁定玩家控制权
