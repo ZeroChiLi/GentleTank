@@ -44,12 +44,12 @@ public class StateController : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.enabled = true;
-        navMeshAgent.speed = defaultStats.navSpeed;
-        navMeshAgent.angularSpeed = defaultStats.navAngularSpeed;
-        navMeshAgent.acceleration = defaultStats.navAcceleration;
-        navMeshAgent.stoppingDistance = defaultStats.navStopDistance;
         navMeshAgent.radius = defaultStats.navRadius;
         navMeshAgent.height = defaultStats.navHeight;
+        navMeshAgent.speed = defaultStats.navSpeed.GetRandomValue();
+        navMeshAgent.angularSpeed = defaultStats.navAngularSpeed.GetRandomValue();
+        navMeshAgent.acceleration = defaultStats.navAcceleration.GetRandomValue();
+        navMeshAgent.stoppingDistance = defaultStats.navStopDistance.GetRandomValue();
     }
 
     //设置巡逻点
@@ -98,7 +98,7 @@ public class StateController : MonoBehaviour
     //开火
     public void Fire()
     {
-        GetComponent<TankShooting>().Fire(defaultStats.attackForce, defaultStats.attackRate);
+        GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
     }
 
     //是否被攻击了
