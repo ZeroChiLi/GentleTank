@@ -30,7 +30,7 @@ public class LookDecision : Decision
         Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
 
         RaycastHit hit;
-        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider))
+        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider)&& !controller.IsMyself(hit.collider))
         {
             controller.chaseTarget = hit.transform;
             return true;

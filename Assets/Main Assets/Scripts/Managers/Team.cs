@@ -8,7 +8,7 @@ public class Team
     private int teamID = -1;                                    //团队ID
     public string TeamName;                                     //团队名称
     [ColorUsage(false)] public Color TeamColor = Color.white;   //团队颜色
-    [HideInInspector] public List<int> playerIdList;            //成员列表ID
+    public List<int> playerIdList;                              //成员列表ID
 
     public string ColoredTeamName                       //带颜色的团队名
     {

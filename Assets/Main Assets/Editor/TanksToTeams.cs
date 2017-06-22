@@ -77,7 +77,6 @@ public class TanksToTeams : EditorWindow
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(300));
         for (int i = 0; i < tanksManager.OriginalLength; i++)
         {
-            EditorGUILayout.Space();
             EditorGUILayout.BeginVertical("Box");
             TankOperation(i);
             EditorGUILayout.EndVertical();
@@ -97,6 +96,15 @@ public class TanksToTeams : EditorWindow
         // 如果坦克已经有队伍了，获取信息到playerTeam和dropdownContent
         if (teamsManager.ContainsPlayer(tanksManager.GetOriginalTank(index).PlayerID))
             playerTeam = teamsManager.GetTeamByPlayerID(tanksManager.GetOriginalTank(index).PlayerID);
+        
+        //玩家无效且有队伍，踢出团队
+        if (!tanksManager.GetOriginalTank(index).active)
+        {
+            if (playerTeam != null)
+                QuitTeam(tanksManager.GetOriginalTank(index).PlayerID);
+            return;           
+        }
+
 
         Horizontal(true);
         EditorGUILayout.PrefixLabel("Select Player's Team : ");
@@ -177,7 +185,6 @@ public class TanksToTeams : EditorWindow
     {
         if (team == null || team.TeamID == -1)
         {
-            EditorGUILayout.Space();
             EditorGUILayout.Space();
             return;
         }
