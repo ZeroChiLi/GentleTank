@@ -4,8 +4,8 @@ using UnityEngine.AI;
 [System.Serializable]
 public class TankManager
 {
-    [HideInInspector , SerializeField]
-    private int playerID;                                   // 玩家ID
+    [SerializeField]
+    private int playerID = -1;                              // 玩家ID
     public string playerName;                               // 玩家名称
     public bool isAI;                                       // 是否是AI
     public GameObject tankPerfab;                           // 坦克预设
