@@ -7,6 +7,7 @@ public class TankManager
     [SerializeField]
     private int playerID = -1;                              // 玩家ID
     public string playerName;                               // 玩家名称
+    public bool active;                                     // 是否激活
     public bool isAI;                                       // 是否是AI
     public GameObject tankPerfab;                           // 坦克预设
     [ColorUsage(false)]

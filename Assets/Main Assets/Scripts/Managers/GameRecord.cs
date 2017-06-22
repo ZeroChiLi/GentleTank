@@ -44,7 +44,7 @@ public class GameRecord
             for (int j = 0; j < allTeamsManager[i].Count; j++)
                 tanksIdTeamsIdDic[allTeamsManager[i][j]] = allTeamsManager[i].TeamID;
         //没有队伍的加进去赋值-1,顺便初始化playerWonTimes
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
         {
             if (!tanksIdTeamsIdDic.ContainsKey(allTanksManager[i].PlayerID))
                 tanksIdTeamsIdDic[allTanksManager[i].PlayerID] = -1;
@@ -80,7 +80,7 @@ public class GameRecord
     {
         bool haveWinner = false;
         int playerID = -1;
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
             if (allTanksManager[i].Instance.activeSelf)
             {
                 int playerTeamID = tanksIdTeamsIdDic[allTanksManager[i].PlayerID];

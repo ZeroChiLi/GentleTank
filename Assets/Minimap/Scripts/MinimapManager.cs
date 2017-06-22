@@ -32,7 +32,7 @@ public class MinimapManager : MonoBehaviour
         allPlayerIcon = new Dictionary<Transform, GameObject>();
         allTanksManager = tanksManager;
         allTeamsManager = teamsManager;
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
         {
             GameObject icon = Instantiate(playerIcon, minimapContent.transform);
             Team team = allTeamsManager.GetTeamByPlayerID(allTanksManager[i].PlayerID);
@@ -51,7 +51,7 @@ public class MinimapManager : MonoBehaviour
     // 设置一个有效的坦克作为目标
     public void SetTargetRandomly()
     {
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
             if (allTanksManager[i].Instance.activeSelf)
             {
                 SetTarget(allTanksManager[i].Instance.transform);

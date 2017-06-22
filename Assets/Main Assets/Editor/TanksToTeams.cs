@@ -21,7 +21,7 @@ public class TanksToTeams : EditorWindow
     static void Init()
     {
         EditorWindow window = GetWindow<TanksToTeams>();
-        window.minSize = new Vector2(500f, 300f);
+        window.minSize = new Vector2(500f, 200f);
         window.Show();
     }
 
@@ -37,8 +37,8 @@ public class TanksToTeams : EditorWindow
     // 强制重置坦克和团队们的ID
     private void ResetTanksAndTeamsID()
     {
-        for (int i = 0; i < tanksManager.Length; i++)
-            tanksManager[i].SetPlayerID(i);
+        for (int i = 0; i < tanksManager.OriginalLength; i++)
+            tanksManager.GetOriginalTank(i).SetPlayerID(i);
         for (int i = 0; i < teamsManager.Length; i++)
             teamsManager[i].SetTeamID(i);
         resetID = true;
@@ -63,19 +63,19 @@ public class TanksToTeams : EditorWindow
             return false;
 
         // 如果没有初始化显示折叠坦克管理器，或者长度变化了，重新定义之
-        if (tanksManagerShow == null || tanksManagerShow.Length != tanksManager.Length)
-            tanksManagerShow = new bool[tanksManager.Length];
+        if (tanksManagerShow == null || tanksManagerShow.Length != tanksManager.OriginalLength)
+            tanksManagerShow = new bool[tanksManager.OriginalLength];
         return true;
     }
 
     // 坦克、团队操作
     private void TanksAndTeamsOperation()
     {
-        EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.Length);
+        EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.OriginalLength);
         EditorGUILayout.LabelField("Teams Size ： " + teamsManager.Length);
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(300));
-        for (int i = 0; i < tanksManager.Length; i++)
+        for (int i = 0; i < tanksManager.OriginalLength; i++)
         {
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical("Box");
@@ -95,8 +95,8 @@ public class TanksToTeams : EditorWindow
         Team playerTeam = new Team();
 
         // 如果坦克已经有队伍了，获取信息到playerTeam和dropdownContent
-        if (teamsManager.ContainsPlayer(tanksManager[index].PlayerID))
-            playerTeam = teamsManager.GetTeamByPlayerID(tanksManager[index].PlayerID);
+        if (teamsManager.ContainsPlayer(tanksManager.GetOriginalTank(index).PlayerID))
+            playerTeam = teamsManager.GetTeamByPlayerID(tanksManager.GetOriginalTank(index).PlayerID);
 
         Horizontal(true);
         EditorGUILayout.PrefixLabel("Select Player's Team : ");
@@ -113,17 +113,20 @@ public class TanksToTeams : EditorWindow
     private bool ShowPlayerTeamInfo(int index)
     {
         Horizontal(true);
-        string showText = " ID : " + tanksManager[index].PlayerID;
+        string showText = " ID : " + tanksManager.GetOriginalTank(index).PlayerID;
         tanksManagerShow[index] = EditorGUILayout.Foldout(tanksManagerShow[index], showText);
 
-        Label(" Name : " + tanksManager[index].playerName);
+        Label(" Name : " + tanksManager.GetOriginalTank(index).playerName);
+
+        Label(" Active : ", GUILayout.Width(50));
+        tanksManager.GetOriginalTank(index).active = EditorGUILayout.Toggle(tanksManager.GetOriginalTank(index).active);
 
         Label(" AI : ", GUILayout.Width(30));
-        tanksManager[index].isAI = EditorGUILayout.Toggle(tanksManager[index].isAI);
+        tanksManager.GetOriginalTank(index).isAI = EditorGUILayout.Toggle(tanksManager.GetOriginalTank(index).isAI);
 
         Label(" Color : ", GUILayout.Width(50));
-        tanksManager[index].playerColor = EditorGUILayout.ColorField(tanksManager[index].playerColor,GUILayout.Width(100));
-        tanksManager[index].playerColor.a = 1;
+        tanksManager.GetOriginalTank(index).playerColor = EditorGUILayout.ColorField(tanksManager.GetOriginalTank(index).playerColor,GUILayout.Width(100));
+        tanksManager.GetOriginalTank(index).playerColor.a = 1;
 
         Horizontal(false);
         return tanksManagerShow[index];
@@ -163,7 +166,7 @@ public class TanksToTeams : EditorWindow
             {
                 if (team == teamsManager[i])        //跳过已经选中的队伍
                     continue;
-                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager[currentIndex].PlayerID, teamId = teamsManager[i].TeamID });
+                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager.GetOriginalTank(currentIndex).PlayerID, teamId = teamsManager[i].TeamID });
             }
             menu.ShowAsContext();
         }

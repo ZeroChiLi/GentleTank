@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     private void SetupGame()
     {
         GameObject tanks = new GameObject("Tanks");
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
             allTanksManager[i].InitTank(Instantiate(allTanksManager[i].tankPerfab, tanks.transform), allTeamsManager);
 
         cameraControl.targets = allTanksManager.GetTanksTransform();
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private void ResetAllTanksSpawnPoint()
     {
         spawnPointList.EnableAllPoints();                     // 初始化出生点
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
         {
             //获取有效随机出生点，且每个坦克位置不一样
             Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     /// <param name="enable">激活状态</param>
     private void SetTanksControlEnable(bool enable)
     {
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
             allTanksManager[i].SetControlEnable(enable);
     }
 

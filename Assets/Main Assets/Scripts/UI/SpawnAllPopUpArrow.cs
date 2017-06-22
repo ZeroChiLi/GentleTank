@@ -7,7 +7,7 @@ public class SpawnAllPopUpArrow : MonoBehaviour
     public void Spawn(AllTanksManager allTanksManager)
     {
         popUpArrowPool.GetPoolParent().transform.parent = gameObject.transform;
-        for (int i = 0; i < allTanksManager.Length; i++)
+        for (int i = 0; i < allTanksManager.Count; i++)
         {
             if (allTanksManager[i].isAI)        //是AI就不显示
                 continue;
