@@ -4,9 +4,9 @@
 [CreateAssetMenu (menuName = "PluggableAI/State")]
 public class State : ScriptableObject 
 {
+    public Color sceneGizmoColor = Color.gray;      //拿来渲染eyes的Gizmos颜色
     public Action[] actions;                        //动作：巡逻动作、
     public Transition[] transitions;                //通过决定，选择下一种动作决定。
-    public Color sceneGizmoColor = Color.gray;      //拿来渲染eyes的Gizmos颜色
     
     //每一帧更新状态，在StateController的OnUpdate中调用。
     public void UpdateState(StateController controller)

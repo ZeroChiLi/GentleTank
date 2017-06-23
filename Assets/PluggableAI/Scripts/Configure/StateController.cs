@@ -28,11 +28,11 @@ public class StateController : MonoBehaviour
         rigidbodySelf = GetComponent<Rigidbody>();
         colliderSelf = GetComponent<Collider>();
         startState = currentState;
-        SetupNavigation();
     }
 
     private void OnEnable()
     {
+        SetupNavigation();
         currentState = startState;                          //复活的时候重置状态
     }
 

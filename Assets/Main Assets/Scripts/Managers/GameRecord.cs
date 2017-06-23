@@ -134,6 +134,10 @@ public class GameRecord
     /// </summary>
     public void UpdateWonData()
     {
+        //平局不更新
+        if (IsDraw())
+            return;
+
         // 个人获胜，只加个人即可
         if (!IsTeamWon())
         {
