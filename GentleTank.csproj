@@ -123,6 +123,8 @@
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />
+    <Compile Include="Assets\Skill\Scripts\Skill.cs" />
+    <Compile Include="Assets\Skill\Scripts\ThunderSkill.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
