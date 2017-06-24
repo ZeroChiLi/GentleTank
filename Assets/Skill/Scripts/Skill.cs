@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,17 +10,17 @@ public abstract class Skill : MonoBehaviour
     public Camera mainCamera;                       // 相机，用于获取鼠标点击位置
     public Image aimImage;                          // 瞄准图片
 
-    public Color normalColor = Color.white;         // 默认颜色
-    public Color hightLightColor = Color.yellow;    // 高亮颜色
-    public Color pressedColor = Color.red;          // 点击颜色
-    public Color disableColor = Color.gray;         // 失效颜色
-
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
     protected bool isReady = false;                 // 准备释放技能（第一次点击）
-    protected bool isOnButton = false;              // 鼠标是否位于按钮上
     protected Vector3 inputHitPos;                  // 点击的位置
     protected GameObject inputHitGameObject;        // 点击的物体
+
+    private bool isOnButton = false;                // 鼠标是否位于按钮上
+    private Color normalColor = Color.white;                    // 默认颜色
+    private Color hightLightColor = new Color(1, 1, 0.45f);     // 高亮颜色
+    private Color pressedColor = new Color(1,0.27f,0.27f);      // 点击颜色
+    private Color disableColor = new Color(0.46f,0.46f,0.46f);  // 失效颜色
 
     /// <summary>
     /// 初始化滑动条最大值
@@ -35,7 +36,7 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// 更新冷却时间、鼠标位置、鼠标点击时释放技能
     /// </summary>
-    private void Update()
+    private void FixedUpdate()
     {
         UpdateCoolDown();
         if (CanRelease())
@@ -60,13 +61,12 @@ public abstract class Skill : MonoBehaviour
         {
             inputHitPos = info.point;
             inputHitGameObject = info.collider.gameObject;
-            Debug.Log(info.point + "  " + inputHitGameObject.name);
         }
         inputHitGameObject = null;
     }
 
     /// <summary>
-    /// 更新冷却时间，通过Time.deltaTime改变。同时改变按钮颜色和滑动条长度
+    /// 更新冷却时间，通过Time.fixedDeltaTime改变。同时改变按钮颜色和滑动条长度
     /// </summary>
     private void UpdateCoolDown()
     {
@@ -79,7 +79,7 @@ public abstract class Skill : MonoBehaviour
             remainReleaseTime = 0;
             return;
         }
-        remainReleaseTime -= Time.deltaTime;
+        remainReleaseTime -= Time.fixedDeltaTime;
         buttonImage.color = disableColor;
     }
 
@@ -92,6 +92,8 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void OnClicked()
     {
+        if (remainReleaseTime > 0)
+            return;
         isReady = !isReady;
         if (isReady)
             Ready();
@@ -100,32 +102,23 @@ public abstract class Skill : MonoBehaviour
     }
 
     /// <summary>
-    /// 鼠标移到按钮时响应
+    /// 鼠标移动到按钮或移出按钮时响应
     /// </summary>
-    public void OnEnter()
+    /// <param name="enter">true进入，否则是移出</param>
+    public void OnMouseOnButton(bool enter)
     {
-        isOnButton = true;
+        isOnButton = enter;
+        if (remainReleaseTime > 0)
+            return;
         if (isReady)
         {
-            aimImage.gameObject.SetActive(false);
+            aimImage.gameObject.SetActive(!enter);
             return;
         }
-        buttonImage.color = hightLightColor;
-    }
-
-    /// <summary>
-    /// 鼠标离开按钮时响应
-    /// </summary>
-    public void OnExit()
-    {
-        isOnButton = false;
-        if (isReady)
-        {
-
-            aimImage.gameObject.SetActive(true);
-            return;
-        }
-        buttonImage.color = normalColor;
+        if (enter)
+            buttonImage.color = hightLightColor;
+        else
+            buttonImage.color = normalColor;
     }
 
     /// <summary>
@@ -165,11 +158,11 @@ public abstract class Skill : MonoBehaviour
         remainReleaseTime = coolDownSlider.maxValue;
         isReady = false;
         Cancel();
-        SkillEffect();
+        StartCoroutine(SkillEffect());
     }
 
     /// <summary>
     /// 技能效果
     /// </summary>
-    abstract public void SkillEffect();
+    abstract public IEnumerator SkillEffect();
 }

@@ -90,7 +90,7 @@ public class ObjectPool : ScriptableObject
     /// <returns>返回新增的对象</returns>
     public GameObject AddOneMoreObject()
     {
-        GameObject obj = Instantiate(objectPerfab);
+        GameObject obj = Instantiate(objectPerfab, poolParent.transform);
         objectPool.Add(obj);
         objectCount = objectPool.Count;
         currentIndex = objectPool.Count - 1;         //用-1也行
