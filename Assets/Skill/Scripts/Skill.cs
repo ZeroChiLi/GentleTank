@@ -17,6 +17,9 @@ public abstract class Skill : MonoBehaviour
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
     protected bool isReady = false;                 // 准备释放技能（第一次点击）
+    protected bool isOnButton = false;              // 鼠标是否位于按钮上
+    protected Vector3 inputHitPos;                  // 点击的位置
+    protected GameObject inputHitGameObject;        // 点击的物体
 
     /// <summary>
     /// 初始化滑动条最大值
@@ -27,12 +30,39 @@ public abstract class Skill : MonoBehaviour
         buttonImage = GetComponent<Image>();
     }
 
+    #region 更新冷却时间、检查是否释放技能
+
     /// <summary>
-    /// 更新冷却时间和滑动条位置
+    /// 更新冷却时间、鼠标位置、鼠标点击时释放技能
     /// </summary>
     private void Update()
     {
         UpdateCoolDown();
+        if (CanRelease())
+        {
+            aimImage.transform.position = Input.mousePosition;
+            if (Input.GetMouseButton(0))
+            {
+                RaycastObject(Input.mousePosition);
+                Release();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 点击更新点击位置以及点击物体
+    /// </summary>
+    /// <param name="screenPos">点击屏幕位置</param>
+    private void RaycastObject(Vector2 screenPos)
+    {
+        RaycastHit info;
+        if (Physics.Raycast(mainCamera.ScreenPointToRay(screenPos), out info, 200))
+        {
+            inputHitPos = info.point;
+            inputHitGameObject = info.collider.gameObject;
+            Debug.Log(info.point + "  " + inputHitGameObject.name);
+        }
+        inputHitGameObject = null;
     }
 
     /// <summary>
@@ -53,7 +83,9 @@ public abstract class Skill : MonoBehaviour
         buttonImage.color = disableColor;
     }
 
-    #region 鼠标点击、进入、离开
+    #endregion
+
+    #region 鼠标点击、进入、离开，准备状态、取消准备
 
     /// <summary>
     /// 点击技能时响应
@@ -62,15 +94,9 @@ public abstract class Skill : MonoBehaviour
     {
         isReady = !isReady;
         if (isReady)
-        {
-            aimImage.gameObject.SetActive(true);
-            buttonImage.color = pressedColor;
-        }
+            Ready();
         else
-        {
-            aimImage.gameObject.SetActive(false);
-            buttonImage.color = normalColor;
-        }
+            Cancel();
     }
 
     /// <summary>
@@ -78,8 +104,12 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void OnEnter()
     {
+        isOnButton = true;
         if (isReady)
+        {
+            aimImage.gameObject.SetActive(false);
             return;
+        }
         buttonImage.color = hightLightColor;
     }
 
@@ -88,8 +118,31 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void OnExit()
     {
+        isOnButton = false;
         if (isReady)
+        {
+
+            aimImage.gameObject.SetActive(true);
             return;
+        }
+        buttonImage.color = normalColor;
+    }
+
+    /// <summary>
+    /// 准备释放技能状态
+    /// </summary>
+    public void Ready()
+    {
+        aimImage.gameObject.SetActive(true);
+        buttonImage.color = pressedColor;
+    }
+
+    /// <summary>
+    /// 取消准备释放技能状态
+    /// </summary>
+    public void Cancel()
+    {
+        aimImage.gameObject.SetActive(false);
         buttonImage.color = normalColor;
     }
 
@@ -101,7 +154,7 @@ public abstract class Skill : MonoBehaviour
     /// <returns>返回True，可以释放技能</returns>
     virtual public bool CanRelease()
     {
-        return remainReleaseTime <= 0f && isReady;
+        return remainReleaseTime <= 0f && isReady && !isOnButton;
     }
 
     /// <summary>
@@ -111,6 +164,7 @@ public abstract class Skill : MonoBehaviour
     {
         remainReleaseTime = coolDownSlider.maxValue;
         isReady = false;
+        Cancel();
         SkillEffect();
     }
 
