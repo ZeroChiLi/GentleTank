@@ -38,14 +38,27 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (!GameRoundPlaying())
+            return;
         UpdateCoolDown();
         if (CanRelease())
         {
-            aimImage.transform.position = Input.mousePosition;
+            //aimImage.gameObject.transform.position = Input.mousePosition;
             RaycastObject(Input.mousePosition);
             if (ReleaseCondition() && Input.GetMouseButton(0))
                 Release();
         }
+    }
+
+    /// <summary>
+    /// 根据游戏是否开始，来设置技能能否使用，返回是否可以使用（是否正在游戏）
+    /// </summary>
+    /// <returns></returns>
+    private bool GameRoundPlaying()
+    {
+        if (GameRecord.instance.CurrentGameState != GameState.Playing)
+            return SetSkillEnable(false);
+        return SetSkillEnable(true);
     }
 
     /// <summary>
@@ -126,6 +139,7 @@ public abstract class Skill : MonoBehaviour
     public void Ready()
     {
         aimImage.gameObject.SetActive(true);
+        aimImage.gameObject.transform.position = Input.mousePosition;
         buttonImage.color = pressedColor;
     }
 
@@ -141,10 +155,38 @@ public abstract class Skill : MonoBehaviour
     #endregion
 
     /// <summary>
+    /// 设置技能能否使用
+    /// </summary>
+    /// <param name="enable">是否激活技能</param>
+    /// <returns>返回是否激活</returns>
+    public bool SetSkillEnable(bool enable)
+    {
+        if (enable)
+        {
+            if (isReady)
+                Ready();
+            else
+                buttonImage.color = normalColor;
+        }
+        else
+        {
+            coolDownSlider.value = coolDownSlider.minValue;
+            remainReleaseTime = coolDownTime;
+            buttonImage.color = disableColor;
+            if (isReady)
+            {
+                isReady = false;
+                aimImage.gameObject.SetActive(false);
+            }
+        }
+        return enabled;
+    }
+
+    /// <summary>
     /// 是否可释放技能
     /// </summary>
     /// <returns>返回True，可以释放技能</returns>
-    virtual public bool CanRelease()
+    public bool CanRelease()
     {
         return remainReleaseTime <= 0f && isReady && !isOnButton;
     }
@@ -152,7 +194,7 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// 释放技能
     /// </summary>
-    virtual public void Release()
+    public void Release()
     {
         remainReleaseTime = coolDownSlider.maxValue;
         isReady = false;

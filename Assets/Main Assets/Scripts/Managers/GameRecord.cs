@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 游戏状态
+/// </summary>
+public enum GameState
+{
+    None, Start, Playing, End
+}
+
 public class GameRecord
 {
     static public GameRecord instance;
@@ -13,9 +21,11 @@ public class GameRecord
     private int maxRound;                                       // 最大回合数
     private int currentRound = 0;                               // 当前回合数
     private int wonPlayerID;                                    // 当前（最终）获胜团队
-    public Dictionary<int, int> playerWonTimes;                 // 玩家ID，获胜次数
+    private Dictionary<int, int> playerWonTimes;                // 玩家ID，获胜次数
+    private GameState currentGameState;                         // 当前游戏状态
 
     public int CurrentRound { get { return currentRound; } }
+    public GameState CurrentGameState { get { return currentGameState; } }
 
     /// <summary>
     /// 初始化构造游戏记录
@@ -70,6 +80,7 @@ public class GameRecord
     {
         ++currentRound;
         wonPlayerID = -1;
+        currentGameState = GameState.Start;
     }
 
     /// <summary>
@@ -78,6 +89,7 @@ public class GameRecord
     /// <returns>是否结束回合</returns>
     public bool IsEndOfTheRound()
     {
+        currentGameState = GameState.Playing;
         bool haveWinner = false;
         int playerID = -1;
         for (int i = 0; i < allTanksManager.Count; i++)
@@ -96,6 +108,7 @@ public class GameRecord
             }
         //如果等于-1，说明平局
         wonPlayerID = playerID;
+        currentGameState = GameState.End;
         return true;
     }
 
