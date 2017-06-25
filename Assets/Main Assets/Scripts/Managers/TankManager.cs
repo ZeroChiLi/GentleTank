@@ -79,7 +79,8 @@ public class TankManager
         {
             coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
             //团队灯光
-            tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
+            if (tankColor.GetComponentInChildren<Light>() != null)
+                tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
         }
         //玩家UI彩色字
         tankColor.RenderPlayerInfo(ColoredPlayerName);

@@ -165,6 +165,8 @@ public abstract class Skill : MonoBehaviour
         {
             if (isReady)
                 Ready();
+            else if (isOnButton)
+                buttonImage.color = hightLightColor;
             else
                 buttonImage.color = normalColor;
         }
