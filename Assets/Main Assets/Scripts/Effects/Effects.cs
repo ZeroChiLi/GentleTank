@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class Explosion : MonoBehaviour 
+/// <summary>
+/// 特效，包含粒子和音效
+/// </summary>
+public class Effects : MonoBehaviour 
 {
     public AudioSource explosionAudio;          //爆炸音效
     public ParticleSystem explosionParticle;    //爆炸粒子
@@ -12,11 +15,13 @@ public class Explosion : MonoBehaviour
         timeElapse = 0;
 
         // 开启爆炸音效
-        explosionAudio.Play();
+        if (explosionAudio != null)
+            explosionAudio.Play();
 
         // 显示爆炸粒子
         ParticleSystem explosionParticles = GetComponent<ParticleSystem>();
-        explosionParticles.Play();
+        if (explosionParticles != null)
+            explosionParticles.Play();
     }
 
     //在粒子结束时，该对象设置失效。

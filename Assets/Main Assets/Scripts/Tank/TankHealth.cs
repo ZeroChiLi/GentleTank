@@ -15,10 +15,16 @@ public class TankHealth : MonoBehaviour
     private float currentHealth;                        // 当前血量
     private bool dead;                                  // 是否死掉
 
+    public float CurrentHealth
+    {
+        get { return currentHealth; }
+        set { currentHealth = Mathf.Clamp(value, 0, startingHealth); }
+    }
+
     private void OnEnable()
     {
         slider.maxValue = startingHealth;
-        currentHealth = startingHealth;
+        CurrentHealth = startingHealth;
         getHurt = false;
         dead = false;
         SetHealthUI();
@@ -28,25 +34,31 @@ public class TankHealth : MonoBehaviour
     public void TakeDamage(float amount)
     {
         getHurt = true;
-        currentHealth -= amount;
+        CurrentHealth -= amount;
         SetHealthUI();
-        if (currentHealth <= 0f && !dead)
+        if (CurrentHealth <= 0f && !dead)
             OnDeath();
     }
 
+    // 加血
+    public void GainHeal(float amount)
+    {
+        CurrentHealth += amount;
+        SetHealthUI();
+    }
 
     // 修改血条长度，颜色
     private void SetHealthUI()
     {
-        slider.value = currentHealth;
-        fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, currentHealth / startingHealth);
+        slider.value = CurrentHealth;
+        fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, CurrentHealth / startingHealth);
     }
 
     // 死掉了
     private void OnDeath()
     {
         dead = true;
-        
+
         //获取爆炸特效，并显示之
         tankExplosionPool.GetNextObjectActive(gameObject.transform);
 

@@ -42,11 +42,9 @@ public abstract class Skill : MonoBehaviour
         if (CanRelease())
         {
             aimImage.transform.position = Input.mousePosition;
-            if (Input.GetMouseButton(0))
-            {
-                RaycastObject(Input.mousePosition);
+            RaycastObject(Input.mousePosition);
+            if (ReleaseCondition() && Input.GetMouseButton(0))
                 Release();
-            }
         }
     }
 
@@ -61,6 +59,7 @@ public abstract class Skill : MonoBehaviour
         {
             inputHitPos = info.point;
             inputHitGameObject = info.collider.gameObject;
+            return;
         }
         inputHitGameObject = null;
     }
@@ -160,6 +159,13 @@ public abstract class Skill : MonoBehaviour
         Cancel();
         StartCoroutine(SkillEffect());
     }
+
+    /// <summary>
+    /// 自定义条件判断是否释放技能
+    /// </summary>
+    /// <returns>返回是否满足自定义条件</returns>
+    virtual public bool ReleaseCondition()
+    { return true; }
 
     /// <summary>
     /// 技能效果
