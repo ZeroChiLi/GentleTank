@@ -45,9 +45,9 @@ public abstract class Skill : MonoBehaviour
         UpdateCoolDown();               //更新冷却时间
         if (CanRelease())               //点了技能按钮，并且有效，可以释放
         {
-            RaycastObject(Input.mousePosition);                             //根据鼠标射线对象
-            //成功更新准心位置 且 满足自定义释放条件，且按钮鼠标左键，释放技能
-            if (UpdateAimPosition() &&ReleaseCondition() && Input.GetMouseButton(0))              
+            RaycastObject(Input.mousePosition);                     //根据鼠标射线获取对象
+            aimImage.gameObject.transform.position = Input.mousePosition;
+            if (ReleaseCondition() && Input.GetMouseButton(0))      //满足自定义释放条件，且按钮鼠标左键，释放技能         
                 Release();
         }
     }
@@ -92,20 +92,6 @@ public abstract class Skill : MonoBehaviour
             return;
         }
         inputHitGameObject = null;
-    }
-
-    /// <summary>
-    /// 更新准心位置
-    /// </summary>
-    private bool UpdateAimPosition()
-    {
-        if (inputHitPos == null)
-        {
-            Debug.LogError("Raycast Didn't Hit,And None 'inputHitPos'.");
-            return false;
-        }
-        aimImage.gameObject.transform.position = new Vector3(inputHitPos.x, inputHitPos.y + 0.5f, inputHitPos.z);
-        return true;
     }
 
     /// <summary>
