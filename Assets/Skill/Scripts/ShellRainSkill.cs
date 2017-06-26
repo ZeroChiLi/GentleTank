@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShellRainSkill : Skill
 {
@@ -15,19 +14,17 @@ public class ShellRainSkill : Skill
     public float attackRate = 0.5f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
-    public Image warnningAreaImage;    //警告区域
 
     /// <summary>
     /// 技能效果
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        ShowWarnningArea(inputHitPos);
+        //根据攻击范围大小改变准心大小
+        //aimImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
         yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)
             yield return CreateShell(inputHitPos, Random.insideUnitCircle * attackRadius);
-        yield return HideWarnningArea(1f);
-
     }
 
     /// <summary>
@@ -35,7 +32,7 @@ public class ShellRainSkill : Skill
     /// </summary>
     /// <param name="randomCircle">创建的XZ坐标</param>
     /// <returns></returns>
-    private IEnumerator CreateShell(Vector3 inputPosition, Vector2 randomCircle)
+    public IEnumerator CreateShell(Vector3 inputPosition, Vector2 randomCircle)
     {
         //创建炮弹 从上而下
         GameObject shell = shellPool.GetNextObjectActive();
@@ -44,18 +41,5 @@ public class ShellRainSkill : Skill
         shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
         shell.GetComponent<Shell>().maxDamage = attackDamage;
         yield return new WaitForSeconds(Random.Range(0, attackRate));
-    }
-
-    private void ShowWarnningArea(Vector3 position)
-    {
-        warnningAreaImage.gameObject.SetActive(true);
-        warnningAreaImage.transform.position = new Vector3(position.x, position.y + 0.5f, position.z);
-        warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
-    }
-
-    private IEnumerator HideWarnningArea(float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-        warnningAreaImage.gameObject.SetActive(false);
     }
 }

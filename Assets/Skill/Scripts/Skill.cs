@@ -8,7 +8,7 @@ public abstract class Skill : MonoBehaviour
     public float coolDownTime = 1f;                 // 冷却时间
     public Slider coolDownSlider;                   // 冷却条
     public Camera mainCamera;                       // 相机，用于获取鼠标点击位置
-    public Aim aim;                                 // 瞄准图片
+    public Image aimImage;                          // 瞄准图片
 
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
@@ -46,7 +46,7 @@ public abstract class Skill : MonoBehaviour
         if (CanRelease())               //点了技能按钮，并且有效，可以释放
         {
             RaycastObject(Input.mousePosition);                     //根据鼠标射线获取对象
-            aim.SetPos(Input.mousePosition);
+            aimImage.gameObject.transform.position = Input.mousePosition;
             if (ReleaseCondition() && Input.GetMouseButton(0))      //满足自定义释放条件，且按钮鼠标左键，释放技能         
                 Release();
         }
@@ -141,7 +141,7 @@ public abstract class Skill : MonoBehaviour
             return;
         if (isReady)
         {
-            aim.SetActive(!enter);
+            aimImage.gameObject.SetActive(!enter);
             return;
         }
         if (enter)
@@ -155,8 +155,8 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void Ready()
     {
-        aim.SetActive(true);
-        aim.SetPos(Input.mousePosition);
+        aimImage.gameObject.SetActive(true);
+        aimImage.gameObject.transform.position = Input.mousePosition;
         buttonImage.color = pressedColor;
     }
 
@@ -165,7 +165,7 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void Cancel()
     {
-        aim.SetActive(false);
+        aimImage.gameObject.SetActive(false);
         buttonImage.color = normalColor;
     }
 
@@ -193,7 +193,7 @@ public abstract class Skill : MonoBehaviour
             if (isReady)
             {
                 isReady = false;
-                aim.SetActive(false);
+                aimImage.gameObject.SetActive(false);
             }
         }
         return enabled;
