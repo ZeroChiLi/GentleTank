@@ -14,6 +14,7 @@ public class TankShooting : MonoBehaviour
     public float minLaunchForce = 15f;          // 最小发射力度
     public float maxLaunchForce = 30f;          // 最大发射力度
     public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
+    public float maxDamage = 100f;              // 最大伤害
 
     private bool isAI;                          // 是否是AI
     private string fireButton;                  // 发射子弹按钮是名字
@@ -44,7 +45,7 @@ public class TankShooting : MonoBehaviour
         if (currentLaunchForce >= maxLaunchForce && !fired)
         {
             currentLaunchForce = maxLaunchForce;
-            Fire(currentLaunchForce, 1);
+            Fire(currentLaunchForce, 1, maxDamage);
         }
         // 如果开始按下攻击键，开始射击力度，开始射击变化音效
         else if (Input.GetButtonDown(fireButton))
@@ -66,7 +67,7 @@ public class TankShooting : MonoBehaviour
         // 松开攻击键，Fire In The Hole!!
         else if (Input.GetButtonUp(fireButton) && !fired)
         {
-            Fire(currentLaunchForce, 1);
+            Fire(currentLaunchForce, 1, maxDamage);
         }
     }
 
@@ -80,13 +81,15 @@ public class TankShooting : MonoBehaviour
     }
 
     //发射炮弹
-    public void Fire(float launchForce, float fireRate)
+    public void Fire(float launchForce, float fireRate,float fireDamage)
     {
         if (!CanFire())
             return;
 
         //获取炮弹，并发射
-        shellPool.GetNextObjectActive(shellSpawn).GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
+        GameObject shell = shellPool.GetNextObjectActive(shellSpawn);
+        shell.GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
+        shell.GetComponent<Shell>().maxDamage = fireDamage;
 
         shootingAudio.clip = fireClip;
         shootingAudio.Play();

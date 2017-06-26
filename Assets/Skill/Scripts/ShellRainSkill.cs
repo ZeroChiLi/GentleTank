@@ -1,21 +1,26 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ThunderSkill : Skill
+public class ShellRainSkill : Skill
 {
     public ObjectPool shellPool;            //炮弹池
+    [Range(0, 10f)]
+    public float skillDelay = 1.5f;         //技能释放延迟
     [Range(1, 100)]
     public int skillLevel = 1;              //技能等级
-    [Range(1, 100)]
+    [Range(1, 100f)]
     public float attackRadius = 5f;         //技能攻击范围半径
     [Range(0, 1f)]
     public float attackRate = 0.5f;         //技能每次释放频率
+    [Range(0, 100f)]
+    public float attackDamage = 30f;        //每一粒炮弹最大伤害
 
     /// <summary>
     /// 技能效果
     /// </summary>
     public override IEnumerator SkillEffect()
     {
+        yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)
             yield return CreateShell(inputHitPos, Random.insideUnitCircle * attackRadius);
     }
@@ -32,6 +37,7 @@ public class ThunderSkill : Skill
         shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
         shell.transform.rotation = Quaternion.Euler(new Vector3(180f, 0, 0));
         shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
+        shell.GetComponent<Shell>().maxDamage = attackDamage;
         yield return new WaitForSeconds(Random.Range(0, attackRate));
     }
 }

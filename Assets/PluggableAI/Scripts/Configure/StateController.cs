@@ -100,7 +100,7 @@ public class StateController : MonoBehaviour
     //开火
     public void Fire()
     {
-        GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
+        GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(),defaultStats.attackDamage.GetRandomValue());
     }
 
     //是否被攻击了
