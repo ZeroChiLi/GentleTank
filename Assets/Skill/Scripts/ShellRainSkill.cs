@@ -20,6 +20,8 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
+        //根据攻击范围大小改变准心大小
+        aimImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
         yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)
             yield return CreateShell(inputHitPos, Random.insideUnitCircle * attackRadius);

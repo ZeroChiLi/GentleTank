@@ -16,11 +16,12 @@ public abstract class Skill : MonoBehaviour
     protected Vector3 inputHitPos;                  // 点击的位置
     protected GameObject inputHitGameObject;        // 点击的物体
 
+    private bool gamePlaying = false;               // 是否正在游戏中
     private bool isOnButton = false;                // 鼠标是否位于按钮上
     private Color normalColor = Color.white;                    // 默认颜色
     private Color hightLightColor = new Color(1, 1, 0.45f);     // 高亮颜色
-    private Color pressedColor = new Color(1,0.27f,0.27f);      // 点击颜色
-    private Color disableColor = new Color(0.46f,0.46f,0.46f);  // 失效颜色
+    private Color pressedColor = new Color(1, 0.27f, 0.27f);      // 点击颜色
+    private Color disableColor = new Color(0.46f, 0.46f, 0.46f);  // 失效颜色
 
     /// <summary>
     /// 初始化滑动条最大值
@@ -28,6 +29,7 @@ public abstract class Skill : MonoBehaviour
     private void Awake()
     {
         coolDownSlider.maxValue = coolDownTime;
+        remainReleaseTime = coolDownTime;
         buttonImage = GetComponent<Image>();
     }
 
@@ -38,14 +40,14 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (!GameRoundPlaying())
+        if (!GameRoundPlaying())        //游戏没开始就直接return
             return;
-        UpdateCoolDown();
-        if (CanRelease())
+        UpdateCoolDown();               //更新冷却时间
+        if (CanRelease())               //点了技能按钮，并且有效，可以释放
         {
-            //aimImage.gameObject.transform.position = Input.mousePosition;
-            RaycastObject(Input.mousePosition);
-            if (ReleaseCondition() && Input.GetMouseButton(0))
+            RaycastObject(Input.mousePosition);                             //根据鼠标射线对象
+            //成功更新准心位置 且 满足自定义释放条件，且按钮鼠标左键，释放技能
+            if (UpdateAimPosition() &&ReleaseCondition() && Input.GetMouseButton(0))              
                 Release();
         }
     }
@@ -56,9 +58,24 @@ public abstract class Skill : MonoBehaviour
     /// <returns></returns>
     private bool GameRoundPlaying()
     {
-        if (GameRecord.instance.CurrentGameState != GameState.Playing)
-            return SetSkillEnable(false);
-        return SetSkillEnable(true);
+        if (GameRecord.instance.CurrentGameState == GameState.Playing)
+            return SetSkillEnableByGamePlaying(true);
+        return SetSkillEnableByGamePlaying(false);
+    }
+
+    /// <summary>
+    /// 只有当gamePlaying 和 isPlaying 不同时才会改变技能是否有效。即只有从 开始到进行触发一次，进行到结束触发一次
+    /// </summary>
+    /// <param name="isPlaying">是否正在游戏</param>
+    /// <returns></returns>
+    private bool SetSkillEnableByGamePlaying(bool isPlaying)
+    {
+        if (gamePlaying != isPlaying)
+        {
+            gamePlaying = isPlaying;
+            SetSkillEnable(isPlaying);
+        }
+        return isPlaying;
     }
 
     /// <summary>
@@ -75,6 +92,20 @@ public abstract class Skill : MonoBehaviour
             return;
         }
         inputHitGameObject = null;
+    }
+
+    /// <summary>
+    /// 更新准心位置
+    /// </summary>
+    private bool UpdateAimPosition()
+    {
+        if (inputHitPos == null)
+        {
+            Debug.LogError("Raycast Didn't Hit,And None 'inputHitPos'.");
+            return false;
+        }
+        aimImage.gameObject.transform.position = new Vector3(inputHitPos.x, inputHitPos.y + 0.5f, inputHitPos.z);
+        return true;
     }
 
     /// <summary>
@@ -163,9 +194,7 @@ public abstract class Skill : MonoBehaviour
     {
         if (enable)
         {
-            if (isReady)
-                Ready();
-            else if (isOnButton)
+            if (isOnButton)
                 buttonImage.color = hightLightColor;
             else
                 buttonImage.color = normalColor;
