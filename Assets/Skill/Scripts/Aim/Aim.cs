@@ -12,17 +12,17 @@ public enum AimState
 public class Aim : MonoBehaviour
 {
     public Camera gameCamera;                       // 游戏镜头
-    public Sprite normal;                           // 普通状态
-    public Sprite friendly;                         // 友好状态
-    public Sprite warnning;                         // 警告状态
-    public Sprite disable;                          // 无效状态
+    public Image stateImage;                        // 当前瞄准图片
+    public Color normalColor = Color.black;         // 普通状态
+    public Color friendlyColor = Color.green;       // 友好状态
+    public Color warnningColor = Color.red;         // 警告状态
+    public Color disableColor = Color.gray;         // 无效状态
 
     public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
     public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
 
     private AimState currentAimState;               // 当前状态
-    private Image currentImage;                     // 当前瞄准图片
     private Vector3 inputHitPos;                    // 鼠标射线射到的点
     private GameObject inputHitGameObject;          // 射线射到的物体
 
@@ -31,7 +31,8 @@ public class Aim : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        currentImage = GetComponent<Image>();
+        stateImage = GetComponent<Image>();
+        SetStateColor(normalColor);
     }
 
     /// <summary>
@@ -97,27 +98,27 @@ public class Aim : MonoBehaviour
         switch (aimState)
         {
             case AimState.Normal:
-                SetCurrentImage(normal);
+                SetStateColor(normalColor);
                 break;
             case AimState.Friendly:
-                SetCurrentImage(friendly);
+                SetStateColor(friendlyColor);
                 break;
             case AimState.Warnning:
-                SetCurrentImage(warnning);
+                SetStateColor(warnningColor);
                 break;
             case AimState.Disable:
-                SetCurrentImage(disable);
+                SetStateColor(disableColor);
                 break;
         }
     }
 
     /// <summary>
-    /// 设置当前瞄准图片
+    /// 设置瞄准状态颜色
     /// </summary>
-    /// <param name="sprite">瞄准图片精灵</param>
-    private void SetCurrentImage(Sprite sprite)
+    /// <param name="color">瞄准颜色</param>
+    private void SetStateColor(Color color)
     {
-        currentImage.sprite = sprite;
+        stateImage.color = color;
     }
 
     #endregion
