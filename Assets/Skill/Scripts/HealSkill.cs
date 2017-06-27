@@ -21,7 +21,7 @@ public class HealSkill : Skill
     public override IEnumerator SkillEffect()
     {
         waitTime = new WaitForSeconds(healRate);
-        GameObject player = inputHitGameObject;
+        GameObject player = aim.HitGameObject;
         for (int i = 0; i < skillLevel; i++)
             yield return HealPlayer(player);
     }
@@ -37,7 +37,7 @@ public class HealSkill : Skill
         if (!player.activeInHierarchy || player.GetComponent<TankHealth>().enabled == false)
             yield break;
         //显示治愈特效
-        healPool.GetNextObjectActive().transform.position = inputHitGameObject.transform.position;
+        healPool.GetNextObjectActive().transform.position = player.transform.position;
         //加血
         player.GetComponent<TankHealth>().GainHeal(healVolume);
         yield return waitTime;
@@ -49,6 +49,6 @@ public class HealSkill : Skill
     /// <returns>返回是否点击玩家</returns>
     public override bool ReleaseCondition()
     {
-        return inputHitGameObject != null && inputHitGameObject.GetComponent<TankHealth>() != null;
+        return aim.HitGameObject != null && aim.HitGameObject.GetComponent<TankHealth>() != null;
     }
 }

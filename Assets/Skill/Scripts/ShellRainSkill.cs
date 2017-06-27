@@ -22,10 +22,10 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        ShowWarnningArea(inputHitPos);
+        ShowWarnningArea(aim.HitPosition);
         yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)
-            yield return CreateShell(inputHitPos, Random.insideUnitCircle * attackRadius);
+            yield return CreateShell(aim.HitPosition, Random.insideUnitCircle * attackRadius);
         yield return HideWarnningArea(1f);
 
     }

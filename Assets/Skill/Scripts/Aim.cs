@@ -10,14 +10,19 @@ public enum AimState
 
 public class Aim : MonoBehaviour
 {
+    public Camera gameCamera;                       // 游戏镜头
     public Sprite normal;                           // 普通状态
     public Sprite friendly;                         // 友好状态
     public Sprite warnning;                         // 警告状态
 
-    public AimState CurrentAimState { get { return currentAimState; } }
+    public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
+    public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
+    public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
 
     private AimState currentAimState;               // 当前状态
     private Image currentImage;                     // 当前瞄准图片
+    private Vector3 inputHitPos;                    // 鼠标射线射到的点
+    private GameObject inputHitGameObject;          // 射线射到的物体
 
     /// <summary>
     /// 获取图片组件
@@ -26,6 +31,29 @@ public class Aim : MonoBehaviour
     {
         currentImage = GetComponent<Image>();
     }
+
+    /// <summary>
+    /// 更新瞄准获取的对象值
+    /// </summary>
+    private void Update()
+    {
+        SetPos(Input.mousePosition);
+        RaycastObject();
+    }
+
+    /// <summary>
+    /// 以鼠标位置从屏幕射线
+    /// </summary>
+    private void RaycastObject()
+    {
+        RaycastHit info;
+        if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200))
+        {
+            inputHitPos = info.point;
+            inputHitGameObject = info.collider.gameObject;
+        }
+    }
+
 
     /// <summary>
     /// 设置对象激活状态

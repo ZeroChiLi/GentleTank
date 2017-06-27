@@ -7,21 +7,18 @@ public abstract class Skill : MonoBehaviour
 {
     public float coolDownTime = 1f;                 // 冷却时间
     public Slider coolDownSlider;                   // 冷却条
-    public Camera mainCamera;                       // 相机，用于获取鼠标点击位置
     public Aim aim;                                 // 瞄准图片
 
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
     protected bool isReady = false;                 // 准备释放技能（第一次点击）
-    protected Vector3 inputHitPos;                  // 点击的位置
-    protected GameObject inputHitGameObject;        // 点击的物体
 
     private bool gamePlaying = false;               // 是否正在游戏中
     private bool isOnButton = false;                // 鼠标是否位于按钮上
-    private Color normalColor = Color.white;                    // 默认颜色
-    private Color hightLightColor = new Color(1, 1, 0.45f);     // 高亮颜色
-    private Color pressedColor = new Color(1, 0.27f, 0.27f);      // 点击颜色
-    private Color disableColor = new Color(0.46f, 0.46f, 0.46f);  // 失效颜色
+    private Color normalColor = Color.white;                        // 默认颜色
+    private Color hightLightColor = new Color(1, 1, 0.45f);         // 高亮颜色
+    private Color pressedColor = new Color(1, 0.27f, 0.27f);        // 点击颜色
+    private Color disableColor = new Color(0.46f, 0.46f, 0.46f);    // 失效颜色
 
     /// <summary>
     /// 初始化滑动条最大值
@@ -43,13 +40,9 @@ public abstract class Skill : MonoBehaviour
         if (!GameRoundPlaying())        //游戏没开始就直接return
             return;
         UpdateCoolDown();               //更新冷却时间
-        if (CanRelease())               //点了技能按钮，并且有效，可以释放
-        {
-            RaycastObject(Input.mousePosition);                     //根据鼠标射线获取对象
-            aim.SetPos(Input.mousePosition);
-            if (ReleaseCondition() && Input.GetMouseButton(0))      //满足自定义释放条件，且按钮鼠标左键，释放技能         
-                Release();
-        }
+        //点了技能按钮，满足自定义释放条件，且按钮再次点击，释放技能  
+        if (CanRelease()&&ReleaseCondition() && Input.GetMouseButton(0))
+            Release();
     }
 
     /// <summary>
@@ -76,22 +69,6 @@ public abstract class Skill : MonoBehaviour
             SetSkillEnable(isPlaying);
         }
         return isPlaying;
-    }
-
-    /// <summary>
-    /// 点击更新点击位置以及点击物体
-    /// </summary>
-    /// <param name="screenPos">点击屏幕位置</param>
-    private void RaycastObject(Vector2 screenPos)
-    {
-        RaycastHit info;
-        if (Physics.Raycast(mainCamera.ScreenPointToRay(screenPos), out info, 200))
-        {
-            inputHitPos = info.point;
-            inputHitGameObject = info.collider.gameObject;
-            return;
-        }
-        inputHitGameObject = null;
     }
 
     /// <summary>
