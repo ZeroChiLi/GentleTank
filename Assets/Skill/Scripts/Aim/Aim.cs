@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public enum AimState
 {
-    Normal, Friendly, Warnning
+    Normal, Friendly, Warnning, Disable
 }
 
 public class Aim : MonoBehaviour
@@ -14,6 +15,7 @@ public class Aim : MonoBehaviour
     public Sprite normal;                           // 普通状态
     public Sprite friendly;                         // 友好状态
     public Sprite warnning;                         // 警告状态
+    public Sprite disable;                          // 无效状态
 
     public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
@@ -39,6 +41,7 @@ public class Aim : MonoBehaviour
     {
         SetPos(Input.mousePosition);
         RaycastObject();
+        UpdateState();
     }
 
     /// <summary>
@@ -54,6 +57,15 @@ public class Aim : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 更新状态
+    /// </summary>
+    private void UpdateState()
+    {
+        SetState(ConvertState());
+    }
+
+    #region 设置激活状态、位置、瞄准状态
 
     /// <summary>
     /// 设置对象激活状态
@@ -93,6 +105,9 @@ public class Aim : MonoBehaviour
             case AimState.Warnning:
                 SetCurrentImage(warnning);
                 break;
+            case AimState.Disable:
+                SetCurrentImage(disable);
+                break;
         }
     }
 
@@ -104,4 +119,12 @@ public class Aim : MonoBehaviour
     {
         currentImage.sprite = sprite;
     }
+
+    #endregion
+
+    /// <summary>
+    /// 自定义状态转换
+    /// </summary>
+    /// <returns>返回转换后的状态</returns>
+    virtual protected AimState ConvertState() { return AimState.Normal; }
 }

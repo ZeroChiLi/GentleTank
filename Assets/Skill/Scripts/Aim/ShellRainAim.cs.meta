@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f11f3aa7f301d524ea0841b3cbdc5db8
+timeCreated: 1498547455
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - gameCamera: {instanceID: 0}
+  - normal: {fileID: 21300000, guid: 21d2d3c3eee41074da382b81a514ad71, type: 3}
+  - friendly: {fileID: 21300000, guid: d2102ed1c8ba8f946a2978f795e04c99, type: 3}
+  - warnning: {fileID: 21300000, guid: 3dc757555f8a0384ea9556e8ec0f06f2, type: 3}
+  - disable: {fileID: 21300000, guid: af0d2d54008665f44bb9cdc460616800, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

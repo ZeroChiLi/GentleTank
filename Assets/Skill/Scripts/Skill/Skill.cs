@@ -7,7 +7,7 @@ public abstract class Skill : MonoBehaviour
 {
     public float coolDownTime = 1f;                 // 冷却时间
     public Slider coolDownSlider;                   // 冷却条
-    public Aim aim;                                 // 瞄准图片
+    public Aim aim;                                 // 瞄准操作
 
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
@@ -177,7 +177,7 @@ public abstract class Skill : MonoBehaviour
     }
 
     /// <summary>
-    /// 是否可释放技能
+    /// 是否可释放技能（冷却时间结束，已经点击了技能，鼠标不在按钮上面）
     /// </summary>
     /// <returns>返回True，可以释放技能</returns>
     public bool CanRelease()

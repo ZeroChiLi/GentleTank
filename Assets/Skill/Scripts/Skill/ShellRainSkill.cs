@@ -22,12 +22,12 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        ShowWarnningArea(aim.HitPosition);
-        yield return new WaitForSeconds(skillDelay);
-        for (int i = 0; i < skillLevel; i++)
-            yield return CreateShell(aim.HitPosition, Random.insideUnitCircle * attackRadius);
-        yield return HideWarnningArea(1f);
-
+        Vector3 position = aim.HitPosition; 
+        ShowWarnningArea(position);                         // 显示警告区域
+        yield return new WaitForSeconds(skillDelay);        // 延时一段时间后再发起攻击
+        for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数
+            yield return CreateShell(position, Random.insideUnitCircle * attackRadius);
+        yield return HideWarnningArea(1f);                  // 一段时间后隐藏警告区域
     }
 
     /// <summary>
@@ -46,6 +46,10 @@ public class ShellRainSkill : Skill
         yield return new WaitForSeconds(Random.Range(0, attackRate));
     }
 
+    /// <summary>
+    /// 显示警告区域，大小随攻击范围改变
+    /// </summary>
+    /// <param name="position">区域位置</param>
     private void ShowWarnningArea(Vector3 position)
     {
         warnningAreaImage.gameObject.SetActive(true);
@@ -53,9 +57,15 @@ public class ShellRainSkill : Skill
         warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
     }
 
+    /// <summary>
+    /// 延时一段时间后，隐藏警告区域
+    /// </summary>
+    /// <param name="delayTime">延时时间</param>
+    /// <returns></returns>
     private IEnumerator HideWarnningArea(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         warnningAreaImage.gameObject.SetActive(false);
     }
+
 }
