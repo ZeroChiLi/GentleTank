@@ -19,18 +19,20 @@ public class ShellRainSkill : Skill
 
     private int blinkTimes = 3;             //警告区域闪烁次数
     private float elapsedTime = 0f;         //计时器
+    private float onceBlinkTime;            //每一次闪烁持续时间
+    private float disappearTime = 1f;       //警告区域消失持续时间
 
     /// <summary>
     /// 技能效果
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        elapsedTime = 0f;
+        onceBlinkTime = skillDelay / blinkTimes;
         Vector3 position = aim.HitPosition;
         yield return ShowWarnningArea(position);                         // 显示警告区域，在一段时间后再发起攻击
         for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数
             yield return CreateShell(position, Random.insideUnitCircle * attackRadius);
-        yield return HideWarnningArea(1f);                  // 一段时间后隐藏警告区域
+        yield return HideWarnningArea();                  // 一段时间后隐藏警告区域
     }
 
     /// <summary>
@@ -59,34 +61,41 @@ public class ShellRainSkill : Skill
         warnningAreaImage.transform.position = new Vector3(position.x, position.y + 0.5f, position.z);
         warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
 
-        float onceBlinkTime = skillDelay / blinkTimes;
+        elapsedTime = 0f;
 
         for (int i = 0; i < blinkTimes - 1; i++)            //前面闪烁,Alpha是从0->1->0
-            while (elapsedTime < (i+1)*onceBlinkTime)
-                yield return OnceBlink(elapsedTime  % onceBlinkTime * 2);
+            while (elapsedTime < (i + 1) * onceBlinkTime)
+                yield return OnceBlink(elapsedTime * 2, onceBlinkTime);
 
         while (elapsedTime < blinkTimes * onceBlinkTime)   //最后一次闪烁,Alpha是从0->1
-            yield return OnceBlink(elapsedTime % onceBlinkTime);
+            yield return OnceBlink(elapsedTime, onceBlinkTime);
+        warnningAreaImage.color = Color.red;
     }
-
-    private IEnumerator OnceBlink(float currentTime)
-    {
-        elapsedTime += Time.deltaTime;
-        Debug.Log(currentTime);
-        warnningAreaImage.color = new Color(1f, 0f, 0f, Mathf.PingPong(currentTime, 1));
-        yield return null;
-    }
-
 
     /// <summary>
     /// 延时一段时间后，隐藏警告区域
     /// </summary>
     /// <param name="delayTime">延时时间</param>
     /// <returns></returns>
-    private IEnumerator HideWarnningArea(float delayTime)
+    private IEnumerator HideWarnningArea()
     {
-        yield return new WaitForSeconds(delayTime);
+        elapsedTime = 0f;
+        while (elapsedTime < disappearTime)                         //消失,Alpha是从1->0
+            yield return OnceBlink(disappearTime - elapsedTime, disappearTime);
         warnningAreaImage.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 每一次闪烁，（颜色渐变）
+    /// </summary>
+    /// <param name="elapsed">根据这个值变化改变透明度</param>
+    /// <returns></returns>
+    private IEnumerator OnceBlink(float elapsed, float period)
+    {
+        elapsedTime += Time.deltaTime;
+        Debug.Log(Mathf.PingPong(elapsed, period) / period);
+        warnningAreaImage.color = new Color(1f, 0f, 0f, Mathf.PingPong(elapsed, period) / period);
+        yield return null;
     }
 
 }
