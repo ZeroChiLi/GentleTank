@@ -35,7 +35,7 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// 更新冷却时间、鼠标位置、鼠标点击时释放技能
     /// </summary>
-    private void FixedUpdate()
+    private void Update()
     {
         if (!GameRoundPlaying())        //游戏没开始就直接return
             return;
@@ -72,7 +72,7 @@ public abstract class Skill : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新冷却时间，通过Time.fixedDeltaTime改变。同时改变按钮颜色和滑动条长度
+    /// 更新冷却时间，通过Time.deltaTime改变。同时改变按钮颜色和滑动条长度
     /// </summary>
     private void UpdateCoolDown()
     {
@@ -85,7 +85,7 @@ public abstract class Skill : MonoBehaviour
             remainReleaseTime = 0;
             return;
         }
-        remainReleaseTime -= Time.fixedDeltaTime;
+        remainReleaseTime -= Time.deltaTime;
         buttonImage.color = disableColor;
     }
 

@@ -15,16 +15,19 @@ public class ShellRainSkill : Skill
     public float attackRate = 0.5f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
-    public Image warnningAreaImage;    //警告区域
+    public Image warnningAreaImage;         //警告区域
+
+    private int blinkTimes = 3;             //警告区域闪烁次数
+    private float elapsedTime = 0f;         //计时器
 
     /// <summary>
     /// 技能效果
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        Vector3 position = aim.HitPosition; 
-        ShowWarnningArea(position);                         // 显示警告区域
-        yield return new WaitForSeconds(skillDelay);        // 延时一段时间后再发起攻击
+        elapsedTime = 0f;
+        Vector3 position = aim.HitPosition;
+        yield return ShowWarnningArea(position);                         // 显示警告区域，在一段时间后再发起攻击
         for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数
             yield return CreateShell(position, Random.insideUnitCircle * attackRadius);
         yield return HideWarnningArea(1f);                  // 一段时间后隐藏警告区域
@@ -50,12 +53,30 @@ public class ShellRainSkill : Skill
     /// 显示警告区域，大小随攻击范围改变
     /// </summary>
     /// <param name="position">区域位置</param>
-    private void ShowWarnningArea(Vector3 position)
+    private IEnumerator ShowWarnningArea(Vector3 position)
     {
         warnningAreaImage.gameObject.SetActive(true);
         warnningAreaImage.transform.position = new Vector3(position.x, position.y + 0.5f, position.z);
         warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
+
+        float onceBlinkTime = skillDelay / blinkTimes;
+
+        for (int i = 0; i < blinkTimes - 1; i++)            //前面闪烁,Alpha是从0->1->0
+            while (elapsedTime < (i+1)*onceBlinkTime)
+                yield return OnceBlink(elapsedTime  % onceBlinkTime * 2);
+
+        while (elapsedTime < blinkTimes * onceBlinkTime)   //最后一次闪烁,Alpha是从0->1
+            yield return OnceBlink(elapsedTime % onceBlinkTime);
     }
+
+    private IEnumerator OnceBlink(float currentTime)
+    {
+        elapsedTime += Time.deltaTime;
+        Debug.Log(currentTime);
+        warnningAreaImage.color = new Color(1f, 0f, 0f, Mathf.PingPong(currentTime, 1));
+        yield return null;
+    }
+
 
     /// <summary>
     /// 延时一段时间后，隐藏警告区域
