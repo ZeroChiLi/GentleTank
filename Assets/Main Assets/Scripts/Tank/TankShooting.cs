@@ -10,7 +10,7 @@ public class TankShooting : MonoBehaviour
     public AudioSource shootingAudio;           // 当前射击音效
     public AudioClip chargingClip;              // 射击力度距离变化声音
     public AudioClip fireClip;                  // 射击时声音
-    public float fireInterval = 0.8f;           // 发射间隔
+    public float fireRate = 0.8f;               // 发射间隔
     public float minLaunchForce = 15f;          // 最小发射力度
     public float maxLaunchForce = 30f;          // 最大发射力度
     public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
@@ -45,7 +45,7 @@ public class TankShooting : MonoBehaviour
         if (currentLaunchForce >= maxLaunchForce && !fired)
         {
             currentLaunchForce = maxLaunchForce;
-            Fire(currentLaunchForce, 1, maxDamage);
+            Fire(currentLaunchForce, fireRate, maxDamage);
         }
         // 如果开始按下攻击键，开始射击力度，开始射击变化音效
         else if (Input.GetButtonDown(fireButton))
@@ -67,7 +67,7 @@ public class TankShooting : MonoBehaviour
         // 松开攻击键，Fire In The Hole!!
         else if (Input.GetButtonUp(fireButton) && !fired)
         {
-            Fire(currentLaunchForce, 1, maxDamage);
+            Fire(currentLaunchForce, fireRate, maxDamage);
         }
     }
 
@@ -88,7 +88,7 @@ public class TankShooting : MonoBehaviour
 
         //获取炮弹，并发射
         GameObject shell = shellPool.GetNextObjectActive(shellSpawn);
-        shell.GetComponent<Rigidbody>().velocity = currentLaunchForce * shellSpawn.forward;
+        shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
         shell.GetComponent<Shell>().maxDamage = fireDamage;
 
         shootingAudio.clip = fireClip;
@@ -97,7 +97,7 @@ public class TankShooting : MonoBehaviour
         currentLaunchForce = minLaunchForce;
         aimSlider.value = minLaunchForce;
 
-        nextFireTime = Time.time + fireInterval;
+        nextFireTime = Time.time + fireRate;
     }
 
     //是否可以攻击
