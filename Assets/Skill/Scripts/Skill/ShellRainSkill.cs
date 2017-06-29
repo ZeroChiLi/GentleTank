@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShellRainSkill : Skill
 {
     public ObjectPool shellPool;            //炮弹池
-    public ObjectPool warnningPool;         //警告区域池
+    public ObjectPool warnningPool;         //警告区域特效池
     [Range(0, 10f)]
     public float skillDelay = 1.5f;         //技能释放延迟
     [Range(1, 100)]
@@ -16,25 +16,26 @@ public class ShellRainSkill : Skill
     public float attackRate = 0.5f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
-    public GameObject SkillGround;          //技能特效画布
-    //private Image warnningAreaImage;        //警告区域
+    public GameObject skillGround;          //技能特效画布
 
-    //private int blinkTimes = 3;             //警告区域闪烁次数
-    //private float elapsedTime = 0f;         //计时器
-    //private float onceBlinkTime;            //每一次闪烁持续时间
-    //private float disappearTime = 1f;       //警告区域消失持续时间
+    /// <summary>
+    /// 更改警告区域池的层级
+    /// </summary>
+    private void Start()
+    {
+        warnningPool.GetPoolParent().transform.parent = skillGround.transform;
+    }
 
     /// <summary>
     /// 技能效果
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        //onceBlinkTime = skillDelay / blinkTimes;
         Vector3 position = aim.HitPosition;
-        ShowWarnningArea(position);                         // 显示警告区域，在一段时间后再发起攻击
+        ShowWarnningArea(position);             // 显示警告区域，在一段时间后再发起攻击
+        yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数
             yield return CreateShell(position, Random.insideUnitCircle * attackRadius);
-        //yield return HideWarnningArea();                  // 一段时间后隐藏警告区域
     }
 
     /// <summary>
@@ -50,61 +51,28 @@ public class ShellRainSkill : Skill
         shell.transform.rotation = Quaternion.Euler(new Vector3(180f, 0, 0));
         shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
         shell.GetComponent<Shell>().maxDamage = attackDamage;
-        yield return new WaitForSeconds(Random.Range(0, attackRate));
+        yield return new WaitForSeconds(Random.Range(0, attackRate *2));
     }
 
+    /// <summary>
+    /// 显示警告区域，设置位置大小持续时间等
+    /// </summary>
+    /// <param name="position">显示的位置</param>
     private void ShowWarnningArea(Vector3 position)
     {
-        Image warnningAreaImage = warnningPool.GetNextObjectActive().GetComponent<Image>();
-        warnningAreaImage.transform.parent = SkillGround.transform;
-        warnningAreaImage.transform.position = new Vector3(position.x, position.y + 0.5f, position.z);
-        warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
+        GameObject warnningArea = warnningPool.GetNextObject();
+        //设置警告区域显示闪烁时间、持续时间
+        WarnningArea areaScript = warnningArea.GetComponent<WarnningArea>();
+        areaScript.blinkDuration = skillDelay;
+        areaScript.duration = skillDelay + attackRate * skillLevel + areaScript.endDuration;
+        //设置警告区域位置大小
+        RectTransform imageTransform = warnningArea.GetComponent<Image>().rectTransform;
+        imageTransform.position = new Vector3(position.x, position.y + 0.5f, position.z);
+        imageTransform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+        imageTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
+
+        //最后再激活，因为有些初始化配置在OnEnable()
+        warnningArea.SetActive(true);
     }
-
-    ///// <summary>
-    ///// 显示警告区域，大小随攻击范围改变
-    ///// </summary>
-    ///// <param name="position">区域位置</param>
-    //private IEnumerator ShowWarnningArea(Vector3 position)
-    //{
-    //    warnningAreaImage.gameObject.SetActive(true);
-    //    warnningAreaImage.transform.position = new Vector3(position.x, position.y + 0.5f, position.z);
-    //    warnningAreaImage.rectTransform.sizeDelta = new Vector2(attackRadius * 2, attackRadius * 2);
-
-    //    elapsedTime = 0f;
-
-    //    for (int i = 0; i < blinkTimes - 1; i++)            //前面闪烁,Alpha是从0->1->0
-    //        while (elapsedTime < (i + 1) * onceBlinkTime)
-    //            yield return OnceBlink(elapsedTime * 2, onceBlinkTime);
-
-    //    while (elapsedTime < blinkTimes * onceBlinkTime)   //最后一次闪烁,Alpha是从0->1
-    //        yield return OnceBlink(elapsedTime, onceBlinkTime);
-    //    warnningAreaImage.color = Color.red;
-    //}
-
-    ///// <summary>
-    ///// 延时一段时间后，隐藏警告区域
-    ///// </summary>
-    ///// <param name="delayTime">延时时间</param>
-    ///// <returns></returns>
-    //private IEnumerator HideWarnningArea()
-    //{
-    //    elapsedTime = 0f;
-    //    while (elapsedTime < disappearTime)                         //消失,Alpha是从1->0
-    //        yield return OnceBlink(disappearTime - elapsedTime, disappearTime);
-    //    warnningAreaImage.gameObject.SetActive(false);
-    //}
-
-    ///// <summary>
-    ///// 每一次闪烁，（颜色渐变）
-    ///// </summary>
-    ///// <param name="elapsed">根据这个值变化改变透明度</param>
-    ///// <returns></returns>
-    //private IEnumerator OnceBlink(float elapsed, float period)
-    //{
-    //    elapsedTime += Time.deltaTime;
-    //    warnningAreaImage.color = new Color(1f, 0f, 0f, Mathf.PingPong(elapsed, period) / period);
-    //    yield return null;
-    //}
 
 }

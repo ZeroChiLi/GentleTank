@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class WarnningArea : MonoBehaviour
@@ -8,7 +6,7 @@ public class WarnningArea : MonoBehaviour
     public float duration = 10f;                //显示区域的持续时间
     public float blinkDuration = 2f;            //闪烁时间
     public int blinkTimes = 3;                  //出现时闪烁次数  
-    public float disappearDuration = 1f;        //警告区域消失持续时间
+    public float endDuration = 1f;              //警告区域消失持续时间
 
     private Color originColor;                  //初始颜色
     private float elapsedTime = 0f;             //计时器
@@ -16,23 +14,32 @@ public class WarnningArea : MonoBehaviour
     private Image warnningImage;                //警告区域图片
     private int currentBlink = 0;               //当前闪烁的次数
 
+    /// <summary>
+    /// 取图片组件，原始颜色
+    /// </summary>
     private void Awake()
     {
         warnningImage = GetComponent<Image>();
         originColor = warnningImage.color;
-        onceBlinkTime = blinkDuration / blinkTimes;
     }
 
+    /// <summary>
+    /// 当被激活，计算每一次闪烁时间，计时器设置为0
+    /// </summary>
     private void OnEnable()
     {
+        onceBlinkTime = blinkDuration / blinkTimes;
         elapsedTime = 0f;
     }
 
+    /// <summary>
+    /// 通过计时器和持续时间判断闪烁、保持、隐藏还是失活对象
+    /// </summary>
     private void Update()
     {
         elapsedTime += Time.deltaTime;
-        if (elapsedTime <= duration - disappearDuration)
-            ShowWarnningArea();
+        if (elapsedTime <= duration - endDuration)
+            Blinking();
         else if (elapsedTime <= duration)
             HideWarnningArea();
         else
@@ -40,11 +47,11 @@ public class WarnningArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 显示警告区域，大小随攻击范围改变
+    /// 闪烁、超过闪烁时间将保持源色
     /// </summary>
-    private void ShowWarnningArea()
+    private void Blinking()
     {
-        if (elapsedTime < (blinkTimes -1) * onceBlinkTime)
+        if (elapsedTime < (blinkTimes - 1) * onceBlinkTime)
             OnceBlink(elapsedTime * 2, onceBlinkTime);
         else if (elapsedTime < blinkTimes * onceBlinkTime)
             OnceBlink(elapsedTime, onceBlinkTime);
@@ -53,11 +60,11 @@ public class WarnningArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 延时一段时间后，隐藏警告区域
+    /// 隐藏警告区域
     /// </summary>
     private void HideWarnningArea()
     {
-        OnceBlink(duration - elapsedTime, disappearDuration);
+        OnceBlink(duration - elapsedTime, endDuration);
     }
 
     /// <summary>
