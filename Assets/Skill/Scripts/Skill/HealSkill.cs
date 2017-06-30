@@ -22,8 +22,9 @@ public class HealSkill : Skill
     {
         waitTime = new WaitForSeconds(healRate);
         GameObject player = aim.HitGameObject;
+        TankHealth tankHealth = player.GetComponent<TankHealth>();
         for (int i = 0; i < skillLevel; i++)
-            yield return HealPlayer(player);
+            yield return HealPlayer(player, tankHealth);
     }
 
     /// <summary>
@@ -31,15 +32,15 @@ public class HealSkill : Skill
     /// </summary>
     /// <param name="transform">玩家的位置</param>
     /// <returns></returns>
-    private IEnumerator HealPlayer(GameObject player)
+    private IEnumerator HealPlayer(GameObject player, TankHealth tankHealth)
     {
         //如果死掉了或血条没有激活就直接结束治疗
-        if (!player.activeInHierarchy || player.GetComponent<TankHealth>().enabled == false)
+        if (!player.activeInHierarchy || tankHealth.enabled == false)
             yield break;
         //显示治愈特效
         healPool.GetNextObjectActive().transform.position = player.transform.position;
         //加血
-        player.GetComponent<TankHealth>().GainHeal(healVolume);
+        tankHealth.GainHeal(healVolume);
         yield return waitTime;
     }
 

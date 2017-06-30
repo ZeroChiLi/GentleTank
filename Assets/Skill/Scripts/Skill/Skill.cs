@@ -171,6 +171,7 @@ public abstract class Skill : MonoBehaviour
                 isReady = false;
                 aim.SetActive(false);
             }
+            //StopCoroutine(SkillEffect());
         }
         return enabled;
     }
