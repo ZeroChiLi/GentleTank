@@ -11,8 +11,8 @@ public abstract class Skill : MonoBehaviour
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
     protected bool isReady = false;                 // 准备释放技能（第一次点击）
+    protected bool gamePlaying = false;             // 是否正在游戏中
 
-    private bool gamePlaying = false;               // 是否正在游戏中
     private bool isOnButton = false;                // 鼠标是否位于按钮上
     private Color normalColor = Color.white;                        // 默认颜色
     private Color hightLightColor = new Color(1, 1, 0.45f);         // 高亮颜色
@@ -171,6 +171,7 @@ public abstract class Skill : MonoBehaviour
                 isReady = false;
                 aim.SetActive(false);
             }
+            //Debug.Log("Stop SkillEffect");
             //StopCoroutine(SkillEffect());
         }
         return enabled;

@@ -45,6 +45,8 @@ public class ShellRainSkill : Skill
     /// <returns></returns>
     private IEnumerator CreateShell(Vector3 inputPosition, Vector2 randomCircle)
     {
+        if (gamePlaying == false)               //不在游戏进行中就终结他，暂未解决使用StopCoroutine无效的问题 'Skill' 175行
+            yield break;            
         //创建炮弹 从上而下
         GameObject shell = shellPool.GetNextObjectActive();
         shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
