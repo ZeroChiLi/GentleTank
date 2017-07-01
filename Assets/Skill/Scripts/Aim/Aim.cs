@@ -11,18 +11,18 @@ public enum AimState
 
 public class Aim : MonoBehaviour
 {
-    public Camera gameCamera;                       // 游戏镜头
     public Image stateImage;                        // 当前瞄准图片
     public Color normalColor = Color.black;         // 普通状态
     public Color friendlyColor = Color.green;       // 友好状态
     public Color warnningColor = Color.red;         // 警告状态
     public Color disableColor = Color.gray;         // 无效状态
-    public SkillLayout skillLayout;                 // 技能布局
+    //public SkillLayout skillLayout;                 // 技能布局
 
     public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
     public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
 
+    private Camera gameCamera;                      // 游戏镜头
     private AimState currentAimState;               // 当前状态
     private Vector3 inputHitPos;                    // 鼠标射线射到的点
     private GameObject inputHitGameObject;          // 射线射到的物体
@@ -33,6 +33,7 @@ public class Aim : MonoBehaviour
     private void Awake()
     {
         stateImage = GetComponent<Image>();
+        gameCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         SetStateColor(normalColor);
     }
 
@@ -85,7 +86,7 @@ public class Aim : MonoBehaviour
     public void SetPos(Vector3 position)
     {
         gameObject.transform.position = position;
-        skillLayout.ContainPosition(position);
+        //skillLayout.ContainPosition(position);
     }
 
     /// <summary>

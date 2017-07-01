@@ -27,6 +27,7 @@ public abstract class Skill : MonoBehaviour
         coolDownSlider.maxValue = coolDownTime;
         remainReleaseTime = coolDownTime;
         buttonImage = GetComponent<Image>();
+        buttonImage.color = Color.white;
     }
 
     #region 更新冷却时间、检查是否释放技能
@@ -47,7 +48,7 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// 根据游戏是否开始，来设置技能能否使用，返回是否可以使用（是否正在游戏）
     /// </summary>
-    /// <returns></returns>
+    /// <returns>目前游戏回合状态</returns>
     private bool GameRoundPlaying()
     {
         if (GameRecord.instance.CurrentGameState == GameState.Playing)
@@ -59,7 +60,7 @@ public abstract class Skill : MonoBehaviour
     /// 只有当gamePlaying 和 isPlaying 不同时才会改变技能是否有效。即只有从 开始到进行触发一次，进行到结束触发一次
     /// </summary>
     /// <param name="isPlaying">是否正在游戏</param>
-    /// <returns></returns>
+    /// <returns>返回参数</returns>
     private bool SetSkillEnableByGamePlaying(bool isPlaying)
     {
         if (gamePlaying != isPlaying)
@@ -113,6 +114,7 @@ public abstract class Skill : MonoBehaviour
     public void OnMouseOnButton(bool enter)
     {
         isOnButton = enter;
+        //isOnButton = false;
         if (remainReleaseTime > 0)
             return;
         if (isReady)
@@ -120,6 +122,11 @@ public abstract class Skill : MonoBehaviour
             aim.SetActive(!enter);
             return;
         }
+        if (buttonImage == null)
+        {
+            Debug.Log("Shit");
+        }
+
         if (enter)
             buttonImage.color = hightLightColor;
         else

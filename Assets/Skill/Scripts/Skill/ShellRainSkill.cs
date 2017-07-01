@@ -16,14 +16,14 @@ public class ShellRainSkill : Skill
     public float attackRate = 0.5f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
-    public GameObject skillGround;          //技能特效画布
+    //public GameObject skillGround;          //技能特效画布
 
     /// <summary>
     /// 更改警告区域池的层级
     /// </summary>
     private void Start()
     {
-        warnningPool.GetPoolParent().transform.parent = skillGround.transform;
+        warnningPool.GetPoolParent().transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
     }
 
     /// <summary>
