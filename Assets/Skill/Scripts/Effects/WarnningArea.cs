@@ -12,7 +12,6 @@ public class WarnningArea : MonoBehaviour
     private float elapsedTime = 0f;             //计时器
     private float onceBlinkTime;                //每一次闪烁持续时间
     private Image warnningImage;                //警告区域图片
-    private int currentBlink = 0;               //当前闪烁的次数
 
     /// <summary>
     /// 取图片组件，原始颜色

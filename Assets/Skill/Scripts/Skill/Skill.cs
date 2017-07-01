@@ -10,10 +10,9 @@ public abstract class Skill : MonoBehaviour
 
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
-    protected bool isReady = false;                 // 准备释放技能（第一次点击）
+    protected bool isReady = false;                 // 是否准备释放技能（第一次点击）
     protected bool gamePlaying = false;             // 是否正在游戏中
 
-    private bool isOnButton = false;                // 鼠标是否位于按钮上
     private Color normalColor = Color.white;                        // 默认颜色
     private Color hightLightColor = new Color(1, 1, 0.45f);         // 高亮颜色
     private Color pressedColor = new Color(1, 0.27f, 0.27f);        // 点击颜色
@@ -30,7 +29,7 @@ public abstract class Skill : MonoBehaviour
         buttonImage.color = Color.white;
     }
 
-    #region 更新冷却时间、检查是否释放技能
+    #region 更新冷却时间、检查是否在游戏进行回合状态，并设置技能是否可用
 
     /// <summary>
     /// 更新冷却时间、鼠标位置、鼠标点击时释放技能
@@ -73,38 +72,21 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     private void UpdateCoolDown()
     {
-        coolDownSlider.value = Mathf.Lerp(coolDownSlider.maxValue, coolDownSlider.minValue, remainReleaseTime / (coolDownSlider.maxValue - coolDownSlider.minValue));
         if (remainReleaseTime == 0)
             return;
         if (remainReleaseTime < 0)
         {
             buttonImage.color = normalColor;
             remainReleaseTime = 0;
+            coolDownSlider.value = coolDownSlider.maxValue;
             return;
         }
+        coolDownSlider.value = Mathf.Lerp(coolDownSlider.maxValue, coolDownSlider.minValue, remainReleaseTime / (coolDownSlider.maxValue - coolDownSlider.minValue));
         remainReleaseTime -= Time.deltaTime;
         buttonImage.color = disableColor;
     }
 
     #endregion
-
-    #region 鼠标点击、进入、离开，准备状态、取消准备
-
-    /// <summary>
-    /// 点击技能时响应，返回是否准备释放技能
-    /// </summary>
-    /// <returns>返回是否准备释放技能</returns>
-    public bool OnClicked()
-    {
-        if (remainReleaseTime > 0)
-            return false;
-        isReady = !isReady;
-        if (isReady)
-            Ready();
-        else
-            Cancel();
-        return isReady;
-    }
 
     /// <summary>
     /// 鼠标移动到按钮或移出按钮时响应
@@ -112,18 +94,23 @@ public abstract class Skill : MonoBehaviour
     /// <param name="enter">true进入，否则是移出</param>
     public void OnMouseOnButton(bool enter)
     {
-        isOnButton = enter;
-        if (remainReleaseTime > 0)
+        if (remainReleaseTime > 0 || isReady)       //如果还在冷却时间，保持灰色；如果还在准备状态，保持高亮。
             return;
-        if (isReady)
-        {
-            //aim.SetActive(!enter);
-            return;
-        }
+
+        // 进入高亮，出去正常
         if (enter)
             buttonImage.color = hightLightColor;
         else
             buttonImage.color = normalColor;
+    }
+
+    /// <summary>
+    /// 是否可以进入准备状态，冷却时间过了
+    /// </summary>
+    /// <returns></returns>
+    public bool CanReady()
+    {
+        return remainReleaseTime == 0;
     }
 
     /// <summary>
@@ -147,8 +134,6 @@ public abstract class Skill : MonoBehaviour
         buttonImage.color = normalColor;
     }
 
-    #endregion
-
     /// <summary>
     /// 设置技能能否使用
     /// </summary>
@@ -157,12 +142,7 @@ public abstract class Skill : MonoBehaviour
     public bool SetSkillEnable(bool enable)
     {
         if (enable)
-        {
-            if (isOnButton)
-                buttonImage.color = hightLightColor;
-            else
-                buttonImage.color = normalColor;
-        }
+            buttonImage.color = normalColor;
         else
         {
             coolDownSlider.value = coolDownSlider.minValue;
@@ -185,7 +165,7 @@ public abstract class Skill : MonoBehaviour
     /// <returns>返回True，可以释放技能</returns>
     public bool CanRelease()
     {
-        return remainReleaseTime <= 0f && isReady /*&& !isOnButton*/ && ReleaseCondition();
+        return remainReleaseTime <= 0f && isReady && ReleaseCondition();
     }
 
     /// <summary>
