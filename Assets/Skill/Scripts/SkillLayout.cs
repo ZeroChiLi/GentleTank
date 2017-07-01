@@ -12,21 +12,22 @@ public class SkillLayout : MonoBehaviour
     private List<Skill> skillList;
     private GridLayoutGroup gridLayoutGroup;
     private RectTransform rectTransform;
-    private Vector2 leftDownPosition;
-    private Vector2 cellSize;
-    private Vector2 spacing;
-    private int currentSkillIndex;
+    private int currentSkillIndex = -1;
+    private int readySkillIndex = -1;
 
-    // 获取大小位置，每个技能按键大小，间隔
+    /// <summary>
+    /// 获取大小位置，每个技能按键大小，距离间隔
+    /// </summary>
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
-        cellSize = gridLayoutGroup.cellSize;
-        spacing = gridLayoutGroup.spacing;
         skillList = new List<Skill>();
     }
 
+    /// <summary>
+    /// 创建技能列表到这个对象里面
+    /// </summary>
     private void Start()
     {
         for (int i = 0; i < skillObjectList.Count; i++)
@@ -36,14 +37,39 @@ public class SkillLayout : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 获取鼠标位置，当点击时，改变技能状态
+    /// </summary>
     private void Update()
     {
-        int currentSkillIndex = GetSkillIndex(Input.mousePosition);
-        if (currentSkillIndex == -1)
-            return;
-        //skillList[currentSkillIndex].OnMouseOnButton(true);
-        if (Input.GetMouseButtonUp(0))
-            skillList[currentSkillIndex].OnClicked();
+        UpdateCurrentSkillIndex(Input.mousePosition);
+        if (Input.GetMouseButtonUp(0))                  // 点击时响应
+        {
+            if (currentSkillIndex == -1)                // 如果点了按钮以外的位置
+            {
+                // 如果已经有按钮被点击一次，就释放该技能，否则直接return
+                if (readySkillIndex != -1 && skillList[readySkillIndex].CanRelease())              
+                {
+                    skillList[readySkillIndex].Release();
+                    readySkillIndex = -1;
+                }
+            }
+            else                                        // 如果点击了技能按钮
+            {
+                if (readySkillIndex != -1)              // 如果之前已经点击过按钮，那就取消该技能准备
+                {
+                    skillList[readySkillIndex].Cancel();
+                    readySkillIndex = -1;
+                }
+                else                                    // 如果之前没点击按钮（就是这是第一次点击按钮）
+                {
+                    if (skillList[currentSkillIndex].OnClicked())       // 如果点击成功（进入技能准备释放状态）
+                        readySkillIndex = currentSkillIndex;
+                    else                                // 点击准备失败（没过完冷却时间）
+                        readySkillIndex = -1;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -51,19 +77,19 @@ public class SkillLayout : MonoBehaviour
     /// </summary>
     /// <param name="position">点击的位置</param>
     /// <returns></returns>
-    public int GetSkillIndex(Vector3 position)
+    public void UpdateCurrentSkillIndex(Vector3 position)
     {
-        Rect cellRect = new Rect(rectTransform.offsetMin, cellSize);
+        Rect cellRect = new Rect(rectTransform.offsetMin, gridLayoutGroup.cellSize);
         for (int i = 0; i < skillObjectList.Count; i++)
         {
             if (cellRect.Contains(position))
             {
-                //Debug.Log("On Button " + i);
-                return i;
+                currentSkillIndex = i;
+                return;
             }
-            cellRect.position += spacing + new Vector2(cellSize.x,0f);
+            cellRect.position += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
         }
-        return -1;
+        currentSkillIndex = -1;
     }
 
 

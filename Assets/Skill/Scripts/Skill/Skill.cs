@@ -40,9 +40,6 @@ public abstract class Skill : MonoBehaviour
         if (!GameRoundPlaying())        //游戏没开始就直接return
             return;
         UpdateCoolDown();               //更新冷却时间
-        //点了技能按钮，满足自定义释放条件，且按钮再次点击，释放技能  
-        if (CanRelease()&&ReleaseCondition() && Input.GetMouseButton(0))
-            Release();
     }
 
     /// <summary>
@@ -94,17 +91,19 @@ public abstract class Skill : MonoBehaviour
     #region 鼠标点击、进入、离开，准备状态、取消准备
 
     /// <summary>
-    /// 点击技能时响应
+    /// 点击技能时响应，返回是否准备释放技能
     /// </summary>
-    public void OnClicked()
+    /// <returns>返回是否准备释放技能</returns>
+    public bool OnClicked()
     {
         if (remainReleaseTime > 0)
-            return;
+            return false;
         isReady = !isReady;
         if (isReady)
             Ready();
         else
             Cancel();
+        return isReady;
     }
 
     /// <summary>
@@ -114,19 +113,13 @@ public abstract class Skill : MonoBehaviour
     public void OnMouseOnButton(bool enter)
     {
         isOnButton = enter;
-        //isOnButton = false;
         if (remainReleaseTime > 0)
             return;
         if (isReady)
         {
-            aim.SetActive(!enter);
+            //aim.SetActive(!enter);
             return;
         }
-        if (buttonImage == null)
-        {
-            Debug.Log("Shit");
-        }
-
         if (enter)
             buttonImage.color = hightLightColor;
         else
@@ -138,6 +131,7 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void Ready()
     {
+        isReady = true;
         aim.SetActive(true);
         aim.SetPos(Input.mousePosition);
         buttonImage.color = pressedColor;
@@ -148,6 +142,7 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     public void Cancel()
     {
+        isReady = false;
         aim.SetActive(false);
         buttonImage.color = normalColor;
     }
@@ -190,7 +185,7 @@ public abstract class Skill : MonoBehaviour
     /// <returns>返回True，可以释放技能</returns>
     public bool CanRelease()
     {
-        return remainReleaseTime <= 0f && isReady && !isOnButton;
+        return remainReleaseTime <= 0f && isReady /*&& !isOnButton*/ && ReleaseCondition();
     }
 
     /// <summary>
@@ -215,4 +210,16 @@ public abstract class Skill : MonoBehaviour
     /// 技能效果
     /// </summary>
     abstract public IEnumerator SkillEffect();
+
+    #region 其他操作 （Aim是否激活）
+
+    /// <summary>
+    /// 设置Aim的激活状态
+    /// </summary>
+    /// <param name="active">是否激活</param>
+    public void SetAimActive(bool active)
+    {
+        aim.SetActive(active);
+    }
+    #endregion
 }
