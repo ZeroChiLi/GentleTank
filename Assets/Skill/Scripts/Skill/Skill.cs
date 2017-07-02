@@ -120,7 +120,7 @@ public abstract class Skill : MonoBehaviour
     {
         isReady = true;
         aim.SetActive(true);
-        aim.SetPos(Input.mousePosition);
+        aim.SetPos(Input.mousePosition);        // 重新改变鼠标瞄准位置（因为在按钮上鼠标是失效的）
         buttonImage.color = pressedColor;
     }
 

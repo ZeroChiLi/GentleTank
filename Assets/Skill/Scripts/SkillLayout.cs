@@ -41,12 +41,21 @@ public class SkillLayout : MonoBehaviour
     private void Update()
     {
         UpdateCurrentSkillIndex(Input.mousePosition);
+
+        // 如果技能进入准备状态，随着鼠标位置是否在按钮上，若在，取消瞄准激活
+        if (readySkillIndex != -1)
+        {
+            if (OnSkillButton())
+                skillList[readySkillIndex].SetAimActive(false);
+            else
+                skillList[readySkillIndex].SetAimActive(true);
+        }
+
         if (!Input.GetMouseButtonUp(0))                 // 点击了才响应
             return;
-
         if (OnSkillButton())                            // 根据点击位置做相应的响应
             SkillOnClicked();
-        else 
+        else
             SceneOnClicked();
     }
 
@@ -101,7 +110,7 @@ public class SkillLayout : MonoBehaviour
             readySkillIndex = -1;
         }
     }
-    
+
     /// <summary>
     /// 点击了场景（除了技能按钮）
     /// </summary>
