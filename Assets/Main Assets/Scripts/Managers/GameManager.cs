@@ -14,26 +14,28 @@ public class GameManager : MonoBehaviour
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    public CameraControl cameraControl;             // 相机控制脚本
+    public CameraControl cameraControl;             // 相机控制组件
     public MinimapManager minimapManager;           // 小地图管理器
     public SpawnAllPopUpArrow spawnAllPopUpArrow;   // 用来显示玩家箭头
 
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
+    private void Awake()
+    {
+        startWait = new WaitForSeconds(startDelay); // 游戏回合开始延时
+        endWait = new WaitForSeconds(endDelay);     // 游戏回合结束延时
+        GameRecord.instance = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager); // 创建一个游戏纪录实例
+    }
+
     /// <summary>
     /// 初始化游戏记录实例、产生所有坦克、设置相机目标、小地图初始化、开始游戏循环
     /// </summary>
     private void Start()
     {
-        startWait = new WaitForSeconds(startDelay);
-        endWait = new WaitForSeconds(endDelay);
-        GameRecord.instance = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager);
-
         SetupGame();                                // 配置游戏
 
-        // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
-        GameRecord.instance.StartGame();
+        GameRecord.instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
     }
 

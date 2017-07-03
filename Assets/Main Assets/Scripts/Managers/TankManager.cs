@@ -25,6 +25,8 @@ public class TankManager
     private TankMovement tankMovement;                      // 移动
     private TankShooting tankShooting;                      // 攻击
     private TankHealth tankHealth;                          // 血量
+    private TankColor tankColor;                            // 颜色渲染
+    private PlayerInfoUI playerInfoUI;                      // UI信息
 
     private StateController stateController;                // AI状态控制器
     private NavMeshAgent navMeshAgent;                      // AI导航
@@ -63,6 +65,9 @@ public class TankManager
         tankMovement = instance.GetComponent<TankMovement>();
         tankShooting = instance.GetComponent<TankShooting>();
         tankHealth = instance.GetComponent<TankHealth>();
+        tankColor = instance.GetComponent<TankColor>();
+        playerInfoUI = instance.GetComponent<PlayerInfoUI>();
+
         stateController = instance.GetComponent<StateController>();
         navMeshAgent = instance.GetComponent<NavMeshAgent>();
     }
@@ -72,18 +77,18 @@ public class TankManager
     /// </summary>
     private void RenderTankColor()
     {
-        TankColor tankColor = instance.gameObject.GetComponent<TankColor>();
-        tankColor.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);
-        coloredPlayerName = playerName;
+        tankColor.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);     // 坦克颜色
+        playerInfoUI.SetNameText(playerName);                                       // UI名字
+        coloredPlayerName = playerName;                                             // 玩家名字富文本
         if (playerTeam != null)
         {
             coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
             //团队灯光
             if (tankColor.GetComponentInChildren<Light>() != null)
                 tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
+
+            playerInfoUI.SetNameColor(playerTeam.TeamColor);                        // UI名字颜色
         }
-        //玩家UI彩色字
-        tankColor.RenderPlayerInfo(ColoredPlayerName);
     }
 
     /// <summary>
@@ -111,7 +116,7 @@ public class TankManager
         else
             SetPlayerControlEnable(enable);
 
-        tankShooting.SetupPlayer(PlayerID,isAI,enable);
+        tankShooting.SetupPlayer(PlayerID, isAI, enable);
         tankHealth.enabled = enable;
     }
 
@@ -126,7 +131,7 @@ public class TankManager
         if (stateController != null)
         {
             stateController.enabled = enable;
-            stateController.SetupAI(PlayerID,enable, allTeamsManager);
+            stateController.SetupAI(PlayerID, enable, allTeamsManager);
         }
         else
             Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");

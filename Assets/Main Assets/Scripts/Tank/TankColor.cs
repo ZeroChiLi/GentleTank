@@ -2,21 +2,21 @@
 
 public class TankColor : MonoBehaviour
 {
-    public PlayerInfoUI playerInfoUI;
+    //public PlayerInfoUI playerInfoUI;
+
+    ///// <summary>
+    ///// 渲染玩家显示信息UI
+    ///// </summary>
+    //public void RenderPlayerInfo(string playerInfo)
+    //{
+    //    playerInfoUI.gameObject.SetActive(true);
+    //    if (playerInfoUI == null)
+    //        return;
+    //    playerInfoUI.SetNameText(playerInfo);
+    //}
 
     /// <summary>
-    /// 渲染玩家显示信息UI
-    /// </summary>
-    public void RenderPlayerInfo(string playerInfo)
-    {
-        playerInfoUI.gameObject.SetActive(true);
-        if (playerInfoUI == null)
-            return;
-        playerInfoUI.SetNameText(playerInfo);
-    }
-
-    /// <summary>
-    /// 渲染所有带‘NeedRenderByPlayerColor’脚本的子组件们颜色
+    /// 渲染所有带'T'类的脚本的子组件们颜色
     /// </summary>
     /// <param name="color">渲染颜色</param>
     public void RenderColorByComponent<T>(Color color) where T : Component
