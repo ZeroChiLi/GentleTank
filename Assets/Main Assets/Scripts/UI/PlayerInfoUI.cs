@@ -29,6 +29,7 @@ public class PlayerInfoUI : MonoBehaviour
         style = new GUIStyle(EditorStyles.largeLabel);
         style.alignment = TextAnchor.MiddleCenter;                  // 文本居中
         style.fontSize = fontSize;                                  // 字体大小
+        style.font = font;                                          // 文本字体
         style.normal.textColor = new Color(0.9f, 0.9f, 0.9f, 1f);   // 字体默认颜色 
     }
 
@@ -70,11 +71,11 @@ public class PlayerInfoUI : MonoBehaviour
     {
         // 计算获取文本对应屏幕位置
         Vector3 screenPosition = targetCamera.WorldToScreenPoint(transform.position + offset * targetCamera.transform.up);
-        screenPosition.y = Screen.height - screenPosition.y;    //翻转Y坐标值  
+        screenPosition.y = Screen.height - screenPosition.y;    //翻转Y坐标值（screenPosition原点在左上角？？）
 
         // 根据文本大小设置位置
         Rect rect = new Rect(Vector2.zero, style.CalcSize(new GUIContent(playerName)));
-        rect.center = screenPosition - Vector3.up * rect.height * 0.5f;     // 设置文本的锚点位置
+        rect.center = screenPosition;
 
         return rect;
     }
