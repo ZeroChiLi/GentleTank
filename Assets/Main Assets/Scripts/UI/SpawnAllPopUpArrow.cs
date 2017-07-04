@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public class SpawnAllPopUpArrow : MonoBehaviour 
+public class SpawnAllPopUpArrow : MonoBehaviour
 {
     public ObjectPool popUpArrowPool;
+    public Camera targetCamera;
+    public float distance = 10f;
 
     public void Spawn(AllTanksManager allTanksManager)
     {
@@ -14,7 +16,8 @@ public class SpawnAllPopUpArrow : MonoBehaviour
             ArrowPopUp arrowPopUp = popUpArrowPool.GetNextObjectActive().GetComponent<ArrowPopUp>();
             if (arrowPopUp == null)
                 continue;
-            arrowPopUp.Setposition(allTanksManager[i].Instance.transform.position);
+            arrowPopUp.SetPosition(allTanksManager[i].Instance.transform.position + targetCamera.transform.up * distance);
+            arrowPopUp.SetRotation(Quaternion.Euler(targetCamera.transform.rotation.eulerAngles + Vector3.right *180));
             arrowPopUp.SetColor(allTanksManager[i].playerColor);
             arrowPopUp.SetText("P" + i);
         }

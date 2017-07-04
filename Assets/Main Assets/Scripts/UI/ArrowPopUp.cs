@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class ArrowPopUp : MonoBehaviour 
 {
     public float moveDistance = 0.5f;       //上下浮动范围
-    public float height = 8f;               //高度
     public TextMesh textMesh;               //文本
 
     private void Update()
@@ -13,9 +12,15 @@ public class ArrowPopUp : MonoBehaviour
     }
 
     //设置初始位置
-    public void Setposition(Vector3 position)
+    public void SetPosition(Vector3 position)
     {
-        transform.position = new Vector3(position.x, position.y + 10f, position.z);
+        transform.position = position;
+    }
+
+    // 设置旋转角度
+    public void SetRotation(Quaternion rotation)
+    {
+        transform.rotation = rotation;
     }
 
     //设置箭头文本
