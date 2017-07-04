@@ -5,12 +5,16 @@ public class PlayerInfoUI : MonoBehaviour
 {
     public bool showPlayerInfo;                     // 是否显示玩家信息
     public Font font;                               // 文本字体
-    public int fontSize = 18;                       // 文本大小
-    public float offset = 5;                        // 文本偏移量
+    public int fontSize = 18;                       // 字体大小
+    public float offset = 5;                        // 文本相对玩家偏移量
+    public float vibrateRange = 2;                  // 文本抖动范围的平方（在范围内位置平滑移动，预防抖动）
+    public float labelMoveSpeed = 0.1f;             // 标签移动速度
 
     private Camera targetCamera;                    // 显示对着的镜头（默认：主相机）
     private GUIStyle style;                         // GUI风格  
     private string playerName;                      // 要显示的文本 
+    private Vector2 nameLabelSize;                  // 文本大小
+    private Vector3 lastScreenPosition = Vector3.zero;  // 上一帧文本对应屏幕位置
 
     /// <summary>
     /// 获取目标镜头和玩家碰撞体
@@ -27,7 +31,7 @@ public class PlayerInfoUI : MonoBehaviour
     private void SetupGUIStyle()
     {
         style = new GUIStyle(EditorStyles.largeLabel);
-        style.alignment = TextAnchor.MiddleCenter;                  // 文本居中
+        style.alignment = TextAnchor.MiddleCenter;                  // 文本锚点左下角
         style.fontSize = fontSize;                                  // 字体大小
         style.font = font;                                          // 文本字体
         style.normal.textColor = new Color(0.9f, 0.9f, 0.9f, 1f);   // 字体默认颜色 
@@ -40,6 +44,7 @@ public class PlayerInfoUI : MonoBehaviour
     public void SetNameText(string name)
     {
         playerName = name;
+        nameLabelSize = style.CalcSize(new GUIContent(playerName)); // 计算获取文本标签大小
     }
 
     /// <summary>
@@ -73,10 +78,20 @@ public class PlayerInfoUI : MonoBehaviour
         Vector3 screenPosition = targetCamera.WorldToScreenPoint(transform.position + offset * targetCamera.transform.up);
         screenPosition.y = Screen.height - screenPosition.y;    //翻转Y坐标值（screenPosition原点在左上角？？）
 
-        // 根据文本大小设置位置
-        Rect rect = new Rect(Vector2.zero, style.CalcSize(new GUIContent(playerName)));
-        rect.center = screenPosition;
+        Rect rect = new Rect(Vector2.zero, nameLabelSize);
 
+        //和上一次位置距离在浮动范围，就平滑移动到上一次的位置
+        if ((lastScreenPosition - screenPosition).sqrMagnitude < vibrateRange)
+        {
+            lastScreenPosition = Vector3.MoveTowards(lastScreenPosition, screenPosition, labelMoveSpeed);
+            rect.center = lastScreenPosition;
+        }
+        else
+        {
+            rect.center = screenPosition;
+            lastScreenPosition = screenPosition;
+        }
+        // 根据文本大小设置位置
         return rect;
     }
 
