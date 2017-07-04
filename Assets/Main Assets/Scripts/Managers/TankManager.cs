@@ -144,7 +144,10 @@ public class TankManager
     private void SetPlayerControlEnable(bool enable)
     {
         if (stateController != null)
+        {
+            stateController.SetPlayerID(PlayerID);          // 设置玩家ID
             stateController.enabled = false;
+        }
         if (navMeshAgent != null)
             navMeshAgent.enabled = false;
         if (tankMovement != null)

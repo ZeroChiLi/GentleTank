@@ -74,7 +74,7 @@ public class TanksToTeams : EditorWindow
         EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.OriginalLength);
         EditorGUILayout.LabelField("Teams Size ： " + teamsManager.Length);
 
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(300));
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(280));
         for (int i = 0; i < tanksManager.OriginalLength; i++)
         {
             EditorGUILayout.BeginVertical("Box");

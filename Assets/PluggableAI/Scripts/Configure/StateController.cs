@@ -9,8 +9,7 @@ public class StateController : MonoBehaviour
     public AIStats defaultStats;                            // 默认状态信息
     public Transform eyes;                                  // 眼睛：拿来观察状态变化
     public PointList wayPointList;                          // 所有巡逻点
-
-    [HideInInspector] public int playerID;                  // 玩家ID
+public int playerID;                  // 玩家ID
     [HideInInspector] public Rigidbody rigidbodySelf;       // 自己的刚体
     [HideInInspector] public Collider colliderSelf;         // 自己的Collider
     [HideInInspector] public NavMeshAgent navMeshAgent;     // 导航组件
@@ -57,10 +56,16 @@ public class StateController : MonoBehaviour
     //设置巡逻点
     public void SetupAI(int playerID,bool aiEnable,AllTeamsManager teamsManager)
     {
-        this.playerID = playerID;
+        SetPlayerID(playerID);
         allTeamsManager = teamsManager;
         navMeshAgent.enabled = aiEnable;
         GetNewNextWayPoint(true);
+    }
+
+    //设置玩家ID
+    public void SetPlayerID(int playerID)
+    {
+        this.playerID = playerID;
     }
 
     //转换到下一个状态
