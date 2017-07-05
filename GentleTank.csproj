@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Skill\Shader\Outlined.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
