@@ -10,11 +10,16 @@ public class StateController : MonoBehaviour
     public Transform eyes;                                  // 眼睛：拿来观察状态变化
     public PointList wayPointList;                          // 所有巡逻点
 
-    [HideInInspector] public int playerID;                  // 玩家ID
-    [HideInInspector] public Rigidbody rigidbodySelf;       // 自己的刚体
-    [HideInInspector] public Collider colliderSelf;         // 自己的Collider
-    [HideInInspector] public NavMeshAgent navMeshAgent;     // 导航组件
-    [HideInInspector] public Transform chaseTarget;         // 追踪目标
+    [HideInInspector]
+    public int playerID;                  // 玩家ID
+    [HideInInspector]
+    public Rigidbody rigidbodySelf;       // 自己的刚体
+    [HideInInspector]
+    public Collider colliderSelf;         // 自己的Collider
+    [HideInInspector]
+    public NavMeshAgent navMeshAgent;     // 导航组件
+    [HideInInspector]
+    public Transform chaseTarget;         // 追踪目标
 
     private int nextWayPointIndex;                          // 下一个巡逻点
     public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
@@ -55,7 +60,7 @@ public class StateController : MonoBehaviour
     }
 
     //设置巡逻点
-    public void SetupAI(int playerID,bool aiEnable,AllTeamsManager teamsManager)
+    public void SetupAI(int playerID, bool aiEnable, AllTeamsManager teamsManager)
     {
         SetPlayerID(playerID);
         allTeamsManager = teamsManager;
@@ -97,7 +102,7 @@ public class StateController : MonoBehaviour
     public Point GetNewNextWayPoint(bool isRandom)
     {
         if (isRandom)
-            nextWayPointIndex = wayPointList.GetRandomDifferenceIndex(nextWayPointIndex,0,wayPointList.Count);
+            nextWayPointIndex = wayPointList.GetRandomDifferenceIndex(nextWayPointIndex, 0, wayPointList.Count);
         else
             nextWayPointIndex = (nextWayPointIndex + 1) % wayPointList.Count;
         return wayPointList[nextWayPointIndex];
@@ -106,7 +111,7 @@ public class StateController : MonoBehaviour
     //开火
     public void Fire()
     {
-        GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(),defaultStats.attackDamage.GetRandomValue());
+        GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
     }
 
     //是否被攻击了

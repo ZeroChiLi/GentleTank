@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Team
+public class TeamManager
 {
     [SerializeField]
     private int teamID = -1;                                    //团队ID

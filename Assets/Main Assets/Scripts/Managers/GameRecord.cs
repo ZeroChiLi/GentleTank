@@ -160,7 +160,7 @@ public class GameRecord
         }
 
         // 团队获胜， 加团队所有人
-        Team wonTeam = GetWonTeam();
+        TeamManager wonTeam = GetWonTeam();
         for (int i = 0; i < wonTeam.Count; i++)
             playerWonTimes[wonTeam[i]]++;
 
@@ -184,7 +184,7 @@ public class GameRecord
     /// 获取获胜团队
     /// </summary>
     /// <returns>获胜团队</returns>
-    private Team GetWonTeam()
+    private TeamManager GetWonTeam()
     {
         return allTeamsManager.GetTeamByPlayerID(wonPlayerID);
     }
@@ -215,7 +215,7 @@ public class GameRecord
             message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
 
         if (IsEndOfTheGame())                           // 如果是最后结束，输出最后赢最多的玩家
-            message.AppendFormat("{0} WINS THE GAME!", GetWinnerName()) ;
+            message.AppendFormat("{0} WINS THE GAME!", GetWinnerName());
 
         return message.ToString();
     }

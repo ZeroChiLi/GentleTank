@@ -20,7 +20,7 @@ public class TankManager
     private GameObject instance;                            // 玩家实例
     private string coloredPlayerName;                       // 带颜色的玩家名
     private AllTeamsManager allTeamsManager;                // 所有团队管理
-    private Team playerTeam;                                // 玩家所在团队
+    private TeamManager playerTeam;                                // 玩家所在团队
 
     private TankMovement tankMovement;                      // 移动
     private TankShooting tankShooting;                      // 攻击

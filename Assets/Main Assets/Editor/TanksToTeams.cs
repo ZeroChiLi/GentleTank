@@ -94,18 +94,18 @@ public class TanksToTeams : EditorWindow
             return;
         GUILayout.Space(5);
 
-        Team playerTeam = new Team();
+        TeamManager playerTeam = new TeamManager();
 
         // 如果坦克已经有队伍了，获取信息到playerTeam和dropdownContent
         if (teamsManager.ContainsPlayer(tanksManager.GetOriginalTank(index).PlayerID))
             playerTeam = teamsManager.GetTeamByPlayerID(tanksManager.GetOriginalTank(index).PlayerID);
-        
+
         //玩家无效且有队伍，踢出团队
         if (!tanksManager.GetOriginalTank(index).active)
         {
             if (playerTeam != null)
                 QuitTeam(tanksManager.GetOriginalTank(index).PlayerID);
-            return;           
+            return;
         }
 
 
@@ -136,7 +136,7 @@ public class TanksToTeams : EditorWindow
         tanksManager.GetOriginalTank(index).isAI = EditorGUILayout.Toggle(tanksManager.GetOriginalTank(index).isAI);
 
         Label(" Color : ", GUILayout.Width(50));
-        tanksManager.GetOriginalTank(index).playerColor = EditorGUILayout.ColorField(tanksManager.GetOriginalTank(index).playerColor,GUILayout.Width(100));
+        tanksManager.GetOriginalTank(index).playerColor = EditorGUILayout.ColorField(tanksManager.GetOriginalTank(index).playerColor, GUILayout.Width(100));
         tanksManager.GetOriginalTank(index).playerColor.a = 1;
 
         Horizontal(false);
@@ -160,11 +160,11 @@ public class TanksToTeams : EditorWindow
     }
 
     // 显示团队下拉列表，第一参数是如果当前玩家已经有队伍
-    private void ShowDropdown(Team team,int currentIndex)
+    private void ShowDropdown(TeamManager team, int currentIndex)
     {
         GUIContent content = new GUIContent();
         //如果存在该队伍，直接显示在下拉菜单中
-        if (team !=null)
+        if (team != null)
             content.text = team.TeamName;
 
         //下拉菜单，显示可选择队伍，修改后对应也会修改teamsManager
@@ -172,7 +172,7 @@ public class TanksToTeams : EditorWindow
         {
             GenericMenu menu = new GenericMenu();
             // 添加一条空的，就是可以不选择任何队伍
-            menu.AddItem(new GUIContent("None (No Team)"),false, QuitTeam, currentIndex);
+            menu.AddItem(new GUIContent("None (No Team)"), false, QuitTeam, currentIndex);
             for (int i = 0; i < teamsManager.Length; i++)
             {
                 if (team == teamsManager[i])        //跳过已经选中的队伍
@@ -184,7 +184,7 @@ public class TanksToTeams : EditorWindow
     }
 
     // 显示团队ID、人数以及颜色
-    private void ShowTeamInfo(Team team)
+    private void ShowTeamInfo(TeamManager team)
     {
         if (team == null || team.TeamID == -1)
         {
@@ -203,9 +203,9 @@ public class TanksToTeams : EditorWindow
     }
 
     // 标签。名称，长度
-    private void Label(string label,params GUILayoutOption[] options)
+    private void Label(string label, params GUILayoutOption[] options)
     {
-        EditorGUILayout.LabelField(label,options);
+        EditorGUILayout.LabelField(label, options);
     }
 
     // 使用水平布局，参数是开始或结束

@@ -10,7 +10,8 @@ public class TankHealth : MonoBehaviour
     public Color zeroHealthColor = Color.red;           // 没血颜色
     public ObjectPool tankExplosionPool;                // 坦克爆炸特效池
 
-    [HideInInspector] public bool getHurt = false;      // 是否受伤
+    [HideInInspector]
+    public bool getHurt = false;      // 是否受伤
 
     private float currentHealth;                        // 当前血量
     private bool dead;                                  // 是否死掉

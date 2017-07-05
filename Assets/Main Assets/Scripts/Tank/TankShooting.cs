@@ -72,7 +72,7 @@ public class TankShooting : MonoBehaviour
     }
 
     //配置玩家属性
-    public void SetupPlayer(int playerID,bool isAI = false,bool enable = true)
+    public void SetupPlayer(int playerID, bool isAI = false, bool enable = true)
     {
         this.playerID = playerID;
         fireButton = "Fire" + playerID;
@@ -81,7 +81,7 @@ public class TankShooting : MonoBehaviour
     }
 
     //发射炮弹
-    public void Fire(float launchForce, float fireRate,float fireDamage)
+    public void Fire(float launchForce, float fireRate, float fireDamage)
     {
         if (!CanFire())
             return;

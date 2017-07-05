@@ -8,9 +8,9 @@ public class AllTeamsManager : ScriptableObject
     [Header("And Select Player's Team.")]
     [Space()]
 
-    public Team[] teamArray;                                // 所有团队
+    public TeamManager[] teamArray;                                // 所有团队
 
-    public Team this[int index]
+    public TeamManager this[int index]
     {
         get { return teamArray[index]; }
         set { teamArray[index] = value; }
@@ -62,7 +62,7 @@ public class AllTeamsManager : ScriptableObject
     /// </summary>
     /// <param name="playerID">玩家ID</param>
     /// <returns>返回对应团队</returns>
-    public Team GetTeamByPlayerID(int playerID)
+    public TeamManager GetTeamByPlayerID(int playerID)
     {
         for (int i = 0; i < teamArray.Length; i++)
             if (teamArray[i].Contains(playerID))
@@ -75,7 +75,7 @@ public class AllTeamsManager : ScriptableObject
     /// </summary>
     /// <param name="teamID">团队ID</param>
     /// <returns>返回对应团队</returns>
-    public Team GetTeamByTeamID(int teamID)
+    public TeamManager GetTeamByTeamID(int teamID)
     {
         for (int i = 0; i < teamArray.Length; i++)
             if (teamArray[i].TeamID == teamID)
@@ -113,7 +113,7 @@ public class AllTeamsManager : ScriptableObject
     /// <param name="playerID">玩家ID</param>
     public void RemoveFromTeam(int playerID)
     {
-        Team team = GetTeamByPlayerID(playerID);
+        TeamManager team = GetTeamByPlayerID(playerID);
         if (team != null && team.Contains(playerID))
             team.Remove(playerID);
     }

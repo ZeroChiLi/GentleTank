@@ -35,7 +35,7 @@ public class MinimapManager : MonoBehaviour
         for (int i = 0; i < allTanksManager.Count; i++)
         {
             GameObject icon = Instantiate(playerIcon, minimapContent.transform);
-            Team team = allTeamsManager.GetTeamByPlayerID(allTanksManager[i].PlayerID);
+            TeamManager team = allTeamsManager.GetTeamByPlayerID(allTanksManager[i].PlayerID);
             if (team != null)
                 icon.GetComponent<Image>().color = team.TeamColor;
             allPlayerIcon[allTanksManager[i].Instance.transform] = icon;
