@@ -9,6 +9,7 @@ public class TanksToTeams : EditorWindow
     public AllTanksManager tanksManager;        // 坦克管理器
     public AllTeamsManager teamsManager;        // 团队管理器
 
+    static private EditorWindow window;         // 编辑窗口
     private bool resetID;                       // 是否已经重载ID
     private bool isSetupTeams;                  // 是否已经配置了团队管理器
     private Vector2 scrollPos;                  // 滑动面板位置
@@ -20,18 +21,22 @@ public class TanksToTeams : EditorWindow
     [MenuItem("Window/Tanks To Teams")]
     static void Init()
     {
-        EditorWindow window = GetWindow<TanksToTeams>();
-        window.minSize = new Vector2(500f, 250f);
+        window = GetWindow<TanksToTeams>();
+        window.minSize = new Vector2(500f, 280f);
         window.Show();
     }
 
     private void OnGUI()
     {
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(280f));
+
         if (!GetTanksTeamsManager())
             return;
         if (!resetID)
             ResetTanksAndTeamsID();
         TanksAndTeamsOperation();
+
+        EditorGUILayout.EndScrollView();
     }
 
     // 强制重置坦克和团队们的ID
@@ -74,14 +79,12 @@ public class TanksToTeams : EditorWindow
         EditorGUILayout.LabelField("Tanks Size ： " + tanksManager.OriginalLength);
         EditorGUILayout.LabelField("Teams Size ： " + teamsManager.Length);
 
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(280));
         for (int i = 0; i < tanksManager.OriginalLength; i++)
         {
             EditorGUILayout.BeginVertical("Box");
             TankOperation(i);
             EditorGUILayout.EndVertical();
         }
-        EditorGUILayout.EndScrollView();
     }
 
     // 单个坦克管理

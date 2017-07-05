@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 /// <summary>
@@ -59,7 +60,7 @@ public class GameRecord
             if (!tanksIdTeamsIdDic.ContainsKey(allTanksManager[i].PlayerID))
                 tanksIdTeamsIdDic[allTanksManager[i].PlayerID] = -1;
 
-            //这里是初始化playerWonTimes，为了省一圈循环
+            //这里顺便初始化playerWonTimes，为了省一圈循环
             playerWonTimes[allTanksManager[i].PlayerID] = 0;
         }
 
@@ -203,19 +204,20 @@ public class GameRecord
     /// <returns></returns>
     public string GetEndingMessage()
     {
-        string message = "DRAW!";                       // 默认平局
+        StringBuilder message;
 
-        if (!IsDraw())                                  // 不是平局，获取胜利者
-            message = GetWinnerName() + " WINS THE ROUND!";
-
-        message += "\n\n";
+        if (IsDraw())                                   // 平局，获取胜利者
+            message = new StringBuilder("DRAW!\n\n");
+        else
+            message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
 
         foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
-            message += allTanksManager.GetTankByID(item.Key).ColoredPlayerName + " : " + item.Value + "WINS\n";
+            message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
 
         if (IsEndOfTheGame())                           // 如果是最后结束，输出最后赢最多的玩家
-            message = GetWinnerName() + " WINS THE GAME!";
-        return message;
+            message.AppendFormat("{0} WINS THE GAME!", GetWinnerName()) ;
+
+        return message.ToString();
     }
 
 }
