@@ -9,7 +9,8 @@ public class StateController : MonoBehaviour
     public AIStats defaultStats;                            // 默认状态信息
     public Transform eyes;                                  // 眼睛：拿来观察状态变化
     public PointList wayPointList;                          // 所有巡逻点
-public int playerID;                  // 玩家ID
+
+    [HideInInspector] public int playerID;                  // 玩家ID
     [HideInInspector] public Rigidbody rigidbodySelf;       // 自己的刚体
     [HideInInspector] public Collider colliderSelf;         // 自己的Collider
     [HideInInspector] public NavMeshAgent navMeshAgent;     // 导航组件

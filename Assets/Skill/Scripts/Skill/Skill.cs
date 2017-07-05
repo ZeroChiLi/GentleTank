@@ -47,7 +47,7 @@ public abstract class Skill : MonoBehaviour
     /// <returns>目前游戏回合状态</returns>
     private bool GameRoundPlaying()
     {
-        if (GameRecord.instance.CurrentGameState == GameState.Playing)
+        if (GameRecord.Instance.CurrentGameState == GameState.Playing)
             return SetSkillEnableByGamePlaying(true);
         return SetSkillEnableByGamePlaying(false);
     }

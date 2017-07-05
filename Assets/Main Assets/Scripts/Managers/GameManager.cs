@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         startWait = new WaitForSeconds(startDelay); // 游戏回合开始延时
         endWait = new WaitForSeconds(endDelay);     // 游戏回合结束延时
-        GameRecord.instance = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager); // 创建一个游戏纪录实例
+        GameRecord.Instance = new GameRecord(numRoundsToWin, allTanksManager, allTeamsManager); // 创建一个游戏纪录实例
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         SetupGame();                                // 配置游戏
 
-        GameRecord.instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
+        GameRecord.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
     }
 
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(RoundEnding());             //回合结束
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合
-        if (GameRecord.instance.IsEndOfTheGame())
+        if (GameRecord.Instance.IsEndOfTheGame())
             SceneManager.LoadScene(0);
         else
             StartCoroutine(GameLoop());
@@ -109,9 +109,9 @@ public class GameManager : MonoBehaviour
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
         spawnAllPopUpArrow.Spawn(allTanksManager);      // 显示玩家箭头
-        GameRecord.instance.StartRound();
+        GameRecord.Instance.StartRound();
 
-        messageText.text = "ROUND " + GameRecord.instance.CurrentRound;
+        messageText.text = "ROUND " + GameRecord.Instance.CurrentRound;
 
         yield return startWait;                         // 延时一段时间再开始
     }
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
 
         messageText.text = string.Empty;                // 清空显示信息
 
-        while (!GameRecord.instance.IsEndOfTheRound())           // 回合没结束就继续
+        while (!GameRecord.Instance.IsEndOfTheRound())           // 回合没结束就继续
             yield return null;
     }
 
@@ -138,9 +138,9 @@ public class GameManager : MonoBehaviour
     {
         SetTanksControlEnable(false);                               // 锁定玩家控制权
 
-        GameRecord.instance.UpdateWonData();                        // 更新获胜次数
+        GameRecord.Instance.UpdateWonData();                        // 更新获胜次数
 
-        messageText.text = GameRecord.instance.GetEndingMessage();  // 获取结束信息并显示之
+        messageText.text = GameRecord.Instance.GetEndingMessage();  // 获取结束信息并显示之
 
         yield return endWait;
     }

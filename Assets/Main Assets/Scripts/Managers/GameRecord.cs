@@ -12,7 +12,7 @@ public enum GameState
 
 public class GameRecord
 {
-    static public GameRecord instance;
+    static public GameRecord Instance;
 
     private AllTanksManager allTanksManager;
     private AllTeamsManager allTeamsManager;
@@ -35,7 +35,7 @@ public class GameRecord
     /// <param name="teamsManager">团队管理器</param>
     public GameRecord(int maxRound, AllTanksManager tanksManager, AllTeamsManager teamsManager)
     {
-        instance = this;
+        Instance = this;
         this.maxRound = maxRound;
         allTanksManager = tanksManager;
         allTeamsManager = teamsManager;

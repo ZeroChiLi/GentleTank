@@ -41,6 +41,19 @@ public class Team
     }
 
     /// <summary>
+    /// 是否包含传入的所有玩家ID
+    /// </summary>
+    /// <param name="playerIDs">玩家ID数组</param>
+    /// <returns>是否包含所有玩家ID</returns>
+    public bool Contains(params int[] playerIDs)
+    {
+        for (int i = 0; i < playerIDs.Length; i++)
+            if (!playerIdList.Contains(playerIDs[i]))
+                return false;
+        return true;
+    }
+
+    /// <summary>
     /// 添加玩家到该团队
     /// </summary>
     /// <param name="playerID">玩家ID</param>

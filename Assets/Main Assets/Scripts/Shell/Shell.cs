@@ -26,7 +26,7 @@ public class Shell : MonoBehaviour
             if (!targetRigidbody)
                 continue;
 
-            // 给一个爆炸力
+            // 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
             targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
 
             // 获取目标的血条，计算扣血量并给给扣血。

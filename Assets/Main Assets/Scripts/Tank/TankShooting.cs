@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TankShooting : MonoBehaviour
 {
-    public int playerID = 1;                // 玩家编号
+    public int playerID = 1;                    // 玩家编号
     public ObjectPool shellPool;                // 炮弹池
     public Transform shellSpawn;                // 发射子弹的位置
     public Slider aimSlider;                    // 发射时显示黄色箭头

@@ -16,7 +16,6 @@ public class ShellRainSkill : Skill
     public float attackRate = 0.5f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
-    //public GameObject skillGround;          //技能特效画布
 
     /// <summary>
     /// 更改警告区域池的层级
@@ -50,7 +49,7 @@ public class ShellRainSkill : Skill
         //创建炮弹 从上而下
         GameObject shell = shellPool.GetNextObjectActive();
         shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
-        shell.transform.rotation = Quaternion.Euler(new Vector3(180f, 0, 0));
+        shell.transform.rotation = Quaternion.Euler(new Vector3(90f, 0, 0));
         shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
         shell.GetComponent<Shell>().maxDamage = attackDamage;
         yield return new WaitForSeconds(Random.Range(0, attackRate *2));
