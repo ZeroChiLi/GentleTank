@@ -215,7 +215,7 @@ public class GameRecord
             message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
 
         if (IsEndOfTheGame())                           // 如果是最后结束，输出最后赢最多的玩家
-            message.AppendFormat("{0} WINS THE GAME!", GetWinnerName());
+            message = new StringBuilder("{0} WINS THE GAME!"+ GetWinnerName());
 
         return message.ToString();
     }

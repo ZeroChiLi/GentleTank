@@ -25,7 +25,7 @@ public class TankManager
     private TankMovement tankMovement;                      // 移动
     private TankShooting tankShooting;                      // 攻击
     private TankHealth tankHealth;                          // 血量
-    private TankColor tankColor;                            // 颜色渲染
+    private TankInformation tankInformation;                            // 颜色渲染
     private PlayerInfoUI playerInfoUI;                      // UI信息
 
     private StateController stateController;                // AI状态控制器
@@ -50,11 +50,11 @@ public class TankManager
     {
         this.instance = instance;
         this.allTeamsManager = allTeamsManager;
-        playerTeam = allTeamsManager.GetTeamByPlayerID(PlayerID);
 
         SetupComponent();                               // 获取私有组件
         SetControlEnable(true);                         // 激活相应的控制权
-        RenderTankColor();                              // 渲染颜色
+        SetupTankInformation();                         // 填充坦克信息，渲染颜色
+        SetupUIAndInput();                              // 配置玩家名、外部输入
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class TankManager
         tankMovement = instance.GetComponent<TankMovement>();
         tankShooting = instance.GetComponent<TankShooting>();
         tankHealth = instance.GetComponent<TankHealth>();
-        tankColor = instance.GetComponent<TankColor>();
+        tankInformation = instance.GetComponent<TankInformation>();
         playerInfoUI = instance.GetComponent<PlayerInfoUI>();
 
         stateController = instance.GetComponent<StateController>();
@@ -75,20 +75,29 @@ public class TankManager
     /// <summary>
     /// 为所有带'NeedRenderByPlayerColor'的子组件染色，包括自己的名字UI，包括团队灯光
     /// </summary>
-    private void RenderTankColor()
+    private void SetupTankInformation()
     {
-        tankColor.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);     // 坦克颜色
-        playerInfoUI.SetNameText(playerName);                                       // UI名字
-        coloredPlayerName = playerName;                                             // 玩家名字富文本
+        playerTeam = allTeamsManager.GetTeamByPlayerID(PlayerID);                           // 坦克所在队伍
+        tankInformation.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);       // 坦克颜色
+        coloredPlayerName = playerName;                                                     // 玩家名字富文本
         if (playerTeam != null)
         {
             coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
             //团队灯光
-            if (tankColor.GetComponentInChildren<Light>() != null)
-                tankColor.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
-
-            playerInfoUI.SetNameColor(playerTeam.TeamColor);                        // UI名字颜色
+            if (tankInformation.GetComponentInChildren<Light>() != null)
+                tankInformation.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
         }
+        tankInformation.SetupTankInfo(playerID, playerName,active, isAI, playerTeam, ColoredPlayerName);
+    }
+
+    /// <summary>
+    /// 配置信息UI、移动、攻击输入
+    /// </summary>
+    public void SetupUIAndInput()
+    {
+        playerInfoUI.SetupNameAndColor();   // 配置玩家信息UI的名字和颜色
+        tankMovement.SetupPlayerInput();    // 配置坦克移动输入
+        tankShooting.SetupPlayerInput();    // 配置坦克攻击输入
     }
 
     /// <summary>
@@ -116,7 +125,7 @@ public class TankManager
         else
             SetPlayerControlEnable(enable);
 
-        tankShooting.SetupPlayer(PlayerID, isAI, enable);
+        tankShooting.enabled = enable;
         tankHealth.enabled = enable;
     }
 
@@ -129,10 +138,7 @@ public class TankManager
         if (tankMovement != null)
             tankMovement.enabled = false;
         if (stateController != null)
-        {
-            stateController.enabled = enable;
-            stateController.SetupAI(PlayerID, enable, allTeamsManager);
-        }
+            stateController.SetupAI(enable, allTeamsManager);
         else
             Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
     }
@@ -144,17 +150,11 @@ public class TankManager
     private void SetPlayerControlEnable(bool enable)
     {
         if (stateController != null)
-        {
-            stateController.SetPlayerID(PlayerID);          // 设置玩家ID
             stateController.enabled = false;
-        }
         if (navMeshAgent != null)
             navMeshAgent.enabled = false;
         if (tankMovement != null)
-        {
             tankMovement.enabled = enable;
-            tankMovement.SetPlayerID(PlayerID);
-        }
         else
             Debug.LogError("If You Want To Control Tank,Need 'TankMovement' Script Component.");
     }

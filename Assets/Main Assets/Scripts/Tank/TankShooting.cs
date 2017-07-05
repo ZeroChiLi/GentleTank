@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class TankShooting : MonoBehaviour
 {
-    public int playerID = 1;                    // 玩家编号
     public ObjectPool shellPool;                // 炮弹池
     public Transform shellSpawn;                // 发射子弹的位置
     public Slider aimSlider;                    // 发射时显示黄色箭头
@@ -16,12 +15,18 @@ public class TankShooting : MonoBehaviour
     public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
     public float maxDamage = 100f;              // 最大伤害
 
-    private bool isAI;                          // 是否是AI
-    private string fireButton;                  // 发射子弹按钮是名字
+    private TankInformation tankInfo;           // 玩家信息
     private float currentLaunchForce;           // 当前发射力度
     private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
     private bool fired = true;                  // 是否发射了
     private float nextFireTime;                 // 下一发最早时间
+
+    private string fireButton;                  // 发射子弹按钮是名字
+
+    private void Awake()
+    {
+        tankInfo = GetComponent<TankInformation>();
+    }
 
     private void Start()
     {
@@ -34,7 +39,7 @@ public class TankShooting : MonoBehaviour
     {
         if (!CanFire())
             return;
-        if (!isAI)
+        if (!tankInfo.playerAI)         //不是AI才更新
             CheckForceToFire();
     }
 
@@ -71,13 +76,12 @@ public class TankShooting : MonoBehaviour
         }
     }
 
-    //配置玩家属性
-    public void SetupPlayer(int playerID, bool isAI = false, bool enable = true)
+    //配置玩家攻击输入属性
+    public void SetupPlayerInput()
     {
-        this.playerID = playerID;
-        fireButton = "Fire" + playerID;
-        this.isAI = isAI;
-        enabled = enable;
+        if (tankInfo == null)
+            Debug.Log("SHIT");
+        fireButton = "Fire" + tankInfo.playerID;
     }
 
     //发射炮弹

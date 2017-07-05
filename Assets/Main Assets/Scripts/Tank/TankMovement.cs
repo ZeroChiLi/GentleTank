@@ -2,7 +2,6 @@
 
 public class TankMovement : MonoBehaviour
 {
-    public int playerNumber = 1;                // 玩家编号
     public float speed = 12f;                   // 移动速度
     public float turnSpeed = 180f;              // 旋转速度
     public AudioSource movementAudio;           // 当前音效
@@ -10,6 +9,7 @@ public class TankMovement : MonoBehaviour
     public AudioClip engineDriving;             // 引擎移动声音
     public float pitchRange = 0.2f;             // 音调浮动范围
 
+    private TankInformation tankInfo;           // 坦克信息
     private string movementAxisName;            // 移动输入轴名
     private string turnAxisName;                // 旋转输入轴名
     private Rigidbody tankRigidbody;            // 刚体
@@ -20,6 +20,7 @@ public class TankMovement : MonoBehaviour
 
     private void Awake()
     {
+        tankInfo = GetComponent<TankInformation>();
         tankRigidbody = GetComponent<Rigidbody>();
         originalPitch = movementAudio.pitch;
     }
@@ -53,12 +54,11 @@ public class TankMovement : MonoBehaviour
     }
 
     //设置编号
-    public void SetPlayerID(int number)
+    public void SetupPlayerInput()
     {
         //输入名要在Player Setting 设置
-        playerNumber = number;
-        movementAxisName = "Vertical" + number;
-        turnAxisName = "Horizontal" + number;
+        movementAxisName = "Vertical" + tankInfo.playerID;
+        turnAxisName = "Horizontal" + tankInfo.playerID;
     }
 
     // 移动、旋转

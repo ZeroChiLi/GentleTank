@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -90,12 +92,12 @@
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPoolCreate.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\TankManager.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\Team.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\TeamManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Shell\Shell.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Tank\TankColor.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankHealth.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Tank\TankInformation.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankMovement.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\ArrowPopUp.cs" />

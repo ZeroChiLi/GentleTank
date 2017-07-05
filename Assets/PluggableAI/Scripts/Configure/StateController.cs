@@ -11,8 +11,6 @@ public class StateController : MonoBehaviour
     public PointList wayPointList;                          // 所有巡逻点
 
     [HideInInspector]
-    public int playerID;                  // 玩家ID
-    [HideInInspector]
     public Rigidbody rigidbodySelf;       // 自己的刚体
     [HideInInspector]
     public Collider colliderSelf;         // 自己的Collider
@@ -24,12 +22,14 @@ public class StateController : MonoBehaviour
     private int nextWayPointIndex;                          // 下一个巡逻点
     public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
+    private TankInformation tankInfo;                       // 坦克信息
     private State startState;                               // 初始状态，每次复活后重置
     private AllTeamsManager allTeamsManager;                // 所有团队管理器
     private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
     private void Awake()
     {
+        tankInfo = GetComponent<TankInformation>();
         rigidbodySelf = GetComponent<Rigidbody>();
         colliderSelf = GetComponent<Collider>();
         startState = currentState;
@@ -59,19 +59,13 @@ public class StateController : MonoBehaviour
         navMeshAgent.stoppingDistance = defaultStats.navStopDistance.GetRandomValue();
     }
 
-    //设置巡逻点
-    public void SetupAI(int playerID, bool aiEnable, AllTeamsManager teamsManager)
+    //配置AI
+    public void SetupAI(bool enable, AllTeamsManager teamsManager)
     {
-        SetPlayerID(playerID);
+        enabled = enable;
         allTeamsManager = teamsManager;
-        navMeshAgent.enabled = aiEnable;
+        navMeshAgent.enabled = enable;
         GetNewNextWayPoint(true);
-    }
-
-    //设置玩家ID
-    public void SetPlayerID(int playerID)
-    {
-        this.playerID = playerID;
     }
 
     //转换到下一个状态
@@ -129,7 +123,7 @@ public class StateController : MonoBehaviour
     //通过碰撞体判断是否队友
     public bool IsTeamMate(Collider collider)
     {
-        return allTeamsManager.IsTeammate(playerID, collider.gameObject.GetComponent<StateController>().playerID);
+        return allTeamsManager.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
     }
 
     public bool IsMyself(Collider collider)
