@@ -67,21 +67,21 @@ public class PlayerInfoUI : MonoBehaviour
     private Rect CalculatePosition()
     {
         // 计算获取文本对应屏幕位置
-        Vector3 screenPosition = targetCamera.WorldToScreenPoint(transform.position + offset * targetCamera.transform.up);
-        screenPosition.y = Screen.height - screenPosition.y;    //翻转Y坐标值（screenPosition原点在左上角？？）
+        Vector3 labelScreenPosition = targetCamera.WorldToScreenPoint(transform.position + offset * targetCamera.transform.up);
+        labelScreenPosition.y = Screen.height - labelScreenPosition.y;    //翻转Y坐标值（screenPosition原点在左上角？？）
 
         Rect rect = new Rect(Vector2.zero, nameLabelSize);
 
         //和上一次位置距离在浮动范围，就平滑移动到上一次的位置
-        if ((lastScreenPosition - screenPosition).sqrMagnitude < vibrateRange)
+        if ((lastScreenPosition - labelScreenPosition).sqrMagnitude < vibrateRange)
         {
-            lastScreenPosition = Vector3.MoveTowards(lastScreenPosition, screenPosition, labelMoveSpeed);
+            lastScreenPosition = Vector3.MoveTowards(lastScreenPosition, labelScreenPosition, labelMoveSpeed);
             rect.center = lastScreenPosition;
         }
         else
         {
-            rect.center = screenPosition;
-            lastScreenPosition = screenPosition;
+            rect.center = labelScreenPosition;
+            lastScreenPosition = labelScreenPosition;
         }
         // 根据文本大小设置位置
         return rect;
