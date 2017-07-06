@@ -40,6 +40,13 @@ public class SkillLayout : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        //不在回合中就跳出
+        if (GameRecord.Instance.CurrentGameState != GameState.Playing)
+        {
+            readySkillIndex = -1;
+            return;
+        }
+
         UpdateCurrentSkillIndex(Input.mousePosition);
 
         // 如果技能进入准备状态，随着鼠标位置是否在按钮上，若在，取消瞄准激活

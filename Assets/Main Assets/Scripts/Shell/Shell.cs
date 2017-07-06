@@ -10,33 +10,48 @@ public class Shell : MonoBehaviour
     public float maxLifeTime = 2f;                      // 炸弹最大生存时间
     public float explosionRadius = 5f;                  // 爆炸半径
 
+    // 把每次需要用到的临时变量拉出来
+    private Collider[] colliders;                       // 碰撞物体们
+    private Rigidbody targetRigidbody;                  // 目标刚体
+    private TankHealth targetHealth;                    // 目标血量
 
     // 当碰到任何物体
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Flag"))
+            return;
+
         // 从爆炸池中获取对象，并设置位置，显示之
         shellExplosionPool.GetNextObjectActive(transform);
 
         // 获取爆炸范围内所有碰撞体
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
+        colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody>();
-            if (!targetRigidbody)
-                continue;
-
-            // 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
-            targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
-
-            // 获取目标的血条，计算扣血量并给给扣血。
-            TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
-            if (!targetHealth)
-                continue;
-            targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));
+            AddForce(i);
+            TakeDamage(i);
         }
 
         gameObject.SetActive(false);
+    }
+
+    // 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
+    private void AddForce(int index)
+    {
+        targetRigidbody = colliders[index].GetComponent<Rigidbody>();
+        if (!targetRigidbody)
+            return;
+        targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+    }
+
+    // 获取目标的血条，计算扣血量并给给扣血。
+    private void TakeDamage(int index)
+    {
+        targetHealth = colliders[index].GetComponent<TankHealth>();
+        if (!targetHealth)
+            return;
+        targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));
     }
 
     // 根据距离计算伤害

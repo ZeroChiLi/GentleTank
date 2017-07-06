@@ -191,8 +191,6 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     abstract public IEnumerator SkillEffect();
 
-    #region 其他操作 （Aim是否激活）
-
     /// <summary>
     /// 设置Aim的激活状态
     /// </summary>
@@ -201,5 +199,4 @@ public abstract class Skill : MonoBehaviour
     {
         aim.SetActive(active);
     }
-    #endregion
 }

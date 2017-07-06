@@ -16,7 +16,6 @@ public class Aim : MonoBehaviour
     public Color friendlyColor = Color.green;       // 友好状态
     public Color warnningColor = Color.red;         // 警告状态
     public Color disableColor = Color.gray;         // 无效状态
-    //public SkillLayout skillLayout;                 // 技能布局
 
     public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
@@ -86,7 +85,6 @@ public class Aim : MonoBehaviour
     public void SetPos(Vector3 position)
     {
         gameObject.transform.position = position;
-        //skillLayout.ContainPosition(position);
     }
 
     /// <summary>
