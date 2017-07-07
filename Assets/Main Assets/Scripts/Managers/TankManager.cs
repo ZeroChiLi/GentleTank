@@ -87,7 +87,7 @@ public class TankManager
             if (tankInformation.GetComponentInChildren<Light>() != null)
                 tankInformation.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
         }
-        tankInformation.SetupTankInfo(playerID, playerName,active, isAI, playerTeam, ColoredPlayerName);
+        tankInformation.SetupTankInfo(playerID, playerName, active, isAI, playerColor, playerTeam, ColoredPlayerName);
     }
 
     /// <summary>
