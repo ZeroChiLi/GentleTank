@@ -3,17 +3,19 @@
 public class TankInformation : MonoBehaviour
 {
     [HideInInspector]
-    public int playerID;                           // 玩家ID
+    public int playerID;                            // 玩家ID
     [HideInInspector]
-    public string playerName;                      // 玩家名
+    public string playerName;                       // 玩家名
     [HideInInspector]
-    public bool playerActive;                      // 玩家是否激活
+    public bool playerActive;                       // 玩家是否激活
     [HideInInspector]
-    public bool playerAI;                          // 玩家是否是AI
+    public bool playerAI;                           // 玩家是否是AI
     [HideInInspector]
-    public TeamManager playerTeam;                 // 玩家所在团队
+    public TeamManager playerTeam;                  // 玩家所在团队
     [HideInInspector]
-    public string playerColoredName;               // 带颜色的玩家名
+    public int playerTeamID = -1;                   // 玩家所在团队ID（没队的-1）
+    [HideInInspector]
+    public string playerColoredName;                // 带颜色的玩家名
 
     public void SetupTankInfo(int id,string name,bool active, bool isAI,TeamManager team,string coloredName)
     {
@@ -23,6 +25,8 @@ public class TankInformation : MonoBehaviour
         playerAI = isAI;
         playerTeam = team;
         playerColoredName = coloredName;
+        if (playerTeam != null)
+            playerTeamID = playerTeam.TeamID;
     }
 
     /// <summary>

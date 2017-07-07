@@ -19,7 +19,12 @@ public class ChargeArea : MonoBehaviour
     private float elapsedTime = 0f;                 // 计时器
     private bool occupied = false;                  // 旗帜区域是否已经被占有
     private bool stalemate = false;                 // 是否保持僵局（区域内不止一个队伍）
-    private List<TankInformation> occupyPlayerList; // 占有旗帜队伍的所有圈内成员
+    private Dictionary<TeamManager, int> occupyTeamDic;         // 旗帜范围内所有团队，及其对应团队权重
+    private List<TankInformation> occupyIndependentPlayer;      // 旗帜范围内所有个人，权重为1
+    private Color occupiedColor;                                // 占有颜色
+
+    public float TotalWeight { get { return playerInfoList.Count; } }     // 总权重
+
 
     /// <summary>
     /// 设置滑动条大小、碰撞体大小
@@ -30,6 +35,8 @@ public class ChargeArea : MonoBehaviour
         areaCanvas.GetComponent<RectTransform>().sizeDelta = Vector2.one * radius * 2;
         playerInfoList = new List<TankInformation>();
         inactivePlayers = new List<TankInformation>();
+        occupyTeamDic = new Dictionary<TeamManager, int>();
+        occupyIndependentPlayer = new List<TankInformation>();
     }
 
     /// <summary>
@@ -41,6 +48,7 @@ public class ChargeArea : MonoBehaviour
         if (!other.gameObject.CompareTag("Player"))
             return;
         playerInfoList.Add(other.GetComponent<TankInformation>());
+        UpdateTeamWeight();
     }
 
     /// <summary>
@@ -52,6 +60,7 @@ public class ChargeArea : MonoBehaviour
         if (!other.gameObject.CompareTag("Player") || !other.gameObject.activeSelf)
             return;
         playerInfoList.Remove(other.GetComponent<TankInformation>());
+        UpdateTeamWeight();
     }
 
     private void Update()
@@ -84,12 +93,14 @@ public class ChargeArea : MonoBehaviour
     {
         inactivePlayers.Clear();
 
-        for (int i = 0; i < playerInfoList.Count; i++)              //先获取所有失效玩家
+        for (int i = 0; i < playerInfoList.Count; i++)              // 先获取所有失效玩家
             if (!playerInfoList[i].gameObject.activeSelf)
                 inactivePlayers.Add(playerInfoList[i]);
 
-        for (int i = 0; i < inactivePlayers.Count; i++)             //再删除所有失效玩家
+        for (int i = 0; i < inactivePlayers.Count; i++)             // 再删除所有失效玩家
             playerInfoList.Remove(inactivePlayers[i]);
+
+        UpdateTeamWeight();
     }
 
     /// <summary>
@@ -97,16 +108,37 @@ public class ChargeArea : MonoBehaviour
     /// </summary>
     private void UpdateCurrentValue()
     {
-
+        if (!OnlyOneTeamHere())                                 // 不止一支队伍，保持僵持状态
+        {
+            KeepStalemate();
+            return;
+        }
+        // 只剩一支队伍，修改占有率
+        if (!occupied)                                          // 没有完成占有，增加占有率
+            UpdateOccupation(1);
+        else if (!OccupiedByPlayer(playerInfoList[0]))            
+            UpdateOccupation(-1);                               // 被占有，但不是自己队伍的，减小占有率
     }
 
     /// <summary>
-    /// 更新占有权值，通过rank来控制更新倍数
+    /// 更新圈内所有团队的权重
     /// </summary>
-    /// <param name="rank">更新倍数</param>
-    private void UpdateOccupation(float rank)
+    private void UpdateTeamWeight()
     {
-
+        occupyTeamDic.Clear();
+        occupyIndependentPlayer.Clear();
+        for (int i = 0; i < playerInfoList.Count; ++i)
+        {
+            if (playerInfoList[i].playerTeamID == -1)                           // 独立玩家（没有队伍），直接加到独立队列
+                occupyIndependentPlayer.Add(playerInfoList[i]);
+            else
+            {
+                if (!occupyTeamDic.ContainsKey(playerInfoList[i].playerTeam))   // 团队，重复就加1权重
+                    occupyTeamDic.Add(playerInfoList[i].playerTeam, 1);
+                else
+                    ++occupyTeamDic[playerInfoList[i].playerTeam];
+            }
+        }
     }
 
     /// <summary>
@@ -115,7 +147,16 @@ public class ChargeArea : MonoBehaviour
     /// <returns>是否只有一个队伍（或个人）在区域内</returns>
     private bool OnlyOneTeamHere()
     {
-
+        if (playerInfoList.Count == 0)                              
+            return false;                                           // 一般不走这步，走了这步算BUG
+        int teamID = playerInfoList[0].playerTeamID;                // 先获取第一个玩家团队ID
+        for (int i = 1; i < playerInfoList.Count; i++)
+        {
+            // 1.只要其他玩家存在没有队的，就不止一支队伍
+            // 2.只要和第一个玩家团队id不同就不止一支队伍。
+            if (playerInfoList[i].playerTeamID == -1 || teamID != playerInfoList[i].playerTeamID)               
+                return false;
+        }
         return true;
     }
 
@@ -123,6 +164,23 @@ public class ChargeArea : MonoBehaviour
     /// 保持僵局，按人数分配扇区颜色
     /// </summary>
     private void KeepStalemate()
+    {
+        //Debug.Log(" --- KeepStalemate --- ");
+        StringBuilder debugStr = new StringBuilder();
+        debugStr.Append("Independent Player : ");
+        for (int i = 0; i < occupyIndependentPlayer.Count; i++)
+            debugStr.AppendFormat("{0}  w:{1} , ", occupyIndependentPlayer[i].playerName, 1f / TotalWeight);
+        debugStr.Append("  Team : ");
+        foreach (var item in occupyTeamDic)
+            debugStr.AppendFormat("{0}  w:{1} , ", item.Key.TeamName, item.Value / TotalWeight);
+        Debug.Log(debugStr);
+    }
+
+    /// <summary>
+    /// 更新占有权值，通过rank来控制更新倍数
+    /// </summary>
+    /// <param name="rank">更新倍数</param>
+    private void UpdateOccupation(float rank)
     {
 
     }
