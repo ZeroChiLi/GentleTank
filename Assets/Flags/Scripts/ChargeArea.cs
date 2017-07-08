@@ -15,6 +15,8 @@ public class ChargeArea : MonoBehaviour
     public Canvas areaCanvas;               // 区域画布
     public Slider slider;                   // 滑动条
     public Image fillImage;                 // 滑动条填充图片
+    [Range(0f,1f)]
+    public float fillAlpha = 0.5f;          // 填充透明度
     public float radius = 5f;               // 区域半径
     public float maxValue = 100f;           // 滑动条最大值
     public float chargeValue = 5f;          // 每秒变化量
@@ -25,14 +27,16 @@ public class ChargeArea : MonoBehaviour
     private List<TankInformation> inactivePlayers;          // 失活的坦克
     private float updateTime = 0.5f;                        // 更新时间
     private float elapsedTime = 0f;                         // 计时器
-    private TankInformation occupyPlayer;                   // 范围内占有玩家代表
+    private TankInformation occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
     private Dictionary<TeamManager, int> occupyTeamDic;     // 旗帜范围内所有团队，及其对应团队权重
     private List<TankInformation> occupyIndependentPlayer;  // 旗帜范围内所有个人，权重为1
     private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
     private Color occupyColor = Color.white;                // 占有颜色
     private bool updateOccupyColor = false;                 // 是否已经更新占有颜色
+    private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
 
-    private float TotalWeight { get { return playerInfoList.Count; } }     // 总权重
+    private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
+    private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
 
     /// <summary>
     /// 设置滑动条大小、碰撞体大小
@@ -100,6 +104,7 @@ public class ChargeArea : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        ChargeAreaEffect();                 //旋转特效
         if (elapsedTime > 0)
         {
             elapsedTime -= Time.deltaTime;
@@ -140,59 +145,6 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新占领区域
-    /// </summary>
-    private void UpdateChargeArea()
-    {
-        if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
-        {
-            FillTrigger(false);
-            UpdateOccupy();
-        }
-        else                                        // 不止一支队伍，保持僵持状态
-        {
-            FillTrigger(true);
-            KeepStalemate();
-        }
-    }
-
-    /// <summary>
-    /// 扇区填充选择（是僵持状态的填充，还是变化状态的填充）
-    /// </summary>
-    /// <param name="isStalemate">是否是僵持状态</param>
-    private void FillTrigger(bool isStalemate)
-    {
-        flagFillPool.poolParent.SetActive(isStalemate);
-        fillImage.gameObject.SetActive(!isStalemate);
-    }
-
-    /// <summary>
-    /// 更新占领区
-    /// </summary>
-    private void UpdateOccupy()
-    {
-        UpdateOccupiedColor();                              // 更新占有颜色
-        switch (occupyState)
-        {
-            case OccupyState.Empty:                         // 占有区完全空白时
-                occupyPlayer = playerInfoList[0];           // 设置占有玩家代表为第一个
-                fillImage.color = occupyColor;              // 没被占有，进行占有并修改为自己团队的颜色
-                UpdateOccupationValue(true);
-                break;
-            case OccupyState.Partly:                        // 占有区部分被占有时
-                if (OccupiedByPlayer(playerInfoList[0]))    // 占有玩家是否是本队的，增长
-                    UpdateOccupationValue(true);
-                else
-                    UpdateOccupationValue(false);           // 非本队的，减小
-                break;
-            case OccupyState.Full:                          // 占有区完全占被有时
-                if (!OccupiedByPlayer(playerInfoList[0]))   // 是本队就保持，非本队就减小
-                    UpdateOccupationValue(false);
-                break;
-        }
-    }
-
-    /// <summary>
     /// 更新圈内所有团队的权重
     /// </summary>
     private void UpdateAreaWeight()
@@ -216,14 +168,79 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
+    /// 更新占领区域
+    /// </summary>
+    private void UpdateChargeArea()
+    {
+        if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
+        {
+            effectRotateDiection = 1;
+            FillTrigger(false);
+            UpdateOccupy();
+        }
+        else                                        // 不止一支队伍，保持僵持状态
+        {
+            effectRotateDiection = -1;
+            FillTrigger(true);
+            KeepStalemate();
+        }
+    }
+
+    /// <summary>
+    /// 扇区填充选择（是僵持状态的填充，还是变化状态的填充）
+    /// </summary>
+    /// <param name="isStalemate">是否是僵持状态</param>
+    private void FillTrigger(bool isStalemate)
+    {
+        flagFillPool.poolParent.SetActive(isStalemate);
+        fillImage.gameObject.SetActive(!isStalemate);
+    }
+
+    /// <summary>
+    /// 区域旋转的特效
+    /// </summary>
+    private void ChargeAreaEffect()
+    {
+        slider.transform.Rotate(0, 0, effectRotateDiection * 90f * Time.deltaTime);
+    }
+
+    #region 只有一支队伍，更新占领区域面积
+
+    /// <summary>
+    /// 更新占领区
+    /// </summary>
+    private void UpdateOccupy()
+    {
+        UpdateOccupiedColor();                              // 更新占有颜色
+        switch (occupyState)
+        {
+            case OccupyState.Empty:                         // 占有区完全空白时
+                occupyPlayer = RepresentativePlayer;
+                fillImage.color = occupyColor;              // 没被占有，进行占有并修改为自己团队的颜色
+                UpdateOccupationValue(true);
+                break;
+            case OccupyState.Partly:                        // 占有区部分被占有时
+                if (OccupiedByPlayer(RepresentativePlayer))    // 占有玩家是否是本队的，增长
+                    UpdateOccupationValue(true);
+                else
+                    UpdateOccupationValue(false);           // 非本队的，减小
+                break;
+            case OccupyState.Full:                          // 占有区完全占被有时
+                if (!OccupiedByPlayer(RepresentativePlayer))   // 是本队就保持，非本队就减小
+                    UpdateOccupationValue(false);
+                break;
+        }
+    }
+
+    /// <summary>
     /// 是否只有一个队伍（或个人）在区域内
     /// </summary>
     /// <returns>是否只有一个队伍（或个人）在区域内</returns>
     private bool OnlyOneTeamHere()
     {
-        if (playerInfoList.Count==0)
+        if (playerInfoList.Count == 0)
             return true;
-        int teamID = playerInfoList[0].playerTeamID;                // 先获取第一个玩家团队ID
+        int teamID = RepresentativePlayer.playerTeamID;                // 先获取第一个玩家团队ID
         for (int i = 1; i < playerInfoList.Count; i++)
         {
             // 1.只要其他玩家存在没有队的，就不止一支队伍
@@ -276,13 +293,17 @@ public class ChargeArea : MonoBehaviour
         if (!updateOccupyColor)                                 // 需要更新才更新
             return;
         if (playerInfoList.Count == 0)
-            occupyColor = Color.white;                          
-        if (playerInfoList[0].playerTeamID == -1)               // 没有队伍的颜色设置为个人颜色
-            occupyColor = playerInfoList[0].playerColor;
+            occupyColor = new Color(1,1,1, fillAlpha);
+        if (RepresentativePlayer.playerTeamID == -1)               // 没有队伍的颜色设置为个人颜色
+            occupyColor = new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
         else                                                    // 有队伍的设置为队伍颜色
-            occupyColor = playerInfoList[0].playerTeam.TeamColor;
+            occupyColor = new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
         updateOccupyColor = false;
     }
+
+    #endregion
+
+    #region 多于一支队伍，保持僵局
 
     /// <summary>
     /// 保持僵局，按人数分配扇区颜色
@@ -312,11 +333,12 @@ public class ChargeArea : MonoBehaviour
     private void FillWithWeight(ref float fillAmountAngle, Color fillColor, float weight)
     {
         Image fillImage = flagFillPool.GetNextObjectActive().GetComponent<Image>();
-        fillImage.color = fillColor;
+        fillImage.color = new Color(fillColor.r, fillColor.g, fillColor.b, fillAlpha);
         fillImage.fillAmount = weight / TotalWeight;
         fillImage.rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, fillAmountAngle));
         fillAmountAngle += fillImage.fillAmount * 360;
     }
+    #endregion
 }
 
 
