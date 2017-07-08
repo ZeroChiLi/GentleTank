@@ -15,7 +15,7 @@ public class ChargeArea : MonoBehaviour
     public Canvas areaCanvas;               // 区域画布
     public Slider slider;                   // 滑动条
     public Image fillImage;                 // 滑动条填充图片
-    [Range(0f,1f)]
+    [Range(0f, 1f)]
     public float fillAlpha = 0.5f;          // 填充透明度
     public float radius = 5f;               // 区域半径
     public float maxValue = 100f;           // 滑动条最大值
@@ -31,8 +31,8 @@ public class ChargeArea : MonoBehaviour
     private Dictionary<TeamManager, int> occupyTeamDic;     // 旗帜范围内所有团队，及其对应团队权重
     private List<TankInformation> occupyIndependentPlayer;  // 旗帜范围内所有个人，权重为1
     private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
-    private Color occupyColor = Color.white;                // 占有颜色
     private bool updateOccupyColor = false;                 // 是否已经更新占有颜色
+    private Color occupyColor = Color.white;                // 占有颜色
     private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
@@ -66,11 +66,12 @@ public class ChargeArea : MonoBehaviour
     private void ResetFillTransform()
     {
         flagFillPool.poolParent.transform.parent = slider.gameObject.transform;
-        RectTransform rectTransform = flagFillPool.poolParent.AddComponent<RectTransform>();
+        RectTransform rectTransform = flagFillPool.poolParent.GetComponent<RectTransform>();
+        if (rectTransform == null)
+            rectTransform = flagFillPool.poolParent.AddComponent<RectTransform>();
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.one;
         rectTransform.sizeDelta = Vector2.zero;
-        //rectTransform.Rotate(new Vector3(90, 0, 0));
         rectTransform.localRotation = Quaternion.identity;
         rectTransform.localPosition = Vector3.zero;
     }
@@ -293,7 +294,7 @@ public class ChargeArea : MonoBehaviour
         if (!updateOccupyColor)                                 // 需要更新才更新
             return;
         if (playerInfoList.Count == 0)
-            occupyColor = new Color(1,1,1, fillAlpha);
+            occupyColor = new Color(1, 1, 1, fillAlpha);
         if (RepresentativePlayer.playerTeamID == -1)               // 没有队伍的颜色设置为个人颜色
             occupyColor = new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
         else                                                    // 有队伍的设置为队伍颜色
@@ -339,6 +340,21 @@ public class ChargeArea : MonoBehaviour
         fillAmountAngle += fillImage.fillAmount * 360;
     }
     #endregion
+
+    /// <summary>
+    /// 重置充电区域
+    /// </summary>
+    public void ResetChargeArea()
+    {
+        slider.value = 0;
+        occupyState = OccupyState.Empty;
+        playerInfoList.Clear();
+        occupyIndependentPlayer.Clear();
+        occupyTeamDic.Clear();
+        occupyPlayer = null;
+        updateOccupyRate = false;
+        updateOccupyColor = false;
+    }
 }
 
 
