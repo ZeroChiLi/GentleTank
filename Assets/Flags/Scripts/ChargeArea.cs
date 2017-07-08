@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 public enum OccupyState
 {
-    Empty, Partly, Full
+    Empty,              // 完全没被占有
+    Partly,             // 部分被占用
+    Full                // 完全被占有
 }
 
 public class ChargeArea : MonoBehaviour
@@ -21,10 +22,8 @@ public class ChargeArea : MonoBehaviour
     private OccupyState occupyState = OccupyState.Empty;    // 占有状态
     private List<TankInformation> playerInfoList;           // 在区域内的所有玩家及其对应信息
     private List<TankInformation> inactivePlayers;          // 失活的坦克
-    private float currentValue = 0f;                        // 当前值
     private float updateTime = 0.5f;                        // 更新时间
     private float elapsedTime = 0f;                         // 计时器
-    private bool stalemate = false;                         // 是否保持僵局（区域内不止一个队伍）
     private TankInformation occupyPlayer;                   // 范围内占有玩家代表
     private Dictionary<TeamManager, int> occupyTeamDic;     // 旗帜范围内所有团队，及其对应团队权重
     private List<TankInformation> occupyIndependentPlayer;  // 旗帜范围内所有个人，权重为1
@@ -72,6 +71,9 @@ public class ChargeArea : MonoBehaviour
         UpdateAreaWeight();
     }
 
+    /// <summary>
+    /// 根据updateTime时间进行更新
+    /// </summary>
     private void Update()
     {
         if (elapsedTime > 0)
@@ -80,10 +82,10 @@ public class ChargeArea : MonoBehaviour
             return;
         }
         elapsedTime = updateTime;
-        if (!ContainAnyPlayer())
+        if (!ContainAnyPlayer())            //不包含任何玩家，直接返回
             return;
-        CleanInactivePlayer();
-        UpdateCurrentValue();
+        CleanInactivePlayer();              //清除所有失效玩家
+        UpdateChargeArea();                 //更新占领区
     }
 
     /// <summary>
@@ -114,44 +116,40 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新当前数值
+    /// 更新占领区域
     /// </summary>
-    private void UpdateCurrentValue()
+    private void UpdateChargeArea()
     {
-        if (!OnlyOneTeamHere())                                 // 不止一支队伍，保持僵持状态
-        {
-            //occupyState = OccupyState.Empty;
+        if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
+            UpdateOccupy();
+        else                                        // 不止一支队伍，保持僵持状态
             KeepStalemate();
-            return;
-        }
+    }
 
-        UpdateOccupiedColor();                                  // 更新占有颜色
-
+    /// <summary>
+    /// 更新占领区
+    /// </summary>
+    private void UpdateOccupy()
+    {
+        UpdateOccupiedColor();                              // 更新占有颜色
         switch (occupyState)
         {
-            case OccupyState.Empty:
-                {
-                    occupyPlayer = playerInfoList[0];
-                    fillImage.color = occupyColor;                      // 没被占有，进行占有并修改为自己团队的颜色
-                    UpdateOccupation(true);
-                    break;
-                }
-            case OccupyState.Partly:
-                {
-                    if (OccupiedByPlayer(playerInfoList[0]))
-                        UpdateOccupation(true);
-                    else
-                        UpdateOccupation(false);
-                    break;
-                }
-            case OccupyState.Full:
-                {
-                    if (!OccupiedByPlayer(playerInfoList[0]))
-                        UpdateOccupation(false);
-                    break;
-                }
+            case OccupyState.Empty:                         // 占有区完全空白时
+                occupyPlayer = playerInfoList[0];           // 设置占有玩家代表为第一个
+                fillImage.color = occupyColor;              // 没被占有，进行占有并修改为自己团队的颜色
+                UpdateOccupationValue(true);
+                break;
+            case OccupyState.Partly:                        // 占有区部分被占有时
+                if (OccupiedByPlayer(playerInfoList[0]))    // 占有玩家是否是本队的，增长
+                    UpdateOccupationValue(true);
+                else
+                    UpdateOccupationValue(false);           // 非本队的，减小
+                break;
+            case OccupyState.Full:                          // 占有区完全占被有时
+                if (!OccupiedByPlayer(playerInfoList[0]))   // 是本队就保持，非本队就减小
+                    UpdateOccupationValue(false);
+                break;
         }
-
     }
 
     /// <summary>
@@ -183,6 +181,8 @@ public class ChargeArea : MonoBehaviour
     /// <returns>是否只有一个队伍（或个人）在区域内</returns>
     private bool OnlyOneTeamHere()
     {
+        if (playerInfoList.Count==0)
+            return true;
         int teamID = playerInfoList[0].playerTeamID;                // 先获取第一个玩家团队ID
         for (int i = 1; i < playerInfoList.Count; i++)
         {
@@ -192,6 +192,56 @@ public class ChargeArea : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    /// <summary>
+    /// 更新占有权值，通过isAdd来控制增加还是减小
+    /// </summary>
+    /// <param name="isAdd">是否增加</param>
+    private void UpdateOccupationValue(bool isAdd)
+    {
+        if (isAdd && slider.value >= slider.maxValue)           // 增长时到爆表
+            occupyState = OccupyState.Full;
+        else if (!isAdd && slider.value <= slider.minValue)     // 减小时到最低点
+            occupyState = OccupyState.Empty;
+        else
+        {
+            occupyState = OccupyState.Partly;                   // 修改当前扇区值
+            slider.value += (isAdd ? 1 : -1) * TotalWeight * chargeValue * updateTime;
+        }
+    }
+
+    /// <summary>
+    /// 判断占有是否与玩家同队
+    /// </summary>
+    /// <param name="player">玩家信息</param>
+    /// <returns>是否被该玩家占有</returns>
+    private bool OccupiedByPlayer(TankInformation player)
+    {
+        if (occupyPlayer == null || occupyPlayer == player)     // 不存在上一次最后离开玩家或者上一次玩家等于传入玩家
+            return true;
+        if (occupyPlayer.playerTeamID == -1)                    // 上一次玩家没有队，那肯定不是传入占有的
+            return false;
+        if (occupyPlayer.playerTeam == player.playerTeam)       // 上一次玩家团队等于这次传入团队
+            return true;
+        return false;
+    }
+
+    /// <summary>
+    /// 获取占有颜色
+    /// </summary>
+    /// <returns>返回占有颜色</returns>
+    private void UpdateOccupiedColor()
+    {
+        if (!updateOccupyColor)                                 // 需要更新才更新
+            return;
+        if (playerInfoList.Count == 0)
+            occupyColor = Color.white;                          
+        if (playerInfoList[0].playerTeamID == -1)               // 没有队伍的颜色设置为个人颜色
+            occupyColor = playerInfoList[0].playerColor;
+        else                                                    // 有队伍的设置为队伍颜色
+            occupyColor = playerInfoList[0].playerTeam.TeamColor;
+        updateOccupyColor = false;
     }
 
     /// <summary>
@@ -210,56 +260,6 @@ public class ChargeArea : MonoBehaviour
             debugStr.AppendFormat("{0}  w:{1} , ", item.Key.TeamName, item.Value / TotalWeight);
         Debug.Log(debugStr);
         updateOccupyRate = false;
-    }
-
-    /// <summary>
-    /// 更新占有权值，通过isAdd来控制增加还是减小
-    /// </summary>
-    /// <param name="isAdd">是否增加</param>
-    private void UpdateOccupation(bool isAdd)
-    {
-        if (isAdd && slider.value >= slider.maxValue)
-            occupyState = OccupyState.Full;
-        else if (!isAdd && slider.value <= slider.minValue)
-            occupyState = OccupyState.Empty;
-        else
-        {
-            occupyState = OccupyState.Partly;
-            slider.value += (isAdd ? 1 : -1) * TotalWeight * chargeValue * updateTime;
-        }
-    }
-
-    /// <summary>
-    /// 占有属于玩家
-    /// </summary>
-    /// <param name="player">玩家信息</param>
-    /// <returns>是否被该玩家占有</returns>
-    private bool OccupiedByPlayer(TankInformation player)
-    {
-        if (occupyPlayer == null || occupyPlayer == player)     // 不存在上一次最后离开玩家或者上一次玩家等于传入玩家
-            return true;
-        if (occupyPlayer.playerTeamID == -1)                  // 上一次玩家没有队，那肯定不是传入占有的
-            return false;
-        if (occupyPlayer.playerTeam == player.playerTeam)     // 上一次玩家团队等于这次传入团队
-            return true;
-        return false;
-    }
-
-    /// <summary>
-    /// 获取占有颜色
-    /// </summary>
-    /// <returns>返回占有颜色</returns>
-    private void UpdateOccupiedColor()
-    {
-        if (!updateOccupyColor)
-            return;
-        if (playerInfoList.Count == 0)
-            occupyColor = Color.white;
-        if (playerInfoList[0].playerTeamID == -1)
-            occupyColor = playerInfoList[0].playerColor;
-        else
-            occupyColor = playerInfoList[0].playerTeam.TeamColor;
-        updateOccupyColor = false;
     }
 
 }
