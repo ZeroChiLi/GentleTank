@@ -18,6 +18,7 @@ public class ChargeArea : MonoBehaviour
     public float radius = 5f;               // 区域半径
     public float maxValue = 100f;           // 滑动条最大值
     public float chargeValue = 5f;          // 每秒变化量
+    public ObjectPool flagFillPool;         // 填充扇区池（用于僵持状态显示）
 
     private OccupyState occupyState = OccupyState.Empty;    // 占有状态
     private List<TankInformation> playerInfoList;           // 在区域内的所有玩家及其对应信息
@@ -45,6 +46,29 @@ public class ChargeArea : MonoBehaviour
         occupyTeamDic = new Dictionary<TeamManager, int>();
         occupyIndependentPlayer = new List<TankInformation>();
         slider.maxValue = maxValue;
+    }
+
+    /// <summary>
+    /// 初始化所有僵持扇区池
+    /// </summary>
+    private void Start()
+    {
+        ResetFillTransform();
+    }
+
+    /// <summary>
+    /// 将对象池的层级拖到自己的层级，并且缩放到指定大小
+    /// </summary>
+    private void ResetFillTransform()
+    {
+        flagFillPool.poolParent.transform.parent = slider.gameObject.transform;
+        RectTransform rectTransform = flagFillPool.poolParent.AddComponent<RectTransform>();
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.sizeDelta = Vector2.zero;
+        //rectTransform.Rotate(new Vector3(90, 0, 0));
+        rectTransform.localRotation = Quaternion.identity;
+        rectTransform.localPosition = Vector3.zero;
     }
 
     /// <summary>
@@ -121,9 +145,25 @@ public class ChargeArea : MonoBehaviour
     private void UpdateChargeArea()
     {
         if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
+        {
+            FillTrigger(false);
             UpdateOccupy();
+        }
         else                                        // 不止一支队伍，保持僵持状态
+        {
+            FillTrigger(true);
             KeepStalemate();
+        }
+    }
+
+    /// <summary>
+    /// 扇区填充选择（是僵持状态的填充，还是变化状态的填充）
+    /// </summary>
+    /// <param name="isStalemate">是否是僵持状态</param>
+    private void FillTrigger(bool isStalemate)
+    {
+        flagFillPool.poolParent.SetActive(isStalemate);
+        fillImage.gameObject.SetActive(!isStalemate);
     }
 
     /// <summary>
@@ -249,19 +289,34 @@ public class ChargeArea : MonoBehaviour
     /// </summary>
     private void KeepStalemate()
     {
-        if (!updateOccupyRate)
+        if (!updateOccupyRate)                  // 改变权值的时候才计算
             return;
-        StringBuilder debugStr = new StringBuilder();
-        debugStr.Append("Independent Player : ");
-        for (int i = 0; i < occupyIndependentPlayer.Count; i++)
-            debugStr.AppendFormat("{0}  w:{1} , ", occupyIndependentPlayer[i].playerName, 1f / TotalWeight);
-        debugStr.Append("  Team : ");
-        foreach (var item in occupyTeamDic)
-            debugStr.AppendFormat("{0}  w:{1} , ", item.Key.TeamName, item.Value / TotalWeight);
-        Debug.Log(debugStr);
+        float lastFillAmountAngle = 0f;         // 上一次填充后的的旋转角
+
+        flagFillPool.SetAllActive(false);       // 清除所有扇区先
+
+        for (int i = 0; i < occupyIndependentPlayer.Count; i++)         // 填充个人
+            FillWithWeight(ref lastFillAmountAngle, occupyIndependentPlayer[i].playerColor, 1.0f);
+        foreach (var item in occupyTeamDic)                             // 填充团队
+            FillWithWeight(ref lastFillAmountAngle, item.Key.TeamColor, item.Value);
+
         updateOccupyRate = false;
     }
 
+    /// <summary>
+    /// 通过权重填充扇区，填充完角度会变成填充后的下一个开始角度
+    /// </summary>
+    /// <param name="fillAmountAngle">填充开始的角度</param>
+    /// <param name="fillColor">填充颜色</param>
+    /// <param name="weight">填充权重</param>
+    private void FillWithWeight(ref float fillAmountAngle, Color fillColor, float weight)
+    {
+        Image fillImage = flagFillPool.GetNextObjectActive().GetComponent<Image>();
+        fillImage.color = fillColor;
+        fillImage.fillAmount = weight / TotalWeight;
+        fillImage.rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, fillAmountAngle));
+        fillAmountAngle += fillImage.fillAmount * 360;
+    }
 }
 
 

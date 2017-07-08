@@ -12,9 +12,10 @@ public class ObjectPool : ScriptableObject
     public int objectCount = 10;                //数量
     public bool autoIncrease = true;            //如果需要自动增加
 
+    [HideInInspector]
+    public GameObject poolParent;               //创建一个空GameObject来存这些子对象
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
-    private GameObject poolParent;              //创建一个空GameObject来存这些子对象
 
     public GameObject this[int index]
     {
@@ -97,13 +98,5 @@ public class ObjectPool : ScriptableObject
         return obj;
     }
 
-    /// <summary>
-    /// 获取存放所有对象的父对象
-    /// </summary>
-    /// <returns>返回存放所有对象的父对象</returns>
-    public GameObject GetPoolParent()
-    {
-        return poolParent;
-    }
 
 }

@@ -22,7 +22,7 @@ public class ShellRainSkill : Skill
     /// </summary>
     private void Start()
     {
-        warnningPool.GetPoolParent().transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
+        warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
     }
 
     /// <summary>

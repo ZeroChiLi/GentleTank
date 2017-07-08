@@ -9,7 +9,7 @@ public class SpawnAllPopUpArrow : MonoBehaviour
     public void Spawn(AllTanksManager allTanksManager)
     {
         //将对象池的层级拖到自己的层级
-        popUpArrowPool.GetPoolParent().transform.parent = gameObject.transform;
+        popUpArrowPool.poolParent.transform.parent = gameObject.transform;
         for (int i = 0; i < allTanksManager.Count; i++)
         {
             if (allTanksManager[i].isAI)        //是AI就不显示
