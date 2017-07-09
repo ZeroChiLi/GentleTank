@@ -42,13 +42,11 @@ public class FlagManager : MonoBehaviour
     {
         if (lastGameState != GameState.Playing && GameRecord.Instance.CurrentGameState == GameState.Playing)
         {
-            Debug.Log("Open Flags");
             lastGameState = GameState.Playing;
             OpenFlags();
         }
         else if (lastGameState == GameState.Playing && GameRecord.Instance.CurrentGameState != GameState.Playing)
         {
-            Debug.Log("Close Flags");
             lastGameState = GameState.None;
             ShutDownFlags();
         }

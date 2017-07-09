@@ -34,6 +34,7 @@ public class ChargeArea : MonoBehaviour
     private bool updateOccupyColor = false;                 // 是否已经更新占有颜色
     private Color occupyColor = Color.white;                // 占有颜色
     private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
+    private List<Image> flagFillList;                       // 填充扇区列表
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
     private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
@@ -50,30 +51,7 @@ public class ChargeArea : MonoBehaviour
         occupyTeamDic = new Dictionary<TeamManager, int>();
         occupyIndependentPlayer = new List<TankInformation>();
         slider.maxValue = maxValue;
-    }
-
-    /// <summary>
-    /// 初始化所有僵持扇区池
-    /// </summary>
-    private void Start()
-    {
-        ResetFillTransform();
-    }
-
-    /// <summary>
-    /// 将对象池的层级拖到自己的层级，并且缩放到指定大小
-    /// </summary>
-    private void ResetFillTransform()
-    {
-        flagFillPool.poolParent.transform.parent = slider.gameObject.transform;
-        RectTransform rectTransform = flagFillPool.poolParent.GetComponent<RectTransform>();
-        if (rectTransform == null)
-            rectTransform = flagFillPool.poolParent.AddComponent<RectTransform>();
-        rectTransform.anchorMin = Vector2.zero;
-        rectTransform.anchorMax = Vector2.one;
-        rectTransform.sizeDelta = Vector2.zero;
-        rectTransform.localRotation = Quaternion.identity;
-        rectTransform.localPosition = Vector3.zero;
+        flagFillList = new List<Image>();
     }
 
     /// <summary>
@@ -193,7 +171,8 @@ public class ChargeArea : MonoBehaviour
     /// <param name="isStalemate">是否是僵持状态</param>
     private void FillTrigger(bool isStalemate)
     {
-        flagFillPool.poolParent.SetActive(isStalemate);
+        for (int i = 0; i < flagFillList.Count; i++)
+            flagFillList[i].gameObject.SetActive(isStalemate);
         fillImage.gameObject.SetActive(!isStalemate);
     }
 
@@ -316,6 +295,7 @@ public class ChargeArea : MonoBehaviour
         float lastFillAmountAngle = 0f;         // 上一次填充后的的旋转角
 
         flagFillPool.SetAllActive(false);       // 清除所有扇区先
+        flagFillList.Clear();                   // 清除列表
 
         for (int i = 0; i < occupyIndependentPlayer.Count; i++)         // 填充个人
             FillWithWeight(ref lastFillAmountAngle, occupyIndependentPlayer[i].playerColor, 1.0f);
@@ -334,11 +314,16 @@ public class ChargeArea : MonoBehaviour
     private void FillWithWeight(ref float fillAmountAngle, Color fillColor, float weight)
     {
         Image fillImage = flagFillPool.GetNextObjectActive().GetComponent<Image>();
+        flagFillList.Add(fillImage);
+        fillImage.transform.SetParent(slider.transform);
+        fillImage.rectTransform.localPosition = Vector3.zero;
+        fillImage.rectTransform.sizeDelta = Vector2.zero;
         fillImage.color = new Color(fillColor.r, fillColor.g, fillColor.b, fillAlpha);
         fillImage.fillAmount = weight / TotalWeight;
         fillImage.rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, fillAmountAngle));
         fillAmountAngle += fillImage.fillAmount * 360;
     }
+
     #endregion
 
     /// <summary>
