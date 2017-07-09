@@ -15,12 +15,13 @@ public class ChargeArea : MonoBehaviour
     public Canvas areaCanvas;               // 区域画布
     public Slider slider;                   // 滑动条
     public Image fillImage;                 // 滑动条填充图片
+    public FlagManager flagManager;         // 旗帜管理
     [Range(0f, 1f)]
     public float fillAlpha = 0.5f;          // 填充透明度
     public float radius = 5f;               // 区域半径
     public float maxValue = 100f;           // 滑动条最大值
     public float chargeValue = 5f;          // 每秒变化量
-    public ObjectPool flagFillPool;         // 填充扇区池（用于僵持状态显示）
+    public ObjectPool fillPool;             // 填充扇区池（用于僵持状态显示）
 
     private OccupyState occupyState = OccupyState.Empty;    // 占有状态
     private List<TankInformation> playerInfoList;           // 在区域内的所有玩家及其对应信息
@@ -31,10 +32,8 @@ public class ChargeArea : MonoBehaviour
     private Dictionary<TeamManager, int> occupyTeamDic;     // 旗帜范围内所有团队，及其对应团队权重
     private List<TankInformation> occupyIndependentPlayer;  // 旗帜范围内所有个人，权重为1
     private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
-    private bool updateOccupyColor = false;                 // 是否已经更新占有颜色
-    private Color occupyColor = Color.white;                // 占有颜色
     private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
-    private List<Image> flagFillList;                       // 填充扇区列表
+    private List<Image> fillList;                           // 填充扇区列表
     private bool triggerState;                              // 僵持和变化之间是否变化
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
@@ -52,7 +51,7 @@ public class ChargeArea : MonoBehaviour
         occupyTeamDic = new Dictionary<TeamManager, int>();
         occupyIndependentPlayer = new List<TankInformation>();
         slider.maxValue = maxValue;
-        flagFillList = new List<Image>();
+        fillList = new List<Image>();
     }
 
     /// <summary>
@@ -148,11 +147,10 @@ public class ChargeArea : MonoBehaviour
                     ++occupyTeamDic[playerInfoList[i].playerTeam];
             }
         }
-        updateOccupyRate = true;        // 顺便更新僵局颜色
-        updateOccupyColor = true;       // 更新进行占有颜色
 
+        updateOccupyRate = true;        // 顺便更新僵局颜色
         SetStalemateFillActive(false);  // 先清除所有僵持状态
-        flagFillList.Clear();
+        fillList.Clear();
     }
 
     /// <summary>
@@ -173,6 +171,7 @@ public class ChargeArea : MonoBehaviour
             if (triggerState == false)
                 triggerState = FillTrigger(true);
             KeepStalemate();
+            //flagManager.SetFlagTargetColor(Color.Lerp(Color.white, fillImage.color, slider.value / slider.maxValue));
         }
     }
 
@@ -193,8 +192,8 @@ public class ChargeArea : MonoBehaviour
     /// <param name="active"></param>
     private void SetStalemateFillActive(bool active)
     {
-        for (int i = 0; i < flagFillList.Count; i++)
-            flagFillList[i].gameObject.SetActive(active);
+        for (int i = 0; i < fillList.Count; i++)
+            fillList[i].gameObject.SetActive(active);
     }
 
     /// <summary>
@@ -212,12 +211,11 @@ public class ChargeArea : MonoBehaviour
     /// </summary>
     private void UpdateOccupy()
     {
-        UpdateOccupiedColor();                              // 更新占有颜色
         switch (occupyState)
         {
             case OccupyState.Empty:                         // 占有区完全空白时
                 occupyPlayer = RepresentativePlayer;
-                fillImage.color = occupyColor;              // 没被占有，进行占有并修改为自己团队的颜色
+                fillImage.color = GetOccupyColor();              // 没被占有，进行占有并修改为自己团队的颜色
                 UpdateOccupationValue(true);
                 break;
             case OccupyState.Partly:                        // 占有区部分被占有时
@@ -266,6 +264,7 @@ public class ChargeArea : MonoBehaviour
         {
             occupyState = OccupyState.Partly;                   // 修改当前扇区值
             slider.value += (isAdd ? 1 : -1) * TotalWeight * chargeValue * updateTime;
+            flagManager.SetFlagTargetColor(Color.Lerp(Color.white, fillImage.color, slider.value / slider.maxValue));
         }
     }
 
@@ -289,20 +288,17 @@ public class ChargeArea : MonoBehaviour
     /// 获取占有颜色
     /// </summary>
     /// <returns>返回占有颜色</returns>
-    private void UpdateOccupiedColor()
+    private Color GetOccupyColor()
     {
-        if (!updateOccupyColor)                                 // 需要更新才更新
-            return;
         if (playerInfoList.Count == 0)
-            occupyColor = new Color(1, 1, 1, fillAlpha);
-        else
-        {
-            if (RepresentativePlayer.playerTeamID == -1)            // 没有队伍的颜色设置为个人颜色
-                occupyColor = new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
-            else                                                    // 有队伍的设置为队伍颜色
-                occupyColor = new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
-        }
-        updateOccupyColor = false;
+            return new Color(1, 1, 1, fillAlpha);
+
+        // 没有队伍的颜色设置为个人颜色
+        if (occupyPlayer.playerTeamID == -1)
+            return new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
+        
+        // 有队伍的设置为队伍颜色
+        return new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
     }
 
     #endregion
@@ -334,8 +330,8 @@ public class ChargeArea : MonoBehaviour
     /// <param name="weight">填充权重</param>
     private void FillWithWeight(ref float fillAmountAngle, Color fillColor, float weight)
     {
-        Image fillImage = flagFillPool.GetNextObjectActive().GetComponent<Image>();
-        flagFillList.Add(fillImage);
+        Image fillImage = fillPool.GetNextObjectActive().GetComponent<Image>();
+        fillList.Add(fillImage);
         fillImage.transform.SetParent(slider.transform);
         fillImage.rectTransform.localPosition = Vector3.zero;
         fillImage.rectTransform.sizeDelta = Vector2.zero;
@@ -360,7 +356,6 @@ public class ChargeArea : MonoBehaviour
         SetStalemateFillActive(false);
         occupyPlayer = null;
         updateOccupyRate = false;
-        updateOccupyColor = false;
     }
 }
 
