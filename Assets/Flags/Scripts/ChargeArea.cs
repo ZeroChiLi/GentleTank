@@ -35,6 +35,7 @@ public class ChargeArea : MonoBehaviour
     private Color occupyColor = Color.white;                // 占有颜色
     private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
     private List<Image> flagFillList;                       // 填充扇区列表
+    private bool triggerState;                              // 僵持和变化之间是否变化
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
     private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
@@ -92,8 +93,8 @@ public class ChargeArea : MonoBehaviour
         elapsedTime = updateTime;
         if (!ContainAnyPlayer())            //不包含任何玩家，直接返回
             return;
-        CleanInactivePlayer();              //清除所有失效玩家
-        UpdateChargeArea();                 //更新占领区
+        if (!CleanInactivePlayer())         //清除所有失效玩家,如果都清除完就不执行更新
+            UpdateChargeArea();             //更新占领区
     }
 
     /// <summary>
@@ -106,9 +107,10 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 移除所有在圈内且已经死掉的玩家
+    /// 移除所有在圈内且已经死掉的玩家,如果有清除后不存在任意玩家返回true
     /// </summary>
-    private void CleanInactivePlayer()
+    /// <returns>如果有清除后不存在任意玩家返回true</returns>
+    private bool CleanInactivePlayer()
     {
         inactivePlayers.Clear();
 
@@ -121,6 +123,10 @@ public class ChargeArea : MonoBehaviour
 
         if (inactivePlayers.Count != 0)                             // 如果修改（删除）了玩家列表，更新权重
             UpdateAreaWeight();
+
+        if (playerInfoList.Count == 0)                              // 一个都不剩返回true
+            return true;
+        return false;
     }
 
     /// <summary>
@@ -144,6 +150,9 @@ public class ChargeArea : MonoBehaviour
         }
         updateOccupyRate = true;        // 顺便更新僵局颜色
         updateOccupyColor = true;       // 更新进行占有颜色
+
+        SetStalemateFillActive(false);  // 先清除所有僵持状态
+        flagFillList.Clear();
     }
 
     /// <summary>
@@ -154,13 +163,15 @@ public class ChargeArea : MonoBehaviour
         if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
         {
             effectRotateDiection = 1;
-            FillTrigger(false);
+            if (triggerState == true)
+                triggerState = FillTrigger(false);
             UpdateOccupy();
         }
         else                                        // 不止一支队伍，保持僵持状态
         {
             effectRotateDiection = -1;
-            FillTrigger(true);
+            if (triggerState == false)
+                triggerState = FillTrigger(true);
             KeepStalemate();
         }
     }
@@ -169,11 +180,21 @@ public class ChargeArea : MonoBehaviour
     /// 扇区填充选择（是僵持状态的填充，还是变化状态的填充）
     /// </summary>
     /// <param name="isStalemate">是否是僵持状态</param>
-    private void FillTrigger(bool isStalemate)
+    private bool FillTrigger(bool isStalemate)
+    {
+        SetStalemateFillActive(isStalemate);
+        fillImage.gameObject.SetActive(!isStalemate);
+        return isStalemate;
+    }
+
+    /// <summary>
+    /// 设置僵持状态的扇区激活状态
+    /// </summary>
+    /// <param name="active"></param>
+    private void SetStalemateFillActive(bool active)
     {
         for (int i = 0; i < flagFillList.Count; i++)
-            flagFillList[i].gameObject.SetActive(isStalemate);
-        fillImage.gameObject.SetActive(!isStalemate);
+            flagFillList[i].gameObject.SetActive(active);
     }
 
     /// <summary>
@@ -274,10 +295,13 @@ public class ChargeArea : MonoBehaviour
             return;
         if (playerInfoList.Count == 0)
             occupyColor = new Color(1, 1, 1, fillAlpha);
-        if (RepresentativePlayer.playerTeamID == -1)               // 没有队伍的颜色设置为个人颜色
-            occupyColor = new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
-        else                                                    // 有队伍的设置为队伍颜色
-            occupyColor = new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
+        else
+        {
+            if (RepresentativePlayer.playerTeamID == -1)            // 没有队伍的颜色设置为个人颜色
+                occupyColor = new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
+            else                                                    // 有队伍的设置为队伍颜色
+                occupyColor = new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
+        }
         updateOccupyColor = false;
     }
 
@@ -293,9 +317,6 @@ public class ChargeArea : MonoBehaviour
         if (!updateOccupyRate)                  // 改变权值的时候才计算
             return;
         float lastFillAmountAngle = 0f;         // 上一次填充后的的旋转角
-
-        flagFillPool.SetAllActive(false);       // 清除所有扇区先
-        flagFillList.Clear();                   // 清除列表
 
         for (int i = 0; i < occupyIndependentPlayer.Count; i++)         // 填充个人
             FillWithWeight(ref lastFillAmountAngle, occupyIndependentPlayer[i].playerColor, 1.0f);
@@ -318,9 +339,9 @@ public class ChargeArea : MonoBehaviour
         fillImage.transform.SetParent(slider.transform);
         fillImage.rectTransform.localPosition = Vector3.zero;
         fillImage.rectTransform.sizeDelta = Vector2.zero;
+        fillImage.rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, fillAmountAngle));
         fillImage.color = new Color(fillColor.r, fillColor.g, fillColor.b, fillAlpha);
         fillImage.fillAmount = weight / TotalWeight;
-        fillImage.rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, fillAmountAngle));
         fillAmountAngle += fillImage.fillAmount * 360;
     }
 
@@ -336,6 +357,7 @@ public class ChargeArea : MonoBehaviour
         playerInfoList.Clear();
         occupyIndependentPlayer.Clear();
         occupyTeamDic.Clear();
+        SetStalemateFillActive(false);
         occupyPlayer = null;
         updateOccupyRate = false;
         updateOccupyColor = false;

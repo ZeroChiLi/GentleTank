@@ -94,7 +94,7 @@ public class ObjectPool : ScriptableObject
         GameObject obj = Instantiate(objectPerfab, poolParent.transform);
         objectPool.Add(obj);
         objectCount = objectPool.Count;
-        currentIndex = objectPool.Count - 1;         //用-1也行
+        currentIndex++;
         return obj;
     }
 

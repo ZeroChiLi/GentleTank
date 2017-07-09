@@ -206,16 +206,17 @@ public class GameRecord
     {
         StringBuilder message;
 
-        if (IsDraw())                                   // 平局，获取胜利者
+        if (IsDraw())                                       // 平局，获取胜利者
             message = new StringBuilder("DRAW!\n\n");
+
+        if (IsEndOfTheGame())                               // 如果是最后结束，输出最后赢最多的玩家
+            message = new StringBuilder(GetWinnerName() + " WINS THE GAME!");
         else
+        {
             message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
-
-        foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
-            message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
-
-        if (IsEndOfTheGame())                           // 如果是最后结束，输出最后赢最多的玩家
-            message = new StringBuilder("{0} WINS THE GAME!"+ GetWinnerName());
+            foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
+                message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
+        }
 
         return message.ToString();
     }
