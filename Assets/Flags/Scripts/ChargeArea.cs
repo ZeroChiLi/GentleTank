@@ -35,6 +35,8 @@ public class ChargeArea : MonoBehaviour
     private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
     private List<Image> fillList;                           // 填充扇区列表
     private bool triggerState;                              // 僵持和变化之间是否变化
+    private float nextColorTime;                            // 僵持特性：下一次变化颜色的时间
+    private int currentIndex;                               // 僵持特性：当前颜色索引
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
     private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
@@ -171,8 +173,24 @@ public class ChargeArea : MonoBehaviour
             if (triggerState == false)
                 triggerState = FillTrigger(true);
             KeepStalemate();
-            //flagManager.SetFlagTargetColor(Color.Lerp(Color.white, fillImage.color, slider.value / slider.maxValue));
+            ShowStalemateEffect(updateTime,2f);
         }
+    }
+
+    /// <summary>
+    /// 显示僵持状态下颜色变幻特效
+    /// </summary>
+    /// <param name="updateTime">每次调用时间间隔</param>
+    /// <param name="period">颜色变化周期</param>
+    private void ShowStalemateEffect(float updateTime, float period)
+    {
+        if (Time.time > nextColorTime)
+        {
+            nextColorTime = Time.time + period;
+            currentIndex = currentIndex + 1;            //循环获取玩家列表
+        }
+        currentIndex %= playerInfoList.Count;           //避免越界，每次使用前先预防一下
+        flagManager.SetFlagTargetColor(Color.Lerp(GetPlayerColor(playerInfoList[currentIndex]), GetPlayerColor(playerInfoList[(currentIndex + 1) % playerInfoList.Count]), (nextColorTime - Time.time) / period));
     }
 
     /// <summary>
@@ -213,19 +231,19 @@ public class ChargeArea : MonoBehaviour
     {
         switch (occupyState)
         {
-            case OccupyState.Empty:                         // 占有区完全空白时
+            case OccupyState.Empty:                             // 占有区完全空白时
                 occupyPlayer = RepresentativePlayer;
-                fillImage.color = GetOccupyColor();              // 没被占有，进行占有并修改为自己团队的颜色
+                fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
                 UpdateOccupationValue(true);
                 break;
-            case OccupyState.Partly:                        // 占有区部分被占有时
-                if (OccupiedByPlayer(RepresentativePlayer))    // 占有玩家是否是本队的，增长
+            case OccupyState.Partly:                            // 占有区部分被占有时
+                if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
                     UpdateOccupationValue(true);
                 else
-                    UpdateOccupationValue(false);           // 非本队的，减小
+                    UpdateOccupationValue(false);               // 非本队的，减小
                 break;
-            case OccupyState.Full:                          // 占有区完全占被有时
-                if (!OccupiedByPlayer(RepresentativePlayer))   // 是本队就保持，非本队就减小
+            case OccupyState.Full:                              // 占有区完全占被有时
+                if (!OccupiedByPlayer(RepresentativePlayer))    // 是本队就保持，非本队就减小
                     UpdateOccupationValue(false);
                 break;
         }
@@ -288,17 +306,17 @@ public class ChargeArea : MonoBehaviour
     /// 获取占有颜色
     /// </summary>
     /// <returns>返回占有颜色</returns>
-    private Color GetOccupyColor()
+    private Color GetPlayerColor(TankInformation player)
     {
         if (playerInfoList.Count == 0)
             return new Color(1, 1, 1, fillAlpha);
 
         // 没有队伍的颜色设置为个人颜色
-        if (occupyPlayer.playerTeamID == -1)
-            return new Color(RepresentativePlayer.playerColor.r, RepresentativePlayer.playerColor.g, RepresentativePlayer.playerColor.b, fillAlpha);
-        
+        if (player.playerTeamID == -1)
+            return new Color(player.playerColor.r, player.playerColor.g, player.playerColor.b, fillAlpha);
+
         // 有队伍的设置为队伍颜色
-        return new Color(RepresentativePlayer.playerTeam.TeamColor.r, RepresentativePlayer.playerTeam.TeamColor.g, RepresentativePlayer.playerTeam.TeamColor.b, fillAlpha);
+        return new Color(player.playerTeam.TeamColor.r, player.playerTeam.TeamColor.g, player.playerTeam.TeamColor.b, fillAlpha);
     }
 
     #endregion

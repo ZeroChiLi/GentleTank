@@ -6,8 +6,6 @@ public class FlagManager : MonoBehaviour
     public MeshRenderer flagMeshRender;     // 旗帜的渲染网格
 
     private Material flagMaterial;          // 旗帜的材质，拿来改颜色
-    private Color targetColor = Color.white;// 要改变到下一种颜色
-    private Color lastColor = Color.white;  // 上一次的颜色
 
     /// <summary>
     /// 旋转旗杆，使旗帜面对镜头
@@ -25,13 +23,7 @@ public class FlagManager : MonoBehaviour
     /// <param name="color">旗帜颜色</param>
     public void SetFlagTargetColor(Color color)
     {
-        //lastColor = targetColor;
-        //targetColor = color;
         flagMaterial.color = color;
     }
 
-    //private void Update()
-    //{
-    //    flagMaterial.color = Color.Lerp(flagMaterial.color, targetColor, CurrentHealth / targetColor);
-    //}
 }
