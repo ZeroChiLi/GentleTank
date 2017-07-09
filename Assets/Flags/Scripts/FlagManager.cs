@@ -14,7 +14,7 @@ public class FlagManager : MonoBehaviour
     {
         flagMaterial = flagMeshRender.material;
         flagPole.transform.rotation = Quaternion.Euler(GameObject.FindGameObjectWithTag("MainCamera").transform.rotation.eulerAngles);
-        flagPole.transform.localEulerAngles =new Vector3(-90f, flagPole.transform.localEulerAngles.y, flagPole.transform.localEulerAngles.z);
+        flagPole.transform.localEulerAngles =new Vector3(0f, flagPole.transform.localEulerAngles.y, flagPole.transform.localEulerAngles.z);
     }
 
     /// <summary>
