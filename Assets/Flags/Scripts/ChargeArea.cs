@@ -374,6 +374,7 @@ public class ChargeArea : MonoBehaviour
         SetStalemateFillActive(false);
         occupyPlayer = null;
         updateOccupyRate = false;
+        flagManager.SetFlagTargetColor(Color.white);
     }
 }
 

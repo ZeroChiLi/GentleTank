@@ -107,7 +107,7 @@ public class TankManager
     public void Reset(Point spawnPoint)
     {
         instance.transform.position = spawnPoint.position;
-        instance.transform.rotation = Quaternion.Euler(spawnPoint.rotation);
+        instance.transform.rotation = spawnPoint.Rotation;
 
         //先设置False，因为如果获胜了的玩家本身就是true，重置就会调用OnEnable函数。
         instance.SetActive(false);

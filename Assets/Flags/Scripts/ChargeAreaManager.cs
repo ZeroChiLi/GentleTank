@@ -23,7 +23,7 @@ public class ChargeAreaManager : MonoBehaviour
     private void CreateFlags()
     {
         for (int i = 0; i < flagPointList.Count; i++)
-            flagList.Add(Instantiate(flagPerfab, flagPointList[i].position, Quaternion.Euler(flagPointList[i].rotation), transform).GetComponent<ChargeArea>());
+            flagList.Add(Instantiate(flagPerfab, flagPointList[i].position, flagPointList[i].Rotation, transform).GetComponent<ChargeArea>());
     }
 
     /// <summary>
