@@ -6,10 +6,12 @@ public class PointList : ScriptableObject
 {
     [ColorUsage(false)]
     public Color sceneColor;            // 在场景中颜色
-    public bool showSceneColor;         // 是否显示到场景中
+    public bool showSceneColor = true;  // 是否显示到场景中
+    public bool showAxis = true;        // 是否显示坐标轴
     public List<Point> pointList;       // 所有点列表
 
     private int currentIndex = -1;      // 当前索引
+    private float axisLength = 2;       // 坐标长度     
 
     public Point this[int index] { get { return pointList[index]; } }
 
@@ -146,11 +148,33 @@ public class PointList : ScriptableObject
     /// </summary>
     public void DebugDrawPoint()
     {
-        if (!showSceneColor)
+        ShowSceneColor(showSceneColor);
+        ShowAxis(showAxis);
+    }
+
+    private void ShowSceneColor(bool show)
+    {
+        if (!show)
             return;
         Gizmos.color = sceneColor;
         for (int i = 0; i < pointList.Count; i++)
             Gizmos.DrawSphere(pointList[i].position, 1);
+    }
+
+    private void ShowAxis(bool show)
+    {
+        if (!show)
+            return;
+        GizomsDrawLine(Color.red, Vector3.right);
+        GizomsDrawLine(Color.green, Vector3.up);
+        GizomsDrawLine(Color.blue, Vector3.forward);
+    }
+
+    private void GizomsDrawLine(Color color, Vector3 distance)
+    {
+        Gizmos.color = color;
+        for (int i = 0; i < pointList.Count; i++)
+            Gizmos.DrawLine(pointList[i].position, Quaternion.Euler(pointList[i].rotation) * distance * axisLength + pointList[i].position);
     }
 }
 
