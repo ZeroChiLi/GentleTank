@@ -26,7 +26,7 @@ public abstract class Skill : MonoBehaviour
         coolDownSlider.maxValue = coolDownTime;
         remainReleaseTime = coolDownTime;
         buttonImage = GetComponent<Image>();
-        buttonImage.color = Color.white;
+        buttonImage.color = disableColor;
     }
 
     #region 更新冷却时间、检查是否在游戏进行回合状态，并设置技能是否可用
@@ -192,11 +192,11 @@ public abstract class Skill : MonoBehaviour
     abstract public IEnumerator SkillEffect();
 
     /// <summary>
-    /// 设置Aim的激活状态
+    /// 设置Aim图标是否有效状态
     /// </summary>
-    /// <param name="active">是否激活</param>
-    public void SetAimActive(bool active)
+    /// <param name="enable">是否有效</param>
+    public void SetAimEnable(bool enable)
     {
-        aim.SetActive(active);
+        aim.SetEnable(enable);
     }
 }

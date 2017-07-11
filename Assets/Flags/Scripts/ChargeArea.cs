@@ -190,7 +190,7 @@ public class ChargeArea : MonoBehaviour
             currentIndex = currentIndex + 1;            //循环获取玩家列表
         }
         currentIndex %= playerInfoList.Count;           //避免越界，每次使用前先预防一下
-        flagManager.SetFlagTargetColor(Color.Lerp(GetPlayerColor(playerInfoList[currentIndex]), GetPlayerColor(playerInfoList[(currentIndex + 1) % playerInfoList.Count]), (nextColorTime - Time.time) / period));
+        flagManager.SetFlagColor(Color.Lerp(GetPlayerColor(playerInfoList[currentIndex]), GetPlayerColor(playerInfoList[(currentIndex + 1) % playerInfoList.Count]), (nextColorTime - Time.time) / period));
     }
 
     /// <summary>
@@ -282,7 +282,7 @@ public class ChargeArea : MonoBehaviour
         {
             occupyState = OccupyState.Partly;                   // 修改当前扇区值
             slider.value += (isAdd ? 1 : -1) * TotalWeight * chargeValue * updateTime;
-            flagManager.SetFlagTargetColor(Color.Lerp(Color.white, fillImage.color, slider.value / slider.maxValue));
+            flagManager.SetFlagColor(Color.Lerp(Color.white, fillImage.color, slider.value / slider.maxValue));
         }
     }
 
@@ -374,7 +374,7 @@ public class ChargeArea : MonoBehaviour
         SetStalemateFillActive(false);
         occupyPlayer = null;
         updateOccupyRate = false;
-        flagManager.SetFlagTargetColor(Color.white);
+        flagManager.SetFlagColor(Color.white);
     }
 }
 

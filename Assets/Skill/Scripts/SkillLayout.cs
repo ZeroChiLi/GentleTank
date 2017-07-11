@@ -53,9 +53,9 @@ public class SkillLayout : MonoBehaviour
         if (readySkillIndex != -1)
         {
             if (OnSkillButton())
-                skillList[readySkillIndex].SetAimActive(false);
+                skillList[readySkillIndex].SetAimEnable(false);
             else
-                skillList[readySkillIndex].SetAimActive(true);
+                skillList[readySkillIndex].SetAimEnable(true);
         }
 
         if (!Input.GetMouseButtonUp(0))                 // 点击了才响应

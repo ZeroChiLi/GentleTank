@@ -21,7 +21,7 @@ public class FlagManager : MonoBehaviour
     /// 设置旗帜颜色
     /// </summary>
     /// <param name="color">旗帜颜色</param>
-    public void SetFlagTargetColor(Color color)
+    public void SetFlagColor(Color color)
     {
         flagMaterial.color = color;
     }

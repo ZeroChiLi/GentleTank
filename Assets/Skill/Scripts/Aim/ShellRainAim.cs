@@ -7,6 +7,8 @@ public class ShellRainAim : Aim
     /// <returns>转换后的状态</returns>
     protected override AimState ConvertState()
     {
+        if (!aimEnable)
+            return AimState.Disable;
         if (HitGameObject.CompareTag("Player"))
             return AimState.Warnning;
         return AimState.Normal;
