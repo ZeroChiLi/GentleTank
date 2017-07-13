@@ -95,7 +95,10 @@ public class ChargeArea : MonoBehaviour
         }
         elapsedTime = updateTime;
         if (!ContainAnyPlayer())            //不包含任何玩家，直接返回
+        {
+            effectController.CloseEffect();
             return;
+        }
         if (!CleanInactivePlayer())         //清除所有失效玩家,如果都清除完就不执行更新
             UpdateChargeArea();             //更新占领区
     }
@@ -177,6 +180,7 @@ public class ChargeArea : MonoBehaviour
             KeepStalemate();
             ShowStalemateEffect(updateTime,2f);
             effectController.SetEffect(EffectState.Chaos,transform);
+            effectController.SetColor(GetPlayerColor(playerInfoList[Random.Range(0,playerInfoList.Count)]));
         }
     }
 
@@ -230,11 +234,13 @@ public class ChargeArea : MonoBehaviour
                 {
                     UpdateOccupationValue(true);
                     effectController.SetEffect(EffectState.Absorb,transform);
+                    effectController.SetColor(fillImage.color);
                 }
                 else
                 {
                     UpdateOccupationValue(false);               // 非本队的，减小
                     effectController.SetEffect(EffectState.Release, transform);
+                    effectController.SetColor(fillImage.color);
                 }
                 break;
             case OccupyState.Full:                              // 占有区完全占被有时
@@ -244,6 +250,7 @@ public class ChargeArea : MonoBehaviour
                 {
                     UpdateOccupationValue(false);
                     effectController.SetEffect(EffectState.Release, transform);
+                    effectController.SetColor(fillImage.color);
                 }
                 break;
         }

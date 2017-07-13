@@ -18,13 +18,14 @@ public class EffectController : MonoBehaviour
 
     private EffectState currentState = EffectState.None;    // 当前特效状态
     private GameObject currentEffect;                       // 当前特性对象
+    private ParticleSystem.MainModule currentParticleMain;  // 当前特效的粒子的主模型
 
     /// <summary>
     /// 关闭特效
     /// </summary>
     public void CloseEffect()
     {
-        if (currentState == EffectState.None || currentEffect == null)
+        if (!EffectActive())
             return;
         currentEffect.SetActive(false);
         currentState = EffectState.None;
@@ -41,8 +42,9 @@ public class EffectController : MonoBehaviour
         if (effect == currentState)
             return;
         CloseEffect();
-        currentEffect = GetEffectObject(effect,transform);
         currentState = effect;
+        currentEffect = GetEffectObject(effect,transform);
+        currentParticleMain = currentEffect.GetComponent<ParticleSystem>().main;
     }
 
     /// <summary>
@@ -68,7 +70,28 @@ public class EffectController : MonoBehaviour
         }
         if (effectObject != null)
             effectObject.transform.Rotate(-90, 0, 0);
-        return null;
+        return effectObject;
     }
 
+    /// <summary>
+    /// 特效是否正确有效
+    /// </summary>
+    /// <returns>是否正确有效</returns>
+    public bool EffectActive()
+    {
+        if (currentState == EffectState.None || currentEffect == null)
+            return false;
+        return true;
+    }
+
+    /// <summary>
+    /// 设置粒子颜色
+    /// </summary>
+    /// <param name="color">颜色</param>
+    public void SetColor(Color color)
+    {
+        if (!EffectActive())
+            return;
+        currentParticleMain.startColor = color;
+    }
 }
