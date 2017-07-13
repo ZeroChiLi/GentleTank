@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\Flags\Scripts\ChargeArea.cs" />
     <Compile Include="Assets\Flags\Scripts\ChargeAreaManager.cs" />
+    <Compile Include="Assets\Flags\Scripts\EffectController.cs" />
     <Compile Include="Assets\Flags\Scripts\FlagManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Effects\Effects.cs" />

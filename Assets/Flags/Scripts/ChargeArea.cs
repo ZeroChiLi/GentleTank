@@ -37,6 +37,7 @@ public class ChargeArea : MonoBehaviour
     private bool triggerState;                              // 僵持和变化之间是否变化
     private float nextColorTime;                            // 僵持特性：下一次变化颜色的时间
     private int currentIndex;                               // 僵持特性：当前颜色索引
+    private EffectController effectController;              // 粒子特性控制器
 
     private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
     private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
@@ -54,6 +55,7 @@ public class ChargeArea : MonoBehaviour
         occupyIndependentPlayer = new List<TankInformation>();
         slider.maxValue = maxValue;
         fillList = new List<Image>();
+        effectController = GetComponent<EffectController>();
     }
 
     /// <summary>
@@ -174,24 +176,10 @@ public class ChargeArea : MonoBehaviour
                 triggerState = FillTrigger(true);
             KeepStalemate();
             ShowStalemateEffect(updateTime,2f);
+            effectController.SetEffect(EffectState.Chaos,transform);
         }
     }
 
-    /// <summary>
-    /// 显示僵持状态下颜色变幻特效
-    /// </summary>
-    /// <param name="updateTime">每次调用时间间隔</param>
-    /// <param name="period">颜色变化周期</param>
-    private void ShowStalemateEffect(float updateTime, float period)
-    {
-        if (Time.time > nextColorTime)
-        {
-            nextColorTime = Time.time + period;
-            currentIndex = currentIndex + 1;            //循环获取玩家列表
-        }
-        currentIndex %= playerInfoList.Count;           //避免越界，每次使用前先预防一下
-        flagManager.SetFlagColor(Color.Lerp(GetPlayerColor(playerInfoList[currentIndex]), GetPlayerColor(playerInfoList[(currentIndex + 1) % playerInfoList.Count]), (nextColorTime - Time.time) / period));
-    }
 
     /// <summary>
     /// 扇区填充选择（是僵持状态的填充，还是变化状态的填充）
@@ -235,16 +223,28 @@ public class ChargeArea : MonoBehaviour
                 occupyPlayer = RepresentativePlayer;
                 fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
                 UpdateOccupationValue(true);
+                effectController.CloseEffect();
                 break;
             case OccupyState.Partly:                            // 占有区部分被占有时
                 if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
+                {
                     UpdateOccupationValue(true);
+                    effectController.SetEffect(EffectState.Absorb,transform);
+                }
                 else
+                {
                     UpdateOccupationValue(false);               // 非本队的，减小
+                    effectController.SetEffect(EffectState.Release, transform);
+                }
                 break;
             case OccupyState.Full:                              // 占有区完全占被有时
-                if (!OccupiedByPlayer(RepresentativePlayer))    // 是本队就保持，非本队就减小
+                if (OccupiedByPlayer(RepresentativePlayer))     // 是本队就保持，非本队就减小
+                    effectController.CloseEffect();
+                else
+                {
                     UpdateOccupationValue(false);
+                    effectController.SetEffect(EffectState.Release, transform);
+                }
                 break;
         }
     }
@@ -357,6 +357,22 @@ public class ChargeArea : MonoBehaviour
         fillImage.color = new Color(fillColor.r, fillColor.g, fillColor.b, fillAlpha);
         fillImage.fillAmount = weight / TotalWeight;
         fillAmountAngle += fillImage.fillAmount * 360;
+    }
+
+    /// <summary>
+    /// 显示僵持状态下颜色变幻特效
+    /// </summary>
+    /// <param name="updateTime">每次调用时间间隔</param>
+    /// <param name="period">颜色变化周期</param>
+    private void ShowStalemateEffect(float updateTime, float period)
+    {
+        if (Time.time > nextColorTime)
+        {
+            nextColorTime = Time.time + period;
+            currentIndex = currentIndex + 1;            //循环获取玩家列表
+        }
+        currentIndex %= playerInfoList.Count;           //避免越界，每次使用前先预防一下
+        flagManager.SetFlagColor(Color.Lerp(GetPlayerColor(playerInfoList[currentIndex]), GetPlayerColor(playerInfoList[(currentIndex + 1) % playerInfoList.Count]), (nextColorTime - Time.time) / period));
     }
 
     #endregion
