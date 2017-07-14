@@ -56,6 +56,7 @@ public class ChargeArea : MonoBehaviour
         slider.maxValue = maxValue;
         fillList = new List<Image>();
         effectController = GetComponent<EffectController>();
+        effectController.SetParticleShapeRaidus(radius);
     }
 
     /// <summary>

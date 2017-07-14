@@ -21,6 +21,17 @@ public class EffectController : MonoBehaviour
     private EffectState currentState = EffectState.None;    // 当前特效状态
     private GameObject currentEffect;                       // 当前特性对象
     private ParticleSystem.MainModule currentParticleMain;  // 当前特效的粒子的主模型
+    private float radius;                                   // 特效发射半径
+    private Transform currentEffectTransform;               // 特效位置
+
+    /// <summary>
+    /// 设置粒子发射的半径
+    /// </summary>
+    /// <param name="radius">粒子发射的半径</param>
+    public void SetParticleShapeRaidus(float radius)
+    {
+        this.radius = radius;
+    }
 
     /// <summary>
     /// 关闭特效
@@ -46,7 +57,10 @@ public class EffectController : MonoBehaviour
         CloseEffect();
         currentState = effect;
         currentEffect = GetEffectObject(effect,transform);
-        currentParticleMain = currentEffect.GetComponent<ParticleSystem>().main;
+        ParticleSystem particle = currentEffect.GetComponent<ParticleSystem>();
+        currentParticleMain = particle.main;
+        ParticleSystem.ShapeModule shape = particle.shape;
+        shape.radius = radius;
     }
 
     /// <summary>
