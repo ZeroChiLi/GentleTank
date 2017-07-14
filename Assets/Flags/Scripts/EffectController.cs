@@ -5,7 +5,7 @@ using UnityEngine;
 // 特效状态，吸收、混乱、释放
 public enum EffectState
 {
-    None,Absorb,Chaos,Release
+    None,Absorb,Chaos,Release,Completed,Crack
 } 
 
 public class EffectController : MonoBehaviour 
@@ -13,6 +13,8 @@ public class EffectController : MonoBehaviour
     public ObjectPool AbsorbEffectPool;             // 吸收效果池
     public ObjectPool ChaosEffectPool;              // 混乱效果池
     public ObjectPool ReleaseEffectPool;            // 释放效果池
+    public ObjectPool CompletedEffectPool;          // 完成效果池
+    public ObjectPool CrackEffectPool;              // 默认效果池
 
     public EffectState CurrentState { get { return currentState; } }    // 获取当前特效状态
 
@@ -66,6 +68,12 @@ public class EffectController : MonoBehaviour
                 break;
             case EffectState.Release:
                 effectObject = ReleaseEffectPool.GetNextObjectActive(transform);
+                break;
+            case EffectState.Completed:
+                effectObject = CompletedEffectPool.GetNextObjectActive(transform);
+                break;
+            case EffectState.Crack:
+                effectObject = CrackEffectPool.GetNextObjectActive(transform);
                 break;
         }
         if (effectObject != null)

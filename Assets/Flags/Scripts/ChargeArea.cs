@@ -227,7 +227,7 @@ public class ChargeArea : MonoBehaviour
                 occupyPlayer = RepresentativePlayer;
                 fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
                 UpdateOccupationValue(true);
-                effectController.CloseEffect();
+                effectController.SetEffect(EffectState.Crack,transform);
                 break;
             case OccupyState.Partly:                            // 占有区部分被占有时
                 if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
@@ -245,7 +245,10 @@ public class ChargeArea : MonoBehaviour
                 break;
             case OccupyState.Full:                              // 占有区完全占被有时
                 if (OccupiedByPlayer(RepresentativePlayer))     // 是本队就保持，非本队就减小
-                    effectController.CloseEffect();
+                {
+                    effectController.SetEffect(EffectState.Completed, transform);
+                    effectController.SetColor(fillImage.color);
+                }
                 else
                 {
                     UpdateOccupationValue(false);
