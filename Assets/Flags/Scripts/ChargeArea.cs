@@ -95,13 +95,15 @@ public class ChargeArea : MonoBehaviour
             return;
         }
         elapsedTime = updateTime;
-        if (!ContainAnyPlayer())            //不包含任何玩家，直接返回
+        if (!ContainAnyPlayer())            // 不包含任何玩家，直接返回
         {
+            if (triggerState == true)       // 但需要更新扇区的话，更新扇区（僵持状态到没有任何玩家状态）
+                triggerState = FillTrigger(false);
             effectController.CloseEffect();
             return;
         }
-        if (!CleanInactivePlayer())         //清除所有失效玩家,如果都清除完就不执行更新
-            UpdateChargeArea();             //更新占领区
+        if (!CleanInactivePlayer())         // 清除所有失效玩家,如果都清除完就不执行更新
+            UpdateChargeArea();             // 更新占领区
     }
 
     /// <summary>
@@ -224,39 +226,63 @@ public class ChargeArea : MonoBehaviour
     {
         switch (occupyState)
         {
-            case OccupyState.Empty:                             // 占有区完全空白时
-                occupyPlayer = RepresentativePlayer;
-                fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
-                UpdateOccupationValue(true);
-                effectController.SetEffect(EffectState.Crack,transform);
+            case OccupyState.Empty:
+                UpdateOccupyEmpty();
                 break;
-            case OccupyState.Partly:                            // 占有区部分被占有时
-                if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
-                {
-                    UpdateOccupationValue(true);
-                    effectController.SetEffect(EffectState.Absorb,transform);
-                    effectController.SetColor(fillImage.color);
-                }
-                else
-                {
-                    UpdateOccupationValue(false);               // 非本队的，减小
-                    effectController.SetEffect(EffectState.Release, transform);
-                    effectController.SetColor(fillImage.color);
-                }
+            case OccupyState.Partly:
+                UpdateOccupyPartly();
                 break;
-            case OccupyState.Full:                              // 占有区完全占被有时
-                if (OccupiedByPlayer(RepresentativePlayer))     // 是本队就保持，非本队就减小
-                {
-                    effectController.SetEffect(EffectState.Completed, transform);
-                    effectController.SetColor(fillImage.color);
-                }
-                else
-                {
-                    UpdateOccupationValue(false);
-                    effectController.SetEffect(EffectState.Release, transform);
-                    effectController.SetColor(fillImage.color);
-                }
+            case OccupyState.Full:
+                UpdateOccupyFull();
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 占有区完全空白时
+    /// </summary>
+    private void UpdateOccupyEmpty()
+    {
+        occupyPlayer = RepresentativePlayer;
+        fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
+        UpdateOccupationValue(true);
+        effectController.SetEffect(EffectState.Crack, transform);
+    }
+
+    /// <summary>
+    /// 占有区部分被占有时
+    /// </summary>
+    private void UpdateOccupyPartly()
+    {
+        if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
+        {
+            UpdateOccupationValue(true);
+            effectController.SetEffect(EffectState.Absorb, transform);
+            effectController.SetColor(fillImage.color);
+        }
+        else
+        {
+            UpdateOccupationValue(false);               // 非本队的，减小
+            effectController.SetEffect(EffectState.Release, transform);
+            effectController.SetColor(fillImage.color);
+        }
+    }
+
+    /// <summary>
+    /// 占有区完全占被有时
+    /// </summary>
+    private void UpdateOccupyFull()
+    {
+        if (OccupiedByPlayer(RepresentativePlayer))     // 是本队就保持，非本队就减小
+        {
+            effectController.SetEffect(EffectState.Completed, transform);
+            effectController.SetColor(fillImage.color);
+        }
+        else
+        {
+            UpdateOccupationValue(false);
+            effectController.SetEffect(EffectState.Release, transform);
+            effectController.SetColor(fillImage.color);
         }
     }
 
@@ -314,7 +340,7 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 获取占有颜色
+    /// 获取占有颜色，有队伍的话返回队伍颜色，否则返回自己的颜色
     /// </summary>
     /// <returns>返回占有颜色</returns>
     private Color GetPlayerColor(TankInformation player)
