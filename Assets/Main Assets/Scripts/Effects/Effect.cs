@@ -3,12 +3,11 @@
 /// <summary>
 /// 特效，包含粒子和音效
 /// </summary>
-public class Effects : MonoBehaviour 
+public class Effect : MonoBehaviour 
 {
-    public AudioSource effectAudio;             // 音效
-    public ParticleSystem effectParticle;       // 粒子
-
-    private float timeElapse;                   //计算从激活开始过去的时间
+    public bool ativeWithParticle = true;               // 是否随这粒子结束失活对象
+    public AudioSource effectAudio;                     // 音效
+    public ParticleSystem effectParticle;               // 粒子
 
     private void Awake()
     {
@@ -20,8 +19,6 @@ public class Effects : MonoBehaviour
 
     void OnEnable()
     {
-        timeElapse = 0;
-
         // 开启爆炸音效
         if (effectAudio != null)
             effectAudio.Play();
@@ -34,9 +31,7 @@ public class Effects : MonoBehaviour
     //在粒子结束时，该对象设置失效。
     void Update()
     {
-        if (effectParticle.isStopped)
+        if (ativeWithParticle && effectParticle.isStopped)
             gameObject.SetActive(false);
-        //timeElapse += Time.deltaTime;
-        //if (timeElapse > explosionParticle.main.duration)
     }
 }
