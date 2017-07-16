@@ -54,8 +54,7 @@ public class Aim : MonoBehaviour
     private void RaycastObject()
     {
         RaycastHit info;
-        // 1<<9，只使用Layer9 ‘Level’
-        if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200,1<<9))
+        if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200, LayerMask.GetMask("Level")))
         {
             inputHitPos = info.point;
             inputHitGameObject = info.collider.gameObject;

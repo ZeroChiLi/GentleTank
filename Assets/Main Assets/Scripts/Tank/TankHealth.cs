@@ -61,7 +61,7 @@ public class TankHealth : MonoBehaviour
         dead = true;
 
         //获取爆炸特效，并显示之
-        tankExplosionPool.GetNextObject(gameObject.transform);
+        tankExplosionPool.GetNextObject(transform: gameObject.transform);
 
         gameObject.SetActive(false);
     }

@@ -30,8 +30,7 @@ public class LookDecision : Decision
         Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
 
         RaycastHit hit;
-        // layerMask 1 << 9 表示只开启Layer9 即至检测Layer : 'Level'
-        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance,1<<9) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider)&& !controller.IsMyself(hit.collider))
+        if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance,LayerMask.GetMask("Level")) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider)&& !controller.IsMyself(hit.collider))
         {
             controller.chaseTarget = hit.transform;
             return true;

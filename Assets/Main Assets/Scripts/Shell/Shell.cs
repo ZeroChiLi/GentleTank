@@ -22,33 +22,33 @@ public class Shell : MonoBehaviour
             return;
 
         // 从爆炸池中获取对象，并设置位置，显示之
-        shellExplosionPool.GetNextObject(transform);
+        shellExplosionPool.GetNextObject(transform: transform);
 
         // 获取爆炸范围内所有碰撞体
         colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            AddForce(i);
-            TakeDamage(i);
+            AddForce(colliders[i]);
+            TakeDamage(colliders[i]);
         }
 
         gameObject.SetActive(false);
     }
 
     // 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
-    private void AddForce(int index)
+    private void AddForce(Collider collider)
     {
-        targetRigidbody = colliders[index].GetComponent<Rigidbody>();
+        targetRigidbody = collider.GetComponent<Rigidbody>();
         if (!targetRigidbody)
             return;
         targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
     }
 
     // 获取目标的血条，计算扣血量并给给扣血。
-    private void TakeDamage(int index)
+    private void TakeDamage(Collider collider)
     {
-        targetHealth = colliders[index].GetComponent<TankHealth>();
+        targetHealth = collider.GetComponent<TankHealth>();
         if (!targetHealth)
             return;
         targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));

@@ -91,7 +91,7 @@ public class TankShooting : MonoBehaviour
             return;
 
         //获取炮弹，并发射
-        GameObject shell = shellPool.GetNextObject(shellSpawn);
+        GameObject shell = shellPool.GetNextObject(transform:shellSpawn);
         shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
         shell.GetComponent<Shell>().maxDamage = fireDamage;
 
