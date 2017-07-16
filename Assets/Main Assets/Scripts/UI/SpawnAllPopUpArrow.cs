@@ -14,7 +14,7 @@ public class SpawnAllPopUpArrow : MonoBehaviour
         {
             if (allTanksManager[i].isAI)        //是AI就不显示
                 continue;
-            ArrowPopUp arrowPopUp = popUpArrowPool.GetNextObjectActive().GetComponent<ArrowPopUp>();
+            ArrowPopUp arrowPopUp = popUpArrowPool.GetNextObject().GetComponent<ArrowPopUp>();
             if (arrowPopUp == null)
                 continue;
             arrowPopUp.SetPosition(allTanksManager[i].Instance.transform.position + targetCamera.transform.up * distance);

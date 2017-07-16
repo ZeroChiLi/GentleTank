@@ -37,7 +37,7 @@ public class HealSkill : Skill
         if (!player.activeInHierarchy || tankHealth.enabled == false)
             yield break;
         //显示治愈特效
-        healPool.GetNextObjectActive().transform.position = player.transform.position;
+        healPool.GetNextObject().transform.position = player.transform.position;
         //加血
         tankHealth.GainHeal(healVolume);
         yield return waitTime;

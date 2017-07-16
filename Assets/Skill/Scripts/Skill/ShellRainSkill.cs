@@ -47,7 +47,7 @@ public class ShellRainSkill : Skill
         if (gamePlaying == false)               //不在游戏进行中就终结他，暂未解决使用StopCoroutine无效的问题 'Skill' 175行
             yield break;            
         //创建炮弹 从上而下
-        GameObject shell = shellPool.GetNextObjectActive();
+        GameObject shell = shellPool.GetNextObject();
         shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
         shell.transform.rotation = Quaternion.Euler(new Vector3(90f, 0, 0));
         shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
@@ -61,7 +61,7 @@ public class ShellRainSkill : Skill
     /// <param name="position">显示的位置</param>
     private void ShowWarnningArea(Vector3 position)
     {
-        GameObject warnningArea = warnningPool.GetNextObject();
+        GameObject warnningArea = warnningPool.GetNextObject(false);
         //设置警告区域显示闪烁时间、持续时间
         WarnningArea areaScript = warnningArea.GetComponent<WarnningArea>();
         areaScript.blinkDuration = skillDelay;

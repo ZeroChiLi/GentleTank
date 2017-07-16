@@ -52,7 +52,7 @@ public class ObjectPool : ScriptableObject
     /// 获取下一个可用对象。
     /// </summary>
     /// <returns>返回有可用对象</returns>
-    public GameObject GetNextObject()
+    public GameObject GetNextObject(bool active = true, Transform transform = null)
     {
         for (int i = 0; i < objectPool.Count; i++)
         {
@@ -60,11 +60,11 @@ public class ObjectPool : ScriptableObject
             if (!objectPool[index].activeInHierarchy)
             {
                 currentIndex = index;
-                return objectPool[index];
+                return SetupObject(objectPool[index],active,transform);
             }
         }
         if (autoIncrease)
-            return AddOneMoreObject();
+            return SetupObject(AddOneMoreObject(), active, transform);
         return null;
     }
 
@@ -73,14 +73,14 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     /// <param name="transform">位置</param>
     /// <returns>放回这个对象</returns>
-    public GameObject GetNextObjectActive(Transform transform = null)
+    private GameObject SetupObject(GameObject obj,bool active, Transform transform)
     {
-        GameObject obj = GetNextObject();
-        obj.SetActive(true);
+        obj.SetActive(active);
         if (transform != null)
         {
             obj.transform.position = transform.position;
             obj.transform.rotation = transform.rotation;
+            obj.transform.localScale = transform.localScale;
         }
         return obj;
     }

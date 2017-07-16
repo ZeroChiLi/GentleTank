@@ -22,7 +22,7 @@ public class Shell : MonoBehaviour
             return;
 
         // 从爆炸池中获取对象，并设置位置，显示之
-        shellExplosionPool.GetNextObjectActive(transform);
+        shellExplosionPool.GetNextObject(transform);
 
         // 获取爆炸范围内所有碰撞体
         colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);

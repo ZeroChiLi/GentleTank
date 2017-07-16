@@ -182,8 +182,8 @@ public class ChargeArea : MonoBehaviour
                 triggerState = FillTrigger(true);
             KeepStalemate();
             ShowStalemateEffect(updateTime,2f);
-            effectController.SetEffect(EffectState.Chaos,transform);
-            effectController.SetColor(GetPlayerColor(playerInfoList[Random.Range(0,playerInfoList.Count)]));
+            effectController.SetEffect(EffectState.Chaos,transform,Color.white);
+            effectController.SetParticleColor(GetPlayerColor(playerInfoList[Random.Range(0, playerInfoList.Count)]));
         }
     }
 
@@ -246,7 +246,7 @@ public class ChargeArea : MonoBehaviour
         occupyPlayer = RepresentativePlayer;
         fillImage.color = GetPlayerColor(RepresentativePlayer);     // 没被占有，进行占有并修改为自己团队的颜色
         UpdateOccupationValue(true);
-        effectController.SetEffect(EffectState.Crack, transform);
+        effectController.SetEffect(EffectState.Crack, transform,fillImage.color);
     }
 
     /// <summary>
@@ -257,14 +257,12 @@ public class ChargeArea : MonoBehaviour
         if (OccupiedByPlayer(RepresentativePlayer))     // 占有玩家是否是本队的，增长
         {
             UpdateOccupationValue(true);
-            effectController.SetEffect(EffectState.Absorb, transform);
-            effectController.SetColor(fillImage.color);
+            effectController.SetEffect(EffectState.Absorb, transform, fillImage.color);
         }
         else
         {
             UpdateOccupationValue(false);               // 非本队的，减小
-            effectController.SetEffect(EffectState.Release, transform);
-            effectController.SetColor(fillImage.color);
+            effectController.SetEffect(EffectState.Release, transform, fillImage.color);
         }
     }
 
@@ -274,15 +272,11 @@ public class ChargeArea : MonoBehaviour
     private void UpdateOccupyFull()
     {
         if (OccupiedByPlayer(RepresentativePlayer))     // 是本队就保持，非本队就减小
-        {
-            effectController.SetEffect(EffectState.Completed, transform);
-            effectController.SetColor(fillImage.color);
-        }
+            effectController.SetEffect(EffectState.Completed, transform, fillImage.color);
         else
         {
             UpdateOccupationValue(false);
-            effectController.SetEffect(EffectState.Release, transform);
-            effectController.SetColor(fillImage.color);
+            effectController.SetEffect(EffectState.Release, transform, fillImage.color);
         }
     }
 
@@ -385,7 +379,7 @@ public class ChargeArea : MonoBehaviour
     /// <param name="weight">填充权重</param>
     private void FillWithWeight(ref float fillAmountAngle, Color fillColor, float weight)
     {
-        Image fillImage = fillPool.GetNextObjectActive().GetComponent<Image>();
+        Image fillImage = fillPool.GetNextObject().GetComponent<Image>();
         fillList.Add(fillImage);
         fillImage.transform.SetParent(slider.transform);
         fillImage.rectTransform.localPosition = Vector3.zero;
@@ -397,7 +391,7 @@ public class ChargeArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 显示僵持状态下颜色变幻特效
+    /// 显示僵持状态下旗帜颜色变幻特效
     /// </summary>
     /// <param name="updateTime">每次调用时间间隔</param>
     /// <param name="period">颜色变化周期</param>

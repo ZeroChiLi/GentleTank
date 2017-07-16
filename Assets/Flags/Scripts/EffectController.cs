@@ -5,10 +5,10 @@ using UnityEngine;
 // 特效状态，吸收、混乱、释放
 public enum EffectState
 {
-    None,Absorb,Chaos,Release,Completed,Crack
-} 
+    None, Absorb, Chaos, Release, Completed, Crack
+}
 
-public class EffectController : MonoBehaviour 
+public class EffectController : MonoBehaviour
 {
     public ObjectPool AbsorbEffectPool;             // 吸收效果池
     public ObjectPool ChaosEffectPool;              // 混乱效果池
@@ -20,7 +20,9 @@ public class EffectController : MonoBehaviour
 
     private EffectState currentState = EffectState.None;    // 当前特效状态
     private GameObject currentEffect;                       // 当前特性对象
+    private ParticleSystem currentParticle;                 // 当前特效的粒子系统
     private ParticleSystem.MainModule currentParticleMain;  // 当前特效的粒子的主模型
+    private ParticleSystem.ShapeModule currentParticleShape;// 当前特效粒子的发射形状
     private float radius;                                   // 特效发射半径
     private Transform currentEffectTransform;               // 特效位置
 
@@ -50,17 +52,23 @@ public class EffectController : MonoBehaviour
     /// </summary>
     /// <param name="effect">特效的状态</param>
     /// <param name="transform">特效的位置</param>
-    public void SetEffect(EffectState effect,Transform transform)
+    /// <param name="color">粒子特效颜色</param>
+    public void SetEffect(EffectState effect, Transform transform, Color color)
     {
         if (effect == currentState)
             return;
         CloseEffect();
         currentState = effect;
-        currentEffect = GetEffectObject(effect,transform);
-        ParticleSystem particle = currentEffect.GetComponent<ParticleSystem>();
-        currentParticleMain = particle.main;
-        ParticleSystem.ShapeModule shape = particle.shape;
-        shape.radius = radius;
+        currentEffect = GetEffectObject(effect, transform);             // 先获取特效
+
+        currentParticle = currentEffect.GetComponent<ParticleSystem>(); // 获取特效的粒子
+        currentParticleMain = currentParticle.main;
+        currentParticleMain.startColor = color;                         // 设置粒子颜色
+
+        currentParticleShape = currentParticle.shape;
+        currentParticleShape.radius = radius;                           // 设置粒子发射半径
+
+        currentEffect.SetActive(true);                                  // 最后再激活特效
     }
 
     /// <summary>
@@ -75,19 +83,19 @@ public class EffectController : MonoBehaviour
         switch (effect)
         {
             case EffectState.Absorb:
-                effectObject= AbsorbEffectPool.GetNextObjectActive(transform);
+                effectObject = AbsorbEffectPool.GetNextObject(false, transform);
                 break;
             case EffectState.Chaos:
-                effectObject = ChaosEffectPool.GetNextObjectActive(transform);
+                effectObject = ChaosEffectPool.GetNextObject(false, transform);
                 break;
             case EffectState.Release:
-                effectObject = ReleaseEffectPool.GetNextObjectActive(transform);
+                effectObject = ReleaseEffectPool.GetNextObject(false, transform);
                 break;
             case EffectState.Completed:
-                effectObject = CompletedEffectPool.GetNextObjectActive(transform);
+                effectObject = CompletedEffectPool.GetNextObject(false, transform);
                 break;
             case EffectState.Crack:
-                effectObject = CrackEffectPool.GetNextObjectActive(transform);
+                effectObject = CrackEffectPool.GetNextObject(false, transform);
                 break;
         }
         if (effectObject != null)
@@ -106,14 +114,10 @@ public class EffectController : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// 设置粒子颜色
-    /// </summary>
-    /// <param name="color">颜色</param>
-    public void SetColor(Color color)
+    public void SetParticleColor(Color color)
     {
-        if (!EffectActive())
-            return;
-        currentParticleMain.startColor = color;
+        if (EffectActive())
+            currentParticleMain.startColor = color;
     }
+
 }
