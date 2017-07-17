@@ -17,7 +17,7 @@ public class Aim : MonoBehaviour
     private Camera gameCamera;                      // 游戏镜头
     private Vector3 inputHitPos;                    // 鼠标射线射到的点
     private GameObject inputHitGameObject;          // 射线射到的物体
-    private int tagIndex;                           // 射到物体的标签对应瞄准模型列表的索引
+    private TagWithColor tagWithColor;              // 射到物体的标签对应瞄准模型
 
     /// <summary>
     /// 获取图片组件
@@ -62,10 +62,10 @@ public class Aim : MonoBehaviour
             aimImage.color = aimMode.disableColor;
             return;
         }
-        tagIndex = aimMode.GetTagIndex(inputHitGameObject.tag); // 如果模型有定义该标签的颜色，修改之
-        if (tagIndex != -1)
+        tagWithColor = aimMode.GetTagWithColorByTag(inputHitGameObject.tag); // 如果模型有定义该标签的颜色，修改之
+        if (tagWithColor != null)
         {
-            aimImage.color = aimMode[tagIndex].color;
+            aimImage.color = tagWithColor.color;
             return;
         }
         aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
