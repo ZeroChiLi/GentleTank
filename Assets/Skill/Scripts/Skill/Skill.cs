@@ -6,7 +6,7 @@ public abstract class Skill : MonoBehaviour
 {
     public float coolDownTime = 1f;                 // 冷却时间
     public Slider coolDownSlider;                   // 冷却条
-    //public Aim aim;                                 // 瞄准操作
+    public AimMode aimMode;                         // 技能对应的瞄准模型
 
     protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
@@ -119,8 +119,6 @@ public abstract class Skill : MonoBehaviour
     public void Ready()
     {
         isReady = true;
-        //aim.SetActive(true);
-        //aim.SetPos(Input.mousePosition);        // 重新改变鼠标瞄准位置（因为在按钮上鼠标是失效的）
         buttonImage.color = pressedColor;
     }
 
@@ -130,7 +128,6 @@ public abstract class Skill : MonoBehaviour
     public void Cancel()
     {
         isReady = false;
-        //aim.SetActive(false);
         buttonImage.color = normalColor;
     }
 
@@ -149,10 +146,7 @@ public abstract class Skill : MonoBehaviour
             remainReleaseTime = coolDownTime;
             buttonImage.color = disableColor;
             if (isReady)
-            {
                 isReady = false;
-                //aim.SetActive(false);
-            }
             //Debug.Log("Stop SkillEffect");
             //StopCoroutine(SkillEffect());
         }
@@ -190,13 +184,4 @@ public abstract class Skill : MonoBehaviour
     /// 技能效果
     /// </summary>
     abstract public IEnumerator SkillEffect();
-
-    ///// <summary>
-    ///// 设置Aim图标是否有效状态
-    ///// </summary>
-    ///// <param name="enable">是否有效</param>
-    //public void SetAimEnable(bool enable)
-    //{
-    //    aim.SetEnable(enable);
-    //}
 }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Aim : MonoBehaviour
 {
     public Image aimImage;                          // 当前瞄准图片
-    public AimMode aimMode;                        // 当前瞄准模型
+    public AimMode aimMode;                         // 当前瞄准模型
 
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
     public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
@@ -34,7 +34,7 @@ public class Aim : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        SetPos(Input.mousePosition);
+        SetPosition(Input.mousePosition);
         RaycastObject();
         UpdateAimColor();
     }
@@ -71,6 +71,15 @@ public class Aim : MonoBehaviour
         aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
     }
 
+    /// <summary>
+    /// 设置当前瞄准模型
+    /// </summary>
+    /// <param name="aimMode">瞄准模型</param>
+    public void SetAimMode(AimMode aimMode)
+    {
+        this.aimMode = aimMode;
+    }
+
     #region 设置激活状态、位置、瞄准状态
 
     /// <summary>
@@ -95,7 +104,7 @@ public class Aim : MonoBehaviour
     /// 设置瞄准图片位置
     /// </summary>
     /// <param name="position">位置</param>
-    public void SetPos(Vector3 position)
+    public void SetPosition(Vector3 position)
     {
         gameObject.transform.position = position;
     }

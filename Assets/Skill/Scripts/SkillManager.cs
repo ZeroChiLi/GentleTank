@@ -113,8 +113,8 @@ public class SkillManager : MonoBehaviour
             {
                 skillList[currentSkillIndex].Ready();
                 readySkillIndex = currentSkillIndex;
+                aim.SetAimMode(skillList[currentSkillIndex].aimMode);
                 aim.SetActive(true);
-                aim.SetPos(Input.mousePosition);        // 重新改变鼠标瞄准位置（因为在按钮上鼠标是失效的）
             }
         }
         // 第二次点击任意技能，都会取消上一次技能的准备状态
