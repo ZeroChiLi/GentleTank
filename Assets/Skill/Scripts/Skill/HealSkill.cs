@@ -20,7 +20,7 @@ public class HealSkill : Skill
     public override IEnumerator SkillEffect()
     {
         waitTime = new WaitForSeconds(healRate);
-        GameObject player = aim.HitGameObject;
+        GameObject player = SkillManager.Instance.aim.HitGameObject;
         TankHealth tankHealth = player.GetComponent<TankHealth>();
         for (int i = 0; i < skillLevel; i++)
             yield return HealPlayer(player, tankHealth);
@@ -49,6 +49,6 @@ public class HealSkill : Skill
     /// <returns>返回是否点击玩家</returns>
     public override bool ReleaseCondition()
     {
-        return aim.HitGameObject != null && aim.HitGameObject.GetComponent<TankHealth>() != null;
+        return SkillManager.Instance.aim.HitGameObject != null && SkillManager.Instance.aim.HitGameObject.GetComponent<TankHealth>() != null;
     }
 }

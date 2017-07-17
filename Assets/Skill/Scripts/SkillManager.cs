@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillLayout : MonoBehaviour
+public class SkillManager : MonoBehaviour
 {
-    public List<GameObject> skillObjectList;                        // 所有需要显示的技能
+    public static SkillManager Instance;                    // 技能管理单例
 
-    private List<Skill> skillList;                                  // 所有技能对应的技能脚本
-    private GridLayoutGroup gridLayoutGroup;                        // 技能布局
-    private RectTransform rectTransform;                            // 技能布局位置大小
-    private int currentSkillIndex = -1;                             // 当前鼠标指向技能索引
-    private int readySkillIndex = -1;                               // 准备释放的技能索引
+    public List<GameObject> skillObjectList;                // 所有需要显示的技能
+    public Aim aim;                                         // 瞄准光标
+
+    private List<Skill> skillList;                          // 所有技能对应的技能脚本
+    private GridLayoutGroup gridLayoutGroup;                // 技能布局
+    private RectTransform rectTransform;                    // 技能布局位置大小
+    private int currentSkillIndex = -1;                     // 当前鼠标指向技能索引
+    private int readySkillIndex = -1;                       // 准备释放的技能索引
 
     /// <summary>
     /// 获取大小位置，每个技能按键大小，距离间隔
     /// </summary>
     private void Awake()
     {
+        Instance = this;
         rectTransform = GetComponent<RectTransform>();
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
         skillList = new List<Skill>();
@@ -44,6 +48,7 @@ public class SkillLayout : MonoBehaviour
         if (GameRecord.Instance.CurrentGameState != GameState.Playing)
         {
             readySkillIndex = -1;
+            aim.SetActive(false);
             return;
         }
 
@@ -53,9 +58,9 @@ public class SkillLayout : MonoBehaviour
         if (readySkillIndex != -1)
         {
             if (OnSkillButton())
-                skillList[readySkillIndex].SetAimEnable(false);
+                aim.SetEnable(false);
             else
-                skillList[readySkillIndex].SetAimEnable(true);
+                aim.SetEnable(true);
         }
 
         if (!Input.GetMouseButtonUp(0))                 // 点击了才响应
@@ -108,12 +113,15 @@ public class SkillLayout : MonoBehaviour
             {
                 skillList[currentSkillIndex].Ready();
                 readySkillIndex = currentSkillIndex;
+                aim.SetActive(true);
+                aim.SetPos(Input.mousePosition);        // 重新改变鼠标瞄准位置（因为在按钮上鼠标是失效的）
             }
         }
         // 第二次点击任意技能，都会取消上一次技能的准备状态
         else
         {
             skillList[readySkillIndex].Cancel();
+            aim.SetActive(false);
             readySkillIndex = -1;
         }
     }
@@ -127,6 +135,7 @@ public class SkillLayout : MonoBehaviour
         if (readySkillIndex != -1 && skillList[readySkillIndex].CanRelease())
         {
             skillList[readySkillIndex].Release();
+            aim.SetActive(false);
             readySkillIndex = -1;
         }
     }

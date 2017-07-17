@@ -30,7 +30,7 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        Vector3 position = aim.HitPosition;
+        Vector3 position = SkillManager.Instance.aim.HitPosition;
         ShowWarnningArea(position);             // 显示警告区域，在一段时间后再发起攻击
         yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数

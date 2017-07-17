@@ -4,29 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum AimState
-{
-    Normal, Friendly, Warnning, Disable
-}
-
 public class Aim : MonoBehaviour
 {
     public Image aimImage;                          // 当前瞄准图片
-    public Color normalColor = Color.black;         // 普通状态
-    public Color friendlyColor = Color.green;       // 友好状态
-    public Color warnningColor = Color.red;         // 警告状态
-    public Color disableColor = Color.gray;         // 无效状态
+    public AimMode aimMode;                        // 当前瞄准模型
 
-    public AimState CurrentAimState { get { return currentAimState; } }         //获取当前瞄准状态
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
     public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
 
     protected bool aimEnable = true;                // 瞄准是否有效
 
     private Camera gameCamera;                      // 游戏镜头
-    private AimState currentAimState;               // 当前状态
     private Vector3 inputHitPos;                    // 鼠标射线射到的点
     private GameObject inputHitGameObject;          // 射线射到的物体
+    private int tagIndex;                           // 射到物体的标签对应瞄准模型列表的索引
 
     /// <summary>
     /// 获取图片组件
@@ -35,7 +26,7 @@ public class Aim : MonoBehaviour
     {
         aimImage = GetComponent<Image>();
         gameCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        SetStateColor(normalColor);
+        aimImage.color = aimMode.normalColor;
     }
 
     /// <summary>
@@ -45,7 +36,7 @@ public class Aim : MonoBehaviour
     {
         SetPos(Input.mousePosition);
         RaycastObject();
-        UpdateState();
+        UpdateAimColor();
     }
 
     /// <summary>
@@ -64,9 +55,20 @@ public class Aim : MonoBehaviour
     /// <summary>
     /// 更新状态
     /// </summary>
-    private void UpdateState()
+    private void UpdateAimColor()
     {
-        SetState(ConvertState());
+        if (aimEnable == false)                                 // 如果失效，设置为失效颜色
+        {
+            aimImage.color = aimMode.disableColor;
+            return;
+        }
+        tagIndex = aimMode.GetTagIndex(inputHitGameObject.tag); // 如果模型有定义该标签的颜色，修改之
+        if (tagIndex != -1)
+        {
+            aimImage.color = aimMode[tagIndex].color;
+            return;
+        }
+        aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
     }
 
     #region 设置激活状态、位置、瞄准状态
@@ -98,46 +100,6 @@ public class Aim : MonoBehaviour
         gameObject.transform.position = position;
     }
 
-    /// <summary>
-    /// 设置瞄准状态
-    /// </summary>
-    /// <param name="aimState">瞄准状态</param>
-    public void SetState(AimState aimState)
-    {
-        if (aimState == CurrentAimState)
-            return;
-        currentAimState = aimState;
-        switch (aimState)
-        {
-            case AimState.Normal:
-                SetStateColor(normalColor);
-                break;
-            case AimState.Friendly:
-                SetStateColor(friendlyColor);
-                break;
-            case AimState.Warnning:
-                SetStateColor(warnningColor);
-                break;
-            case AimState.Disable:
-                SetStateColor(disableColor);
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 设置瞄准状态颜色
-    /// </summary>
-    /// <param name="color">瞄准颜色</param>
-    private void SetStateColor(Color color)
-    {
-        aimImage.color = color;
-    }
-
     #endregion
 
-    /// <summary>
-    /// 自定义状态转换
-    /// </summary>
-    /// <returns>返回转换后的状态</returns>
-    virtual protected AimState ConvertState() { return AimState.Normal; }
 }

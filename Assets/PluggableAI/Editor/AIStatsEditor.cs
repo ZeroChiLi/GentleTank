@@ -79,6 +79,12 @@ public class AIStatsEditor : Editor
         minMaxValue.maxValue = Mathf.Clamp(EditorGUILayout.FloatField("Max Value :", minMaxValue.maxValue), minMaxValue.minValue, minMaxValue.maxLimit);
     }
 
+    /// <summary>
+    /// 显示菜单列表
+    /// </summary>
+    /// <param name="order">标签序号</param>
+    /// <param name="title">标签标题</param>
+    /// <returns>返回是否显示</returns>
     private bool ShowUp(int order,string title)
     {
         EditorGUI.indentLevel = 0;
