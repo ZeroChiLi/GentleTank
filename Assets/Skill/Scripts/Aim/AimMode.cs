@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEditor;
 
 [System.Serializable]
@@ -14,6 +15,8 @@ public class TagWithColor
 [CreateAssetMenu(menuName = "Skill/Aim Mode")]
 public class AimMode : ScriptableObject
 {
+    public Sprite aimSprite;                            // 瞄准图片精灵
+    public bool showInScreen = true;                    // 是否显示在屏幕，否则显示在场景中
     public Color normalColor = Color.black;             // 正常状态颜色
     public Color disableColor = Color.gray;             // 无效状态颜色
     public List<TagWithColor> tagColorList = new List<TagWithColor>();  // 标签颜色列表
