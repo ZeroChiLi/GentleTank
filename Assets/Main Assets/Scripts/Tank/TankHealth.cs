@@ -31,6 +31,12 @@ public class TankHealth : MonoBehaviour
         SetHealthUI();
     }
 
+    private void OnDisable()
+    {
+        CurrentHealth = 0;
+        SetHealthUI();
+    }
+
     // 受伤害
     public void TakeDamage(float amount)
     {

@@ -10,14 +10,13 @@ public class TagWithColor
     public Color color;         // 颜色
 }
 
+[System.Serializable]
 [CreateAssetMenu(menuName = "Skill/Aim Mode")]
-public class AimMode : Editor
+public class AimMode : ScriptableObject
 {
     public Color normalColor = Color.black;             // 正常状态颜色
     public Color disableColor = Color.gray;             // 无效状态颜色
     public List<TagWithColor> tagColorList = new List<TagWithColor>();  // 标签颜色列表
-
-    private int listCount;
 
     public TagWithColor this[int index]
     {

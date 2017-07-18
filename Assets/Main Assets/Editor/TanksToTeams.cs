@@ -28,7 +28,7 @@ public class TanksToTeams : EditorWindow
 
     private void OnGUI()
     {
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(280f));
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
         if (!GetTanksTeamsManager())
             return;

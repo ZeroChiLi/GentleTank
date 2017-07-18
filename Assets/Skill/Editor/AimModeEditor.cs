@@ -4,34 +4,29 @@ using UnityEditor;
 using UnityEngine;
 
 //[CustomEditor(typeof(AimMode))]
-//[CanEditMultipleObjects]
 public class AimModeEditor : Editor
 {
-    private AimMode aimMode;
-    private SerializedProperty damageProp;
-    private SerializedProperty armorProp;
-    private SerializedProperty gunProp;
+    public AimMode aimMode;
     private int listCount;
 
-    /// <summary>
-    /// 初始化配置
-    /// </summary>
-    private void Awake()
-    {
-        aimMode = (AimMode)target;
-        listCount = aimMode.tagColorList.Count;
-    }
+    ///// <summary>
+    ///// 获取对象列表
+    ///// </summary>
+    //private void OnEnable()
+    //{
+    //    aimMode = target as AimMode;
+    //    listCount = aimMode.tagColorList.Count;
+    //    Debug.Log(listCount);
+    //}
 
     ///// <summary>
     ///// 更新面板时更新列表
     ///// </summary>
     //public override void OnInspectorGUI()
     //{
-    //    serializedObject.Update();
     //    DefaultColor();             // 正常、无效颜色
     //    InputListSize();            // 列表长度
     //    ShowTagColorList();         // 列表项
-    //    serializedObject.ApplyModifiedProperties();
     //}
 
     /// <summary>
@@ -39,7 +34,7 @@ public class AimModeEditor : Editor
     /// </summary>
     public void DefaultColor()
     {
-        aimMode.normalColor = EditorGUILayout.ColorField("Normal Color",aimMode.normalColor);
+        aimMode.normalColor = EditorGUILayout.ColorField("Normal Color", aimMode.normalColor);
         aimMode.disableColor = EditorGUILayout.ColorField("Disable Color", aimMode.disableColor);
     }
 

@@ -422,6 +422,7 @@ public class ChargeArea : MonoBehaviour
         occupyPlayer = null;
         updateOccupyRate = false;
         flagManager.SetFlagColor(Color.white);
+        effectController.CloseEffect();
     }
 }
 
