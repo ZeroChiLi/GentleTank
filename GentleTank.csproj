@@ -135,7 +135,9 @@
     <Compile Include="Assets\Skill\Scripts\Skill\HealSkill.cs" />
     <Compile Include="Assets\Skill\Scripts\Skill\ShellRainSkill.cs" />
     <Compile Include="Assets\Skill\Scripts\Skill\Skill.cs" />
-    <Compile Include="Assets\Skill\Scripts\SkillManager.cs" />
+    <Compile Include="Assets\Skill\Scripts\Skill\SkillModel.cs" />
+    <Compile Include="Assets\Skill\Scripts\Skill\SkillManager.cs" />
+    <Compile Include="Assets\Skill\Scripts\AllSkillManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />

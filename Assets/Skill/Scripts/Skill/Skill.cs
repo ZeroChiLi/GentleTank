@@ -1,14 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class Skill : MonoBehaviour
+public abstract class Skill : ScriptableObject
 {
     public float coolDownTime = 1f;                 // 冷却时间
-    public Slider coolDownSlider;                   // 冷却条
     public AimMode aimMode;                         // 技能对应的瞄准模型
+    
+    [HideInInspector]
+    public Slider coolDownSlider;                   // 冷却条
+    [HideInInspector]
+    public Image buttonImage;                       // 按钮图片
+    [HideInInspector]
+    public EventTrigger eventTrigger;               // 事件触发器
 
-    protected Image buttonImage;                    // 按钮图片
     protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
     protected bool isReady = false;                 // 是否准备释放技能（第一次点击）
     protected bool gamePlaying = false;             // 是否正在游戏中
@@ -21,12 +27,32 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// 初始化滑动条最大值
     /// </summary>
-    private void Awake()
+    public void InitSkill(Slider slider,Image buttonImage,EventTrigger eventTrigger)
     {
+        coolDownSlider = slider;
+        this.buttonImage = buttonImage;
+        this.eventTrigger = eventTrigger;
         coolDownSlider.maxValue = coolDownTime;
         remainReleaseTime = coolDownTime;
-        buttonImage = GetComponent<Image>();
         buttonImage.color = disableColor;
+        SetupButtonEvent();
+        CustomInit();
+    }
+
+    /// <summary>
+    /// 配置按钮事件（鼠标进入，离开）
+    /// </summary>
+    public void SetupButtonEvent()
+    {
+        EventTrigger.Entry entryEnter = new EventTrigger.Entry();               // 鼠标进入事件
+        entryEnter.eventID = EventTriggerType.PointerEnter;
+        entryEnter.callback.AddListener((data) => { MouseOnButton(true); });
+        eventTrigger.triggers.Add(entryEnter);
+
+        EventTrigger.Entry entryExit = new EventTrigger.Entry();                // 鼠标离开事件
+        entryExit.eventID = EventTriggerType.PointerExit;
+        entryExit.callback.AddListener((data) => { MouseOnButton(false); });
+        eventTrigger.triggers.Add(entryExit);
     }
 
     /// <summary>
@@ -126,7 +152,7 @@ public abstract class Skill : MonoBehaviour
         remainReleaseTime = coolDownSlider.maxValue;
         isReady = false;
         Cancel();
-        StartCoroutine(SkillEffect());
+        //StartCoroutine(SkillEffect());
     }
 
     /// <summary>
@@ -135,6 +161,11 @@ public abstract class Skill : MonoBehaviour
     /// <returns>返回是否满足自定义条件</returns>
     virtual public bool ReleaseCondition()
     { return true; }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    abstract public void CustomInit();
 
     /// <summary>
     /// 技能效果

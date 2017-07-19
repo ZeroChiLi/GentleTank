@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillManager : MonoBehaviour
+public class AllSkillManager : MonoBehaviour
 {
-    public static SkillManager Instance;                    // 技能管理单例
+    public static AllSkillManager Instance;                    // 技能管理单例
 
-    public List<GameObject> skillObjectList;                // 所有需要显示的技能
+    public List<SkillModel> skillModelList;                 // 技能模型列表
     public Aim aim;                                         // 瞄准光标
 
     private List<Skill> skillList;                          // 所有技能对应的技能脚本
@@ -37,23 +37,20 @@ public class SkillManager : MonoBehaviour
     private void InitAllSkillRect()
     {
         Vector2 currentPosition = rectTransform.offsetMin;
-        for (int i = 0; i < skillObjectList.Count; i++)
+        for (int i = 0; i < skillModelList.Count; i++)
         {
             skillRectList.Add(new Rect(currentPosition, gridLayoutGroup.cellSize));
             currentPosition += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
         }
     }
 
-    /// <summary>
-    /// 创建技能列表到这个对象里面
-    /// </summary>
+    ///// <summary>
+    ///// 创建技能列表到这个对象里面
+    ///// </summary>
     private void Start()
     {
-        for (int i = 0; i < skillObjectList.Count; i++)
-        {
-            skillObjectList[i] = Instantiate(skillObjectList[i], transform);
-            skillList.Add(skillObjectList[i].GetComponent<Skill>());
-        }
+        for (int i = 0; i < skillModelList.Count; i++)
+            skillList.Add(skillModelList[i].CreateSkillButton(transform).GetComponent<SkillManager>().skill);
     }
 
     /// <summary>
@@ -174,6 +171,7 @@ public class SkillManager : MonoBehaviour
         if (readySkillIndex != -1 && skillList[readySkillIndex].CanRelease())
         {
             skillList[readySkillIndex].Release();
+            StartCoroutine(skillList[readySkillIndex].SkillEffect());
             aim.SetActive(false);
             readySkillIndex = -1;
         }

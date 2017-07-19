@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[CreateAssetMenu(menuName = "Skill/Shell Rain Skill")]
 public class ShellRainSkill : Skill
 {
     public ObjectPool shellPool;            //炮弹池
@@ -9,18 +10,18 @@ public class ShellRainSkill : Skill
     [Range(0, 10f)]
     public float skillDelay = 1.5f;         //技能释放延迟
     [Range(1, 100)]
-    public int skillLevel = 1;              //技能等级
+    public int skillLevel = 6;              //技能等级
     [Range(1, 100f)]
     public float attackRadius = 5f;         //技能攻击范围半径
     [Range(0, 1f)]
-    public float attackRate = 0.5f;         //技能每次释放频率
+    public float attackRate = 0.3f;         //技能每次释放频率
     [Range(0, 100f)]
     public float attackDamage = 30f;        //每一粒炮弹最大伤害
 
     /// <summary>
-    /// 更改警告区域池的层级
+    /// 初始化警告区域位置
     /// </summary>
-    private void Start()
+    public override void CustomInit()
     {
         warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
     }
@@ -30,7 +31,8 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        Vector3 position = SkillManager.Instance.aim.HitPosition;
+        warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
+        Vector3 position = AllSkillManager.Instance.aim.HitPosition;
         ShowWarnningArea(position);             // 显示警告区域，在一段时间后再发起攻击
         yield return new WaitForSeconds(skillDelay);
         for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数

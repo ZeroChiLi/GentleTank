@@ -1,17 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Skill/Heal Skill")]
 public class HealSkill : Skill
 {
     public ObjectPool healPool;             //治愈特效池
     [Range(1, 100)]
-    public int skillLevel = 1;              //技能等级（次数）
+    public int skillLevel = 5;              //技能等级（次数）
     [Range(1, 100)]
-    public float healVolume = 10f;          //治愈血量
+    public float healVolume = 20f;          //治愈血量
     [Range(0, 10f)]
-    public float healRate = 1f;             //技能每次释放频率
+    public float healRate = 0.5f;             //技能每次释放频率
 
     private WaitForSeconds waitTime;        //每次治愈时间间隔一样
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    public override void CustomInit()
+    {
+        waitTime = new WaitForSeconds(healRate);
+    }
 
     /// <summary>
     /// 技能效果
@@ -19,8 +29,7 @@ public class HealSkill : Skill
     /// <returns></returns>
     public override IEnumerator SkillEffect()
     {
-        waitTime = new WaitForSeconds(healRate);
-        GameObject player = SkillManager.Instance.aim.HitGameObject;
+        GameObject player = AllSkillManager.Instance.aim.HitGameObject;
         TankHealth tankHealth = player.GetComponent<TankHealth>();
         for (int i = 0; i < skillLevel; i++)
             yield return HealPlayer(player, tankHealth);
@@ -49,6 +58,6 @@ public class HealSkill : Skill
     /// <returns>返回是否点击玩家</returns>
     public override bool ReleaseCondition()
     {
-        return SkillManager.Instance.aim.HitGameObject != null && SkillManager.Instance.aim.HitGameObject.GetComponent<TankHealth>() != null;
+        return AllSkillManager.Instance.aim.HitGameObject != null && AllSkillManager.Instance.aim.HitGameObject.GetComponent<TankHealth>() != null;
     }
 }
