@@ -29,48 +29,10 @@ public abstract class Skill : MonoBehaviour
         buttonImage.color = disableColor;
     }
 
-    #region 更新冷却时间、检查是否在游戏进行回合状态，并设置技能是否可用
-
-    /// <summary>
-    /// 更新冷却时间、鼠标位置、鼠标点击时释放技能
-    /// </summary>
-    private void Update()
-    {
-        if (!GameRoundPlaying())        //游戏没开始就直接return
-            return;
-        UpdateCoolDown();               //更新冷却时间
-    }
-
-    /// <summary>
-    /// 根据游戏是否开始，来设置技能能否使用，返回是否可以使用（是否正在游戏）
-    /// </summary>
-    /// <returns>目前游戏回合状态</returns>
-    private bool GameRoundPlaying()
-    {
-        if (GameRecord.Instance.CurrentGameState == GameState.Playing)
-            return SetSkillEnableByGamePlaying(true);
-        return SetSkillEnableByGamePlaying(false);
-    }
-
-    /// <summary>
-    /// 只有当gamePlaying 和 isPlaying 不同时才会改变技能是否有效。即只有从 开始到进行触发一次，进行到结束触发一次
-    /// </summary>
-    /// <param name="isPlaying">是否正在游戏</param>
-    /// <returns>返回参数</returns>
-    private bool SetSkillEnableByGamePlaying(bool isPlaying)
-    {
-        if (gamePlaying != isPlaying)
-        {
-            gamePlaying = isPlaying;
-            SetSkillEnable(isPlaying);
-        }
-        return isPlaying;
-    }
-
     /// <summary>
     /// 更新冷却时间，通过Time.deltaTime改变。同时改变按钮颜色和滑动条长度
     /// </summary>
-    private void UpdateCoolDown()
+    public void UpdateCoolDown()
     {
         if (remainReleaseTime == 0)
             return;
@@ -85,8 +47,6 @@ public abstract class Skill : MonoBehaviour
         remainReleaseTime -= Time.deltaTime;
         buttonImage.color = disableColor;
     }
-
-    #endregion
 
     /// <summary>
     /// 鼠标移动到按钮或移出按钮时响应
@@ -136,21 +96,17 @@ public abstract class Skill : MonoBehaviour
     /// </summary>
     /// <param name="enable">是否激活技能</param>
     /// <returns>返回是否激活</returns>
-    public bool SetSkillEnable(bool enable)
+    public void SetSkillEnable(bool enable)
     {
         if (enable)
             buttonImage.color = normalColor;
-        else
+        else if (!enable)
         {
             coolDownSlider.value = coolDownSlider.minValue;
             remainReleaseTime = coolDownTime;
             buttonImage.color = disableColor;
-            if (isReady)
-                isReady = false;
-            //Debug.Log("Stop SkillEffect");
-            //StopCoroutine(SkillEffect());
+            isReady = false;
         }
-        return enabled;
     }
 
     /// <summary>

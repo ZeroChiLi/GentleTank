@@ -11,10 +11,12 @@ public class SkillManager : MonoBehaviour
     public Aim aim;                                         // 瞄准光标
 
     private List<Skill> skillList;                          // 所有技能对应的技能脚本
+    private List<Rect> skillRectList;                       // 所有技能方块
     private GridLayoutGroup gridLayoutGroup;                // 技能布局
     private RectTransform rectTransform;                    // 技能布局位置大小
     private int currentSkillIndex = -1;                     // 当前鼠标指向技能索引
     private int readySkillIndex = -1;                       // 准备释放的技能索引
+    private bool allSkillEnable = false;                    // 所有技能是否有效
 
     /// <summary>
     /// 获取大小位置，每个技能按键大小，距离间隔
@@ -25,6 +27,21 @@ public class SkillManager : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
         skillList = new List<Skill>();
+        skillRectList = new List<Rect>();
+        InitAllSkillRect();
+    }
+
+    /// <summary>
+    /// 初始化所有技能所占方块位置和大小
+    /// </summary>
+    private void InitAllSkillRect()
+    {
+        Vector2 currentPosition = rectTransform.offsetMin;
+        for (int i = 0; i < skillObjectList.Count; i++)
+        {
+            skillRectList.Add(new Rect(currentPosition, gridLayoutGroup.cellSize));
+            currentPosition += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
+        }
     }
 
     /// <summary>
@@ -49,10 +66,14 @@ public class SkillManager : MonoBehaviour
         {
             readySkillIndex = -1;
             aim.SetActive(false);
+            SetAllSkillEnable(false);
             return;
         }
 
+        SetAllSkillEnable(true);
+        UpdateAllSkillCoolDown();
         UpdateCurrentSkillIndex(Input.mousePosition);
+
 
         // 如果技能进入准备状态，随着鼠标位置是否在按钮上，若在，取消瞄准激活
         if (readySkillIndex != -1)
@@ -72,22 +93,40 @@ public class SkillManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 获取点击的技能的索引值，无效返回-1
+    /// 设置所有技能是否有效
+    /// </summary>
+    /// <param name="enable">是否有效</param>
+    private void SetAllSkillEnable(bool enable)
+    {
+        if (allSkillEnable == enable)
+            return;
+        allSkillEnable = enable;
+        for (int i = 0; i < skillList.Count; i++)
+            skillList[i].SetSkillEnable(enable);
+    }
+
+    /// <summary>
+    /// 更新所有技能冷却时间
+    /// </summary>
+    private void UpdateAllSkillCoolDown()
+    {
+        for (int i = 0; i < skillList.Count; i++)
+            skillList[i].UpdateCoolDown();
+    }
+
+    /// <summary>
+    /// 获取点击的技能的索引值，结果返回到currentSkillIndex，无效为-1
     /// </summary>
     /// <param name="position">点击的位置</param>
     /// <returns></returns>
     private void UpdateCurrentSkillIndex(Vector3 position)
     {
-        Rect cellRect = new Rect(rectTransform.offsetMin, gridLayoutGroup.cellSize);
-        for (int i = 0; i < skillObjectList.Count; i++)
-        {
-            if (cellRect.Contains(position))
+        for (int i = 0; i < skillRectList.Count; i++)
+            if (skillRectList[i].Contains(position))
             {
                 currentSkillIndex = i;
                 return;
             }
-            cellRect.position += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
-        }
         currentSkillIndex = -1;
     }
 
