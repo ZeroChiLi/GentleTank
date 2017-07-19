@@ -52,7 +52,7 @@ public abstract class Skill : MonoBehaviour
     /// 鼠标移动到按钮或移出按钮时响应
     /// </summary>
     /// <param name="enter">true进入，否则是移出</param>
-    public void OnMouseOnButton(bool enter)
+    public void MouseOnButton(bool enter)
     {
         if (remainReleaseTime > 0 || isReady)       //如果还在冷却时间，保持灰色；如果还在准备状态，保持高亮。
             return;
