@@ -21,7 +21,7 @@ public class ShellRainSkill : Skill
     /// <summary>
     /// 初始化警告区域位置
     /// </summary>
-    public override void CustomInit()
+    public override void Init()
     {
         warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
     }

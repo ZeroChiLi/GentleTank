@@ -8,8 +8,9 @@ public class AllSkillManager : MonoBehaviour
     public static AllSkillManager Instance;                    // 技能管理单例
 
     public Aim aim;                                         // 瞄准光标
-    public List<Skill> skillList;                           // 所有技能对应的技能脚本
+    public List<Skill> skillList;                           // 技能特性列表
 
+    private List<SkillManager> skillManagerList;            // 技能通常控制列表
     private List<Rect> skillRectList;                       // 所有技能方块
     private GridLayoutGroup gridLayoutGroup;                // 技能布局
     private RectTransform rectTransform;                    // 技能布局位置大小
@@ -26,6 +27,7 @@ public class AllSkillManager : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
         skillRectList = new List<Rect>();
+        skillManagerList = new List<SkillManager>();
     }
 
     ///// <summary>
@@ -37,7 +39,7 @@ public class AllSkillManager : MonoBehaviour
         for (int i = 0; i < skillList.Count; i++)
         {
             //创建技能按钮
-            skillList[i].CreateSkillButton(transform);
+            skillManagerList.Add(skillList[i].CreateSkillButton(transform).GetComponent<SkillManager>());
 
             //计算每个按钮所占区域
             skillRectList.Add(new Rect(currentPosition, gridLayoutGroup.cellSize));
@@ -90,8 +92,8 @@ public class AllSkillManager : MonoBehaviour
         if (allSkillEnable == enable)
             return;
         allSkillEnable = enable;
-        for (int i = 0; i < skillList.Count; i++)
-            skillList[i].SetSkillEnable(enable);
+        for (int i = 0; i < skillManagerList.Count; i++)
+            skillManagerList[i].SetSkillEnable(enable);
     }
 
     /// <summary>
@@ -99,8 +101,8 @@ public class AllSkillManager : MonoBehaviour
     /// </summary>
     private void UpdateAllSkillCoolDown()
     {
-        for (int i = 0; i < skillList.Count; i++)
-            skillList[i].UpdateCoolDown();
+        for (int i = 0; i < skillManagerList.Count; i++)
+            skillManagerList[i].UpdateCoolDown();
     }
 
     /// <summary>
@@ -137,18 +139,18 @@ public class AllSkillManager : MonoBehaviour
         if (readySkillIndex == -1)
         {
             //且可以进入准备状态（过了冷却时间），那就进入准备状态
-            if (skillList[currentSkillIndex].CanReady())
+            if (skillManagerList[currentSkillIndex].CanReady())
             {
-                skillList[currentSkillIndex].Ready();
+                skillManagerList[currentSkillIndex].Ready();
                 readySkillIndex = currentSkillIndex;
-                aim.SetAimMode(skillList[currentSkillIndex].aimMode);
+                aim.SetAimMode(skillManagerList[currentSkillIndex].skill.aimMode);
                 aim.SetActive(true);
             }
         }
         // 第二次点击任意技能，都会取消上一次技能的准备状态
         else
         {
-            skillList[readySkillIndex].Cancel();
+            skillManagerList[readySkillIndex].Cancel();
             aim.SetActive(false);
             readySkillIndex = -1;
         }
@@ -160,10 +162,9 @@ public class AllSkillManager : MonoBehaviour
     private void SceneOnClicked()
     {
         //已经点击了技能，且满足释放条件（过了冷却时间和满足自定义条件）就释放该技能
-        if (readySkillIndex != -1 && skillList[readySkillIndex].CanRelease())
+        if (readySkillIndex != -1 && skillManagerList[readySkillIndex].CanRelease())
         {
-            skillList[readySkillIndex].Release();
-            StartCoroutine(skillList[readySkillIndex].SkillEffect());
+            skillManagerList[readySkillIndex].Release();
             aim.SetActive(false);
             readySkillIndex = -1;
         }

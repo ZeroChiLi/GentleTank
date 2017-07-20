@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Aim : MonoBehaviour
 {
-    public Image aimImage;                          // 当前瞄准图片
     public AimMode aimMode;                         // 当前瞄准模型
 
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
@@ -14,6 +10,7 @@ public class Aim : MonoBehaviour
 
     protected bool aimEnable = true;                // 瞄准是否有效
 
+    private Image aimImage;                         // 当前瞄准图片
     private Camera gameCamera;                      // 游戏镜头
     private Vector3 inputHitPos;                    // 鼠标射线射到的点
     private GameObject inputHitGameObject;          // 射线射到的物体

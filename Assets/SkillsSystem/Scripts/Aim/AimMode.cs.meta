@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: 16e098fa703e1e143a1bccc5de3fd503
-timeCreated: 1500183689
+timeCreated: 1500557385
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - aimSprite: {fileID: 21300000, guid: 8df4747dbf7925a45a3f9d135b3137ff, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

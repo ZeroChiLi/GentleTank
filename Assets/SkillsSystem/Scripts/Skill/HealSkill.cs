@@ -13,14 +13,14 @@ public class HealSkill : Skill
     [Range(0, 10f)]
     public float healRate = 0.5f;             //技能每次释放频率
 
-    private WaitForSeconds waitTime;        //每次治愈时间间隔一样
+    private WaitForSeconds healWaitTime;        //每次治愈时间间隔一样
 
     /// <summary>
     /// 初始化
     /// </summary>
-    public override void CustomInit()
+    public override void Init()
     {
-        waitTime = new WaitForSeconds(healRate);
+        healWaitTime = new WaitForSeconds(healRate);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class HealSkill : Skill
         healPool.GetNextObject().transform.position = player.transform.position;
         //加血
         tankHealth.GainHeal(healVolume);
-        yield return waitTime;
+        yield return healWaitTime;
     }
 
     /// <summary>
