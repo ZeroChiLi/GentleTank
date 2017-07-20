@@ -7,10 +7,9 @@ public class AllSkillManager : MonoBehaviour
 {
     public static AllSkillManager Instance;                    // 技能管理单例
 
-    public List<SkillModel> skillModelList;                 // 技能模型列表
     public Aim aim;                                         // 瞄准光标
+    public List<Skill> skillList;                           // 所有技能对应的技能脚本
 
-    private List<Skill> skillList;                          // 所有技能对应的技能脚本
     private List<Rect> skillRectList;                       // 所有技能方块
     private GridLayoutGroup gridLayoutGroup;                // 技能布局
     private RectTransform rectTransform;                    // 技能布局位置大小
@@ -26,22 +25,7 @@ public class AllSkillManager : MonoBehaviour
         Instance = this;
         rectTransform = GetComponent<RectTransform>();
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
-        skillList = new List<Skill>();
         skillRectList = new List<Rect>();
-        InitAllSkillRect();
-    }
-
-    /// <summary>
-    /// 初始化所有技能所占方块位置和大小
-    /// </summary>
-    private void InitAllSkillRect()
-    {
-        Vector2 currentPosition = rectTransform.offsetMin;
-        for (int i = 0; i < skillModelList.Count; i++)
-        {
-            skillRectList.Add(new Rect(currentPosition, gridLayoutGroup.cellSize));
-            currentPosition += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
-        }
     }
 
     ///// <summary>
@@ -49,8 +33,16 @@ public class AllSkillManager : MonoBehaviour
     ///// </summary>
     private void Start()
     {
-        for (int i = 0; i < skillModelList.Count; i++)
-            skillList.Add(skillModelList[i].CreateSkillButton(transform).GetComponent<SkillManager>().skill);
+        Vector2 currentPosition = rectTransform.offsetMin;
+        for (int i = 0; i < skillList.Count; i++)
+        {
+            //创建技能按钮
+            skillList[i].CreateSkillButton(transform);
+
+            //计算每个按钮所占区域
+            skillRectList.Add(new Rect(currentPosition, gridLayoutGroup.cellSize));
+            currentPosition += gridLayoutGroup.spacing + new Vector2(gridLayoutGroup.cellSize.x, 0f);
+        }
     }
 
     /// <summary>

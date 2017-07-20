@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public abstract class Skill : ScriptableObject
 {
+    public string skillName;                        // 技能名称
+    public GameObject skillModelPerfab;             // 技能按钮模型
     public float coolDownTime = 1f;                 // 冷却时间
+    public Sprite CDFullSprite;                     // 技能滑动条充满时图片精灵
+    public Sprite CDEmptySprite;                    // 技能滑动条空时图片精灵
     public AimMode aimMode;                         // 技能对应的瞄准模型
     
     [HideInInspector]
@@ -24,14 +28,33 @@ public abstract class Skill : ScriptableObject
     private Color pressedColor = new Color(1, 0.27f, 0.27f);        // 点击颜色
     private Color disableColor = new Color(0.46f, 0.46f, 0.46f);    // 失效颜色
 
+
+    /// <summary>
+    /// 通过输入的属性创建技能按钮
+    /// </summary>
+    /// <returns>返回创建好的按钮</returns>
+    public GameObject CreateSkillButton(Transform parent)
+    {
+        GameObject newSkillButton = Instantiate(skillModelPerfab, parent);
+        SkillManager modelComponent = newSkillButton.GetComponent<SkillManager>();
+        modelComponent.buttonImage = newSkillButton.GetComponent<Image>();
+        modelComponent.fullImage.sprite = CDFullSprite;
+        modelComponent.emptyImage.sprite = CDEmptySprite;
+
+        modelComponent.skill = this;
+        modelComponent.skill.InitSkill(modelComponent);
+
+        return newSkillButton;
+    }
+
     /// <summary>
     /// 初始化滑动条最大值
     /// </summary>
-    public void InitSkill(Slider slider,Image buttonImage,EventTrigger eventTrigger)
+    public void InitSkill(SkillManager skillManager)
     {
-        coolDownSlider = slider;
-        this.buttonImage = buttonImage;
-        this.eventTrigger = eventTrigger;
+        coolDownSlider = skillManager.slider;
+        buttonImage = skillManager.buttonImage;
+        eventTrigger = skillManager.evenTrigger;
         coolDownSlider.maxValue = coolDownTime;
         remainReleaseTime = coolDownTime;
         buttonImage.color = disableColor;

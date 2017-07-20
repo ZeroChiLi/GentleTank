@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -129,19 +127,18 @@
     <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
     <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />
-    <Compile Include="Assets\Skill\Scripts\Aim\Aim.cs" />
-    <Compile Include="Assets\Skill\Scripts\Aim\AimMode.cs" />
-    <Compile Include="Assets\Skill\Scripts\Effects\WarnningArea.cs" />
-    <Compile Include="Assets\Skill\Scripts\Skill\HealSkill.cs" />
-    <Compile Include="Assets\Skill\Scripts\Skill\ShellRainSkill.cs" />
-    <Compile Include="Assets\Skill\Scripts\Skill\Skill.cs" />
-    <Compile Include="Assets\Skill\Scripts\Skill\SkillModel.cs" />
-    <Compile Include="Assets\Skill\Scripts\Skill\SkillManager.cs" />
-    <Compile Include="Assets\Skill\Scripts\AllSkillManager.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Aim\Aim.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Aim\AimMode.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\AllSkillManager.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Effects\WarnningArea.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Skill\HealSkill.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Skill\ShellRainSkill.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Skill\Skill.cs" />
+    <Compile Include="Assets\SkillsSystem\Scripts\Skill\SkillManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
-    <None Include="Assets\Skill\Shader\Outlined.shader" />
+    <None Include="Assets\SkillsSystem\Shader\Outlined.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

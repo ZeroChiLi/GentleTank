@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -128,11 +126,11 @@
     <Compile Include="Assets\Main Assets\Editor\MoveSceneViewCamera.cs" />
     <Compile Include="Assets\Main Assets\Editor\TanksToTeams.cs" />
     <Compile Include="Assets\PluggableAI\Editor\AIStatsEditor.cs" />
-    <Compile Include="Assets\Skill\Editor\AimModeEditor.cs" />
+    <Compile Include="Assets\SkillsSystem\Editor\AimModeEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
-    <None Include="Assets\Skill\Shader\Outlined.shader" />
+    <None Include="Assets\SkillsSystem\Shader\Outlined.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

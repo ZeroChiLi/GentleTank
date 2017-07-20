@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: f72d3502940fc444e8f9beb62d80b28c
+timeCreated: 1500523843
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - skillModelPerfab: {fileID: 1204286105137276, guid: f5fa5948c238e6c4195f2289aa6796aa,
+      type: 2}
+  - CDFullSprite: {instanceID: 0}
+  - CDEmptySprite: {instanceID: 0}
+  - aimMode: {fileID: 11400000, guid: e9fcc3996e0abf749adcc66415012c7b, type: 2}
+  - coolDownSlider: {instanceID: 0}
+  - buttonImage: {instanceID: 0}
+  - eventTrigger: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
