@@ -144,8 +144,8 @@ public class AllSkillManager : MonoBehaviour
             {
                 skillManagerList[currentSkillIndex].Ready();
                 readySkillIndex = currentSkillIndex;
-                aim.SetAimMode(skillManagerList[currentSkillIndex].skill.aimMode);
                 aim.SetActive(true);
+                aim.SetAimMode(skillManagerList[currentSkillIndex].skill.aimMode);
             }
         }
         // 第二次点击任意技能，都会取消上一次技能的准备状态

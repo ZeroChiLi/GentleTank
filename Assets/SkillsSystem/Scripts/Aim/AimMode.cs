@@ -15,8 +15,12 @@ public class TagWithColor
 [CreateAssetMenu(menuName = "Skill/Aim Mode")]
 public class AimMode : ScriptableObject
 {
-    public Sprite aimSprite;                            // 瞄准图片精灵
-    public bool showInScreen = true;                    // 是否显示在屏幕，否则显示在场景中
+    public bool showInGround = false;                   // 是否显示在世界空间
+    public Sprite groundSprite;                         // 显示在世界空间的图片精灵
+    public float groundSpriteRadius = 5f;               // 世界空间的图片半径
+    public bool showInScreen = true;                    // 是否显示在屏幕
+    public Sprite screenSprite;                         // 显示在屏幕的精灵
+    public float screenSpriteRadius = 32f;              // 瞄准图片半径
     public Color normalColor = Color.black;             // 正常状态颜色
     public Color disableColor = Color.gray;             // 无效状态颜色
     public List<TagWithColor> tagColorList = new List<TagWithColor>();  // 标签颜色列表

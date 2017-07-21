@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Aim : MonoBehaviour
 {
     public AimMode aimMode;                         // 当前瞄准模型
+    public Image groundAimImage;                    // 显示在世界区域的瞄准图片
 
     public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
     public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
@@ -24,6 +25,7 @@ public class Aim : MonoBehaviour
         aimImage = GetComponent<Image>();
         gameCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         aimImage.color = aimMode.normalColor;
+        SetAimMode(aimMode);
     }
 
     /// <summary>
@@ -69,15 +71,19 @@ public class Aim : MonoBehaviour
     }
 
     /// <summary>
-    /// 设置当前瞄准模型
+    /// 设置当前瞄准模式
     /// </summary>
-    /// <param name="aimMode">瞄准模型</param>
+    /// <param name="aimMode">瞄准模式</param>
     public void SetAimMode(AimMode aimMode)
     {
         this.aimMode = aimMode;
+        aimImage.rectTransform.sizeDelta = Vector2.one * aimMode.screenSpriteRadius * 2;
+        aimImage.enabled = aimMode.showInScreen;
+        aimImage.sprite = aimMode.screenSprite;
+        groundAimImage.rectTransform.sizeDelta = Vector2.one * aimMode.groundSpriteRadius * 2;
+        groundAimImage.enabled = aimMode.showInGround;
+        groundAimImage.sprite = aimMode.groundSprite;
     }
-
-    #region 设置激活状态、位置、瞄准状态
 
     /// <summary>
     /// 设置对象激活状态
@@ -86,6 +92,7 @@ public class Aim : MonoBehaviour
     public void SetActive(bool active)
     {
         gameObject.SetActive(active);
+        groundAimImage.gameObject.SetActive(active);
     }
 
     /// <summary>
@@ -104,8 +111,8 @@ public class Aim : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         gameObject.transform.position = position;
+        if (inputHitPos != null)
+            groundAimImage.transform.position = inputHitPos + Vector3.up * 0.5f;
     }
-
-    #endregion
 
 }

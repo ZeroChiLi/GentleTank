@@ -24,6 +24,7 @@ public class ShellRainSkill : Skill
     public override void Init()
     {
         warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
+        aimMode.groundSpriteRadius = attackRadius;
     }
 
     /// <summary>
@@ -31,7 +32,6 @@ public class ShellRainSkill : Skill
     /// </summary>
     public override IEnumerator SkillEffect()
     {
-        warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
         Vector3 position = AllSkillManager.Instance.aim.HitPosition;
         ShowWarnningArea(position);             // 显示警告区域，在一段时间后再发起攻击
         yield return new WaitForSeconds(skillDelay);
