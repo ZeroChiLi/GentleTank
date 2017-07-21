@@ -18,6 +18,7 @@ public class SkillManager : MonoBehaviour
     private Color hightLightColor = new Color(1, 1, 0.45f);         // 高亮颜色
     private Color pressedColor = new Color(1, 0.27f, 0.27f);        // 点击颜色
     private Color disableColor = new Color(0.46f, 0.46f, 0.46f);    // 失效颜色
+    private Coroutine currentSkillCoroutine;                         // 当前技能释放时的协程
 
     /// <summary>
     /// 初始化技能管理器
@@ -129,6 +130,7 @@ public class SkillManager : MonoBehaviour
             remainReleaseTime = skill.coolDownTime;
             buttonImage.color = disableColor;
             isReady = false;
+            Stop();             // 停止掉技能协程
         }
     }
 
@@ -149,7 +151,16 @@ public class SkillManager : MonoBehaviour
         remainReleaseTime = slider.maxValue;
         isReady = false;
         Cancel();
-        StartCoroutine(skill.SkillEffect());
+        currentSkillCoroutine = StartCoroutine(skill.SkillEffect());
+    }
+
+    /// <summary>
+    /// 终止当前技能释放
+    /// </summary>
+    public void Stop()
+    {
+        if (currentSkillCoroutine != null)
+            StopCoroutine(currentSkillCoroutine);
     }
 
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AllSkillManager : MonoBehaviour
 {
-    public static AllSkillManager Instance;                    // 技能管理单例
+    public static AllSkillManager Instance;                 // 技能管理单例
 
     public Aim aim;                                         // 瞄准光标
     public List<Skill> skillList;                           // 技能特性列表
@@ -95,6 +95,7 @@ public class AllSkillManager : MonoBehaviour
         for (int i = 0; i < skillManagerList.Count; i++)
             skillManagerList[i].SetSkillEnable(enable);
     }
+
 
     /// <summary>
     /// 更新所有技能冷却时间
