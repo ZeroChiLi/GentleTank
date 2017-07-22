@@ -24,7 +24,6 @@ public class StateController : MonoBehaviour
 
     private TankInformation tankInfo;                       // 坦克信息
     private State startState;                               // 初始状态，每次复活后重置
-    private AllTeamsManager allTeamsManager;                // 所有团队管理器
     private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
     private void Awake()
@@ -60,10 +59,9 @@ public class StateController : MonoBehaviour
     }
 
     //配置AI
-    public void SetupAI(bool enable, AllTeamsManager teamsManager)
+    public void SetupAI(bool enable)
     {
         enabled = enable;
-        allTeamsManager = teamsManager;
         navMeshAgent.enabled = enable;
         GetNewNextWayPoint(true);
     }
@@ -123,7 +121,7 @@ public class StateController : MonoBehaviour
     //通过碰撞体判断是否队友
     public bool IsTeamMate(Collider collider)
     {
-        return allTeamsManager.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
+        return AllTeamsManager.Instance.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
     }
 
     public bool IsMyself(Collider collider)

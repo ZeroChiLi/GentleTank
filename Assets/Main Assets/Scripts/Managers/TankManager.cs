@@ -19,8 +19,7 @@ public class TankManager
 
     private GameObject instance;                            // 玩家实例
     private string coloredPlayerName;                       // 带颜色的玩家名
-    private AllTeamsManager allTeamsManager;                // 所有团队管理
-    private TeamManager playerTeam;                                // 玩家所在团队
+    private TeamManager playerTeam;                         // 玩家所在团队
 
     private TankMovement tankMovement;                      // 移动
     private TankShooting tankShooting;                      // 攻击
@@ -46,10 +45,9 @@ public class TankManager
     /// <param name="instance">坦克Perfab</param>
     /// <param name="spawnPoint">出生点</param>
     /// <param name="allTeamsManager">所有团队管理器</param>
-    public void InitTank(GameObject instance, AllTeamsManager allTeamsManager)
+    public void InitTank(GameObject instance)
     {
         this.instance = instance;
-        this.allTeamsManager = allTeamsManager;
 
         SetupComponent();                               // 获取私有组件
         SetControlEnable(true);                         // 激活相应的控制权
@@ -77,7 +75,7 @@ public class TankManager
     /// </summary>
     private void SetupTankInformation()
     {
-        playerTeam = allTeamsManager.GetTeamByPlayerID(PlayerID);                           // 坦克所在队伍
+        playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);                           // 坦克所在队伍
         tankInformation.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);       // 坦克颜色
         coloredPlayerName = playerName;                                                     // 玩家名字富文本
         if (playerTeam != null)
@@ -138,7 +136,7 @@ public class TankManager
         if (tankMovement != null)
             tankMovement.enabled = false;
         if (stateController != null)
-            stateController.SetupAI(enable, allTeamsManager);
+            stateController.SetupAI(enable);
         else
             Debug.LogError("If This Tank Is AI,You Need 'StateController' Script Compontent");
     }

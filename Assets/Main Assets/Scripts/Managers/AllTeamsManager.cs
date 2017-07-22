@@ -4,11 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Configure/All Teams Manager")]
 public class AllTeamsManager : ScriptableObject
 {
-    [Header("Open 'Window/Tanks To Team',")]
-    [Header("And Select Player's Team.")]
-    [Space()]
+    static private AllTeamsManager instance;                            // 团队管理器单例
+    static public AllTeamsManager Instance { get { return instance; } } 
 
-    public TeamManager[] teamArray;                                // 所有团队
+    public TeamManager[] teamArray;                             // 所有团队
 
     public TeamManager this[int index]
     {
@@ -17,6 +16,15 @@ public class AllTeamsManager : ScriptableObject
     }
 
     public int Length { get { return teamArray.Length; } }
+
+    /// <summary>
+    /// 设置单例
+    /// </summary>
+    public void SetupInstance()
+    {
+        instance = this;
+        Debug.Log("AllTeamsManager Instance Setup");
+    }
 
     /// <summary>
     /// 是否包含该玩家

@@ -15,8 +15,6 @@ public class GameRecord
 {
     static public GameRecord Instance;
 
-    private AllTanksManager allTanksManager;
-    private AllTeamsManager allTeamsManager;
     private Dictionary<int, int> tanksIdTeamsIdDic;             // 坦克ID对应团队ID，没队的-1
 
     private int maxRound;                                       // 最大回合数
@@ -32,14 +30,10 @@ public class GameRecord
     /// 初始化构造游戏记录
     /// </summary>
     /// <param name="maxRound">最大回合数</param>
-    /// <param name="tanksManager">坦克管理器</param>
-    /// <param name="teamsManager">团队管理器</param>
-    public GameRecord(int maxRound, AllTanksManager tanksManager, AllTeamsManager teamsManager)
+    public GameRecord(int maxRound)
     {
         Instance = this;
         this.maxRound = maxRound;
-        allTanksManager = tanksManager;
-        allTeamsManager = teamsManager;
         tanksIdTeamsIdDic = new Dictionary<int, int>();
         playerWonTimes = new Dictionary<int, int>();
         InitTanksTeamsDic();
@@ -51,17 +45,17 @@ public class GameRecord
     private void InitTanksTeamsDic()
     {
         //先从所有队伍里面填进去进去
-        for (int i = 0; i < allTeamsManager.Length; i++)
-            for (int j = 0; j < allTeamsManager[i].Count; j++)
-                tanksIdTeamsIdDic[allTeamsManager[i][j]] = allTeamsManager[i].TeamID;
+        for (int i = 0; i < AllTeamsManager.Instance.Length; i++)
+            for (int j = 0; j < AllTeamsManager.Instance[i].Count; j++)
+                tanksIdTeamsIdDic[AllTeamsManager.Instance[i][j]] = AllTeamsManager.Instance[i].TeamID;
         //没有队伍的加进去赋值-1,顺便初始化playerWonTimes
-        for (int i = 0; i < allTanksManager.Count; i++)
+        for (int i = 0; i < AllTanksManager.Instance.Count; i++)
         {
-            if (!tanksIdTeamsIdDic.ContainsKey(allTanksManager[i].PlayerID))
-                tanksIdTeamsIdDic[allTanksManager[i].PlayerID] = -1;
+            if (!tanksIdTeamsIdDic.ContainsKey(AllTanksManager.Instance[i].PlayerID))
+                tanksIdTeamsIdDic[AllTanksManager.Instance[i].PlayerID] = -1;
 
             //这里顺便初始化playerWonTimes，为了省一圈循环
-            playerWonTimes[allTanksManager[i].PlayerID] = 0;
+            playerWonTimes[AllTanksManager.Instance[i].PlayerID] = 0;
         }
 
     }
@@ -93,14 +87,14 @@ public class GameRecord
         currentGameState = GameState.Playing;
         bool haveWinner = false;
         int playerID = -1;
-        for (int i = 0; i < allTanksManager.Count; i++)
-            if (allTanksManager[i].Instance.activeSelf)
+        for (int i = 0; i < AllTanksManager.Instance.Count; i++)
+            if (AllTanksManager.Instance[i].Instance.activeSelf)
             {
-                int playerTeamID = tanksIdTeamsIdDic[allTanksManager[i].PlayerID];
+                int playerTeamID = tanksIdTeamsIdDic[AllTanksManager.Instance[i].PlayerID];
                 // 遍历获取第一个赢的人
                 if (!haveWinner)
                 {
-                    playerID = allTanksManager[i].PlayerID;
+                    playerID = AllTanksManager.Instance[i].PlayerID;
                     haveWinner = true;
                 }
                 // 第二个赢得的人没有队伍或与第一个人队伍不同，也说明没结束
@@ -189,7 +183,7 @@ public class GameRecord
     /// <returns>获胜团队</returns>
     private TeamManager GetWonTeam()
     {
-        return allTeamsManager.GetTeamByPlayerID(wonPlayerID);
+        return AllTeamsManager.Instance.GetTeamByPlayerID(wonPlayerID);
     }
 
     /// <summary>
@@ -198,7 +192,7 @@ public class GameRecord
     /// <returns>获胜玩家</returns>
     private TankManager GetWonTank()
     {
-        return allTanksManager.GetTankByID(wonPlayerID);
+        return AllTanksManager.Instance.GetTankByID(wonPlayerID);
     }
 
     /// <summary>
@@ -218,7 +212,7 @@ public class GameRecord
         {
             message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
             foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
-                message.AppendFormat("{0} : {1} WINS\n", allTanksManager.GetTankByID(item.Key).ColoredPlayerName, item.Value);
+                message.AppendFormat("{0} : {1} WINS\n", AllTanksManager.Instance.GetTankByID(item.Key).ColoredPlayerName, item.Value);
         }
 
         return message.ToString();

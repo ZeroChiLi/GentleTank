@@ -4,8 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Configure/All Tanks Manager")]
 public class AllTanksManager : ScriptableObject
 {
-    public TankManager[] tanks;
-    private List<TankManager> activeTanks;
+    static private AllTanksManager instance;                    // 坦克管理单例
+    static public AllTanksManager Instance { get { return instance; } }
+
+    public TankManager[] tanks;                                 // 所有坦克
+    private List<TankManager> activeTanks;                      // 所有有效坦克
 
     // 有效坦克的索引
     public TankManager this[int index]
@@ -17,7 +20,20 @@ public class AllTanksManager : ScriptableObject
     public int OriginalLength { get { return tanks.Length; } }  //所有坦克数量
     public int Count { get { return activeTanks.Count; } }      //有效坦克数量
 
-    //获取原始坦克
+    /// <summary>
+    /// 设置单例
+    /// </summary>
+    public void SetupInstance()
+    {
+        instance = this;
+        Debug.Log("AllTanksManager Instance Setup");
+    }
+
+    /// <summary>
+    /// 获取坦克（包括无效）
+    /// </summary>
+    /// <param name="index">索引</param>
+    /// <returns>索引对应坦克</returns>
     public TankManager GetOriginalTank(int index)
     {
         return tanks[index];
