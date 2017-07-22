@@ -8,27 +8,34 @@ public class MinimapManager : MonoBehaviour
     public float zoom = 1;                                  // 缩放大小
     public GameObject minimapContent;                       // 小地图内容
     public GameObject playerIcon;                           // 代表玩家图标
+    public GameObject cameraRig;                            // 相机设备
 
     private bool isSetup = false;                           // 是否已经配置好
     private AllTanksManager allTanksManager;                // 所有坦克管理
     private AllTeamsManager allTeamsManager;                // 所有团队管理
     private Dictionary<Transform,GameObject> allPlayerIcon; // 所有玩家位置及对应图标
     private Transform target;                               // 追随目标
+    private Quaternion contentRotate;                       // 小地图旋转角
 
-    // 更新目标，所有图标位置
+    /// <summary>
+    /// 更新目标，所有图标位置
+    /// </summary>
     private void Update()
     {
         if (!isSetup)
             return;
-        if (target == null /*|| target.gameObject.activeSelf*/)
+        if (target == null)
             SetTargetRandomly();
         UpdateAllIconPosition();
     }
 
-    // 添加玩家图标列表
+    /// <summary>
+    /// 初始化玩家图标列表
+    /// </summary>
+    /// <param name="tanksManager"></param>
+    /// <param name="teamsManager"></param>
     public void SetupPlayerIconDic(AllTanksManager tanksManager, AllTeamsManager teamsManager)
     {
-        isSetup = true;
         allPlayerIcon = new Dictionary<Transform, GameObject>();
         allTanksManager = tanksManager;
         allTeamsManager = teamsManager;
@@ -39,16 +46,25 @@ public class MinimapManager : MonoBehaviour
             if (team != null)
                 icon.GetComponent<Image>().color = team.TeamColor;
             allPlayerIcon[allTanksManager[i].Instance.transform] = icon;
-        }
+        } 
+        // 旋转角，通过相机位置
+        contentRotate = Quaternion.Euler(new Vector3(0,0,cameraRig.transform.rotation.eulerAngles.y));   
+        isSetup = true;
     }
 
-    // 设置目标
+
+    /// <summary>
+    /// 设置小地图中心目标
+    /// </summary>
+    /// <param name="target">中心目标</param>
     public void SetTarget(Transform target)
     {
         this.target = target;
     }
 
-    // 设置一个有效的坦克作为目标
+    /// <summary>
+    /// 随机设置目标
+    /// </summary>
     public void SetTargetRandomly()
     {
         for (int i = 0; i < allTanksManager.Count; i++)
@@ -59,8 +75,10 @@ public class MinimapManager : MonoBehaviour
             }
         SetTarget(new GameObject().transform);
     }
-    
-    // 更新所有玩家对应小地图位置
+
+    /// <summary>
+    /// 更新所有玩家对应小地图位置
+    /// </summary>
     public void UpdateAllIconPosition()
     {
         foreach (var item in allPlayerIcon)
@@ -71,11 +89,9 @@ public class MinimapManager : MonoBehaviour
                 continue;
 
             Vector3 realDistance = item.Key.transform.position - target.position;
-            Vector3 showDistance = new Vector3(realDistance.x, realDistance.z, 0) * zoom;
+            Vector3 showDistance = contentRotate * new Vector3(realDistance.x, realDistance.z, 0) * zoom;
             item.Value.transform.position = showDistance + allPlayerIcon[target].transform.position;
         }
     }
-
-
 
 }

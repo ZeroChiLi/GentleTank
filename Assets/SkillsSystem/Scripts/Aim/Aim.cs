@@ -111,8 +111,7 @@ public class Aim : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         gameObject.transform.position = position;
-        if (inputHitPos != null)
-            groundAimImage.transform.position = inputHitPos + Vector3.up * 0.5f;
+        groundAimImage.transform.position = inputHitPos + Vector3.up * 0.5f;
     }
 
 }

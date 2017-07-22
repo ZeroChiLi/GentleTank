@@ -5,17 +5,12 @@ public class CameraControl : MonoBehaviour
     public float dampTime = 0.2f;                   // 重新聚焦到的时间
     public float screenEdgeBuffer = 4f;             // 屏幕中最边界到玩家距离
     public float minSize = 6.5f;                    // 屏幕最小尺寸
+    public Camera controlCamera;                           // 摄像机
     [HideInInspector] public Transform[] targets;   // 所有参与显示到屏幕的transform
 
-    private Camera controlCamera;                   // 相机
     private float zoomSpeed;                        // 缩放速度
     private Vector3 moveVelocity;                   // 移动速度
     private Vector3 desiredPosition;                // 需要移到到地点
-
-    private void Awake()
-    {
-        controlCamera = GetComponentInChildren<Camera>();
-    }
 
     // 固定时间频率更新
     private void FixedUpdate()

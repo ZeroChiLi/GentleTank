@@ -162,7 +162,10 @@ public class GameRecord
         // 团队获胜， 加团队所有人
         TeamManager wonTeam = GetWonTeam();
         for (int i = 0; i < wonTeam.Count; i++)
-            playerWonTimes[wonTeam[i]]++;
+        {
+            if (playerWonTimes.ContainsKey(wonTeam[i]))     // 如果有玩家Active为False，那就不在字典里面
+                playerWonTimes[wonTeam[i]]++;
+        }
 
     }
 

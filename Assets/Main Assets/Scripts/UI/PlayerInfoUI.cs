@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInfoUI : MonoBehaviour
 {
@@ -31,7 +30,7 @@ public class PlayerInfoUI : MonoBehaviour
     /// </summary>
     private void SetupGUIStyle()
     {
-        style = new GUIStyle(EditorStyles.largeLabel);
+        style = new GUIStyle();
         style.alignment = TextAnchor.MiddleCenter;                  // 文本锚点左下角
         style.fontSize = fontSize;                                  // 字体大小
         style.font = font;                                          // 文本字体
