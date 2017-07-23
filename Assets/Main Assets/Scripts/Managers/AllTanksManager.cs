@@ -26,7 +26,6 @@ public class AllTanksManager : ScriptableObject
     public void SetupInstance()
     {
         instance = this;
-        Debug.Log("AllTanksManager Instance Setup");
     }
 
     /// <summary>

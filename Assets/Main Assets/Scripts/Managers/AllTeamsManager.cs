@@ -7,15 +7,17 @@ public class AllTeamsManager : ScriptableObject
     static private AllTeamsManager instance;                            // 团队管理器单例
     static public AllTeamsManager Instance { get { return instance; } } 
 
-    public TeamManager[] teamArray;                             // 所有团队
+    public List<TeamManager> teamList;                          // 所有团队
+
+    private Dictionary<int, TeamManager> playerFromTeam;        // 玩家ID对应团队
 
     public TeamManager this[int index]
     {
-        get { return teamArray[index]; }
-        set { teamArray[index] = value; }
+        get { return teamList[index]; }
+        set { teamList[index] = value; }
     }
 
-    public int Length { get { return teamArray.Length; } }
+    public int Length { get { return teamList.Count; } }
 
     /// <summary>
     /// 设置单例
@@ -23,7 +25,22 @@ public class AllTeamsManager : ScriptableObject
     public void SetupInstance()
     {
         instance = this;
-        Debug.Log("AllTeamsManager Instance Setup");
+    }
+
+    /// <summary>
+    /// 启用时，初始化坦克队伍键值表
+    /// </summary>
+    private void OnEnable()
+    {
+        playerFromTeam = new Dictionary<int, TeamManager>();
+        if (teamList == null)
+            teamList = new List<TeamManager>();
+        for (int i = 0; i < teamList.Count; i++)
+        {
+            teamList[i].SetTeamID(i);
+            for (int j = 0; j < teamList[i].Count; j++)
+                playerFromTeam.Add(teamList[i][j], teamList[i]);
+        }
     }
 
     /// <summary>
@@ -33,10 +50,7 @@ public class AllTeamsManager : ScriptableObject
     /// <returns>返回是否包含该玩家</returns>
     public bool ContainsPlayer(int playerID)
     {
-        for (int i = 0; i < teamArray.Length; i++)
-            if (teamArray[i].Contains(playerID))
-                return true;
-        return false;
+        return playerFromTeam.ContainsKey(playerID);
     }
 
     /// <summary>
@@ -47,22 +61,9 @@ public class AllTeamsManager : ScriptableObject
     /// <returns>返回是否是队友</returns>
     public bool IsTeammate(int id1,int id2)
     {
-        for (int i = 0; i < teamArray.Length; i++)
-        {
-            if (teamArray[i].Contains(id1))
-            {
-                if (teamArray[i].Contains(id2))
-                    return true;
-                return false;
-            }
-            if (teamArray[i].Contains(id2))
-            {
-                if (teamArray[i].Contains(id1))
-                    return true;
-                return false;
-            }
-        }
-        return false;
+        if (!playerFromTeam.ContainsKey(id1) || !playerFromTeam.ContainsKey(id2))
+            return false;
+        return playerFromTeam[id1] == playerFromTeam[id2];
     }
 
     /// <summary>
@@ -72,23 +73,9 @@ public class AllTeamsManager : ScriptableObject
     /// <returns>返回对应团队</returns>
     public TeamManager GetTeamByPlayerID(int playerID)
     {
-        for (int i = 0; i < teamArray.Length; i++)
-            if (teamArray[i].Contains(playerID))
-                return teamArray[i];
-        return null;
-    }
-
-    /// <summary>
-    /// 通过团队ID获取团队
-    /// </summary>
-    /// <param name="teamID">团队ID</param>
-    /// <returns>返回对应团队</returns>
-    public TeamManager GetTeamByTeamID(int teamID)
-    {
-        for (int i = 0; i < teamArray.Length; i++)
-            if (teamArray[i].TeamID == teamID)
-                return teamArray[i];
-        return null;
+        if (!playerFromTeam.ContainsKey(playerID))
+            return null;
+        return playerFromTeam[playerID];
     }
 
     /// <summary>
@@ -98,9 +85,9 @@ public class AllTeamsManager : ScriptableObject
     /// <returns>返回对应团队颜色</returns>
     public Color GetTeamColor(int playerID)
     {
-        if (!ContainsPlayer(playerID))
+        if (!playerFromTeam.ContainsKey(playerID))
             return Color.white;
-        return GetTeamByPlayerID(playerID).TeamColor;
+        return playerFromTeam[playerID].TeamColor;
     }
 
     /// <summary>
@@ -108,11 +95,12 @@ public class AllTeamsManager : ScriptableObject
     /// </summary>
     /// <param name="playerID"></param>
     /// <param name="teamID"></param>
-    public void AddToTeam(int playerID,int teamID)
+    public void AddToTeam(int playerID,TeamManager team)
     {
-        if (ContainsPlayer(playerID))
-            GetTeamByPlayerID(playerID).Remove(playerID);
-        GetTeamByTeamID(teamID).Add(playerID);
+        if (playerFromTeam.ContainsKey(playerID))
+            RemoveFromTeam(playerID);
+        team.Add(playerID);
+        playerFromTeam[playerID] = team;
     }
 
     /// <summary>
@@ -121,9 +109,10 @@ public class AllTeamsManager : ScriptableObject
     /// <param name="playerID">玩家ID</param>
     public void RemoveFromTeam(int playerID)
     {
-        TeamManager team = GetTeamByPlayerID(playerID);
-        if (team != null && team.Contains(playerID))
-            team.Remove(playerID);
+        if (!playerFromTeam.ContainsKey(playerID))
+            return;
+        playerFromTeam[playerID].Remove(playerID);
+        playerFromTeam.Remove(playerID);
     }
 
 }

@@ -16,7 +16,7 @@ public class TanksToTeams : EditorWindow
     private bool[] tanksManagerShow;            // 对应坦克管理是否显示在面板
 
     // 坦克和选择的团队索引值，用来当回调函数参数用
-    class TankIdAndTeamIndex { public int tankId; public int teamId; }
+    class TankIdAndTeamIndex { public int tankId; public TeamManager team; }
 
     [MenuItem("Window/Tanks To Teams")]
     static void Init()
@@ -146,11 +146,11 @@ public class TanksToTeams : EditorWindow
     // 选择团队回调函数
     private void SelectedTeam(object tankToTeam)
     {
-        TankIdAndTeamIndex tankIdTeamIndex = tankToTeam as TankIdAndTeamIndex;
-        if (tankIdTeamIndex == null)
+        TankIdAndTeamIndex tankIdTeam = tankToTeam as TankIdAndTeamIndex;
+        if (tankIdTeam == null)
             return;
 
-        teamsManager.AddToTeam(tankIdTeamIndex.tankId, tankIdTeamIndex.teamId);
+        teamsManager.AddToTeam(tankIdTeam.tankId, tankIdTeam.team);
     }
 
     // 退出团队回调函数
@@ -177,7 +177,7 @@ public class TanksToTeams : EditorWindow
             {
                 if (team == teamsManager[i])        //跳过已经选中的队伍
                     continue;
-                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager.GetOriginalTank(currentIndex).PlayerID, teamId = teamsManager[i].TeamID });
+                menu.AddItem(new GUIContent(teamsManager[i].TeamName), false, SelectedTeam, new TankIdAndTeamIndex { tankId = tanksManager.GetOriginalTank(currentIndex).PlayerID, team = teamsManager[i] });
             }
             menu.ShowAsContext();
         }
