@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour 
 {
@@ -10,6 +7,22 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void LoadSoloScene()
     {
-        SceneManager.LoadScene(1);
+        AllSceneManager.LoadScene(GameScene.SoloScene);
+    }
+
+    /// <summary>
+    /// 加载多人游戏菜单
+    /// </summary>
+    public void LoadMultiplayerMenuScene()
+    {
+        AllSceneManager.LoadScene(GameScene.MultiMenuScene);
+    }
+
+    /// <summary>
+    /// 退出游戏
+    /// </summary>
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
