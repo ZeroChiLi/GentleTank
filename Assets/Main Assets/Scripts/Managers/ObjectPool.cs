@@ -13,7 +13,7 @@ public class ObjectPool : ScriptableObject
     public bool autoIncrease = true;            //如果需要自动增加
 
     [HideInInspector]
-    public GameObject poolParent;               //创建一个空GameObject来存这些子对象
+    public GameObject poolParent;               //对象池存放的父对象
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
 
@@ -26,9 +26,10 @@ public class ObjectPool : ScriptableObject
     /// <summary>
     /// 创建对象池
     /// </summary>
-    public void CreateObjectPool()
+    public void CreateObjectPool(GameObject poolParent = null)
     {
-        poolParent = new GameObject(objectPerfab.name + " Pool");
+        if (poolParent == null)     //如果没有设置父对象。创建一个空GameObject来存这些子对象
+            poolParent = new GameObject(objectPerfab.name + " Pool");
         objectPool = new List<GameObject>();
         for (int i = 0; i < objectCount; ++i)
         {

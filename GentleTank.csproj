@@ -119,11 +119,14 @@
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\SpawnAllPopUpArrow.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
+    <Compile Include="Assets\Menu\Scripts\AllRoomsManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MultiMenuManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\RoomInfoLabel.cs" />
+    <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
