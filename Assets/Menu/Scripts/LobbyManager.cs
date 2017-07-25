@@ -9,6 +9,7 @@ public class LobbyManager : MonoBehaviour
     public GameObject createRoomWindow;                     // 创建房间窗口
     public InputField playerName;                           // 玩家名输入字段
     public float refreshTime = 3f;                          // 刷新时间间隔
+    public AllRoomsManager allRoomsManager;                 // 所有房间标签管理
 
     private bool connectFailed = false;                     // 是否连接失败
     private float elapsed;                                  // 下一次刷新剩余时间
@@ -18,6 +19,9 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        if (toast == null)
+            Debug.Log("LobbyManager SHIT");
+
         PhotonNetwork.automaticallySyncScene = true;        // 定义所有客户端要转换场景时，需要同步主客户端。
 
         // 如果已经创建了客户端，但是还没有上线，那就连接上线呗。
@@ -69,6 +73,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void Refresh()
     {
+        allRoomsManager.Refresh(PhotonNetwork.GetRoomList());
         ShowServerInfo();
     }
 
