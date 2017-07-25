@@ -11,8 +11,13 @@ public class LobbyManager : MonoBehaviour
     public float refreshTime = 3f;                          // 刷新时间间隔
     public AllRoomsManager allRoomsManager;                 // 所有房间标签管理
 
+    public Color fpsGoodColor;                              // 延迟低颜色
+    public Color fpsGeneralColor;                           // 延迟一般颜色
+    public Color fpsBadColor;                               // 延迟严重颜色
+
     private bool connectFailed = false;                     // 是否连接失败
     private float elapsed;                                  // 下一次刷新剩余时间
+    private float currentPing;                              // 当前Ping值
 
     /// <summary>
     /// 连接客户端
@@ -85,11 +90,32 @@ public class LobbyManager : MonoBehaviour
         StringBuilder str = new StringBuilder();
         str.Append("当前玩家总数： ");
         str.Append(PhotonNetwork.countOfPlayers);
-        str.Append("  当前房间总数： ");
+        str.Append("    当前房间总数： ");
         str.Append(PhotonNetwork.countOfRooms);
+        str.Append("    延迟： ");
+        currentPing = PhotonNetwork.GetPing();
+        str.Append("<color=#");
+        str.Append(ColorUtility.ToHtmlStringRGB(GetPingColor(currentPing)));
+        str.Append(">");
+        str.Append(currentPing);
+        str.Append("ms</color>");
         infoText.text = str.ToString();
     }
 
+    /// <summary>
+    /// 获取延迟时间对应颜色
+    /// </summary>
+    /// <param name="ping">ping值</param>
+    /// <returns>返回延迟值对应颜色</returns>
+    public Color GetPingColor(float ping)
+    {
+        if (ping < 20f)
+            return fpsGoodColor;
+        else if (ping < 40f)
+            return fpsGeneralColor;
+        else
+            return fpsBadColor;
+    }
     /// <summary>
     /// 显示或关闭创建房间窗口
     /// </summary>

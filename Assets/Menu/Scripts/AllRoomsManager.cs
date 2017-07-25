@@ -30,12 +30,14 @@ public class AllRoomsManager : MonoBehaviour
         for (int i = 0; i < roomInfoArray.Length; i++)
         {
             if (!roomInfoLabelDic.ContainsKey(roomInfoArray[i]))
+            {
+                Debug.Log("New Room : " + roomInfoArray[i].Name);
                 roomInfoLabelDic.Add(roomInfoArray[i], roomInfoPool.GetNextObject().GetComponent<RoomInfoLabel>());
+            }
 
             roomInfoLabel = roomInfoLabelDic[roomInfoArray[i]];
             roomInfoLabel.SetRoommates(roomInfoArray[i].PlayerCount, roomInfoArray[i].MaxPlayers);
             roomInfoLabel.SetRoomName(roomInfoArray[i].Name);
-            roomInfoLabel.SetRoomDelay(PhotonNetwork.GetPing());
         }
     }
 

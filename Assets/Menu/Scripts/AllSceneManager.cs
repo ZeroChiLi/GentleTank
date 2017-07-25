@@ -10,7 +10,8 @@ public enum GameScene : byte
     MainMenuScene = 0,
     SoloScene = 1,
     MultiMenuScene = 2,
-    LobbyScene = 3
+    LobbyScene = 3,
+    RoomScene = 4,
 }
 
 /// <summary>
