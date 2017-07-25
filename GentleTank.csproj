@@ -124,6 +124,7 @@
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MultiMenuManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
