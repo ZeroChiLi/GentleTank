@@ -54,6 +54,8 @@ public class RoomLabelsManager : MonoBehaviour
                 needCleanedRooms.Add(item.Key);
         for (int i = 0; i < needCleanedRooms.Count; i++)
         {
+            if (roomInfoLabelDic[needCleanedRooms[i]] == SelectedLabel)
+                selectedLabel = null;
             roomInfoLabelDic[needCleanedRooms[i]].gameObject.SetActive(false);
             roomInfoLabelDic.Remove(needCleanedRooms[i]);
         }

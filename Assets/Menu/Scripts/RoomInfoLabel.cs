@@ -6,6 +6,8 @@ public class RoomInfoLabel : MonoBehaviour
     public Text roommatesCount;         // 房间人数文本
     public Text roomName;               // 房间名称文本
 
+    public string RoomName { get { return roomName.text; } }        // 获取房间名
+
     /// <summary>
     /// 设置房间人数文本
     /// </summary>
