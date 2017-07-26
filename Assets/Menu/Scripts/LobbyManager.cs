@@ -174,7 +174,21 @@ public class LobbyManager : MonoBehaviour
 
     public void OnPhotonJoinRoomFailed(object[] cause)
     {
-        toast.ShowToast(3f, "加入失败。");
+        switch (int.Parse(cause[0].ToString()))
+        {
+            case ErrorCode.GameFull:
+                toast.ShowToast(3f, "加入失败，房间已满。");
+                break;
+            case ErrorCode.GameDoesNotExist:
+                toast.ShowToast(3f, "加入失败，房间不存在。");
+                break;
+            case ErrorCode.GameClosed:
+                toast.ShowToast(3f, "加入失败，房间已关闭。");
+                break;
+            default:
+                toast.ShowToast(3f, "加入失败。" + cause[1]);
+                break;
+        }
     }
 
     public void OnPhotonRandomJoinFailed()
@@ -200,7 +214,7 @@ public class LobbyManager : MonoBehaviour
 
     public void OnConnectedToMaster()
     {
-        Debug.Log("As OnConnectedToMaster() got called, the PhotonServerSetting.AutoJoinLobby must be off. Joining lobby by calling PhotonNetwork.JoinLobby().");
+        Debug.Log("OnConnectedToMaster, the PhotonServerSetting.AutoJoinLobby must be off. Joining lobby by calling PhotonNetwork.JoinLobby().");
         PhotonNetwork.JoinLobby();
     }
 }

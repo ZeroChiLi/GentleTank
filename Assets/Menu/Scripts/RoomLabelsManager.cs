@@ -49,7 +49,7 @@ public class RoomLabelsManager : MonoBehaviour
     {
         roomInfoList = new List<RoomInfo>(roomInfoArray);
         needCleanedRooms.Clear();
-        foreach (var item in roomInfoLabelDic)
+        foreach (var item in roomInfoLabelDic)                  // 先获取需要清除的列表
             if (!roomInfoList.Contains(item.Key))
                 needCleanedRooms.Add(item.Key);
         for (int i = 0; i < needCleanedRooms.Count; i++)
@@ -69,11 +69,8 @@ public class RoomLabelsManager : MonoBehaviour
     {
         for (int i = 0; i < roomInfoArray.Length; i++)
         {
-            if (!roomInfoLabelDic.ContainsKey(roomInfoArray[i]))
-            {
-                Debug.Log("New Room : " + roomInfoArray[i].Name);
+            if (!roomInfoLabelDic.ContainsKey(roomInfoArray[i]))    // 新房间加入
                 roomInfoLabelDic.Add(roomInfoArray[i], roomInfoPool.GetNextObject().GetComponent<RoomInfoLabel>());
-            }
 
             roomInfoLabel = roomInfoLabelDic[roomInfoArray[i]];
             roomInfoLabel.SetRoommates(roomInfoArray[i].PlayerCount, roomInfoArray[i].MaxPlayers);
