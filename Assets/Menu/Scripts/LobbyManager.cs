@@ -80,6 +80,16 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 设置玩家名称
+    /// </summary>
+    public void SetPlayerName()
+    {
+        PhotonNetwork.playerName = playerName.text;
+        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
+        Debug.Log(PhotonNetwork.playerName + " 设置名字");
+    }
+
+    /// <summary>
     /// 刷新信息
     /// </summary>
     public void Refresh()
@@ -134,8 +144,7 @@ public class LobbyManager : MonoBehaviour
             toast.ShowToast(3f, "请输入玩家名称");
             return;
         }
-        PhotonNetwork.playerName = playerName.text;
-        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
+        SetPlayerName();
         createRoomWindow.SetActive(show);
     }
 
@@ -149,6 +158,7 @@ public class LobbyManager : MonoBehaviour
             toast.ShowToast(3f, "未选中任何房间。");
             return;
         }
+        SetPlayerName();
         PhotonNetwork.JoinRoom(roomLabelsManager.SelectedLabel.RoomName);
     }
 
@@ -157,6 +167,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void JoinRoomRandomly()
     {
+        SetPlayerName();
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -168,10 +179,9 @@ public class LobbyManager : MonoBehaviour
         AllSceneManager.LoadScene(GameScene.MultiMenuScene);
     }
 
-
     public void OnJoinedRoom()
     {
-        Debug.Log("加入房间");
+        Debug.Log(" OnJoinedRoom ");
     }
 
     public void OnPhotonJoinRoomFailed(object[] cause)
@@ -198,11 +208,6 @@ public class LobbyManager : MonoBehaviour
         toast.ShowToast(3f, "随机加入失败。");
     }
 
-    public void OnCreatedRoom()
-    {
-        Debug.Log("OnCreatedRoom");
-    }
-
     public void OnDisconnectedFromPhoton()
     {
         Debug.Log("Disconnected from Photon.");
@@ -214,9 +219,11 @@ public class LobbyManager : MonoBehaviour
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
 
+    /// <summary>
+    /// 房间创建者连接成功，房间加入到大厅
+    /// </summary>
     public void OnConnectedToMaster()
     {
-        Debug.Log("OnConnectedToMaster, the PhotonServerSetting.AutoJoinLobby must be off. Joining lobby by calling PhotonNetwork.JoinLobby().");
         PhotonNetwork.JoinLobby();
     }
 }
