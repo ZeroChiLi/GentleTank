@@ -134,6 +134,8 @@ public class LobbyManager : MonoBehaviour
             toast.ShowToast(3f, "请输入玩家名称");
             return;
         }
+        PhotonNetwork.playerName = playerName.text;
+        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
         createRoomWindow.SetActive(show);
     }
 
