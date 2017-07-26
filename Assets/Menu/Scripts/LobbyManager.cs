@@ -8,8 +8,8 @@ public class LobbyManager : MonoBehaviour
     public Toast toast;                                     // 提示信息
     public GameObject createRoomWindow;                     // 创建房间窗口
     public InputField playerName;                           // 玩家名输入字段
-    public float refreshTime = 3f;                          // 刷新时间间隔
-    public AllRoomsManager allRoomsManager;                 // 所有房间标签管理
+    public float refreshRate = 3f;                          // 刷新时间间隔
+    public RoomLabelsManager roomLabelsManager;             // 所有房间标签管理
 
     public Color fpsGoodColor;                              // 延迟低颜色
     public Color fpsGeneralColor;                           // 延迟一般颜色
@@ -48,7 +48,7 @@ public class LobbyManager : MonoBehaviour
         elapsed -= Time.deltaTime;
         if (elapsed < 0f)
         {
-            elapsed = refreshTime;
+            elapsed = refreshRate;
             Refresh();
         }
     }
@@ -78,7 +78,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void Refresh()
     {
-        allRoomsManager.Refresh(PhotonNetwork.GetRoomList());
+        roomLabelsManager.Refresh(PhotonNetwork.GetRoomList());
         ShowServerInfo();
     }
 

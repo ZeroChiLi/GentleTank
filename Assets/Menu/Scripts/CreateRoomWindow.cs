@@ -15,14 +15,6 @@ public class CreateRoomWindow : MonoBehaviour
     private int createRoomSize;             // 创建房间的大小
 
     /// <summary>
-    /// 初始化房间最小大小
-    /// </summary>
-    private void Awake()
-    {
-        createRoomSize = 2;
-    }
-
-    /// <summary>
     /// 限制房间大小
     /// </summary>
     public void RoomSizeClamp()
@@ -66,7 +58,7 @@ public class CreateRoomWindow : MonoBehaviour
     public void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
-        //AllSceneManager.LoadScene(GameScene.RoomScene);
+        AllSceneManager.LoadScene(GameScene.RoomScene);
     }
 
 }

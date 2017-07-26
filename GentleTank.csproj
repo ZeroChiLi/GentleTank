@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -119,7 +121,7 @@
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\SpawnAllPopUpArrow.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
-    <Compile Include="Assets\Menu\Scripts\AllRoomsManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\RoomLabelsManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
