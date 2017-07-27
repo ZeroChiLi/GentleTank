@@ -30,11 +30,6 @@ public class RoomManager : Photon.MonoBehaviour
             return;
         }
         playerPanel = PhotonNetwork.Instantiate(playerPanelPerfab.name, transform.position, Quaternion.identity, 0);
-        playerPanel.GetComponent<PlayerPanelManager>().Fill(PhotonNetwork.player);
-        //for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
-        //{
-        //    //PhotonNetwork.playerList[i].
-        //}
     }
 
     /// <summary>
@@ -96,15 +91,6 @@ public class RoomManager : Photon.MonoBehaviour
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-    }
-
-    /// <summary>
-    /// 更换房间主人时调用
-    /// </summary>
-    /// <param name="player"></param>
-    public void OnMasterClientSwitched(PhotonPlayer player)
-    {
-        Debug.Log("OnMasterClientSwitched: " + player);
     }
 
     /// <summary>
