@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class PlayerPanelManager : MonoBehaviour
 {
-    public Text playerNameText;
-
+    public bool isMaster;                                   // 是否是房主
     public Color activePlayerColor = Color.black;           // 有效玩家颜色
     public Color inactivePlayerColor = Color.grey;          // 无效玩家颜色
+    public Text playerNameText;                             // 玩家名称文本
+    public Image masterIcon;                                // 房主标签
 
     public bool IsUsed { get { return isUsed; } }
     public PhotonPlayer Player { get { return photonPlayer; } }
@@ -50,6 +51,15 @@ public class PlayerPanelManager : MonoBehaviour
         photonPlayer = null;
         playerNameText.text = "玩家 " + index;
         playerNameText.color = inactivePlayerColor;
+    }
+
+    /// <summary>
+    /// 设置是否为房主
+    /// </summary>
+    /// <param name="isMaster"></param>
+    public void SetMaster(bool isMaster)
+    {
+        masterIcon.gameObject.SetActive(isMaster);
     }
 
 }

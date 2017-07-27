@@ -5,16 +5,18 @@ using UnityEngine.UI;
 public class LobbyManager : MonoBehaviour
 {
     public Text infoText;                                   // 信息文本
-    public Toast toast;                                     // 提示信息
-    public GameObject createRoomWindow;                     // 创建房间窗口
     public InputField playerName;                           // 玩家名输入字段
     public float refreshRate = 3f;                          // 刷新时间间隔
     public RoomLabelsManager roomLabelsManager;             // 所有房间标签管理
+    public Toast toast;                                     // 提示信息
+    public GameObject createRoomWindow;                     // 创建房间窗口
+    public LoadingPanel loadingPanel;                       // 加载面板
 
     public Color fpsGoodColor;                              // 延迟低颜色
     public Color fpsGeneralColor;                           // 延迟一般颜色
     public Color fpsBadColor;                               // 延迟严重颜色
 
+    private bool connecting = false;                        // 正在连接
     private bool connectFailed = false;                     // 是否连接失败
     private float elapsed;                                  // 下一次刷新剩余时间
     private float currentPing;                              // 当前Ping值
@@ -37,11 +39,14 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 初始化随机命名玩家
+    /// 初始化玩家名字，若已经有，不修改
     /// </summary>
     private void Start()
     {
-        playerName.text = "玩家" + Random.Range(1, 9999);
+        loadingPanel.StartLoading();
+        playerName.text = PhotonNetwork.playerName;
+        if (string.IsNullOrEmpty(playerName.text))
+            playerName.text = "玩家" + Random.Range(1, 9999);
     }
 
     /// <summary>
@@ -66,12 +71,22 @@ public class LobbyManager : MonoBehaviour
     private bool IsConnected()
     {
         if (PhotonNetwork.connected)
+        {
+            if (connecting)
+            {
+                connecting = false;
+                loadingPanel.EndLoading();
+            }
             return true;
+        }
 
         if (PhotonNetwork.connecting)
+        {
+            connecting = true;
             infoText.text = "Connecting to: " + PhotonNetwork.ServerAddress;
+        }
         else
-            infoText.text = "Not connected. Connection state: " + PhotonNetwork.connectionStateDetailed + " Server: " + PhotonNetwork.ServerAddress;
+            infoText.text = "Not connected. " + PhotonNetwork.connectionStateDetailed + " Server: " + PhotonNetwork.ServerAddress;
 
         if (connectFailed)
             infoText.text = "Connected failed.";
@@ -160,6 +175,7 @@ public class LobbyManager : MonoBehaviour
         }
         SetPlayerName();
         PhotonNetwork.JoinRoom(roomLabelsManager.SelectedLabel.RoomName);
+        loadingPanel.StartLoading();
     }
 
     /// <summary>
@@ -169,6 +185,7 @@ public class LobbyManager : MonoBehaviour
     {
         SetPlayerName();
         PhotonNetwork.JoinRandomRoom();
+        loadingPanel.StartLoading();
     }
 
     /// <summary>
@@ -179,13 +196,22 @@ public class LobbyManager : MonoBehaviour
         AllSceneManager.LoadScene(GameScene.MultiMenuScene);
     }
 
+    /// <summary>
+    /// 加入房间时调用
+    /// </summary>
     public void OnJoinedRoom()
     {
         Debug.Log(" OnJoinedRoom ");
+        loadingPanel.EndLoading();
     }
 
+    /// <summary>
+    /// 加入房间失败
+    /// </summary>
+    /// <param name="cause">失败信息</param>
     public void OnPhotonJoinRoomFailed(object[] cause)
     {
+        loadingPanel.EndLoading();
         switch (int.Parse(cause[0].ToString()))
         {
             case ErrorCode.GameFull:
@@ -203,27 +229,43 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 随机加入失败
+    /// </summary>
     public void OnPhotonRandomJoinFailed()
     {
+        loadingPanel.EndLoading();
+        Debug.Log("OnPhotonRandomJoinFailed");
         toast.ShowToast(3f, "随机加入失败。");
     }
 
+    /// <summary>
+    /// 连接中断
+    /// </summary>
     public void OnDisconnectedFromPhoton()
     {
+        loadingPanel.EndLoading();
         Debug.Log("Disconnected from Photon.");
     }
 
+    /// <summary>
+    /// 连接失败
+    /// </summary>
+    /// <param name="parameters">失败信息</param>
     public void OnFailedToConnectToPhoton(object parameters)
     {
+        loadingPanel.EndLoading();
         this.connectFailed = true;
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
 
     /// <summary>
-    /// 房间创建者连接成功，房间加入到大厅
+    /// 加入到大厅
     /// </summary>
     public void OnConnectedToMaster()
     {
+        Debug.Log("OnConnectedToMaster() PhotonNetwork.JoinLobby()");
+        loadingPanel.EndLoading();
         PhotonNetwork.JoinLobby();
     }
 }

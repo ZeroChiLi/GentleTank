@@ -35,11 +35,12 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 初始化房间
+    /// 初始化房间，房主
     /// </summary>
     private void Start()
     {
         InitRoom();
+        RefreshMaster();
     }
 
     /// <summary>
@@ -139,23 +140,25 @@ public class RoomManager : Photon.MonoBehaviour
         isReady = ready;
     }
 
+    /// <summary>
+    /// 刷新房主标记
+    /// </summary>
+    public void RefreshMaster()
+    {
+        for (int i = 0; i < playerPanelList.Count; i++)
+            if (playerPanelList[i].IsUsed)
+                playerPanelList[i].SetMaster(playerPanelList[i].Player.IsMasterClient);
+            else
+                playerPanelList[i].SetMaster(false);
+    }
+
+    /// <summary>
+    /// 更换房间主人时调用
+    /// </summary>
+    /// <param name="player"></param>
     public void OnMasterClientSwitched(PhotonPlayer player)
     {
         Debug.Log("OnMasterClientSwitched: " + player);
-
-        string message;
-        InRoomChat chatComponent = GetComponent<InRoomChat>();  // if we find a InRoomChat component, we print out a short message
-
-        if (chatComponent != null)
-        {
-            // to check if this client is the new master...
-            if (player.IsLocal)
-                message = "You are Master Client now.";
-            else
-                message = player.NickName + " is Master Client now.";
-
-            chatComponent.AddLine(message); // the Chat method is a RPC. as we don't want to send an RPC and neither create a PhotonMessageInfo, lets call AddLine()
-        }
     }
 
     /// <summary>
@@ -164,18 +167,20 @@ public class RoomManager : Photon.MonoBehaviour
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        //if (PhotonNetwork.player != null && playerDic.ContainsKey(PhotonNetwork.player))
-        //{
-        //}
     }
 
+    /// <summary>
+    /// 自己离开房间时调用
+    /// </summary>
     public void OnLeftRoom()
     {
-        Debug.Log("OnLeftRoom (local)");
-
+        Debug.Log("自己离开了房间");
         AllSceneManager.LoadScene(GameScene.LobbyScene);
     }
 
+    /// <summary>
+    /// 失去连接时调用
+    /// </summary>
     public void OnDisconnectedFromPhoton()
     {
         Debug.Log("OnDisconnectedFromPhoton");
@@ -184,6 +189,10 @@ public class RoomManager : Photon.MonoBehaviour
         AllSceneManager.LoadScene(GameScene.LobbyScene);
     }
 
+    /// <summary>
+    /// 实力创建时调用
+    /// </summary>
+    /// <param name="info"></param>
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         Debug.Log("OnPhotonInstantiate " + info.sender);    // you could use this info to store this or react
@@ -196,6 +205,7 @@ public class RoomManager : Photon.MonoBehaviour
     public void OnPhotonPlayerConnected(PhotonPlayer player)
     {
         RefeshPlayerDic(PhotonNetwork.playerList);
+        RefreshMaster();
     }
 
     /// <summary>
@@ -205,13 +215,15 @@ public class RoomManager : Photon.MonoBehaviour
     public void OnPhotonPlayerDisconnected(PhotonPlayer player)
     {
         CleanInvalidPlayerPanels(PhotonNetwork.playerList);
+        RefreshMaster();
     }
 
+    /// <summary>
+    /// 连接失败
+    /// </summary>
     public void OnFailedToConnectToPhoton()
     {
         Debug.Log("OnFailedToConnectToPhoton");
-
-        // back to main menu
         AllSceneManager.LoadScene(GameScene.LobbyScene);
     }
 
