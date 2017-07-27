@@ -14,12 +14,10 @@ public class RoomManager : Photon.MonoBehaviour
     public Toast toast;                                     // 提示
     public float refreshRate = 1f;                          // 刷新信息时间
 
+    private GameObject playerPanel;                         // 玩家自己的面板
     private float elapsed;                                  // 计时器
     private int maxPlayers;                                 // 房间玩家总容量
-    private List<PlayerPanelManager> playerPanelList;       // 玩家面板列表
     private bool isReady;                                   // 是否可以开始游戏
-    private Dictionary<PhotonPlayer, PlayerPanelManager> playerDic;     // 玩家信息对应面板
-    private List<PhotonPlayer> temPlayerList;                           // 临时玩家列表
 
     /// <summary>
     /// 进入房间，如果失去连接回到大厅，没有就初始化
@@ -31,7 +29,12 @@ public class RoomManager : Photon.MonoBehaviour
             AllSceneManager.LoadScene(GameScene.LobbyScene);
             return;
         }
-        playerDic = new Dictionary<PhotonPlayer, PlayerPanelManager>();
+        playerPanel = PhotonNetwork.Instantiate(playerPanelPerfab.name, transform.position, Quaternion.identity, 0);
+        playerPanel.GetComponent<PlayerPanelManager>().Fill(PhotonNetwork.player);
+        //for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+        //{
+        //    //PhotonNetwork.playerList[i].
+        //}
     }
 
     /// <summary>
@@ -40,7 +43,16 @@ public class RoomManager : Photon.MonoBehaviour
     private void Start()
     {
         InitRoom();
-        RefreshMaster();
+    }
+
+    /// <summary>
+    /// 初始化房间信息
+    /// </summary>
+    public void InitRoom()
+    {
+        roomTitle.text = PhotonNetwork.room.Name;
+        maxPlayers = PhotonNetwork.room.MaxPlayers;
+        roommatesCount.text = "1/" + maxPlayers;
     }
 
     /// <summary>
@@ -57,43 +69,6 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 初始化房间信息
-    /// </summary>
-    public void InitRoom()
-    {
-        roomTitle.text = PhotonNetwork.room.Name;
-        maxPlayers = PhotonNetwork.room.MaxPlayers;
-        roommatesCount.text = "1/" + maxPlayers;
-        playerPanelList = new List<PlayerPanelManager>();
-        for (int i = 0; i < maxPlayers; i++)
-        {
-            playerPanelList.Add(Instantiate(playerPanelPerfab, playerGroup).GetComponent<PlayerPanelManager>());
-            playerPanelList[i].Init(i + 1);
-        }
-        RefeshPlayerDic(PhotonNetwork.playerList);
-    }
-
-    /// <summary>
-    /// 清除无效玩家
-    /// </summary>
-    /// <param name="photonPlayers">服务器发来的玩家列表</param>
-    public void CleanInvalidPlayerPanels(PhotonPlayer[] photonPlayers)
-    {
-        temPlayerList = new List<PhotonPlayer>(photonPlayers);
-        for (int i = 0; i < playerPanelList.Count; i++)
-        {
-            // 如果面板没人再用，或者有人但这人在列表里面，跳过。
-            if (!playerPanelList[i].IsUsed || temPlayerList.Contains(playerPanelList[i].Player))
-                continue;
-
-            Debug.Log("Cleaned " + playerPanelList[i].Player.NickName);
-            playerDic.Remove(playerPanelList[i].Player);
-            playerPanelList[i].Clean();
-            StartBtnTrigger(false);
-        }
-    }
-
-    /// <summary>
     /// 刷新信息
     /// </summary>
     public void Refresh(PhotonPlayer[] photonPlayers)
@@ -102,31 +77,6 @@ public class RoomManager : Photon.MonoBehaviour
 
         if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount == maxPlayers && !isReady)
             StartBtnTrigger(true);
-    }
-
-    /// <summary>
-    /// 刷新玩家字典，玩家进入房间时
-    /// </summary>
-    public void RefeshPlayerDic(PhotonPlayer[] photonPlayers)
-    {
-        for (int i = 0; i < photonPlayers.Length; i++)
-            if (!playerDic.ContainsKey(photonPlayers[i]))
-            {
-                playerDic[photonPlayers[i]] = GetEmptyPlayerPanel();
-                playerDic[photonPlayers[i]].Fill(photonPlayers[i]);
-            }
-    }
-
-    /// <summary>
-    /// 获取空的玩家面板
-    /// </summary>
-    /// <returns>空玩家面板</returns>
-    public PlayerPanelManager GetEmptyPlayerPanel()
-    {
-        for (int i = 0; i < playerPanelList.Count; i++)
-            if (!playerPanelList[i].IsUsed)
-                return playerPanelList[i];
-        return null;
     }
 
     /// <summary>
@@ -141,15 +91,11 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 刷新房主标记
+    /// 退出房间
     /// </summary>
-    public void RefreshMaster()
+    public void LeaveRoom()
     {
-        for (int i = 0; i < playerPanelList.Count; i++)
-            if (playerPanelList[i].IsUsed)
-                playerPanelList[i].SetMaster(playerPanelList[i].Player.IsMasterClient);
-            else
-                playerPanelList[i].SetMaster(false);
+        PhotonNetwork.LeaveRoom();
     }
 
     /// <summary>
@@ -162,20 +108,21 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 退出房间
-    /// </summary>
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    /// <summary>
     /// 自己离开房间时调用
     /// </summary>
     public void OnLeftRoom()
     {
         Debug.Log("自己离开了房间");
         AllSceneManager.LoadScene(GameScene.LobbyScene);
+    }
+
+    /// <summary>
+    /// 实力创建时调用
+    /// </summary>
+    /// <param name="info"></param>
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        Debug.Log("OnPhotonInstantiate " + info.sender);    // you could use this info to store this or react
     }
 
     /// <summary>
@@ -190,40 +137,12 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 实力创建时调用
-    /// </summary>
-    /// <param name="info"></param>
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        Debug.Log("OnPhotonInstantiate " + info.sender);    // you could use this info to store this or react
-    }
-
-    /// <summary>
-    /// 新玩家进入是更新玩家字典
-    /// </summary>
-    /// <param name="player">新玩家</param>
-    public void OnPhotonPlayerConnected(PhotonPlayer player)
-    {
-        RefeshPlayerDic(PhotonNetwork.playerList);
-        RefreshMaster();
-    }
-
-    /// <summary>
-    /// 玩家离开时清除掉
-    /// </summary>
-    /// <param name="player"></param>
-    public void OnPhotonPlayerDisconnected(PhotonPlayer player)
-    {
-        CleanInvalidPlayerPanels(PhotonNetwork.playerList);
-        RefreshMaster();
-    }
-
-    /// <summary>
     /// 连接失败
     /// </summary>
     public void OnFailedToConnectToPhoton()
     {
         Debug.Log("OnFailedToConnectToPhoton");
+        windowPanel.OpenWindow("连接失败", "连接失败", "返回大厅", false, () => { AllSceneManager.LoadScene(GameScene.LobbyScene); });
         AllSceneManager.LoadScene(GameScene.LobbyScene);
     }
 

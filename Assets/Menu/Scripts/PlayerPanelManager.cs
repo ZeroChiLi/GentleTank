@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerPanelManager : MonoBehaviour
+public class PlayerPanelManager : Photon.MonoBehaviour
 {
     public bool isMaster;                                   // 是否是房主
     public Color activePlayerColor = Color.black;           // 有效玩家颜色
@@ -17,6 +15,27 @@ public class PlayerPanelManager : MonoBehaviour
     private PhotonPlayer photonPlayer;                      // 对应玩家
     private bool isUsed;                                    // 是否在使用中
     private int index;                                      // 索引值
+    private Transform parent;                               // 父层级
+
+    private void Awake()
+    {
+        transform.parent = GameObject.FindGameObjectWithTag("PlayerPanelGroup").transform;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //if (stream.isWriting)
+        //{
+        //    stream.SendNext(parent);
+        //}
+        //else
+        //{
+        //    Transform t = stream.ReceiveNext() as Transform;
+        //    Debug.Log(t);
+        //    transform.parent = t;
+        //}
+    }
+
 
     /// <summary>
     /// 初始化
@@ -39,7 +58,7 @@ public class PlayerPanelManager : MonoBehaviour
         photonPlayer = player;
         playerNameText.text = player.NickName;
         playerNameText.color = activePlayerColor;
-        Debug.Log("Fill " + index + "  Name: " + player.NickName);
+        masterIcon.gameObject.SetActive(player.IsMasterClient);
     }
 
     /// <summary>

@@ -101,7 +101,6 @@ public class LobbyManager : MonoBehaviour
     {
         PhotonNetwork.playerName = playerName.text;
         PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
-        Debug.Log(PhotonNetwork.playerName + " 设置名字");
     }
 
     /// <summary>

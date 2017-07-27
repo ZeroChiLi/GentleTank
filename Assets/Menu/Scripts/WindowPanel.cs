@@ -56,6 +56,7 @@ public class WindowPanel : MonoBehaviour
     /// </summary>
     public void AddOnCloseButtonClickListener(UnityAction call)
     {
+        closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(call);
     }
 
