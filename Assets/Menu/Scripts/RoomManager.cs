@@ -14,7 +14,6 @@ public class RoomManager : Photon.MonoBehaviour
     public Toast toast;                                     // 提示
     public float refreshRate = 1f;                          // 刷新信息时间
 
-    private GameObject playerPanel;                         // 玩家自己的面板
     private float elapsed;                                  // 计时器
     private int maxPlayers;                                 // 房间玩家总容量
     private bool isReady;                                   // 是否可以开始游戏
@@ -29,7 +28,7 @@ public class RoomManager : Photon.MonoBehaviour
             AllSceneManager.LoadScene(GameScene.LobbyScene);
             return;
         }
-        playerPanel = PhotonNetwork.Instantiate(playerPanelPerfab.name, transform.position, Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(playerPanelPerfab.name, transform.position, Quaternion.identity, 0);
     }
 
     /// <summary>
@@ -130,6 +129,25 @@ public class RoomManager : Photon.MonoBehaviour
         Debug.Log("OnFailedToConnectToPhoton");
         windowPanel.OpenWindow("连接失败", "连接失败", "返回大厅", false, () => { AllSceneManager.LoadScene(GameScene.LobbyScene); });
         AllSceneManager.LoadScene(GameScene.LobbyScene);
+    }
+
+    /// <summary>
+    /// 新玩家进入时响应
+    /// </summary>
+    /// <param name="player">新玩家</param>
+    public void OnPhotonPlayerConnected(PhotonPlayer player)
+    {
+        Debug.Log("OnPhotonPlayerConnected: " + player.NickName);
+    }
+
+    /// <summary>
+    /// 玩家离开时响应
+    /// </summary>
+    /// <param name="player">离开的玩家</param>
+    public void OnPhotonPlayerDisconnected(PhotonPlayer player)
+    {
+        Debug.Log("OnPlayerDisconneced: " + player);
+        StartBtnTrigger(false);
     }
 
 }
