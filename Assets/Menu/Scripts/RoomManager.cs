@@ -14,7 +14,6 @@ public class RoomManager : Photon.MonoBehaviour
     public Toast toast;                                     // 提示
     public float refreshRate = 1f;                          // 刷新信息时间
 
-    private float elapsed;                                  // 计时器
     private bool isReady;                                   // 是否可以开始游戏
 
     /// <summary>
@@ -36,26 +35,13 @@ public class RoomManager : Photon.MonoBehaviour
     private void Start()
     {
         roomTitle.text = PhotonNetwork.room.Name;
-        roommatesCount.text = "1/" + PhotonNetwork.room.MaxPlayers;
-    }
-
-    /// <summary>
-    /// 周期刷新信息
-    /// </summary>
-    private void Update()
-    {
-        elapsed -= Time.deltaTime;
-        if (elapsed < 0f)
-        {
-            elapsed = refreshRate;
-            Refresh(PhotonNetwork.playerList);
-        }
+        Refresh();
     }
 
     /// <summary>
     /// 刷新信息
     /// </summary>
-    public void Refresh(PhotonPlayer[] photonPlayers)
+    public void Refresh()
     {
         roommatesCount.text = PhotonNetwork.room.PlayerCount + "/" + PhotonNetwork.room.MaxPlayers;
 
@@ -136,7 +122,8 @@ public class RoomManager : Photon.MonoBehaviour
     /// <param name="player">新玩家</param>
     public void OnPhotonPlayerConnected(PhotonPlayer player)
     {
-        Debug.Log("OnPhotonPlayerConnected: " + player.NickName);
+        Debug.Log("新玩家加入: " + player.NickName);
+        Refresh();
     }
 
     /// <summary>
@@ -145,7 +132,8 @@ public class RoomManager : Photon.MonoBehaviour
     /// <param name="player">离开的玩家</param>
     public void OnPhotonPlayerDisconnected(PhotonPlayer player)
     {
-        Debug.Log("OnPlayerDisconneced: " + player);
+        Debug.Log("玩家离开: " + player);
+        Refresh();
         StartBtnTrigger(false);
     }
 

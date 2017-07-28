@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class CreateRoomWindow : MonoBehaviour
 {
-    public LoadingPanel loadingPanel;       // 加载面板
     public Toast toast;                     // 提示标签
     public InputField roomName;             // 房间名称
     public InputField roomSize;             // 房间大小
+    public Button createRoomButton;         // 创建房间按钮
     public int minRoomSize = 1;             // 房间最小容量
     public int maxRoomSize = 4;             // 房间最大容量
 
@@ -32,9 +32,8 @@ public class CreateRoomWindow : MonoBehaviour
     {
         if (!RoomInputInfoCompleted())
             return;
-        loadingPanel.StartLoading();
-        if (!PhotonNetwork.CreateRoom(roomName.text, new RoomOptions() { MaxPlayers = (byte)createRoomSize }, null))
-            toast.ShowToast(3f, "该房间已存在。");
+        createRoomButton.interactable = false;
+        PhotonNetwork.CreateRoom(roomName.text, new RoomOptions() { MaxPlayers = (byte)createRoomSize }, null);
     }
 
     /// <summary>
@@ -56,8 +55,20 @@ public class CreateRoomWindow : MonoBehaviour
     /// </summary>
     public void OnCreatedRoom()
     {
-        Debug.Log("OnCreatedRoom");
+        Debug.Log("创建房间成功");
+        createRoomButton.interactable = true;
         AllSceneManager.LoadScene(GameScene.RoomScene);
     }
+
+    /// <summary>
+    /// 创建失败
+    /// </summary>
+    public void OnPhotonCreateRoomFailed()
+    {
+        Debug.Log("创建房间失败");
+        createRoomButton.interactable = true;
+        toast.ShowToast(3f, "该房间已存在。");
+    }
+
 
 }

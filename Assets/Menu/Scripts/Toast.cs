@@ -54,6 +54,7 @@ public class Toast : MonoBehaviour
         isShowed = true;
         toastText.text = content;
         gameObject.SetActive(true);
+        Debug.Log(content);
     }
 
 
