@@ -15,7 +15,6 @@ public class RoomManager : Photon.MonoBehaviour
     public float refreshRate = 1f;                          // 刷新信息时间
 
     private float elapsed;                                  // 计时器
-    private int maxPlayers;                                 // 房间玩家总容量
     private bool isReady;                                   // 是否可以开始游戏
 
     /// <summary>
@@ -32,21 +31,12 @@ public class RoomManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 初始化房间，房主
+    /// 初始化房间
     /// </summary>
     private void Start()
     {
-        InitRoom();
-    }
-
-    /// <summary>
-    /// 初始化房间信息
-    /// </summary>
-    public void InitRoom()
-    {
         roomTitle.text = PhotonNetwork.room.Name;
-        maxPlayers = PhotonNetwork.room.MaxPlayers;
-        roommatesCount.text = "1/" + maxPlayers;
+        roommatesCount.text = "1/" + PhotonNetwork.room.MaxPlayers;
     }
 
     /// <summary>
@@ -67,9 +57,9 @@ public class RoomManager : Photon.MonoBehaviour
     /// </summary>
     public void Refresh(PhotonPlayer[] photonPlayers)
     {
-        roommatesCount.text = PhotonNetwork.room.PlayerCount + "/" + maxPlayers;
+        roommatesCount.text = PhotonNetwork.room.PlayerCount + "/" + PhotonNetwork.room.MaxPlayers;
 
-        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount == maxPlayers && !isReady)
+        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount ==  PhotonNetwork.room.MaxPlayers && !isReady)
             StartBtnTrigger(true);
     }
 
@@ -82,6 +72,15 @@ public class RoomManager : Photon.MonoBehaviour
         roommatesCount.gameObject.SetActive(!ready);
         startButton.gameObject.SetActive(ready);
         isReady = ready;
+    }
+
+    /// <summary>
+    /// 开始游戏
+    /// </summary>
+    public void StartGame()
+    {
+        if (PhotonNetwork.isMasterClient)
+            PhotonNetwork.LoadLevel("OnlineMultiplayerScene");
     }
 
     /// <summary>

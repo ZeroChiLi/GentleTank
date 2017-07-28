@@ -29,11 +29,13 @@ public class ObjectPool : ScriptableObject
     public void CreateObjectPool(GameObject poolParent = null)
     {
         if (poolParent == null)     //如果没有设置父对象。创建一个空GameObject来存这些子对象
-            poolParent = new GameObject(objectPerfab.name + " Pool");
+            this.poolParent = new GameObject(objectPerfab.name + " Pool");
+        else
+            this.poolParent = poolParent;
         objectPool = new List<GameObject>();
         for (int i = 0; i < objectCount; ++i)
         {
-            GameObject obj = Instantiate(objectPerfab,poolParent.transform);
+            GameObject obj = Instantiate(objectPerfab, this.poolParent.transform);
             objectPool.Add(obj);
             obj.SetActive(false);
         }

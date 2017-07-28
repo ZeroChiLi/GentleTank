@@ -24,12 +24,14 @@ public class PlayerPanelManager : Photon.MonoBehaviour
         rectransform.SetParent(GameObject.FindGameObjectWithTag("PlayerPanelGroup").transform);
         rectransform.localPosition = Vector3.zero;
         rectransform.localScale = Vector3.one;
-        masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);
-        playerNameText.text = photonView.owner.NickName;
 
-        controlPanel.SetActive(photonView.isMine);
-        if (!photonView.isMine)
-            return;
+        masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);   // 房主标记
+        playerNameText.text = photonView.owner.NickName;                    // 玩家名
+        controlPanel.SetActive(photonView.isMine);                          // 控制面板
+        SavePlayerPrefs(currentColor);                                      // 保存颜色
+
+        //if (!photonView.isMine)
+        //    return;
     }
 
 
@@ -54,6 +56,17 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     }
 
     /// <summary>
+    /// 保持玩家信息
+    /// </summary>
+    /// <param name="color">玩家颜色</param>
+    public void SavePlayerPrefs(Color color)
+    {
+        PlayerPrefs.SetFloat("colorR", color.r);
+        PlayerPrefs.SetFloat("colorG", color.g);
+        PlayerPrefs.SetFloat("colorB", color.b);
+    }
+
+    /// <summary>
     /// 同步信息
     /// </summary>
     /// <param name="stream">信息流</param>
@@ -62,15 +75,18 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     {
         if (stream.isWriting)
         {
-            Debug.Log("Send");
             stream.SendNext(currentColor.r);
             stream.SendNext(currentColor.g);
             stream.SendNext(currentColor.b);
         }
         else
         {
-            Debug.Log("Get");
-            tankModelUI.ChangeColor(new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext()));
+            currentColor.r = (float)stream.ReceiveNext();
+            currentColor.g = (float)stream.ReceiveNext();
+            currentColor.b = (float)stream.ReceiveNext();
+            tankModelUI.ChangeColor(currentColor);
+            SavePlayerPrefs(currentColor);
         }
     }
+
 }
