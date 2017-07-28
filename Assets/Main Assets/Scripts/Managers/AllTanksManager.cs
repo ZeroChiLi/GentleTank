@@ -53,11 +53,11 @@ public class AllTanksManager : ScriptableObject
     /// 获取坦克实例形状列表
     /// </summary>
     /// <returns>坦克实例形状列表</returns>
-    public Transform[] GetTanksTransform()
+    public List<Transform> GetTanksTransform()
     {
-        Transform[] instanceList = new Transform[Count];
+        List<Transform> instanceList = new List<Transform>();
         for (int i = 0; i < Count; i++)
-            instanceList[i] = activeTanks[i].Instance.transform;
+            instanceList.Add(activeTanks[i].Instance.transform);
         return instanceList;
     }
 

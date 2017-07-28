@@ -28,13 +28,11 @@ public class PlayerPanelManager : Photon.MonoBehaviour
         masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);   // 房主标记
         playerNameText.text = photonView.owner.NickName;                    // 玩家名
         controlPanel.SetActive(photonView.isMine);                          // 控制面板
-        SavePlayerPrefs(currentColor);                                      // 保存颜色
 
-        //if (!photonView.isMine)
-        //    return;
+        if (!photonView.isMine)
+            return;
+        SetRandomColor();                                                   // 随机更改颜色
     }
-
-
 
     /// <summary>
     /// 更换随机颜色，同时改变按钮普通状态颜色
@@ -44,6 +42,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
         currentColor = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
         tankModelUI.ChangeColor(currentColor);
         colorButtonText.color = currentColor;
+        SavePlayerPrefs(currentColor);                  // 改完颜色保存起来
     }
 
     /// <summary>
@@ -61,6 +60,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     /// <param name="color">玩家颜色</param>
     public void SavePlayerPrefs(Color color)
     {
+        Debug.Log("My Color :" + color);
         PlayerPrefs.SetFloat("colorR", color.r);
         PlayerPrefs.SetFloat("colorG", color.g);
         PlayerPrefs.SetFloat("colorB", color.b);
@@ -85,7 +85,6 @@ public class PlayerPanelManager : Photon.MonoBehaviour
             currentColor.g = (float)stream.ReceiveNext();
             currentColor.b = (float)stream.ReceiveNext();
             tankModelUI.ChangeColor(currentColor);
-            SavePlayerPrefs(currentColor);
         }
     }
 
