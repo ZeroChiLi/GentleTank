@@ -6,22 +6,24 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     public bool isMaster;                                   // 是否是房主
     public Text playerNameText;                             // 玩家名称文本
     public Image masterIcon;                                // 房主标签
-    public Camera tankCamera;                               // 对着坦克的镜头
 
     private string playerName;                              // 玩家名
+    private RectTransform rectransform;                     // 变换
 
     /// <summary>
     /// 添加到父组件，初始化名字
     /// </summary>
     private void Awake()
     {
-        transform.parent = GameObject.FindGameObjectWithTag("PlayerPanelGroup").transform;
+        rectransform = GetComponent<RectTransform>();
+        rectransform.SetParent(GameObject.FindGameObjectWithTag("PlayerPanelGroup").transform);
+        rectransform.localPosition = Vector3.zero;
+        rectransform.localScale = Vector3.one;
         masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);
         playerNameText.text = photonView.owner.NickName;
 
         if (!photonView.isMine)
             return;
-        tankCamera.gameObject.SetActive(true);
     }
 
     /// <summary>
