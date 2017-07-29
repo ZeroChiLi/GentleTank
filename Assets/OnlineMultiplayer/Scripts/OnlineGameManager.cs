@@ -30,9 +30,7 @@ public class OnlineGameManager : Photon.MonoBehaviour
     {
         spawnPoint = pointList.GetRandomPoint();
         playerInstance = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.Rotation, 0).GetComponent<OnlineTankManager>();
-        playerInstance.InitTank(PhotonNetwork.playerName,new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB")));
-        //tankInformation.RendererColorByComponent<NeedRenderByPlayerColor>(playerInstance.PlayerColor);
-        //playerInstance.RendererColor(new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB")));
+        playerInstance.InitTank();
     }
 
 

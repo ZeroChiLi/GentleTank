@@ -45,10 +45,10 @@ public class TankMovement : MonoBehaviour
     // 获取移动、旋转值
     private void Update()
     {
-        movementInputValue = Input.GetAxis(movementAxisName);
-        turnInputValue = Input.GetAxis(turnAxisName);
-
         EngineAudio();
+
+        Move(Input.GetAxis(movementAxisName));
+        Turn(Input.GetAxis(turnAxisName));
     }
 
     //设置编号
@@ -60,13 +60,6 @@ public class TankMovement : MonoBehaviour
         //输入名要在Player Setting 设置
         movementAxisName = "Vertical" + id;
         turnAxisName = "Horizontal" + id;
-    }
-
-    // 移动、旋转
-    private void FixedUpdate()
-    {
-        Move();
-        Turn();
     }
 
     // 坦克引擎声音
@@ -88,16 +81,16 @@ public class TankMovement : MonoBehaviour
     }
 
     //移动
-    private void Move()
+    private void Move(float moveValue)
     {
-        Vector3 movement = transform.forward * movementInputValue * speed * Time.deltaTime;
+        Vector3 movement = transform.forward * moveValue * speed * Time.deltaTime;
         tankRigidbody.MovePosition(tankRigidbody.position + movement);
     }
 
     //旋转
-    private void Turn()
+    private void Turn(float turnValue)
     {
-        float turn = turnInputValue * turnSpeed * Time.deltaTime;
+        float turn = turnValue * turnSpeed * Time.deltaTime;
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
         tankRigidbody.MoveRotation(tankRigidbody.rotation * turnRotation);
     }

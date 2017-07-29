@@ -9,33 +9,28 @@ public class OnlineTankManager : Photon.MonoBehaviour
 
     public Color PlayerColor { get { return playerColor; } }
 
+    private bool isMine;
     private string playerName;
     private Color playerColor;
 
-    public void InitTank(string playerName,Color color)
+    /// <summary>
+    /// 初始化坦克信息
+    /// </summary>
+    public void InitTank()
     {
-        this.playerName = playerName;
-        playerColor = color;
-        tankInfo.SetupTankInfo(-1, playerName, true, false, color);
-        tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(color);
+        isMine = photonView.isMine;
+        playerName = PhotonNetwork.playerName;
+        playerColor = new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB"));
+        tankInfo.SetupTankInfo(-1, playerName, true, false, playerColor);
+        tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);
+        tankMovement.enabled = isMine;
     }
-
 
     /// <summary>
-    /// 渲染颜色
+    /// 同步客户端信息
     /// </summary>
-    /// <param name="color">颜色</param>
-    public void RendererColor(Color color)
-    {
-        playerColor = color;
-        MeshRenderer[] meshRenderer = GetComponentsInChildren<MeshRenderer>();
-        if (meshRenderer == null)
-            return;
-        for (int i = 0; i < meshRenderer.Length; i++)
-            meshRenderer[i].material.color = color;
-    }
-
-
+    /// <param name="stream">信息流</param>
+    /// <param name="info"></param>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
@@ -49,7 +44,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
             playerColor.r = (float)stream.ReceiveNext();
             playerColor.g = (float)stream.ReceiveNext();
             playerColor.b = (float)stream.ReceiveNext();
-            RendererColor(playerColor);
+            tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);
         }
     }
 }

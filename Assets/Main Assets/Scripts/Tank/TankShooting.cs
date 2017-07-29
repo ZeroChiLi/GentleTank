@@ -25,6 +25,7 @@ public class TankShooting : MonoBehaviour
 
     private void Start()
     {
+        tankInfo = GetComponent<TankInformation>();
         currentLaunchForce = minLaunchForce;
         aimSlider.value = minLaunchForce;
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
