@@ -9,9 +9,8 @@ public class TankMovement : MonoBehaviour
     public AudioClip engineDriving;             // 引擎移动声音
     public float pitchRange = 0.2f;             // 音调浮动范围
 
-    private TankInformation tankInfo;           // 坦克信息
-    private string movementAxisName;            // 移动输入轴名
-    private string turnAxisName;                // 旋转输入轴名
+    private string movementAxisName = "Vertical";       // 移动输入轴名
+    private string turnAxisName = "Horizontal";         // 旋转输入轴名
     private Rigidbody tankRigidbody;            // 刚体
     private float movementInputValue;           // 当前移动值
     private float turnInputValue;               // 当前旋转值
@@ -20,7 +19,6 @@ public class TankMovement : MonoBehaviour
 
     private void Awake()
     {
-        tankInfo = GetComponent<TankInformation>();
         tankRigidbody = GetComponent<Rigidbody>();
         originalPitch = movementAudio.pitch;
     }
@@ -54,11 +52,14 @@ public class TankMovement : MonoBehaviour
     }
 
     //设置编号
-    public void SetupPlayerInput()
+    public void SetupPlayerInput(int id)
     {
+        if (id < 0)
+            return;
+
         //输入名要在Player Setting 设置
-        movementAxisName = "Vertical" + tankInfo.playerID;
-        turnAxisName = "Horizontal" + tankInfo.playerID;
+        movementAxisName = "Vertical" + id;
+        turnAxisName = "Horizontal" + id;
     }
 
     // 移动、旋转

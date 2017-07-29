@@ -21,12 +21,7 @@ public class TankShooting : MonoBehaviour
     private bool fired = true;                  // 是否发射了
     private float nextFireTime;                 // 下一发最早时间
 
-    private string fireButton;                  // 发射子弹按钮是名字
-
-    private void Awake()
-    {
-        tankInfo = GetComponent<TankInformation>();
-    }
+    private string fireButton = "Fire0";        // 发射子弹按钮是名字
 
     private void Start()
     {
@@ -77,11 +72,11 @@ public class TankShooting : MonoBehaviour
     }
 
     //配置玩家攻击输入属性
-    public void SetupPlayerInput()
+    public void SetupPlayerInput(int id)
     {
-        if (tankInfo == null)
-            Debug.Log("SHIT");
-        fireButton = "Fire" + tankInfo.playerID;
+        if (id < 0)
+            return;
+        fireButton = "Fire" + id;
     }
 
     //发射炮弹

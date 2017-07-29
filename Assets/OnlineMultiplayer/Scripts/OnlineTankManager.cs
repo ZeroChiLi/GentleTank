@@ -4,7 +4,22 @@ using UnityEngine;
 
 public class OnlineTankManager : Photon.MonoBehaviour
 {
+    public TankInformation tankInfo;
+    public TankMovement tankMovement;
+
+    public Color PlayerColor { get { return playerColor; } }
+
+    private string playerName;
     private Color playerColor;
+
+    public void InitTank(string playerName,Color color)
+    {
+        this.playerName = playerName;
+        playerColor = color;
+        tankInfo.SetupTankInfo(-1, playerName, true, false, color);
+        tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(color);
+    }
+
 
     /// <summary>
     /// 渲染颜色
@@ -19,6 +34,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
         for (int i = 0; i < meshRenderer.Length; i++)
             meshRenderer[i].material.color = color;
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

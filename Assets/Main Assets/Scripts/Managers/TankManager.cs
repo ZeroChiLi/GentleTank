@@ -76,7 +76,7 @@ public class TankManager
     private void SetupTankInformation()
     {
         playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);                           // 坦克所在队伍
-        tankInformation.RenderColorByComponent<NeedRenderByPlayerColor>(playerColor);       // 坦克颜色
+        tankInformation.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);       // 坦克颜色
         coloredPlayerName = playerName;                                                     // 玩家名字富文本
         if (playerTeam != null)
         {
@@ -94,8 +94,8 @@ public class TankManager
     public void SetupUIAndInput()
     {
         playerInfoUI.SetupNameAndColor();   // 配置玩家信息UI的名字和颜色
-        tankMovement.SetupPlayerInput();    // 配置坦克移动输入
-        tankShooting.SetupPlayerInput();    // 配置坦克攻击输入
+        tankMovement.SetupPlayerInput(tankInformation.playerID);    // 配置坦克移动输入
+        tankShooting.SetupPlayerInput(tankInformation.playerID);    // 配置坦克攻击输入
     }
 
     /// <summary>

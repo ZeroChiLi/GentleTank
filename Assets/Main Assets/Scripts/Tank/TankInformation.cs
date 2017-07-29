@@ -19,7 +19,7 @@ public class TankInformation : MonoBehaviour
     [HideInInspector]
     public string playerColoredName;                // 带颜色的玩家名
 
-    public void SetupTankInfo(int id,string name,bool active, bool isAI,Color color,TeamManager team,string coloredName)
+    public void SetupTankInfo(int id,string name,bool active, bool isAI,Color color,TeamManager team = null,string coloredName = null)
     {
         playerID = id;
         playerName = name;
@@ -27,7 +27,7 @@ public class TankInformation : MonoBehaviour
         playerAI = isAI;
         playerColor = color;
         playerTeam = team;
-        playerColoredName = coloredName;
+        playerColoredName = coloredName == null ? name : coloredName;
         if (playerTeam != null)
             playerTeamID = playerTeam.TeamID;
     }
@@ -36,13 +36,13 @@ public class TankInformation : MonoBehaviour
     /// 渲染所有带'T'类的脚本的子组件们颜色
     /// </summary>
     /// <param name="color">渲染颜色</param>
-    public void RenderColorByComponent<T>(Color color) where T : Component
+    public void RendererColorByComponent<T>(Color color) where T : Component
     {
         T[] renderChildren = GetComponentsInChildren<T>();
         if (renderChildren == null)
             return;
         for (int i = 0; i < renderChildren.Length; i++)
-            SetMeshRenderColor(renderChildren[i], color);
+            SetMeshRendererColor(renderChildren[i], color);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class TankInformation : MonoBehaviour
     /// </summary>
     /// <param name="gameObject">设置对象</param>
     /// <param name="color">渲染颜色</param>
-    private void SetMeshRenderColor(Component needRenderComponent, Color color)
+    private void SetMeshRendererColor(Component needRenderComponent, Color color)
     {
         MeshRenderer[] meshRenderer = needRenderComponent.GetComponentsInChildren<MeshRenderer>();
         if (meshRenderer == null)

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class OnlineGameManager : Photon.MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public PointList pointList;
-    public CameraControl cameraControl;
+    public GameObject playerPrefab;                         // 玩家预设
+    public PointList pointList;                             // 玩家出生点列表
+    public CameraControl cameraControl;                     // 镜头控制
 
-    private OnlineTankManager playerInstance;
-    private Point spawnPoint;
+    private OnlineTankManager playerInstance;               // 玩家实例
+    private Point spawnPoint;                               // 玩家出身点
 
     /// <summary>
     /// 初始化，创建实例
@@ -30,7 +30,9 @@ public class OnlineGameManager : Photon.MonoBehaviour
     {
         spawnPoint = pointList.GetRandomPoint();
         playerInstance = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.Rotation, 0).GetComponent<OnlineTankManager>();
-        playerInstance.RendererColor(new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB")));
+        playerInstance.InitTank(PhotonNetwork.playerName,new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB")));
+        //tankInformation.RendererColorByComponent<NeedRenderByPlayerColor>(playerInstance.PlayerColor);
+        //playerInstance.RendererColor(new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB")));
     }
 
 
