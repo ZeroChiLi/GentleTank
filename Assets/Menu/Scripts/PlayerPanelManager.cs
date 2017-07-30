@@ -60,7 +60,6 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     /// <param name="color">玩家颜色</param>
     public void SavePlayerPrefs(Color color)
     {
-        Debug.Log("My Color :" + color);
         PlayerPrefs.SetFloat("colorR", color.r);
         PlayerPrefs.SetFloat("colorG", color.g);
         PlayerPrefs.SetFloat("colorB", color.b);
