@@ -11,6 +11,7 @@ public class ObjectPool : ScriptableObject
     public GameObject objectPerfab;             //预设
     public int objectCount = 10;                //数量
     public bool autoIncrease = true;            //如果需要自动增加
+    public bool isPhotonView = false;           // 是否需要Photon同步
 
     [HideInInspector]
     public GameObject poolParent;               //对象池存放的父对象
@@ -26,16 +27,23 @@ public class ObjectPool : ScriptableObject
     /// <summary>
     /// 创建对象池
     /// </summary>
-    public void CreateObjectPool(GameObject poolParent = null)
+    public void CreateObjectPool(GameObject parent = null)
     {
-        if (poolParent == null)     //如果没有设置父对象。创建一个空GameObject来存这些子对象
-            this.poolParent = new GameObject(objectPerfab.name + " Pool");
+        if (parent == null)     //如果没有设置父对象。创建一个空GameObject来存这些子对象
+            poolParent = new GameObject(objectPerfab.name + " Pool");
         else
-            this.poolParent = poolParent;
+            poolParent = parent;
         objectPool = new List<GameObject>();
         for (int i = 0; i < objectCount; ++i)
         {
-            GameObject obj = Instantiate(objectPerfab, this.poolParent.transform);
+            GameObject obj;
+            if (isPhotonView)
+            {
+                obj = PhotonNetwork.Instantiate(objectPerfab.name, Vector3.zero, Quaternion.identity, 0);
+                obj.transform.parent = poolParent.transform;
+            }
+            else
+                obj = Instantiate(objectPerfab, poolParent.transform);
             objectPool.Add(obj);
             obj.SetActive(false);
         }

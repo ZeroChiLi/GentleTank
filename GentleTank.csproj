@@ -132,7 +132,10 @@
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
+    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineShell.cs" />
+    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankHealth.cs" />
     <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankManager.cs" />
+    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankShooting.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />

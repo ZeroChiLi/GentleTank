@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TankShooting : MonoBehaviour
+public class OnlineTankShooting : MonoBehaviour
 {
     public ObjectPool shellPool;                // 炮弹池
+    public OnlineShell onlineShell;             // 同步炮弹
     public Transform shellSpawn;                // 发射子弹的位置
     public Slider aimSlider;                    // 发射时显示黄色箭头
     public AudioSource shootingAudio;           // 当前射击音效
@@ -87,9 +88,10 @@ public class TankShooting : MonoBehaviour
             return;
 
         //获取炮弹，并发射
-        GameObject shell = shellPool.GetNextObject(transform: shellSpawn);
+        //GameObject shell = shellPool.GetNextObject(true,shellSpawn);
+        GameObject shell = PhotonNetwork.Instantiate(onlineShell.name, shellSpawn.position, shellSpawn.rotation, 0);
         shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
-        shell.GetComponent<Shell>().maxDamage = fireDamage;
+        shell.GetComponent<OnlineShell>().maxDamage = fireDamage;
 
         shootingAudio.clip = fireClip;
         shootingAudio.Play();

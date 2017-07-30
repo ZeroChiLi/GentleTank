@@ -67,6 +67,8 @@ public class RoomManager : Photon.MonoBehaviour
     {
         if (PhotonNetwork.isMasterClient)
             PhotonNetwork.LoadLevel("OnlineMultiplayerScene");
+
+        PhotonNetwork.room.IsOpen = false;
     }
 
     /// <summary>

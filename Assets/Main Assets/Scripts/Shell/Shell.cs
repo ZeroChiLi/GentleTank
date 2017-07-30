@@ -6,7 +6,7 @@ public class Shell : MonoBehaviour
 
     public LayerMask layerMask;                         // 坦克遮罩（"Level"）
     public float maxDamage = 100f;                      // 最大伤害
-    public float explosionForce = 100f;                // 爆炸中心的能量
+    public float explosionForce = 100f;                 // 爆炸中心的能量
     public float maxLifeTime = 2f;                      // 炸弹最大生存时间
     public float explosionRadius = 5f;                  // 爆炸半径
 
