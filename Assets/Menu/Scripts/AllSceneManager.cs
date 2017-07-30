@@ -9,9 +9,9 @@ public enum GameScene : byte
 {
     MainMenuScene = 0,
     SoloScene = 1,
-    MultiMenuScene = 2,
-    LobbyScene = 3,
-    RoomScene = 4,
+    LobbyScene = 2,
+    RoomScene = 3,
+    OnlineMutiplayerScene = 4
 }
 
 /// <summary>

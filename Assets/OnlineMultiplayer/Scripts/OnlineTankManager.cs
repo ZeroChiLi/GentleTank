@@ -22,7 +22,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
         playerName = PhotonNetwork.playerName;
         playerColor = new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB"));
         tankInfo.SetupTankInfo(-1, playerName, true, false, playerColor);
-        tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);
+        ChangeColor.SelfAndChildrens(gameObject, playerColor);
         tankMovement.enabled = isMine;
     }
 
@@ -44,7 +44,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
             playerColor.r = (float)stream.ReceiveNext();
             playerColor.g = (float)stream.ReceiveNext();
             playerColor.b = (float)stream.ReceiveNext();
-            tankInfo.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);
+            ChangeColor.SelfAndChildrens(gameObject, playerColor);
         }
     }
 }

@@ -196,14 +196,6 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 返回上一个菜单（多人模式）
-    /// </summary>
-    public void BackToLastScene()
-    {
-        AllSceneManager.LoadScene(GameScene.MultiMenuScene);
-    }
-
-    /// <summary>
     /// 加入房间时调用
     /// </summary>
     public void OnJoinedRoom()
@@ -270,8 +262,16 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void OnConnectedToMaster()
     {
-        toast.ShowToast(3f, "连接服务器成功，加入大厅。");
+        toast.ShowToast(3f, "加入大厅。");
         LockButtons(false);
         PhotonNetwork.JoinLobby();
+    }
+
+    /// <summary>
+    /// 回到主菜单
+    /// </summary>
+    public void BackToMainScene()
+    {
+        AllSceneManager.LoadScene(GameScene.MainMenuScene);
     }
 }

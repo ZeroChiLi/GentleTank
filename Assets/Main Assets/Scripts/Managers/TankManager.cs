@@ -75,9 +75,9 @@ public class TankManager
     /// </summary>
     private void SetupTankInformation()
     {
-        playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);                           // 坦克所在队伍
-        tankInformation.RendererColorByComponent<NeedRenderByPlayerColor>(playerColor);       // 坦克颜色
-        coloredPlayerName = playerName;                                                     // 玩家名字富文本
+        playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);          // 坦克所在队伍
+        ChangeColor.SelfAndChildrens(instance, playerColor);                        // 坦克颜色
+        coloredPlayerName = playerName;                                             // 玩家名字富文本
         if (playerTeam != null)
         {
             coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";

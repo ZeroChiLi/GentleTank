@@ -147,5 +147,11 @@ public class GameManager : MonoBehaviour
         yield return endWait;
     }
 
-
+    /// <summary>
+    /// 回到主菜单
+    /// </summary>
+    public void BackToMainScene()
+    {
+        AllSceneManager.LoadScene(GameScene.MainMenuScene);
+    }
 }

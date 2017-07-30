@@ -6,7 +6,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     public bool isMaster;                                   // 是否是房主
     public Text playerNameText;                             // 玩家名称文本
     public Image masterIcon;                                // 房主标签
-    public TankModelUI tankModelUI;                         // 坦克模型UI
+    public GameObject tankModelUI;                          // 坦克模型UI
     public GameObject controlPanel;                         // 控制面板
     public Button colorButton;                              // 坦克颜色更换按钮
     public Text colorButtonText;                            // 颜色按钮文本
@@ -40,7 +40,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     public void SetRandomColor()
     {
         currentColor = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-        tankModelUI.ChangeColor(currentColor);
+        ChangeColor.SelfAndChildrens(tankModelUI, currentColor);
         colorButtonText.color = currentColor;
         SavePlayerPrefs(currentColor);                  // 改完颜色保存起来
     }
@@ -84,7 +84,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
             currentColor.r = (float)stream.ReceiveNext();
             currentColor.g = (float)stream.ReceiveNext();
             currentColor.b = (float)stream.ReceiveNext();
-            tankModelUI.ChangeColor(currentColor);
+            ChangeColor.SelfAndChildrens(tankModelUI, currentColor);
         }
     }
 
