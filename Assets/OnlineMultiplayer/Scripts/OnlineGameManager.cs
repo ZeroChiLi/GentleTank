@@ -7,6 +7,7 @@ public class OnlineGameManager : Photon.MonoBehaviour
     public GameObject playerPrefab;                         // 玩家预设
     public PointList pointList;                             // 玩家出生点列表
     public CameraControl cameraControl;                     // 镜头控制
+    public OnlineShellPool onlineShellPool;                 // 炮弹池
 
     private OnlineTankManager playerInstance;               // 玩家实例
     private Point spawnPoint;                               // 玩家出身点
@@ -30,9 +31,8 @@ public class OnlineGameManager : Photon.MonoBehaviour
     {
         spawnPoint = pointList.GetRandomPoint();
         playerInstance = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.Rotation, 0).GetComponent<OnlineTankManager>();
-        playerInstance.InitTank();
+        playerInstance.InitTank(onlineShellPool);
     }
-
 
     /// <summary>
     /// 返回大厅

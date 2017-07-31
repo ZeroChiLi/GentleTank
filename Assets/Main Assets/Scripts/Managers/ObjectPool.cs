@@ -18,6 +18,9 @@ public class ObjectPool : ScriptableObject
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
 
+    public int Count { get { return objectPool.Count; } }
+    public List<GameObject> PoolList { get { return objectPool; } set { objectPool = value; } }
+
     public GameObject this[int index]
     {
         get { return objectPool[index]; }
@@ -99,13 +102,16 @@ public class ObjectPool : ScriptableObject
     /// <summary>
     /// 增加一个对象
     /// </summary>
+    /// <param name="obj">新增对象</param>
     /// <returns>返回新增的对象</returns>
-    public GameObject AddOneMoreObject()
+    public GameObject AddOneMoreObject(GameObject obj = null)
     {
-        GameObject obj = Instantiate(objectPerfab, poolParent.transform);
+        if (obj == null)
+            obj = Instantiate(objectPerfab, poolParent.transform);
+        else
+            obj.transform.parent = poolParent.transform;
         objectPool.Add(obj);
-        objectCount = objectPool.Count;
-        currentIndex++;
+        currentIndex = -1;
         return obj;
     }
 

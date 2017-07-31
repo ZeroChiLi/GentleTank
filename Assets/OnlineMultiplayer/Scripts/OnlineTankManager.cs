@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class OnlineTankManager : Photon.MonoBehaviour
 {
-    public TankInformation tankInfo;            // 坦克信息
-    public TankMovement tankMovement;           // 坦克移动
-    public OnlineTankShooting tankShooting;           // 坦克攻击
+    public TankInformation tankInfo;                // 坦克信息
+    public TankMovement tankMovement;               // 坦克移动
+    public OnlineTankShooting tankShooting;         // 坦克攻击
 
     public Color PlayerColor { get { return playerColor; } }
 
@@ -17,7 +17,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
     /// <summary>
     /// 初始化坦克信息
     /// </summary>
-    public void InitTank()
+    public void InitTank(OnlineShellPool shellPool)
     {
         isMine = photonView.isMine;
         playerName = PhotonNetwork.playerName;
@@ -26,6 +26,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
         ChangeColor.SelfAndChildrens(gameObject, playerColor);
         tankMovement.enabled = isMine;
         tankShooting.enabled = isMine;
+        tankShooting.shellPool = shellPool;
     }
 
     /// <summary>
