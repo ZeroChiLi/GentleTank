@@ -69,7 +69,7 @@ public class LobbyManager : MonoBehaviour
         if (PhotonNetwork.connecting)
             infoText.text = "正在连接： " + PhotonNetwork.ServerAddress;
         else
-            infoText.text = "未连接，尝试返回后重新进入。 " + PhotonNetwork.connectionStateDetailed + " 服务器： " + PhotonNetwork.ServerAddress;
+            infoText.text = "未连接，尝试返回后重新进入。服务器：" + PhotonNetwork.ServerAddress;
 
         if (connectFailed)
             infoText.text = "连接失败，尝试返回后重新进入。";

@@ -16,7 +16,6 @@ public class RoomLabelsManager : MonoBehaviour
     private RoomInfo[] currentRoomArray;                            // 当前房间信息数组
     private List<RoomInfo> roomInfoList;                            // 房间信息列表
     private List<RoomInfo> needCleanedRooms;                        // 需要被删除的信息列表
-    private RoomInfoLabel roomInfoLabel;                            // 单个房间信息标签
     private RoomInfoLabel selectedLabel;                            // 被选中的标签
 
     /// <summary>
@@ -57,6 +56,7 @@ public class RoomLabelsManager : MonoBehaviour
             if (roomInfoLabelDic[needCleanedRooms[i]] == SelectedLabel)
                 selectedLabel = null;
             roomInfoLabelDic[needCleanedRooms[i]].gameObject.SetActive(false);
+            roomInfoLabelDic[needCleanedRooms[i]].CleanRoomInfo(needCleanedRooms[i]);
             roomInfoLabelDic.Remove(needCleanedRooms[i]);
         }
     }
@@ -71,11 +71,8 @@ public class RoomLabelsManager : MonoBehaviour
         {
             if (!roomInfoLabelDic.ContainsKey(roomInfoArray[i]))    // 新房间加入
                 roomInfoLabelDic.Add(roomInfoArray[i], roomInfoPool.GetNextObject().GetComponent<RoomInfoLabel>());
-
-            roomInfoLabel = roomInfoLabelDic[roomInfoArray[i]];
-            roomInfoLabel.SetRoommates(roomInfoArray[i].PlayerCount, roomInfoArray[i].MaxPlayers);
-            roomInfoLabel.SetRoomName(roomInfoArray[i].Name);
-            AddRoomLabelEvent(roomInfoLabel);
+            roomInfoLabelDic[roomInfoArray[i]].UpdateRoomInfo(roomInfoArray[i]);
+            AddRoomLabelEvent(roomInfoLabelDic[roomInfoArray[i]]);
         }
     }
 

@@ -3,29 +3,43 @@ using UnityEngine.UI;
 
 public class RoomInfoLabel : MonoBehaviour 
 {
-    public Text roommatesCount;         // 房间人数文本
-    public Text roomName;               // 房间名称文本
+    public Text roommatesCount;                     // 房间人数文本
+    public Text roomName;                           // 房间名称文本
+    public Color normalColor = Color.black;         // 房间字体正常颜色
+    public Color unopenedColor = Color.gray;        // 房间未开启颜色
 
     public string RoomName { get { return roomName.text; } }        // 获取房间名
 
+    private Color currentColor;
+    private string playingText = "正在游戏";
+
     /// <summary>
-    /// 设置房间人数文本
+    /// 更新房间信息
     /// </summary>
-    /// <param name="current">当前人数</param>
-    /// <param name="max">最大人数</param>
-    public void SetRoommates(int current,int max)
+    public void UpdateRoomInfo(RoomInfo roomInfo)
     {
-        roommatesCount.text = current + "/" + max;
+        if (roomInfo == null)
+            return;
+
+        currentColor = roomInfo.IsOpen ? normalColor : unopenedColor;
+
+        roommatesCount.text = roomInfo.IsOpen ? (roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers) : playingText;
+        roommatesCount.color = currentColor;
+
+        roomName.text = roomInfo.Name;
+        roomName.color = currentColor;
     }
 
     /// <summary>
-    /// 设置房间名称
+    /// 清除信息
     /// </summary>
-    /// <param name="name">房间名称</param>
-    public void SetRoomName(string name)
+    public void CleanRoomInfo(RoomInfo roomInfo)
     {
-        roomName.text = name;
+        if (roomInfo == null)
+            return;
+
+        roommatesCount.text = "0/0";
+        roomName.text = "null";
+        roomInfo = null;
     }
-
-
 }

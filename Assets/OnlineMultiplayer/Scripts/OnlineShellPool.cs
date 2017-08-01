@@ -9,7 +9,7 @@ public class OnlineShellPool : MonoBehaviour
     private bool IsCreate;                          // 是否已经初始化创建了炮弹对象池
 
     /// <summary>
-    /// 仅房主创建对象池共享w
+    /// 仅房主创建对象池共享
     /// </summary>
     private void Start()
     {
@@ -20,7 +20,7 @@ public class OnlineShellPool : MonoBehaviour
             IsCreate = true;
             onlineShellsPool.CreateObjectPool(gameObject);
         }
-        Debug.Log("onlineShellsPool.Count  " + onlineShellsPool.objectCount + "   Find " + transform.root.GetComponentsInChildren(typeof(OnlineShell),true).Length);
+        Debug.Log(PhotonNetwork.isMasterClient + "   ShellsPool.Count  " + onlineShellsPool.objectCount + "   Find " + FindObjectsOfType<OnlineShell>().Length);
     }
 
     /// <summary>

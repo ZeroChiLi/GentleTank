@@ -16,6 +16,14 @@ public class OnlineShell : Photon.MonoBehaviour
     private bool isExplosion;                           // 爆炸过了
 
     /// <summary>
+    /// 设置层级
+    /// </summary>
+    private void Start()
+    {
+        transform.parent = GameObject.FindGameObjectWithTag("ShellPool").transform;
+    }
+
+    /// <summary>
     /// 当碰到任何物体，"Level"遮罩层下
     /// </summary>
     /// <param name="other">碰到的物体</param>
