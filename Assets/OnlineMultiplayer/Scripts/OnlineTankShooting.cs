@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class OnlineTankShooting : MonoBehaviour
 {
-    public OnlineShellPool shellPool;           // 炮弹列表
+    //public OnlineShellPool shellPool;           // 炮弹列表
     public OnlineShell onlineShell;             // 同步炮弹
     public string fireKey = "Fire0";            // 发射子弹按钮是名字
     public Transform shellSpawn;                // 发射子弹的位置
@@ -90,9 +90,8 @@ public class OnlineTankShooting : MonoBehaviour
             return;
 
         //获取炮弹，并发射
-        //GameObject shell = shellPool.GetNextObject(true,shellSpawn);
-        //GameObject shell = PhotonNetwork.Instantiate(onlineShell.name, shellSpawn.position, shellSpawn.rotation, 0);
-        shell = shellPool.GetNextObject(true, shellSpawn);
+        //shell = shellPool.GetNextObject(true, shellSpawn);
+        shell = PhotonNetwork.Instantiate(onlineShell.name, shellSpawn.position, shellSpawn.rotation, 0);
         shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
         shell.GetComponent<OnlineShell>().maxDamage = fireDamage;
 

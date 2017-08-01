@@ -17,7 +17,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
     /// <summary>
     /// 初始化坦克信息
     /// </summary>
-    public void InitTank(OnlineShellPool shellPool)
+    public void InitTank(/*OnlineShellPool shellPool*/)
     {
         isMine = photonView.isMine;
         playerName = PhotonNetwork.playerName;
@@ -26,7 +26,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
         ChangeColor.SelfAndChildrens(gameObject, playerColor);
         tankMovement.enabled = isMine;
         tankShooting.enabled = isMine;
-        tankShooting.shellPool = shellPool;
+        //tankShooting.shellPool = shellPool;
     }
 
     /// <summary>

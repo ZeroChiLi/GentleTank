@@ -106,6 +106,7 @@ public class ObjectPool : ScriptableObject
     /// <returns>返回新增的对象</returns>
     public GameObject AddOneMoreObject(GameObject obj = null)
     {
+        objectPool = objectPool ?? new List<GameObject>();  // 若没创建，那就先创建
         if (obj == null)
             obj = Instantiate(objectPerfab, poolParent.transform);
         else
@@ -115,5 +116,13 @@ public class ObjectPool : ScriptableObject
         return obj;
     }
 
+    /// <summary>
+    /// 清除所有对象
+    /// </summary>
+    public void CleanAll()
+    {
+        objectPool = null;
+        currentIndex = -1;
+    }
 
 }

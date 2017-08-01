@@ -1,39 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OnlineShellPool : MonoBehaviour
 {
     public ObjectPool onlineShellsPool;             // 炮弹池对象池
 
-    private bool IsCreate;                          // 是否已经初始化创建了炮弹对象池
+    /// <summary>
+    /// 初始化对象池
+    /// </summary>
+    private void Awake()
+    {
+        onlineShellsPool.CleanAll();
+    }
 
     /// <summary>
     /// 仅房主创建对象池共享
     /// </summary>
     private void Start()
     {
-        
         onlineShellsPool.poolParent = gameObject;
         if (PhotonNetwork.isMasterClient)
-        {
-            IsCreate = true;
             onlineShellsPool.CreateObjectPool(gameObject);
-        }
-        Debug.Log(PhotonNetwork.isMasterClient + "   ShellsPool.Count  " + onlineShellsPool.objectCount + "   Find " + FindObjectsOfType<OnlineShell>().Length);
     }
 
     /// <summary>
-    /// 查找所有子弹，存到列表里
+    /// 添加对象到对象池中
     /// </summary>
-    public void FindAllOnlineShells()
+    /// <param name="obj">对象</param>
+    public void AddToPool(GameObject obj)
     {
-        IsCreate = true;
-        var componentArray = transform.root.GetComponentsInChildren(typeof(Transform), true);
-        Debug.Log("find "+ componentArray.Length +"  "+ onlineShellsPool.objectCount);
-        onlineShellsPool.PoolList = new List<GameObject>();
-        for (int i = 0; i < componentArray.Length; i++)
-            onlineShellsPool.AddOneMoreObject(componentArray[i].gameObject);
+        onlineShellsPool.AddOneMoreObject(obj);
+        Debug.Log("Add to pool  " + onlineShellsPool.Count);
     }
 
     /// <summary>
@@ -44,8 +40,6 @@ public class OnlineShellPool : MonoBehaviour
     /// <returns></returns>
     public GameObject GetNextObject(bool active = true, Transform transform = null)
     {
-        if (!IsCreate)            //  对象池没创建（非房主）
-            FindAllOnlineShells();
         return onlineShellsPool.GetNextObject(active, transform);
     }
 }

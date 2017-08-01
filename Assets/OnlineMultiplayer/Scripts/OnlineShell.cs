@@ -14,14 +14,18 @@ public class OnlineShell : Photon.MonoBehaviour
     private Rigidbody targetRigidbody;                  // 目标刚体
     private OnlineTankHealth targetHealth;              // 目标血量
     private bool isExplosion;                           // 爆炸过了
+    //private OnlineShellPool onlineShellPool;            // 子弹池
 
-    /// <summary>
-    /// 设置层级
-    /// </summary>
-    private void Start()
-    {
-        transform.parent = GameObject.FindGameObjectWithTag("ShellPool").transform;
-    }
+    ///// <summary>
+    ///// 初始化对象池先
+    ///// </summary>
+    //private void Awake()
+    //{
+    //    if (PhotonNetwork.isMasterClient)               // 不是主客户端的需要手动添加到子弹池
+    //        return;
+    //    onlineShellPool = GameObject.FindGameObjectWithTag("ShellPool").GetComponent<OnlineShellPool>();
+    //    onlineShellPool.AddToPool(gameObject);
+    //}
 
     /// <summary>
     /// 当碰到任何物体，"Level"遮罩层下
@@ -35,6 +39,8 @@ public class OnlineShell : Photon.MonoBehaviour
 
         if (PhotonNetwork.isMasterClient)               // 房主作为基准
             photonView.RPC("Explosion", PhotonTargets.AllViaServer,transform.position);
+
+        //PhotonNetwork.Destroy(photonView);
     }
 
     /// <summary>
@@ -43,6 +49,9 @@ public class OnlineShell : Photon.MonoBehaviour
     [PunRPC]
     public void Explosion(Vector3 position)
     {
+        if (isExplosion)
+            return;
+        isExplosion = true;
         // 获取爆炸范围内所有碰撞体
         colliders = Physics.OverlapSphere(position, explosionRadius, layerMask);
 
@@ -73,7 +82,7 @@ public class OnlineShell : Photon.MonoBehaviour
     private void TakeDamage(Vector3 center, Collider collider)
     {
         targetHealth = collider.GetComponent<OnlineTankHealth>();
-        if (!targetHealth)
+        if (!targetHealth || !targetHealth.photonView.isMine)
             return;
         targetHealth.TakeDamage(CalculateDamage(center,targetRigidbody.position));
     }

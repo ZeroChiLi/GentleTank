@@ -131,6 +131,7 @@
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />
     <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
+    <Compile Include="Assets\OnlineMultiplayer\Scripts\DestroyForSeconds.cs" />
     <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
     <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineObjectPool.cs" />
     <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineShell.cs" />
