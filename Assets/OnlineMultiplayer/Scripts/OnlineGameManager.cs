@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OnlineGameManager : Photon.MonoBehaviour
 {
@@ -43,4 +44,5 @@ public class OnlineGameManager : Photon.MonoBehaviour
             PhotonNetwork.LeaveRoom();
         AllSceneManager.LoadScene(GameScene.LobbyScene);
     }
+
 }
