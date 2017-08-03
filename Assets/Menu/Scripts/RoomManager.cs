@@ -13,6 +13,8 @@ public class RoomManager : Photon.MonoBehaviour
     public WindowPanel windowPanel;                         // 窗口按钮
     public Toast toast;                                     // 提示
     public float refreshRate = 1f;                          // 刷新信息时间
+    public PlayerPanelManager playerPanel;                  // 玩机自己的面板
+    public RoommatesPanelManager roomatesPanelManager;      // 其他玩家面板管理
 
     private bool isReady;                                   // 是否可以开始游戏
 
@@ -22,11 +24,7 @@ public class RoomManager : Photon.MonoBehaviour
     private void Awake()
     {
         if (!PhotonNetwork.connected)                       // 若进入时没连接，直接回去大厅
-        {
             AllSceneManager.LoadScene(GameScene.LobbyScene);
-            return;
-        }
-        PhotonNetwork.Instantiate(playerPanelPerfab.name, transform.position, Quaternion.identity, 0);
     }
 
     /// <summary>
@@ -35,6 +33,9 @@ public class RoomManager : Photon.MonoBehaviour
     private void Start()
     {
         roomTitle.text = PhotonNetwork.room.Name;
+        playerPanel.SetupInfo(PhotonNetwork.playerName, PhotonNetwork.isMasterClient);
+        playerPanel.SetRandomColor();
+        roomatesPanelManager.Init(PhotonNetwork.room.MaxPlayers);
         Refresh();
     }
 

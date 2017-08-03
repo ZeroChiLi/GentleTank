@@ -3,35 +3,31 @@ using UnityEngine.UI;
 
 public class PlayerPanelManager : Photon.MonoBehaviour
 {
-    public bool isMaster;                                   // 是否是房主
     public Text playerNameText;                             // 玩家名称文本
     public Image masterIcon;                                // 房主标签
-    public GameObject tankModelUI;                          // 坦克模型UI
-    public GameObject controlPanel;                         // 控制面板
-    public Button colorButton;                              // 坦克颜色更换按钮
+    public GameObject tankRenderers;                        // 坦克渲染模型
     public Text colorButtonText;                            // 颜色按钮文本
 
     private string playerName;                              // 玩家名
-    private RectTransform rectransform;                     // 变换
     private Color currentColor = Color.green;               // 当前颜色
 
     /// <summary>
-    /// 添加到父组件，初始化名字
+    /// 清除信息
     /// </summary>
-    private void Awake()
+    public void Clear()
     {
-        rectransform = GetComponent<RectTransform>();
-        rectransform.SetParent(GameObject.FindGameObjectWithTag("PlayerPanelGroup").transform);
-        rectransform.localPosition = Vector3.zero;
-        rectransform.localScale = Vector3.one;
+        playerNameText.text = string.Empty;
+        tankRenderers.gameObject.SetActive(false);
+    }
 
-        masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);   // 房主标记
-        playerNameText.text = photonView.owner.NickName;                    // 玩家名
-        controlPanel.SetActive(photonView.isMine);                          // 控制面板
-
-        if (!photonView.isMine)
-            return;
-        SetRandomColor();                                                   // 随机更改颜色
+    /// <summary>
+    /// 配置名字，房主标记
+    /// </summary>
+    public void SetupInfo(string playerName,bool isMasterClient)
+    {
+        masterIcon.gameObject.SetActive(isMasterClient);   // 房主标记
+        playerNameText.text = playerName;                    // 玩家名
+        tankRenderers.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -40,8 +36,9 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     public void SetRandomColor()
     {
         currentColor = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-        ChangeColor.SelfAndChildrens(tankModelUI, currentColor);
-        colorButtonText.color = currentColor;
+        ChangeColor.SelfAndChildrens(tankRenderers, currentColor);
+        if (colorButtonText != null)
+            colorButtonText.color = currentColor;
         SavePlayerPrefs(currentColor);                  // 改完颜色保存起来
     }
 
@@ -83,7 +80,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
             currentColor.r = (float)stream.ReceiveNext();
             currentColor.g = (float)stream.ReceiveNext();
             currentColor.b = (float)stream.ReceiveNext();
-            ChangeColor.SelfAndChildrens(tankModelUI, currentColor);
+            ChangeColor.SelfAndChildrens(tankRenderers, currentColor);
         }
     }
 

@@ -15,7 +15,6 @@ public class CountDown : Photon.MonoBehaviour
     public Text messageTest;                                    // 游戏主信息文本 
     public float startDelay = 3f;                               // 开始游戏延迟
 
-    private bool getDelayTime;                                  // 已经获取了同步延时时间s
     private float delayTimeRemain;                              // 剩余延迟时间
     static private CountDownState currentState = CountDownState.None;  // 当前倒计时状态
 
@@ -59,7 +58,6 @@ public class CountDown : Photon.MonoBehaviour
     /// <param name="remainTime"></param>
     public void SetReaminTime(float remainTime)
     {
-        getDelayTime = true;
         delayTimeRemain = remainTime;
     }
 

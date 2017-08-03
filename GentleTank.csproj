@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -121,10 +123,12 @@
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
+    <Compile Include="Assets\Menu\Scripts\EmptyPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\PlayerPanelManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\RoommatesPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomInfoLabel.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomLabelsManager.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
