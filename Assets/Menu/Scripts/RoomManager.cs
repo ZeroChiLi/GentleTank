@@ -13,10 +13,11 @@ public class RoomManager : Photon.MonoBehaviour
     public WindowPanel windowPanel;                         // 窗口按钮
     public Toast toast;                                     // 提示
     public float refreshRate = 1f;                          // 刷新信息时间
-    public PlayerPanelManager playerPanel;                  // 玩机自己的面板
-    public RoommatesPanelManager roomatesPanelManager;      // 其他玩家面板管理
+    public PlayerPanelManager myPlayerPanel;                // 玩机自己的面板
+    public AllRoommatesPanelManager allRoomatesPanel;       // 所有其他玩家面板管理
 
     private bool isReady;                                   // 是否可以开始游戏
+    private PhotonView temPhotonView;                       // 同步视角组件
 
     /// <summary>
     /// 进入房间，如果失去连接回到大厅，没有就初始化
@@ -33,10 +34,16 @@ public class RoomManager : Photon.MonoBehaviour
     private void Start()
     {
         roomTitle.text = PhotonNetwork.room.Name;
-        playerPanel.SetupInfo(PhotonNetwork.playerName, PhotonNetwork.isMasterClient);
-        playerPanel.SetRandomColor();
-        roomatesPanelManager.Init(PhotonNetwork.room.MaxPlayers);
+        myPlayerPanel.SetupInfo(PhotonNetwork.playerName, PhotonNetwork.isMasterClient);
+        myPlayerPanel.SetRandomColorAndSave();
+        allRoomatesPanel.Init(PhotonNetwork.room.MaxPlayers);
         Refresh();
+        temPhotonView = myPlayerPanel.gameObject.AddComponent<PhotonView>();
+        //temPhotonView.viewID = PhotonNetwork.AllocateViewID();
+        temPhotonView.viewID =666;
+        temPhotonView.synchronization = ViewSynchronization.UnreliableOnChange;
+        temPhotonView.ObservedComponents = new List<Component>();
+        temPhotonView.ObservedComponents.Add(myPlayerPanel);
     }
 
     /// <summary>
@@ -46,7 +53,7 @@ public class RoomManager : Photon.MonoBehaviour
     {
         roommatesCount.text = PhotonNetwork.room.PlayerCount + "/" + PhotonNetwork.room.MaxPlayers;
 
-        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount ==  PhotonNetwork.room.MaxPlayers && !isReady)
+        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount == PhotonNetwork.room.MaxPlayers && !isReady)
             StartBtnTrigger(true);
     }
 
@@ -137,6 +144,7 @@ public class RoomManager : Photon.MonoBehaviour
     {
         Debug.Log("玩家离开: " + player);
         Refresh();
+        allRoomatesPanel.RemovePlayer(player);
         StartBtnTrigger(false);
     }
 
