@@ -12,6 +12,16 @@ public class AllRoommatesPanelManager : MonoBehaviour
     private PhotonPlayer temPlayer;                         // 临时玩家变量
     private PhotonView temPhotonView;                       // 同步视角组件
 
+    public PlayerPanelManager this[PhotonPlayer player]
+    {
+        get
+        {
+            if (playerPanelDic.ContainsKey(player))
+                return playerPanelDic[player];
+            return null;
+        }
+    }
+
     /// <summary>
     /// 初始化有效面板数量
     /// </summary>
@@ -22,12 +32,6 @@ public class AllRoommatesPanelManager : MonoBehaviour
         enableCount = Mathf.Max(0, playerMaxCount - 1);     // 除去自己剩余有效玩家面板数量
         for (int i = 0; i < othersPanelList.Count; i++)
         {
-            temPhotonView = othersPanelList[i].gameObject.AddComponent<PhotonView>();
-            //temPhotonView.viewID = PhotonNetwork.AllocateViewID();
-            temPhotonView.viewID = 50 + i;
-            temPhotonView.synchronization = ViewSynchronization.UnreliableOnChange;
-            temPhotonView.ObservedComponents = new List<Component>();
-            temPhotonView.ObservedComponents.Add(othersPanelList[i]);
             othersPanelList[i].Clear();
             if (i >= enableCount)
                 othersPanelList[i].IsEnable = false;
@@ -75,9 +79,8 @@ public class AllRoommatesPanelManager : MonoBehaviour
     {
         if (playerPanelDic.ContainsKey(player) || !ExistEnablePanel())  // 如果已经存在或者不存在但没有可用的，直接返回
             return;
-        Debug.Log("Add " + player.NickName);
         playerPanelDic.Add(player, GetEmptyPanel());
-        playerPanelDic[player].SetupInfo(player.NickName, player.IsMasterClient);
+        playerPanelDic[player].SetupInfo(player, player.IsMasterClient);
     }
 
     /// <summary>
@@ -89,7 +92,6 @@ public class AllRoommatesPanelManager : MonoBehaviour
     {
         if (!playerPanelDic.ContainsKey(player))
             return;
-        Debug.Log("Update " + player.NickName + "  " + color);
         playerPanelDic[player].SetColor(color);
     }
 
@@ -116,4 +118,5 @@ public class AllRoommatesPanelManager : MonoBehaviour
         playerPanelDic[player].Clear();
         playerPanelDic.Remove(player);
     }
+
 }

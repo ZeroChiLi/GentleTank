@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerPanelManager : Photon.MonoBehaviour
+public class PlayerPanelManager : MonoBehaviour
 {
     public Text playerNameText;                             // 玩家名称文本
     public Image masterIcon;                                // 房主标签
@@ -12,6 +12,9 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     public Image backgroundImage;                           // 背景颜色
     public AllRoommatesPanelManager allRoomatesPanel;       // 所有其他玩家面板管理
 
+    public Color CurrentColor { get { return currentColor; } }
+
+    private PhotonPlayer photonPlayer;                      // 面板对应玩家
     private string playerName;                              // 玩家名
     private Color currentColor = Color.green;               // 当前颜色
     private bool isEnable = true;                           // 是否可用
@@ -44,6 +47,7 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     /// </summary>
     public void Clear()
     {
+        photonPlayer = null;
         playerNameText.text = string.Empty;
         masterIcon.gameObject.SetActive(false);
         tankRenderers.gameObject.SetActive(false);
@@ -53,11 +57,12 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     /// <summary>
     /// 配置名字，房主标记
     /// </summary>
-    public void SetupInfo(string playerName, bool isMasterClient)
+    public void SetupInfo(PhotonPlayer player, bool isMasterClient)
     {
+        photonPlayer = player;
         isEmpty = false;
         masterIcon.gameObject.SetActive(isMasterClient);        // 房主标记
-        playerNameText.text = playerName;                       // 玩家名
+        playerNameText.text = player.NickName;                  // 玩家名
         tankRenderers.gameObject.SetActive(true);
     }
 
@@ -82,19 +87,6 @@ public class PlayerPanelManager : Photon.MonoBehaviour
         SavePlayerPrefs(currentColor);                  // 改完颜色保存起来
     }
 
-
-    /// <summary>
-    /// 更换房间主人时调用
-    /// </summary>
-    /// <param name="player">成为房主的人</param>
-    public void OnMasterClientSwitched(PhotonPlayer player)
-    {
-        //if (player.IsLocal)
-        //    masterIcon.gameObject.SetActive(true);
-        //if (!IsEmpty)
-        //masterIcon.gameObject.SetActive(photonView.owner.IsMasterClient);
-    }
-
     /// <summary>
     /// 保持玩家信息
     /// </summary>
@@ -107,26 +99,12 @@ public class PlayerPanelManager : Photon.MonoBehaviour
     }
 
     /// <summary>
-    /// 同步信息，仅主面板带Photon view自动回调
+    /// 更换房间主人时调用
     /// </summary>
-    /// <param name="stream">信息流</param>
-    /// <param name="info">信息介绍</param>
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    /// <param name="player">成为房主的人</param>
+    public void OnMasterClientSwitched(PhotonPlayer player)
     {
-        if (stream.isWriting)
-        {
-            stream.SendNext(currentColor.r);
-            stream.SendNext(currentColor.g);
-            stream.SendNext(currentColor.b);
-        }
-        else
-        {
-            Debug.Log("Receive");
-            temColor.r = (float)stream.ReceiveNext();
-            temColor.g = (float)stream.ReceiveNext();
-            temColor.b = (float)stream.ReceiveNext();
-            allRoomatesPanel.AddOrUpdatePlayer(info.sender,temColor);
-        }
+        if (photonPlayer != null)
+            masterIcon.gameObject.SetActive(photonPlayer.IsMasterClient);
     }
-
 }

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class RoomManager : Photon.MonoBehaviour
 {
+    static private RoomManager instance;
+    static public RoomManager Instance { get { return instance; } }
+
     public GameObject playerPanelPerfab;                    // 玩家面板预设
     public Transform playerGroup;                           // 玩家面板组
     public Text roomTitle;                                  // 房间标题
@@ -15,6 +18,7 @@ public class RoomManager : Photon.MonoBehaviour
     public float refreshRate = 1f;                          // 刷新信息时间
     public PlayerPanelManager myPlayerPanel;                // 玩机自己的面板
     public AllRoommatesPanelManager allRoomatesPanel;       // 所有其他玩家面板管理
+    public GameObject syncPlayerInfoPerfab;                 // 同步玩家信息预设
 
     private bool isReady;                                   // 是否可以开始游戏
     private PhotonView temPhotonView;                       // 同步视角组件
@@ -24,8 +28,13 @@ public class RoomManager : Photon.MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        instance = this;
         if (!PhotonNetwork.connected)                       // 若进入时没连接，直接回去大厅
+        {
             AllSceneManager.LoadScene(GameScene.LobbyScene);
+            return;
+        }
+        PhotonNetwork.Instantiate(syncPlayerInfoPerfab.name, Vector3.zero, Quaternion.identity, 0).GetComponent<SyncPlayerInfo>().Init(myPlayerPanel);
     }
 
     /// <summary>
@@ -34,16 +43,10 @@ public class RoomManager : Photon.MonoBehaviour
     private void Start()
     {
         roomTitle.text = PhotonNetwork.room.Name;
-        myPlayerPanel.SetupInfo(PhotonNetwork.playerName, PhotonNetwork.isMasterClient);
+        myPlayerPanel.SetupInfo(PhotonNetwork.player, PhotonNetwork.isMasterClient);
         myPlayerPanel.SetRandomColorAndSave();
         allRoomatesPanel.Init(PhotonNetwork.room.MaxPlayers);
         Refresh();
-        temPhotonView = myPlayerPanel.gameObject.AddComponent<PhotonView>();
-        //temPhotonView.viewID = PhotonNetwork.AllocateViewID();
-        temPhotonView.viewID =666;
-        temPhotonView.synchronization = ViewSynchronization.UnreliableOnChange;
-        temPhotonView.ObservedComponents = new List<Component>();
-        temPhotonView.ObservedComponents.Add(myPlayerPanel);
     }
 
     /// <summary>
