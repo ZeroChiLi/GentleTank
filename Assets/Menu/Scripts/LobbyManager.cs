@@ -119,7 +119,6 @@ public class LobbyManager : MonoBehaviour
         PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
     }
 
-
     /// <summary>
     /// 显示服务器信息：在线玩家人数，房间总数
     /// </summary>

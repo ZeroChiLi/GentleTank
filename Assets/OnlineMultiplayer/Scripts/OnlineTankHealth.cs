@@ -14,59 +14,80 @@ public class OnlineTankHealth : Photon.MonoBehaviour
     public bool getHurt = false;      // 是否受伤
 
     private float currentHealth;                        // 当前血量
-    private bool dead;                                  // 是否死掉
+    private bool isDead;                                // 是否死掉
 
+    /// <summary>
+    /// 当前血量
+    /// </summary>
     public float CurrentHealth
     {
         get { return currentHealth; }
         set { currentHealth = Mathf.Clamp(value, 0, startingHealth); }
     }
 
+    /// <summary>
+    /// 激活时初始化
+    /// </summary>
     private void OnEnable()
     {
         slider.maxValue = startingHealth;
         CurrentHealth = startingHealth;
         getHurt = false;
-        dead = false;
-        SetHealthUI();
+        isDead = false;
+        UpdateHealthUI();
     }
 
+    /// <summary>
+    /// 失效时清空信息
+    /// </summary>
     private void OnDisable()
     {
         CurrentHealth = 0;
-        SetHealthUI();
+        UpdateHealthUI();
     }
 
-    // 受伤害
+    /// <summary>
+    /// 受伤害
+    /// </summary>
+    /// <param name="amount">伤害值</param>
+    /// <returns>返回当前血量</returns>
     public float TakeDamage(float amount)
     {
         getHurt = true;
         CurrentHealth -= amount;
-        SetHealthUI();
-        if (CurrentHealth <= 0f && !dead)
+        UpdateHealthUI();
+        if (CurrentHealth <= 0f && !isDead)
             OnDeath();
-        return currentHealth;
+        return CurrentHealth;
     }
 
-    // 加血
+    /// <summary>
+    /// 增加血量
+    /// </summary>
+    /// <param name="amount">增加量</param>
+    /// <returns>当前血量</returns>
     public float GainHeal(float amount)
     {
         CurrentHealth += amount;
-        SetHealthUI();
-        return currentHealth;
+        UpdateHealthUI();
+        return CurrentHealth;
     }
 
-    // 修改血条长度，颜色
-    private void SetHealthUI()
+    /// <summary>
+    /// 更新血量UI
+    /// </summary>
+    private void UpdateHealthUI()
     {
         slider.value = CurrentHealth;
         fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, CurrentHealth / startingHealth);
     }
 
-    // 死掉了
+    /// <summary>
+    /// 死掉时调用
+    /// </summary>
     private void OnDeath()
     {
-        dead = true;
+        isDead = true;
 
         //获取爆炸特效，并显示之
         tankExplosionPool.GetNextObject(transform: gameObject.transform);
@@ -84,12 +105,12 @@ public class OnlineTankHealth : Photon.MonoBehaviour
         if (stream.isWriting)
         {
             stream.SendNext(currentHealth);
-            stream.SendNext(dead);
+            stream.SendNext(isDead);
         }
         else
         {
             currentHealth = (float)stream.ReceiveNext();
-            SetHealthUI();
+            UpdateHealthUI();
             if ((bool)stream.ReceiveNext())
                 OnDeath();
         }

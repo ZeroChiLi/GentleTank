@@ -21,7 +21,6 @@ public class RoomManager : Photon.MonoBehaviour
     public GameObject syncPlayerInfoPerfab;                 // 同步玩家信息预设
 
     private bool isReady;                                   // 是否可以开始游戏
-    private PhotonView temPhotonView;                       // 同步视角组件
 
     /// <summary>
     /// 进入房间，如果失去连接回到大厅，没有就初始化

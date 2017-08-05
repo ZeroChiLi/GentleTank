@@ -34,9 +34,6 @@ public class OnlineShell : Photon.MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameObject.SetActive(false);
-        // 从爆炸池中获取对象，并设置位置，显示之
-        shellExplosionPool.GetNextObject(transform: transform);
-
         if (PhotonNetwork.isMasterClient)               // 房主作为基准
             photonView.RPC("Explosion", PhotonTargets.AllViaServer,transform.position);
 
@@ -49,6 +46,10 @@ public class OnlineShell : Photon.MonoBehaviour
     [PunRPC]
     public void Explosion(Vector3 position)
     {
+        gameObject.SetActive(false);
+        // 从爆炸池中获取对象，并设置位置，显示之
+        shellExplosionPool.GetNextObject(transform: transform);
+
         if (isExplosion)
             return;
         isExplosion = true;
