@@ -115,6 +115,7 @@
     <Compile Include="Assets\Main Assets\Scripts\Tank\TankShooting.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\ArrowPopUp.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\ChangeColor.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\UI\JoystickInput.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\SpawnAllPopUpArrow.cs" />
     <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
