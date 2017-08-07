@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public CameraControl cameraControl;             // 相机控制组件
     public MinimapManager minimapManager;           // 小地图管理器
     public SpawnAllPopUpArrow spawnAllPopUpArrow;   // 用来显示玩家箭头
+    public TankFireButton tankFireButton;           // 坦克普通攻击按钮
 
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
@@ -49,6 +51,9 @@ public class GameManager : MonoBehaviour
         GameObject tanks = new GameObject("Tanks");
         for (int i = 0; i < AllTanksManager.Instance.Count; i++)
             AllTanksManager.Instance[i].InitTank(Instantiate(AllTanksManager.Instance[i].tankPerfab, tanks.transform));
+
+        // 为第一个坦克添加到UI控制
+        tankFireButton.tankShooting = AllTanksManager.Instance[0].Instance.GetComponent<TankShooting>();
 
         cameraControl.targets = AllTanksManager.Instance.GetTanksTransform();
         cameraControl.SetStartPositionAndSize();

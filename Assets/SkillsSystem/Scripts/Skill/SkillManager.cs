@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SkillManager : MonoBehaviour 
 {
+    public bool needReady = true;                   // 需要准备（两次点击后才释放技能），否则一次直接释放
     public Slider slider;                           // 滑动条
     public Image fullImage;                         // 滑动条图片
     public Image emptyImage;                        // 滑动条背景图片
@@ -21,18 +22,25 @@ public class SkillManager : MonoBehaviour
     private Coroutine currentSkillCoroutine;                         // 当前技能释放时的协程
 
     /// <summary>
-    /// 初始化技能管理器
+    /// 初始化
+    /// </summary>
+    public void Start()
+    {
+        buttonImage = GetComponent<Image>();
+        slider.maxValue = skill.coolDownTime;
+        remainReleaseTime = skill.coolDownTime;
+        buttonImage.color = disableColor;
+        SetupButtonEvent();
+    }
+
+    /// <summary>
+    /// 通过外部初始化技能管理器
     /// </summary>
     public void InitSkillManager(Skill skill,Sprite fullSprite,Sprite emptySprite)
     {
         this.skill = skill;
         fullImage.sprite = fullSprite;
         emptyImage.sprite = emptySprite;
-        buttonImage = GetComponent<Image>();
-        slider.maxValue = skill.coolDownTime;
-        remainReleaseTime = skill.coolDownTime;
-        buttonImage.color = disableColor;
-        SetupButtonEvent();
     }
 
     /// <summary>
@@ -140,6 +148,8 @@ public class SkillManager : MonoBehaviour
     /// <returns>返回True，可以释放技能</returns>
     public bool CanRelease()
     {
+        if (!needReady)     // 如果不需要准备，那就自动设置为准备状态
+            Ready();
         return remainReleaseTime <= 0f && isReady && skill.ReleaseCondition();
     }
 
@@ -151,7 +161,8 @@ public class SkillManager : MonoBehaviour
         remainReleaseTime = slider.maxValue;
         isReady = false;
         Cancel();
-        currentSkillCoroutine = StartCoroutine(skill.SkillEffect());
+        if (skill != null)
+            currentSkillCoroutine = StartCoroutine(skill.SkillEffect());
     }
 
     /// <summary>
