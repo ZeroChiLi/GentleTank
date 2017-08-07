@@ -16,13 +16,21 @@ public class TankMovement : MonoBehaviour
     private float turnInputValue;               // 当前旋转值
     private float originalPitch;                // 初始音调值
     private ParticleSystem[] particleSystems;   // 坦克的所有粒子系统（尾气）
+    private Vector3 movement;                   // 移动值
+    private Quaternion turnRotation;            // 旋转值
 
+    /// <summary>
+    /// 获取刚体组件，声音源片段
+    /// </summary>
     private void Awake()
     {
         tankRigidbody = GetComponent<Rigidbody>();
         originalPitch = movementAudio.pitch;
     }
 
+    /// <summary>
+    /// 启动初始化配置
+    /// </summary>
     private void OnEnable()
     {
         tankRigidbody.isKinematic = false;
@@ -34,6 +42,9 @@ public class TankMovement : MonoBehaviour
             particleSystems[i].Play();
     }
 
+    /// <summary>
+    /// 终止活动
+    /// </summary>
     private void OnDisable()
     {
         tankRigidbody.isKinematic = true;
@@ -42,16 +53,23 @@ public class TankMovement : MonoBehaviour
             particleSystems[i].Stop();
     }
 
-    // 获取移动、旋转值
+    /// <summary>
+    /// 更新音频、移动、旋转
+    /// </summary>
     private void Update()
     {
         EngineAudio();
 
-        Move(Input.GetAxis(movementAxisName));
-        Turn(Input.GetAxis(turnAxisName));
+        //Move(Input.GetAxis(movementAxisName));
+        //Turn(Input.GetAxis(turnAxisName));
+        Move(JoystickInput.Instance.GetAxis().y);
+        Turn(JoystickInput.Instance.GetAxis().x);
     }
 
-    //设置编号
+    /// <summary>
+    /// 设置玩家输入ID，通过ID控制输入的按键
+    /// </summary>
+    /// <param name="id"></param>
     public void SetupPlayerInput(int id)
     {
         if (id < 0)
@@ -62,7 +80,9 @@ public class TankMovement : MonoBehaviour
         turnAxisName = "Horizontal" + id;
     }
 
-    // 坦克引擎声音
+    /// <summary>
+    /// 坦克引擎声音
+    /// </summary>
     private void EngineAudio()
     {
         // 如果从移动变化到静止状态（包括旋转），关掉移动音效，开启闲置音效
@@ -72,7 +92,10 @@ public class TankMovement : MonoBehaviour
             ChangeAudioClipAndPlay(engineDriving);
     }
 
-    // 改变音效
+    /// <summary>
+    /// 改变音效
+    /// </summary>
+    /// <param name="audioClip">声音片段</param>
     private void ChangeAudioClipAndPlay(AudioClip audioClip)
     {
         movementAudio.clip = audioClip;
@@ -80,18 +103,23 @@ public class TankMovement : MonoBehaviour
         movementAudio.Play();
     }
 
-    //移动
+    /// <summary>
+    /// 移动
+    /// </summary>
+    /// <param name="moveValue">移动值</param>
     private void Move(float moveValue)
     {
-        Vector3 movement = transform.forward * moveValue * speed * Time.deltaTime;
+        movement = transform.forward * moveValue * speed * Time.deltaTime;
         tankRigidbody.MovePosition(tankRigidbody.position + movement);
     }
 
-    //旋转
+    /// <summary>
+    /// 旋转
+    /// </summary>
+    /// <param name="turnValue">旋转值</param>
     private void Turn(float turnValue)
     {
-        float turn = turnValue * turnSpeed * Time.deltaTime;
-        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        turnRotation = Quaternion.Euler(0f, turnValue * turnSpeed * Time.deltaTime, 0f);
         tankRigidbody.MoveRotation(tankRigidbody.rotation * turnRotation);
     }
 }
