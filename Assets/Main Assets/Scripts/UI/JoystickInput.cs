@@ -13,9 +13,11 @@ public class JoystickInput : MonoBehaviour
     public float movementRange = 100;                       // 摇杆移动范围
     public string horizontalAxisName = "Horizontal";        // 水平方向名称
     public string verticalAxisName = "Vertical";            // 竖直方向名称
+    public CanvasScaler canvasScaler;                       // 画布缩放
 
     public bool IsActive { get { return isActive; } }       // 摇杆是否激活
 
+    private float screenRatio;                              // 屏幕缩放比(依据屏幕高)
     private bool isActive;                                  // 是否激活
     private RectTransform rectTransfrom;                    // 本身的矩形变换
     private Vector3 center;                                 // 原点位置
@@ -56,9 +58,12 @@ public class JoystickInput : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        screenRatio = Screen.height /canvasScaler.referenceResolution.y;
         joystick.GetComponent<Image>().enabled = showJoystick;
         rectTransfrom.sizeDelta = Vector2.one * movementRange;
+        movementRange *= screenRatio;
         center = rectTransfrom.position + new Vector3(movementRange/2, movementRange/2,0);
+        //Debug.Log(rectTransfrom.sizeDelta + "  " + rectTransfrom.position + "  " + center + "  " + screenRatio +"  " +joystick.transform.position);
     }
 
     /// <summary>
