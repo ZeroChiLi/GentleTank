@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Item.Tank;
 using UnityEngine;
 
 public class OnlineTankManager : Photon.MonoBehaviour

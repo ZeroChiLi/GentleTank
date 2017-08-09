@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Item.Tank;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -26,6 +27,9 @@ public class StateController : MonoBehaviour
     private State startState;                               // 初始状态，每次复活后重置
     private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
+    /// <summary>
+    /// 获取组件
+    /// </summary>
     private void Awake()
     {
         tankInfo = GetComponent<TankInformation>();
@@ -34,18 +38,26 @@ public class StateController : MonoBehaviour
         startState = currentState;
     }
 
+    /// <summary>
+    /// 配置导航信息，重置状态
+    /// </summary>
     private void OnEnable()
     {
         SetupNavigation();
         currentState = startState;                          //复活的时候重置状态
     }
 
+    /// <summary>
+    /// 更新状态
+    /// </summary>
     private void Update()
     {
         currentState.UpdateState(this);                     //更新状态
     }
 
-    //初始化导航的变量
+    /// <summary>
+    /// 初始化导航的变量
+    /// </summary>
     private void SetupNavigation()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -58,7 +70,10 @@ public class StateController : MonoBehaviour
         navMeshAgent.stoppingDistance = defaultStats.navStopDistance.GetRandomValue();
     }
 
-    //配置AI
+    /// <summary>
+    /// 配置AI
+    /// </summary>
+    /// <param name="enable">是否可用</param>
     public void SetupAI(bool enable)
     {
         enabled = enable;
@@ -66,7 +81,10 @@ public class StateController : MonoBehaviour
         GetNewNextWayPoint(true);
     }
 
-    //转换到下一个状态
+    /// <summary>
+    /// 转换到下一个状态
+    /// </summary>
+    /// <param name="nextState">下一个状态</param>
     public void TransitionToState(State nextState)
     {
         if (nextState != remainState)
@@ -76,21 +94,31 @@ public class StateController : MonoBehaviour
         }
     }
 
-    //退出改变状态时调用
+    /// <summary>
+    /// 改变状态后调用
+    /// </summary>
     private void OnExitState()
     {
         stateTimeElapsed = 0;
         SetHurt(false);
     }
 
-    //返回是否过了时间间隔
+    /// <summary>
+    /// 返回是否过了时间间隔
+    /// </summary>
+    /// <param name="duration">持续时间</param>
+    /// <returns>是否过了持续时间</returns>
     public bool CheckIfCountDownElapsed(float duration)
     {
         stateTimeElapsed += Time.deltaTime;
         return (stateTimeElapsed >= duration);
     }
 
-    //获取下一个目标巡逻点
+    /// <summary>
+    /// 获取下一个目标巡逻点
+    /// </summary>
+    /// <param name="isRandom">是否随机</param>
+    /// <returns>返回下一个巡逻点</returns>
     public Point GetNewNextWayPoint(bool isRandom)
     {
         if (isRandom)
@@ -100,30 +128,47 @@ public class StateController : MonoBehaviour
         return wayPointList[nextWayPointIndex];
     }
 
-    //开火
-    public void Fire()
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    public void Attack()
     {
         GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
     }
 
-    //是否被攻击了
+    /// <summary>
+    /// 是否被攻击了
+    /// </summary>
+    /// <returns>被攻击状态</returns>
     public bool GetHurt()
     {
         return GetComponent<TankHealth>().getHurt;
     }
 
-    //设置是否感受到伤害
-    public void SetHurt(bool hurt)
+    /// <summary>
+    /// 设置是否被攻击
+    /// </summary>
+    /// <param name="isGetHurt">是否被攻击</param>
+    public void SetHurt(bool isGetHurt)
     {
-        GetComponent<TankHealth>().getHurt = hurt;
+        GetComponent<TankHealth>().getHurt = isGetHurt;
     }
 
-    //通过碰撞体判断是否队友
+    /// <summary>
+    /// 通过碰撞体判断是否队友
+    /// </summary>
+    /// <param name="collider">碰撞的物体</param>
+    /// <returns>是否是队友</returns>
     public bool IsTeamMate(Collider collider)
     {
         return AllTeamsManager.Instance.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
     }
 
+    /// <summary>
+    /// 碰撞是否是自己
+    /// </summary>
+    /// <param name="collider">碰撞的物体</param>
+    /// <returns>是否是自己</returns>
     public bool IsMyself(Collider collider)
     {
         return collider == colliderSelf;

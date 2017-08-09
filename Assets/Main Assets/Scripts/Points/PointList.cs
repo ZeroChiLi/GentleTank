@@ -155,7 +155,7 @@ public class PointList : ScriptableObject
     /// 显示在场景中的位置
     /// </summary>
     /// <param name="show">是否显示</param>
-    private void ShowPosition(bool show)
+    public void ShowPosition(bool show)
     {
         if (!show)
             return;
@@ -168,7 +168,7 @@ public class PointList : ScriptableObject
     /// 显示在点的方向坐标
     /// </summary>
     /// <param name="show">是否显示</param>
-    private void ShowAxis(bool show)
+    public void ShowAxis(bool show)
     {
         if (!show)
             return;
