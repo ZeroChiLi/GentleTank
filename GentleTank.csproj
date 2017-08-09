@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -90,10 +92,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Flags\Scripts\ChargeArea.cs" />
-    <Compile Include="Assets\Flags\Scripts\ChargeAreaManager.cs" />
-    <Compile Include="Assets\Flags\Scripts\EffectController.cs" />
-    <Compile Include="Assets\Flags\Scripts\FlagManager.cs" />
+    <Compile Include="Assets\ChargeArea\Scripts\ChargeAreaManager.cs" />
+    <Compile Include="Assets\ChargeArea\Scripts\AllChargeAreaManager.cs" />
+    <Compile Include="Assets\ChargeArea\Scripts\EffectController.cs" />
+    <Compile Include="Assets\ChargeArea\Scripts\FlagManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Effects\Effect.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ActiveForSeconds.cs" />
