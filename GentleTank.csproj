@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -91,12 +93,58 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiplayerCameraManager.cs" />
-    <Compile Include="Assets\Items\ArrowPopUp\Scripts\AllArrowPopUpManager.cs" />
-    <Compile Include="Assets\Items\ArrowPopUp\Scripts\ArrowPopUpManager.cs" />
-    <Compile Include="Assets\Items\ChargeArea\Scripts\AllChargeAreaManager.cs" />
-    <Compile Include="Assets\Items\ChargeArea\Scripts\ChargeAreaManager.cs" />
-    <Compile Include="Assets\Items\ChargeArea\Scripts\EffectController.cs" />
-    <Compile Include="Assets\Items\ChargeArea\Scripts\FlagManager.cs" />
+    <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
+    <Compile Include="Assets\Common\Scripts\AllTeamsManager.cs" />
+    <Compile Include="Assets\Common\Scripts\ChangeColor.cs" />
+    <Compile Include="Assets\Common\Scripts\Effect.cs" />
+    <Compile Include="Assets\Common\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Common\Scripts\GameRecord.cs" />
+    <Compile Include="Assets\Common\Scripts\ObjectPool.cs" />
+    <Compile Include="Assets\Common\Scripts\ObjectPoolCreate.cs" />
+    <Compile Include="Assets\Common\Scripts\PlayerInfoUI.cs" />
+    <Compile Include="Assets\Common\Scripts\Point.cs" />
+    <Compile Include="Assets\Common\Scripts\PointList.cs" />
+    <Compile Include="Assets\Common\Scripts\PointsDebugShow.cs" />
+    <Compile Include="Assets\Common\Scripts\TeamManager.cs" />
+    <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\JoystickInput.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\CountDown.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\DestroyForSeconds.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineObjectPool.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineShell.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineShellPool.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineTankHealth.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineTankManager.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineTankShooting.cs" />
+    <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\SyncPlayerInfo.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\Action.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\AttackAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BackOff.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\ChaseAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\AIStats.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\MinMaxValue.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\StateController.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\Decision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\DelayDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\HurtDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\LookDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\ScanDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\State\State.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\State\Transition.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\Aim\Aim.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\Aim\AimMode.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\AllSkillManager.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\Effects\WarnningArea.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillManager.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\HealSkill.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\ShellRainSkill.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillObject.cs" />
     <Compile Include="Assets\Items\Shell\Scripts\ShellManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\AllTanksManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankFireButton.cs" />
@@ -105,21 +153,6 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankShooting.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\ActiveForSeconds.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\AllTeamsManager.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\Effect.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\GameRecord.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPoolCreate.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\PointsDebugShow.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Managers\TeamManager.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Points\Point.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Points\PointList.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\UI\ChangeColor.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\UI\JoystickInput.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\UI\PlayerInfoUI.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\UI\UIDirectionControl.cs" />
     <Compile Include="Assets\Menu\Scripts\AllRoommatesPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
@@ -133,17 +166,6 @@
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />
-    <Compile Include="Assets\Minimap\Scripts\MinimapManager.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\CountDown.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\DestroyForSeconds.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineObjectPool.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineShell.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineShellPool.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankHealth.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankManager.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\OnlineTankShooting.cs" />
-    <Compile Include="Assets\OnlineMultiplayer\Scripts\SyncPlayerInfo.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
@@ -204,36 +226,16 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\UI\ButtonInsideScrollList.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\UI\TextButtonTransition.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\UI\TextToggleIsOnTransition.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\Action.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\AttackAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\BackOff.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\ChaseAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Configure\AIStats.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Configure\MinMaxValue.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Configure\StateController.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\Decision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\DelayDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\HurtDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\LookDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\ScanDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\State\State.cs" />
-    <Compile Include="Assets\PluggableAI\Scripts\State\Transition.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Aim\Aim.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Aim\AimMode.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\AllSkillManager.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Effects\WarnningArea.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Skill\HealSkill.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Skill\ShellRainSkill.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Skill\Skill.cs" />
-    <Compile Include="Assets\SkillsSystem\Scripts\Skill\SkillManager.cs" />
+    <Compile Include="Assets\Widgets\ArrowPopUp\Scripts\AllArrowPopUpManager.cs" />
+    <Compile Include="Assets\Widgets\ArrowPopUp\Scripts\ArrowPopUpManager.cs" />
+    <Compile Include="Assets\Widgets\ChargeArea\Scripts\AllChargeAreaManager.cs" />
+    <Compile Include="Assets\Widgets\ChargeArea\Scripts\ChargeAreaManager.cs" />
+    <Compile Include="Assets\Widgets\ChargeArea\Scripts\EffectController.cs" />
+    <Compile Include="Assets\Widgets\ChargeArea\Scripts\FlagManager.cs" />
+    <Compile Include="Assets\Widgets\Minimap\Scripts\MinimapManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
   </ItemGroup>

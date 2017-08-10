@@ -87,7 +87,7 @@
     <Compile Include="Assets\Plugins\WebSocket\WebSocket.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
   </ItemGroup>

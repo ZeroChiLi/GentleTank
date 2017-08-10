@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CrossPlatformInput;
+using UnityEngine;
 
 namespace Item.Tank
 {

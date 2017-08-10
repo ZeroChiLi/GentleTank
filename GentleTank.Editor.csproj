@@ -136,8 +136,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Main Assets\Editor\MoveSceneViewCamera.cs" />
-    <Compile Include="Assets\Main Assets\Editor\TanksToTeams.cs" />
+    <Compile Include="Assets\Common\Editor\TanksToTeams.cs" />
+    <Compile Include="Assets\Environment\Editor\MoveSceneViewCamera.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Editor\AIStatsEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\AccountService.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\CullAreaEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonConverter.cs" />
@@ -155,10 +156,9 @@
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonTransformViewEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PlayerRoomIndexingInspector.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PunTeamsInspector.cs" />
-    <Compile Include="Assets\PluggableAI\Editor\AIStatsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Main Assets\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
   </ItemGroup>
