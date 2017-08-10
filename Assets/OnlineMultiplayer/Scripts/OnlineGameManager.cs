@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CameraRig;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +8,8 @@ public class OnlineGameManager : Photon.MonoBehaviour
 {
     public GameObject playerPrefab;                         // 玩家预设
     public PointList pointList;                             // 玩家出生点列表
-    public CameraControl cameraControl;                     // 镜头控制
-    //public OnlineShellPool onlineShellPool;                 // 炮弹池
+    public MultiplayerCameraManager cameraControl;          // 镜头控制
+    //public OnlineShellPool onlineShellPool;               // 炮弹池
 
     private OnlineTankManager playerInstance;               // 玩家实例
     private Point spawnPoint;                               // 玩家出身点

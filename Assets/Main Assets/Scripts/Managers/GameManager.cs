@@ -1,4 +1,6 @@
+using CameraRig;
 using Item.Tank;
+using Item.ArrowPopUp;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,9 +16,9 @@ public class GameManager : MonoBehaviour
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    public CameraControl cameraControl;             // 相机控制组件
+    public MultiplayerCameraManager cameraControl;  // 相机控制组件
     public MinimapManager minimapManager;           // 小地图管理器
-    public SpawnAllPopUpArrow spawnAllPopUpArrow;   // 用来显示玩家箭头
+    public AllArrowPopUpManager spawnAllPopUpArrow;   // 用来显示玩家箭头
     public TankFireButton tankFireButton;           // 坦克普通攻击按钮
 
     private WaitForSeconds startWait;               // 开始回合延时
