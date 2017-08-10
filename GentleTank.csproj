@@ -105,9 +105,9 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankShooting.cs" />
-    <Compile Include="Assets\Main Assets\Scripts\Effects\Effect.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ActiveForSeconds.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\AllTeamsManager.cs" />
+    <Compile Include="Assets\Main Assets\Scripts\Managers\Effect.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\GameRecord.cs" />
     <Compile Include="Assets\Main Assets\Scripts\Managers\ObjectPool.cs" />
