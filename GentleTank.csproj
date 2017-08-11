@@ -92,18 +92,19 @@
   <ItemGroup>
     <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiplayerCameraManager.cs" />
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
-    <Compile Include="Assets\Common\Scripts\AllTeamsManager.cs" />
     <Compile Include="Assets\Common\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Common\Scripts\Effect.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
     <Compile Include="Assets\CrossPlatformInput\Scripts\JoystickInput.cs" />
     <Compile Include="Assets\GameControl\Scripts\AllPlayerManager.cs" />
+    <Compile Include="Assets\GameControl\Scripts\AllTeamsManager.cs" />
     <Compile Include="Assets\GameControl\Scripts\GameManager.cs" />
     <Compile Include="Assets\GameControl\Scripts\GameRecord.cs" />
     <Compile Include="Assets\GameControl\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\GameControl\Scripts\ObjectPoolCreate.cs" />
     <Compile Include="Assets\GameControl\Scripts\PlayerInfoUI.cs" />
     <Compile Include="Assets\GameControl\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\GameControl\Scripts\PlayerTeamManager.cs" />
     <Compile Include="Assets\GameControl\Scripts\Point.cs" />
     <Compile Include="Assets\GameControl\Scripts\PointList.cs" />
     <Compile Include="Assets\GameControl\Scripts\PointsDebugShow.cs" />

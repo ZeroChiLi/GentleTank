@@ -35,18 +35,18 @@ namespace Widget.Minimap
         /// </summary>
         public void SetupPlayerIconDic()
         {
-            allPlayerIcon = new Dictionary<Transform, GameObject>();
-            for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-            {
-                GameObject icon = Instantiate(playerIcon, minimapContent.transform);
-                TeamManager team = AllTeamsManager.Instance.GetTeamByPlayerID(AllTanksManager.Instance[i].PlayerID);
-                if (team != null)
-                    icon.GetComponent<Image>().color = team.TeamColor;
-                allPlayerIcon[AllTanksManager.Instance[i].Instance.transform] = icon;
-            }
-            // 旋转角，通过相机位置
-            contentRotate = Quaternion.Euler(new Vector3(0, 0, cameraRig.transform.rotation.eulerAngles.y));
-            isSetup = true;
+            //allPlayerIcon = new Dictionary<Transform, GameObject>();
+            //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
+            //{
+            //    GameObject icon = Instantiate(playerIcon, minimapContent.transform);
+            //    TeamManager team = AllTeamsManager.Instance.GetTeamByPlayerID(AllTanksManager.Instance[i].PlayerID);
+            //    if (team != null)
+            //        icon.GetComponent<Image>().color = team.TeamColor;
+            //    allPlayerIcon[AllTanksManager.Instance[i].Instance.transform] = icon;
+            //}
+            //// 旋转角，通过相机位置
+            //contentRotate = Quaternion.Euler(new Vector3(0, 0, cameraRig.transform.rotation.eulerAngles.y));
+            //isSetup = true;
         }
 
 
@@ -64,13 +64,13 @@ namespace Widget.Minimap
         /// </summary>
         public void SetTargetRandomly()
         {
-            for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-                if (AllTanksManager.Instance[i].Instance.activeSelf)
-                {
-                    SetTarget(AllTanksManager.Instance[i].Instance.transform);
-                    return;
-                }
-            SetTarget(new GameObject().transform);
+            //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
+            //    if (AllTanksManager.Instance[i].Instance.activeSelf)
+            //    {
+            //        SetTarget(AllTanksManager.Instance[i].Instance.transform);
+            //        return;
+            //    }
+            //SetTarget(new GameObject().transform);
         }
 
         /// <summary>

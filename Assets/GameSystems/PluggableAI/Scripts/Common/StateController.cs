@@ -163,7 +163,8 @@ namespace GameSystem.AI
         /// <returns>是否是队友</returns>
         public bool IsTeamMate(Collider collider)
         {
-            return AllTeamsManager.Instance.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
+            return false;
+            //return AllTeamsManager.Instance.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
         }
 
         /// <summary>

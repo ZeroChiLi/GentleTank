@@ -10,7 +10,7 @@ public class PlayerInformation
     public bool isAI;                       // 玩家是否是AI
     public GameObject perfab;               // 玩家预设
     public Color representColor;            // 玩家代表颜色
-    public TeamManager team;                // 玩家所在的团队，没有则为null
+    public PlayerTeamManager team;                // 玩家所在的团队，没有则为null
 
     /// <summary>
     /// 创建游戏对象实例，并把该玩家信息作为组件（PlayerManager）添加进去
@@ -19,7 +19,8 @@ public class PlayerInformation
     public PlayerManager CreateGameObjectWithPlayerManager()
     {
         GameObject gameObject = Object.Instantiate(perfab);
-        PlayerManager playerManager = gameObject.GetComponent<PlayerManager>();
+        // 如果已经有该组件，直接修改。如果没有该组件，创建之
+        PlayerManager playerManager = gameObject.GetComponent<PlayerManager>() ?? gameObject.AddComponent<PlayerManager>();
         playerManager.SetInformation(this);
         return playerManager;
     }
@@ -35,7 +36,7 @@ public class PlayerManager : MonoBehaviour
     public bool Active { get { return information.isActive; } }
     public bool IsAI { get { return information.isAI; } }
     public Color RepresentColor { get { return information.representColor; } }
-    public TeamManager Team { get { return information.team; } }
+    public PlayerTeamManager Team { get { return information.team; } }
 
     /// <summary>
     /// 设置玩家信息

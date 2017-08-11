@@ -78,17 +78,17 @@ namespace Item.Tank
         /// </summary>
         private void SetupTankInformation()
         {
-            playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);          // 坦克所在队伍
-            ChangeColor.SelfAndChildrens(instance, playerColor);                        // 坦克颜色
-            coloredPlayerName = playerName;                                             // 玩家名字富文本
-            if (playerTeam != null)
-            {
-                coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
-                //团队灯光
-                if (tankInformation.GetComponentInChildren<Light>() != null)
-                    tankInformation.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
-            }
-            tankInformation.SetupTankInfo(playerID, playerName, active, isAI, playerColor, playerTeam, ColoredPlayerName);
+            //playerTeam = AllTeamsManager.Instance.GetTeamByPlayerID(PlayerID);          // 坦克所在队伍
+            //ChangeColor.SelfAndChildrens(instance, playerColor);                        // 坦克颜色
+            //coloredPlayerName = playerName;                                             // 玩家名字富文本
+            //if (playerTeam != null)
+            //{
+            //    coloredPlayerName = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTeam.TeamColor) + ">" + playerName + "</color>";
+            //    //团队灯光
+            //    if (tankInformation.GetComponentInChildren<Light>() != null)
+            //        tankInformation.GetComponentInChildren<Light>().color = playerTeam.TeamColor;
+            //}
+            //tankInformation.SetupTankInfo(playerID, playerName, active, isAI, playerColor, playerTeam, ColoredPlayerName);
         }
 
         /// <summary>
