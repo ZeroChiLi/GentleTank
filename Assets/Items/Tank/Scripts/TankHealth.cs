@@ -12,12 +12,12 @@ namespace Item.Tank
         public Color zeroHealthColor = Color.red;           // 没血颜色
         public ObjectPool tankExplosionPool;                // 坦克爆炸特效池
         public ObjectPool tankBustedPool;                   // 坦克残骸池
-
-        [HideInInspector]
-        public bool getHurt = false;                        // 是否受伤
+        public float feelPainTime = 4f;                     // 感到伤痛持续时间（被攻击）
 
         private PlayerManager playerManager;                // 玩家信息
         private float currentHealth;                        // 当前血量
+        private bool isFeelPain = false;                    // 是否感受到伤害
+        private float timeElapsed;                          // 计时器
         private bool isDead;                                // 是否死掉
 
         public float CurrentHealth
@@ -25,6 +25,8 @@ namespace Item.Tank
             get { return currentHealth; }
             set { currentHealth = Mathf.Clamp(value, 0, startingHealth); }
         }
+        public bool IsFeelPain { get { return isFeelPain; } }
+
 
         /// <summary>
         /// 获取玩家信息
@@ -41,7 +43,7 @@ namespace Item.Tank
         {
             slider.maxValue = startingHealth;
             CurrentHealth = startingHealth;
-            getHurt = false;
+            isFeelPain = false;
             isDead = false;
             SetHealthUI();
         }
@@ -56,12 +58,26 @@ namespace Item.Tank
         }
 
         /// <summary>
+        /// 更新受伤感受时间
+        /// </summary>
+        private void Update()
+        {
+            if (isFeelPain)
+            {
+                timeElapsed -= Time.deltaTime;
+                if (timeElapsed <= 0)
+                    isFeelPain = false;
+            }
+        }
+
+        /// <summary>
         /// 受伤害
         /// </summary>
         /// <param name="amount">伤害值</param>
         public void TakeDamage(float amount)
         {
-            getHurt = true;
+            isFeelPain = true;
+            timeElapsed = feelPainTime;
             CurrentHealth -= amount;
             SetHealthUI();
             if (CurrentHealth <= 0f && !isDead)

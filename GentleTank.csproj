@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -99,7 +101,7 @@
     <Compile Include="Assets\CrossPlatformInput\Scripts\JoystickInput.cs" />
     <Compile Include="Assets\GameControl\Scripts\AllPlayerManager.cs" />
     <Compile Include="Assets\GameControl\Scripts\GameManager.cs" />
-    <Compile Include="Assets\GameControl\Scripts\GameRecord.cs" />
+    <Compile Include="Assets\GameControl\Scripts\GameRound.cs" />
     <Compile Include="Assets\GameControl\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\GameControl\Scripts\ObjectPoolCreate.cs" />
     <Compile Include="Assets\GameControl\Scripts\PlayerInfoUI.cs" />

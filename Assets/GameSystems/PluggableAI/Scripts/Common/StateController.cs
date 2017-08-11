@@ -26,6 +26,7 @@ namespace GameSystem.AI
         public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
         private PlayerManager playerManager;                    // 玩家信息
+        private TankManager tankManager;                        // 坦克信息
         private State startState;                               // 初始状态，每次复活后重置
         private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
@@ -35,6 +36,7 @@ namespace GameSystem.AI
         private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
+            tankManager = GetComponent<TankManager>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -102,7 +104,6 @@ namespace GameSystem.AI
         private void OnExitState()
         {
             stateTimeElapsed = 0;
-            SetHurt(false);
         }
 
         /// <summary>
@@ -135,25 +136,16 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            GetComponent<TankShooting>().Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
+            tankManager.tankShooting.Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
         }
 
         /// <summary>
         /// 是否被攻击了
         /// </summary>
         /// <returns>被攻击状态</returns>
-        public bool GetHurt()
+        public bool IsFeelPain()
         {
-            return GetComponent<TankHealth>().getHurt;
-        }
-
-        /// <summary>
-        /// 设置是否被攻击
-        /// </summary>
-        /// <param name="isGetHurt">是否被攻击</param>
-        public void SetHurt(bool isGetHurt)
-        {
-            GetComponent<TankHealth>().getHurt = isGetHurt;
+            return tankManager.tankHealth.IsFeelPain;
         }
 
         /// <summary>
@@ -176,13 +168,5 @@ namespace GameSystem.AI
             return collider == colliderSelf;
         }
 
-        //private void OnDrawGizmos()
-        //{
-        //    if (currentState != null && eyes != null)
-        //    {
-        //        Gizmos.color = currentState.sceneGizmoColor;
-        //        Gizmos.DrawWireSphere(eyes.position, 1);
-        //    }
-        //}
     }
 }

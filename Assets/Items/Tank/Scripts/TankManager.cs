@@ -6,14 +6,20 @@ namespace Item.Tank
 {
     public class TankManager : MonoBehaviour
     {
-        private PlayerManager playerManager;                    // 玩家信息
-        private TankMovement tankMovement;                      // 移动
-        private TankShooting tankShooting;                      // 攻击
-        private TankHealth tankHealth;                          // 血量
-        private PlayerInfoUI playerInfoUI;                      // UI信息
-
-        private StateController stateController;                // AI状态控制器
-        private NavMeshAgent navMeshAgent;                      // AI导航
+        [HideInInspector]
+        public PlayerManager playerManager;                    // 玩家信息
+        [HideInInspector]
+        public PlayerInfoUI playerInfoUI;                      // UI信息
+        [HideInInspector]
+        public TankMovement tankMovement;                      // 移动
+        [HideInInspector]
+        public TankShooting tankShooting;                      // 攻击
+        [HideInInspector]
+        public TankHealth tankHealth;                          // 血量
+        [HideInInspector]
+        public StateController stateController;                // AI状态控制器
+        [HideInInspector]
+        public NavMeshAgent navMeshAgent;                      // AI导航
 
         /// <summary>
         /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。

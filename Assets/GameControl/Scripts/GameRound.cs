@@ -1,5 +1,4 @@
-﻿using Item.Tank;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 /// <summary>
@@ -10,10 +9,10 @@ public enum GameState
     None, Start, Playing, End
 }
 
-public class GameRecord
+public class GameRound
 {
-    private static GameRecord instance;
-    public static GameRecord Instance { get { return instance; } }
+    private static GameRound instance;
+    public static GameRound Instance { get { return instance; } }
 
     private GameState currentGameState;                         // 当前游戏状态
     private int maxRound;                                       // 最大回合数
@@ -32,7 +31,7 @@ public class GameRecord
     /// 初始化构造游戏记录
     /// </summary>
     /// <param name="maxRound">最大回合数</param>
-    public GameRecord(int maxRound)
+    public GameRound(int maxRound)
     {
         instance = this;
         this.maxRound = maxRound;

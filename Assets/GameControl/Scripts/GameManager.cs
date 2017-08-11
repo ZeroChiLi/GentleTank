@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
     {
         SetupGame();                                // 配置游戏
 
-        new GameRecord(numRoundsToWin);             // 创建一个游戏纪录实例
-        GameRecord.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
+        new GameRound(numRoundsToWin);             // 创建一个游戏纪录实例
+        GameRound.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
     }
 
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(RoundEnding());             //回合结束
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合
-        if (GameRecord.Instance.IsEndOfTheGame())
+        if (GameRound.Instance.IsEndOfTheGame())
             SceneManager.LoadScene(0);
         else
             StartCoroutine(GameLoop());
@@ -123,9 +123,9 @@ public class GameManager : MonoBehaviour
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
         spawnAllPopUpArrow.Spawn();      // 显示玩家箭头
-        GameRecord.Instance.StartRound();
+        GameRound.Instance.StartRound();
 
-        messageText.text = "ROUND " + GameRecord.Instance.CurrentRound;
+        messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
         yield return startWait;                         // 延时一段时间再开始
     }
@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
 
         messageText.text = string.Empty;                // 清空显示信息
 
-        while (!GameRecord.Instance.IsEndOfTheRound())           // 回合没结束就继续
+        while (!GameRound.Instance.IsEndOfTheRound())           // 回合没结束就继续
             yield return null;
     }
 
@@ -152,9 +152,9 @@ public class GameManager : MonoBehaviour
     {
         SetTanksControlEnable(false);                               // 锁定玩家控制权
 
-        GameRecord.Instance.UpdateWonData();                        // 更新获胜次数
+        GameRound.Instance.UpdateWonData();                        // 更新获胜次数
 
-        messageText.text = GameRecord.Instance.GetEndingMessage();  // 获取结束信息并显示之
+        messageText.text = GameRound.Instance.GetEndingMessage();  // 获取结束信息并显示之
 
         yield return endWait;
     }

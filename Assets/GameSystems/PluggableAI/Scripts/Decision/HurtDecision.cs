@@ -8,7 +8,7 @@ namespace GameSystem.AI
         //是否受到伤害
         public override bool Decide(StateController controller)
         {
-            return controller.GetHurt();
+            return controller.IsFeelPain();
         }
     }
 }

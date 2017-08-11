@@ -55,7 +55,7 @@ namespace GameSystem.Skill
         private void Update()
         {
             //不在回合中就跳出
-            if (GameRecord.Instance.CurrentGameState != GameState.Playing)
+            if (GameRound.Instance.CurrentGameState != GameState.Playing)
             {
                 readySkillIndex = -1;
                 aim.SetActive(false);

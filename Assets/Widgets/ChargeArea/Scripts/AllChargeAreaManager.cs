@@ -41,12 +41,12 @@ namespace Widget.ChargeArea
         /// </summary>
         private void ChangeChargeAreaStateWithGameRoundState()
         {
-            if (lastGameState != GameState.Playing && GameRecord.Instance.CurrentGameState == GameState.Playing)
+            if (lastGameState != GameState.Playing && GameRound.Instance.CurrentGameState == GameState.Playing)
             {
                 lastGameState = GameState.Playing;
                 OpenChargeAreas();
             }
-            else if (lastGameState == GameState.Playing && GameRecord.Instance.CurrentGameState != GameState.Playing)
+            else if (lastGameState == GameState.Playing && GameRound.Instance.CurrentGameState != GameState.Playing)
             {
                 lastGameState = GameState.None;
                 ShutChargeAreas();

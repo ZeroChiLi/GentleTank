@@ -19,7 +19,7 @@ public class OnlineTankManager : Photon.MonoBehaviour
     public void InitTank(/*OnlineShellPool shellPool*/)
     {
         isMine = photonView.isMine;
-        playerName = PhotonNetwork.playerName;
+        //playerName = PhotonNetwork.playerName;
         playerColor = new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB"));
         ChangeColor.SelfAndChildrens(gameObject, playerColor);
         EnableControl(isMine);
