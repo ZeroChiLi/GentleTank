@@ -25,7 +25,7 @@ namespace Item.Tank
         public bool usingInputButton = true;        // 是否使用标准输入
 
         private ShootState shootState = ShootState.None;    // 当前射击状态
-        private TankInformation tankInfo;           // 玩家信息
+        private PlayerManager playerManager;           // 玩家信息
         private float currentLaunchForce;           // 当前发射力度
         private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
         private float nextFireTime;                 // 下一发最早时间
@@ -37,7 +37,7 @@ namespace Item.Tank
         /// </summary>
         private void Start()
         {
-            tankInfo = GetComponent<TankInformation>();
+            playerManager = GetComponent<PlayerManager>();
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
             chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
@@ -62,7 +62,7 @@ namespace Item.Tank
                 StateChangeByInput();
             if (!CanFire())
                 return;
-            if (!tankInfo.playerAI)         //不是AI才更新
+            if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
         }
 

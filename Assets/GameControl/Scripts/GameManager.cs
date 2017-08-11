@@ -6,12 +6,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Widget.Minimap;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public PointList spawnPointList;                // 坦克出生点
-    //public AllTanksManager allTanks;                // 所有坦克管理器
-    //public AllTeamsManager allTeams;                // 所有团队管理器
 
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -23,15 +22,13 @@ public class GameManager : MonoBehaviour
     public TankFireButton tankFireButton;           // 坦克普通攻击按钮
     public AllPlayerManager allPlayerManager;       // 所有玩家
 
+    private List<TankManager> tankList;             // 所有玩家坦克
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
     private void Awake()
     {
-        //allTanks.SetupInstance();
-        //allTeams.SetupInstance();
-        allPlayerManager.SetupInstance();
-        GameRecord.Instance = new GameRecord(numRoundsToWin); // 创建一个游戏纪录实例
+        tankList = new List<TankManager>();
         startWait = new WaitForSeconds(startDelay); // 游戏回合开始延时
         endWait = new WaitForSeconds(endDelay);     // 游戏回合结束延时
     }
@@ -43,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         SetupGame();                                // 配置游戏
 
+        new GameRecord(numRoundsToWin);             // 创建一个游戏纪录实例
         GameRecord.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
     }
@@ -52,22 +50,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SetupGame()
     {
-        GameObject tanks = new GameObject("Tanks");
-        //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-        //    AllTanksManager.Instance[i].InitTank(Instantiate(AllTanksManager.Instance[i].tankPerfab, tanks.transform));
+        allPlayerManager.SetupInstance();
+        AllPlayerManager.Instance.CreatePlayerGameObjects(new GameObject("Tanks").transform);
+        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+        {
+            tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
+            tankList[i].Init();
+        }
 
-        allPlayerManager.CreatePlayerGameObjects();
-        for (int i = 0; i < allPlayerManager.Count; i++)
-            allPlayerManager[i].transform.position = spawnPointList[i].position;
+        // 为第一个坦克添加到UI控制
+        tankFireButton.tankShooting = AllPlayerManager.Instance[0].GetComponent<TankShooting>();
 
-        //// 为第一个坦克添加到UI控制
-        //tankFireButton.tankShooting = AllTanksManager.Instance[0].Instance.GetComponent<TankShooting>();
+        cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
+        cameraControl.SetStartPositionAndSize();
 
-        //cameraControl.targets = AllTanksManager.Instance.GetTanksTransform();
-        //cameraControl.SetStartPositionAndSize();
-
-        //minimapManager.SetupPlayerIconDic();
-        //minimapManager.SetTarget(AllTanksManager.Instance[0].Instance.transform);
+        minimapManager.SetupPlayerIconDic();
+        if (AllPlayerManager.Instance.GetMyPlayer() != null)
+            minimapManager.SetTarget(AllPlayerManager.Instance.GetMyPlayer().transform);
     }
 
     /// <summary>
@@ -75,15 +74,15 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ResetAllTanksSpawnPoint()
     {
-        //spawnPointList.EnableAllPoints();                     // 初始化出生点
-        //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-        //{
-        //    //获取有效随机出生点，且每个坦克位置不一样
-        //    Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
-        //    if (spawnPoint == null)
-        //        continue;
-        //    AllTanksManager.Instance[i].Reset(spawnPoint);
-        //}
+        spawnPointList.EnableAllPoints();                     // 初始化出生点
+        for (int i = 0; i < tankList.Count; i++)
+        {
+            //获取有效随机出生点，且每个坦克位置不一样
+            Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
+            if (spawnPoint == null)
+                continue;
+            tankList[i].ResetSpawnPoint(spawnPoint);
+        }
     }
 
     /// <summary>
@@ -92,8 +91,8 @@ public class GameManager : MonoBehaviour
     /// <param name="enable">激活状态</param>
     private void SetTanksControlEnable(bool enable)
     {
-        //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-        //    AllTanksManager.Instance[i].SetControlEnable(enable);
+        for (int i = 0; i < tankList.Count; i++)
+            tankList[i].SetControlEnable(enable);
     }
 
     /// <summary>

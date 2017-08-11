@@ -10,7 +10,7 @@ public class PlayerInfoUI : MonoBehaviour
     public float vibrateRange = 2;                  // 文本抖动范围的平方（在范围内位置平滑移动，预防抖动）
     public float labelMoveSpeed = 0.1f;             // 标签移动速度
 
-    private TankInformation tankInfo;               // 玩家信息
+    private PlayerManager playerManage;               // 玩家信息
     private Camera targetCamera;                    // 显示对着的镜头（默认：主相机）
     private GUIStyle style;                         // GUI风格  
     private Vector2 nameLabelSize;                  // 文本大小
@@ -21,7 +21,7 @@ public class PlayerInfoUI : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        tankInfo = GetComponent<TankInformation>();
+        playerManage = GetComponent<PlayerManager>();
         targetCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         SetupGUIStyle();
     }
@@ -43,9 +43,9 @@ public class PlayerInfoUI : MonoBehaviour
     /// </summary>
     public void SetupNameAndColor()
     {
-        nameLabelSize = style.CalcSize(new GUIContent(tankInfo.playerName)); // 计算获取文本标签大小
-        if(tankInfo.playerTeam != null)
-            style.normal.textColor = tankInfo.playerTeam.TeamColor;
+        nameLabelSize = style.CalcSize(new GUIContent(playerManage.PlayerName)); // 计算获取文本标签大小
+        if(playerManage.Team != null)
+            style.normal.textColor = playerManage.Team.TeamColor;
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class PlayerInfoUI : MonoBehaviour
             return;
 
         //绘制名字
-        GUI.Label(CalculatePosition(), tankInfo.playerName, style);
+        GUI.Label(CalculatePosition(), playerManage.PlayerName, style);
     }
 
     /// <summary>

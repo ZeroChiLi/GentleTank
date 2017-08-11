@@ -12,15 +12,18 @@ public enum GameState
 
 public class GameRecord
 {
-    static public GameRecord Instance;
+    private static GameRecord instance;
+    public static GameRecord Instance { get { return instance; } }
 
-    private Dictionary<int, int> tanksIdTeamsIdDic;             // 坦克ID对应团队ID，没队的-1
-
+    private GameState currentGameState;                         // 当前游戏状态
     private int maxRound;                                       // 最大回合数
     private int currentRound = 0;                               // 当前回合数
-    private int wonPlayerID;                                    // 当前（最终）获胜团队
-    private Dictionary<int, int> playerWonTimes;                // 玩家ID，获胜次数
-    private GameState currentGameState;                         // 当前游戏状态
+    private PlayerManager winner;                               // 当前（最终）获胜团队
+    private Dictionary<PlayerManager, int> playerWonTimes;      // 玩家及其对应获胜次数
+    private bool haveWinner = false;                            // 临时判断获胜玩家变量
+    private PlayerManager temPlayer;                            // 临时玩家变量
+
+    public PlayerManager Winner { get { return winner; } }
 
     public int CurrentRound { get { return currentRound; } }
     public GameState CurrentGameState { get { return currentGameState; } }
@@ -31,10 +34,9 @@ public class GameRecord
     /// <param name="maxRound">最大回合数</param>
     public GameRecord(int maxRound)
     {
-        Instance = this;
+        instance = this;
         this.maxRound = maxRound;
-        tanksIdTeamsIdDic = new Dictionary<int, int>();
-        playerWonTimes = new Dictionary<int, int>();
+        playerWonTimes = new Dictionary<PlayerManager, int>();
         InitTanksTeamsDic();
     }
 
@@ -43,20 +45,8 @@ public class GameRecord
     /// </summary>
     private void InitTanksTeamsDic()
     {
-        ////先从所有队伍里面填进去进去
-        //for (int i = 0; i < AllTeamsManager.Instance.Length; i++)
-        //    for (int j = 0; j < AllTeamsManager.Instance[i].Count; j++)
-        //        tanksIdTeamsIdDic[AllTeamsManager.Instance[i][j]] = AllTeamsManager.Instance[i].TeamID;
-        ////没有队伍的加进去赋值-1,顺便初始化playerWonTimes
-        //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-        //{
-        //    if (!tanksIdTeamsIdDic.ContainsKey(AllTanksManager.Instance[i].PlayerID))
-        //        tanksIdTeamsIdDic[AllTanksManager.Instance[i].PlayerID] = -1;
-
-        //    //这里顺便初始化playerWonTimes，为了省一圈循环
-        //    playerWonTimes[AllTanksManager.Instance[i].PlayerID] = 0;
-        //}
-
+        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+            playerWonTimes.Add(AllPlayerManager.Instance[i],0);
     }
 
     /// <summary>
@@ -73,7 +63,7 @@ public class GameRecord
     public void StartRound()
     {
         ++currentRound;
-        wonPlayerID = -1;
+        winner = null;
         currentGameState = GameState.Start;
     }
 
@@ -83,27 +73,26 @@ public class GameRecord
     /// <returns>是否结束回合</returns>
     public bool IsEndOfTheRound()
     {
-        //currentGameState = GameState.Playing;
-        //bool haveWinner = false;
-        //int playerID = -1;
-        //for (int i = 0; i < AllTanksManager.Instance.Count; i++)
-        //    if (AllTanksManager.Instance[i].Instance.activeSelf)
-        //    {
-        //        int playerTeamID = tanksIdTeamsIdDic[AllTanksManager.Instance[i].PlayerID];
-        //        // 遍历获取第一个赢的人
-        //        if (!haveWinner)
-        //        {
-        //            playerID = AllTanksManager.Instance[i].PlayerID;
-        //            haveWinner = true;
-        //        }
-        //        // 第二个赢得的人没有队伍或与第一个人队伍不同，也说明没结束
-        //        else if (playerTeamID == -1 || tanksIdTeamsIdDic[playerID] != playerTeamID)
-        return false;
-        //    }
-        ////如果等于-1，说明平局
-        //wonPlayerID = playerID;
-        //currentGameState = GameState.End;
-        //return true;
+        currentGameState = GameState.Playing;
+        haveWinner = false;
+        temPlayer = null;
+        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+            if (AllPlayerManager.Instance[i].gameObject.activeSelf)
+            {
+                // 遍历获取第一个赢的人
+                if (!haveWinner)
+                {
+                    temPlayer = AllPlayerManager.Instance[i];
+                    haveWinner = true;
+                }
+                // 第二个赢得的人没有队伍或与第一个人队伍不同，也说明没结束
+                else if (!AllPlayerManager.Instance[i].IsTeammate(temPlayer))
+                    return false;
+            }
+        //如果为空，说明平局（全死了，没有获胜玩家）
+        winner = temPlayer;
+        currentGameState = GameState.End;
+        return true;
     }
 
     /// <summary>
@@ -124,7 +113,7 @@ public class GameRecord
     /// <returns>是否平局</returns>
     public bool IsDraw()
     {
-        return wonPlayerID == -1;
+        return winner == null;
     }
 
     /// <summary>
@@ -133,7 +122,7 @@ public class GameRecord
     /// <returns>是否团队获胜</returns>
     public bool IsTeamWon()
     {
-        return tanksIdTeamsIdDic[wonPlayerID] != -1;
+        return winner.Team != null;
     }
 
     /// <summary>
@@ -148,17 +137,19 @@ public class GameRecord
         // 个人获胜，只加个人即可
         if (!IsTeamWon())
         {
-            playerWonTimes[wonPlayerID]++;
+            playerWonTimes[winner]++;
             return;
         }
 
         // 团队获胜， 加团队所有人
-        TeamManager wonTeam = GetWonTeam();
-        for (int i = 0; i < wonTeam.Count; i++)
-        {
-            if (playerWonTimes.ContainsKey(wonTeam[i]))     // 如果有玩家Active为False，那就不在字典里面
-                playerWonTimes[wonTeam[i]]++;
-        }
+        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+            if (winner.Team == AllPlayerManager.Instance[i].Team)
+                playerWonTimes[AllPlayerManager.Instance[i]]++;
+        //for (int i = 0; i < wonTeam.Count; i++)
+        //{
+        //    if (playerWonTimes.ContainsKey(wonTeam[i]))     // 如果有玩家Active为False，那就不在字典里面
+        //        playerWonTimes[wonTeam[i]]++;
+        //}
 
     }
 
@@ -170,30 +161,10 @@ public class GameRecord
     {
         string message;
         if (IsTeamWon())
-            message = GetWonTeam().ColoredTeamName + " TEAM";
+            message = winner.Team.ColoredTeamName + " TEAM";
         else
-            message = GetWonTank().ColoredPlayerName + " PLAYER";
+            message = winner.ColoredPlayerName + " PLAYER";
         return message;
-    }
-
-    /// <summary>
-    /// 获取获胜团队
-    /// </summary>
-    /// <returns>获胜团队</returns>
-    private TeamManager GetWonTeam()
-    {
-        //return AllTeamsManager.Instance.GetTeamByPlayerID(wonPlayerID);
-        return null;
-    }
-
-    /// <summary>
-    /// 获取个人获胜坦克ID
-    /// </summary>
-    /// <returns>获胜玩家</returns>
-    private TankManager GetWonTank()
-    {
-        //return AllTanksManager.Instance.GetTankByID(wonPlayerID);
-        return null;
     }
 
     /// <summary>
@@ -212,8 +183,8 @@ public class GameRecord
         else
         {
             message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
-            //foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
-            //    message.AppendFormat("{0} : {1} WINS\n", AllTanksManager.Instance.GetTankByID(item.Key).ColoredPlayerName, item.Value);
+            foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
+                message.AppendFormat("{0} : {1} WINS\n", item.Key.ColoredPlayerName, item.Value);
         }
 
         return message.ToString();

@@ -26,11 +26,11 @@ public class AllPlayerManager : ScriptableObject
     /// <summary>
     /// 创建玩家对象们（playerManagerList）
     /// </summary>
-    public void CreatePlayerGameObjects()
+    public void CreatePlayerGameObjects(Transform parent = null)
     {
         playerManagerList = new List<PlayerManager>();
         for (int i = 0; i < playerInformationList.Count; i++)
-            playerManagerList.Add(playerInformationList[i].CreateGameObjectWithPlayerManager());
+            playerManagerList.Add(playerInformationList[i].CreateGameObjectWithPlayerManager(parent));
     }
 
     /// <summary>
@@ -88,5 +88,17 @@ public class AllPlayerManager : ScriptableObject
             if (playerManagerList[i].IsMine)
                 return playerManagerList[i];
         return null;
+    }
+
+    /// <summary>
+    /// 获取玩家对象的转换列表
+    /// </summary>
+    /// <returns>玩家对象的转换列表</returns>
+    public List<Transform> GetAllPlayerTransform()
+    {
+        List<Transform> playerTransformList = new List<Transform>();
+        for (int i = 0; i < playerManagerList.Count; i++)
+            playerTransformList.Add(playerManagerList[i].transform);
+        return playerTransformList;
     }
 }

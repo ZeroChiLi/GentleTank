@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class OnlineTankManager : Photon.MonoBehaviour
 {
-    public TankInformation tankInfo;                // 坦克信息
     public TankMovement tankMovement;               // 坦克移动
     public OnlineTankShooting tankShooting;         // 坦克攻击
     public OnlineTankHealth tankHealth;             // 坦克血量
@@ -22,7 +21,6 @@ public class OnlineTankManager : Photon.MonoBehaviour
         isMine = photonView.isMine;
         playerName = PhotonNetwork.playerName;
         playerColor = new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB"));
-        tankInfo.SetupTankInfo(-1, playerName, true, false, playerColor);
         ChangeColor.SelfAndChildrens(gameObject, playerColor);
         EnableControl(isMine);
         //tankShooting.shellPool = shellPool;

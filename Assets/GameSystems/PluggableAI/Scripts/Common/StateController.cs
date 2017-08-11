@@ -25,7 +25,7 @@ namespace GameSystem.AI
         private int nextWayPointIndex;                          // 下一个巡逻点
         public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
-        private TankInformation tankInfo;                       // 坦克信息
+        private PlayerManager playerManager;                    // 玩家信息
         private State startState;                               // 初始状态，每次复活后重置
         private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
@@ -34,7 +34,7 @@ namespace GameSystem.AI
         /// </summary>
         private void Awake()
         {
-            tankInfo = GetComponent<TankInformation>();
+            playerManager = GetComponent<PlayerManager>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -163,8 +163,7 @@ namespace GameSystem.AI
         /// <returns>是否是队友</returns>
         public bool IsTeamMate(Collider collider)
         {
-            return false;
-            //return AllTeamsManager.Instance.IsTeammate(tankInfo.playerID, collider.gameObject.GetComponent<TankInformation>().playerID);
+            return playerManager.IsTeammate(collider.GetComponent<PlayerManager>());
         }
 
         /// <summary>

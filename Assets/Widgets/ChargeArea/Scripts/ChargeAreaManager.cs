@@ -26,13 +26,13 @@ namespace Widget.ChargeArea
         public ObjectPool fillPool;             // 填充扇区池（用于僵持状态显示）
 
         private OccupyState occupyState = OccupyState.Empty;    // 占有状态
-        private List<TankInformation> playerInfoList;           // 在区域内的所有玩家及其对应信息
-        private List<TankInformation> inactivePlayers;          // 失活的坦克
+        private List<PlayerManager> playerInfoList;           // 在区域内的所有玩家及其对应信息
+        private List<PlayerManager> inactivePlayers;          // 失活的坦克
         private float updateTime = 0.5f;                        // 更新时间
         private float elapsedTime = 0f;                         // 计时器
-        private TankInformation occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
-        private Dictionary<TeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
-        private List<TankInformation> occupyIndependentPlayer;  // 充电区范围内所有个人，权重为1
+        private PlayerManager occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
+        private Dictionary<PlayerTeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
+        private List<PlayerManager> occupyIndependentPlayer;  // 充电区范围内所有个人，权重为1
         private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
         private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
         private List<Image> fillList;                           // 填充扇区列表
@@ -42,7 +42,7 @@ namespace Widget.ChargeArea
         private EffectController effectController;              // 粒子特性控制器
 
         private float TotalWeight { get { return playerInfoList.Count; } }                  // 总权重
-        private TankInformation RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
+        private PlayerManager RepresentativePlayer { get { return playerInfoList[0]; } }  //圈内玩家代表（只有一支队伍情况下）
 
         /// <summary>
         /// 设置滑动条大小、碰撞体大小
@@ -51,10 +51,10 @@ namespace Widget.ChargeArea
         {
             GetComponent<SphereCollider>().radius = radius;
             areaCanvas.GetComponent<RectTransform>().sizeDelta = Vector2.one * radius * 2;
-            playerInfoList = new List<TankInformation>();
-            inactivePlayers = new List<TankInformation>();
-            occupyTeamDic = new Dictionary<TeamManager, int>();
-            occupyIndependentPlayer = new List<TankInformation>();
+            playerInfoList = new List<PlayerManager>();
+            inactivePlayers = new List<PlayerManager>();
+            occupyTeamDic = new Dictionary<PlayerTeamManager, int>();
+            occupyIndependentPlayer = new List<PlayerManager>();
             slider.maxValue = maxValue;
             fillList = new List<Image>();
             effectController = GetComponent<EffectController>();
@@ -69,7 +69,7 @@ namespace Widget.ChargeArea
         {
             if (!other.gameObject.CompareTag("Player"))
                 return;
-            playerInfoList.Add(other.GetComponent<TankInformation>());
+            playerInfoList.Add(other.GetComponent<PlayerManager>());
             UpdateAreaWeight();
         }
 
@@ -81,7 +81,7 @@ namespace Widget.ChargeArea
         {
             if (!other.gameObject.CompareTag("Player") || !other.gameObject.activeSelf)
                 return;
-            playerInfoList.Remove(other.GetComponent<TankInformation>());
+            playerInfoList.Remove(other.GetComponent<PlayerManager>());
             UpdateAreaWeight();
         }
 
@@ -149,14 +149,14 @@ namespace Widget.ChargeArea
             occupyIndependentPlayer.Clear();
             for (int i = 0; i < playerInfoList.Count; ++i)
             {
-                if (playerInfoList[i].playerTeamID == -1)                           // 独立玩家（没有队伍），直接加到独立队列
+                if (playerInfoList[i].Team == null)                           // 独立玩家（没有队伍），直接加到独立队列
                     occupyIndependentPlayer.Add(playerInfoList[i]);
                 else
                 {
-                    if (!occupyTeamDic.ContainsKey(playerInfoList[i].playerTeam))   // 团队，重复就加1权重
-                        occupyTeamDic.Add(playerInfoList[i].playerTeam, 1);
+                    if (!occupyTeamDic.ContainsKey(playerInfoList[i].Team))   // 团队，重复就加1权重
+                        occupyTeamDic.Add(playerInfoList[i].Team, 1);
                     else
-                        ++occupyTeamDic[playerInfoList[i].playerTeam];
+                        ++occupyTeamDic[playerInfoList[i].Team];
                 }
             }
 
@@ -289,12 +289,12 @@ namespace Widget.ChargeArea
         {
             if (playerInfoList.Count == 0)
                 return true;
-            int teamID = RepresentativePlayer.playerTeamID;                // 先获取第一个玩家团队ID
+            PlayerTeamManager team = RepresentativePlayer.Team;                // 先获取第一个玩家团队ID
             for (int i = 1; i < playerInfoList.Count; i++)
             {
                 // 1.只要其他玩家存在没有队的，就不止一支队伍
                 // 2.只要和第一个玩家团队id不同就不止一支队伍。
-                if (playerInfoList[i].playerTeamID == -1 || teamID != playerInfoList[i].playerTeamID)
+                if (playerInfoList[i].Team == null || team != playerInfoList[i].Team)
                     return false;
             }
             return true;
@@ -323,13 +323,13 @@ namespace Widget.ChargeArea
         /// </summary>
         /// <param name="player">玩家信息</param>
         /// <returns>是否被该玩家占有</returns>
-        private bool OccupiedByPlayer(TankInformation player)
+        private bool OccupiedByPlayer(PlayerManager player)
         {
             if (occupyPlayer == null || occupyPlayer == player)     // 不存在上一次最后离开玩家或者上一次玩家等于传入玩家
                 return true;
-            if (occupyPlayer.playerTeamID == -1)                    // 上一次玩家没有队，那肯定不是传入占有的
+            if (occupyPlayer.Team == null)                    // 上一次玩家没有队，那肯定不是传入占有的
                 return false;
-            if (occupyPlayer.playerTeam == player.playerTeam)       // 上一次玩家团队等于这次传入团队
+            if (occupyPlayer.Team == player.Team)       // 上一次玩家团队等于这次传入团队
                 return true;
             return false;
         }
@@ -338,17 +338,17 @@ namespace Widget.ChargeArea
         /// 获取占有颜色，有队伍的话返回队伍颜色，否则返回自己的颜色
         /// </summary>
         /// <returns>返回占有颜色</returns>
-        private Color GetPlayerColor(TankInformation player)
+        private Color GetPlayerColor(PlayerManager player)
         {
             if (playerInfoList.Count == 0)
                 return new Color(1, 1, 1, fillAlpha);
 
             // 没有队伍的颜色设置为个人颜色
-            if (player.playerTeamID == -1)
-                return new Color(player.playerColor.r, player.playerColor.g, player.playerColor.b, fillAlpha);
+            if (player.Team == null)
+                return new Color(player.RepresentColor.r, player.RepresentColor.g, player.RepresentColor.b, fillAlpha);
 
             // 有队伍的设置为队伍颜色
-            return new Color(player.playerTeam.TeamColor.r, player.playerTeam.TeamColor.g, player.playerTeam.TeamColor.b, fillAlpha);
+            return new Color(player.Team.TeamColor.r, player.Team.TeamColor.g, player.Team.TeamColor.b, fillAlpha);
         }
 
         #endregion
@@ -365,7 +365,7 @@ namespace Widget.ChargeArea
             float lastFillAmountAngle = 0f;         // 上一次填充后的的旋转角
 
             for (int i = 0; i < occupyIndependentPlayer.Count; i++)         // 填充个人
-                FillWithWeight(ref lastFillAmountAngle, occupyIndependentPlayer[i].playerColor, 1.0f);
+                FillWithWeight(ref lastFillAmountAngle, occupyIndependentPlayer[i].RepresentColor, 1.0f);
             foreach (var item in occupyTeamDic)                             // 填充团队
                 FillWithWeight(ref lastFillAmountAngle, item.Key.TeamColor, item.Value);
 

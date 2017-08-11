@@ -150,7 +150,6 @@
     <Compile Include="Assets\Items\Tank\Scripts\AllTanksManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankFireButton.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankHealth.cs" />
-    <Compile Include="Assets\Items\Tank\Scripts\TankInformation.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankShooting.cs" />
