@@ -31,7 +31,7 @@ namespace Widget.ChargeArea
         private float updateTime = 0.5f;                        // 更新时间
         private float elapsedTime = 0f;                         // 计时器
         private PlayerManager occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
-        private Dictionary<PlayerTeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
+        private Dictionary<TeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
         private List<PlayerManager> occupyIndependentPlayer;  // 充电区范围内所有个人，权重为1
         private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
         private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
@@ -53,7 +53,7 @@ namespace Widget.ChargeArea
             areaCanvas.GetComponent<RectTransform>().sizeDelta = Vector2.one * radius * 2;
             playerInfoList = new List<PlayerManager>();
             inactivePlayers = new List<PlayerManager>();
-            occupyTeamDic = new Dictionary<PlayerTeamManager, int>();
+            occupyTeamDic = new Dictionary<TeamManager, int>();
             occupyIndependentPlayer = new List<PlayerManager>();
             slider.maxValue = maxValue;
             fillList = new List<Image>();
@@ -289,7 +289,7 @@ namespace Widget.ChargeArea
         {
             if (playerInfoList.Count == 0)
                 return true;
-            PlayerTeamManager team = RepresentativePlayer.Team;                // 先获取第一个玩家团队ID
+            TeamManager team = RepresentativePlayer.Team;                // 先获取第一个玩家团队ID
             for (int i = 1; i < playerInfoList.Count; i++)
             {
                 // 1.只要其他玩家存在没有队的，就不止一支队伍

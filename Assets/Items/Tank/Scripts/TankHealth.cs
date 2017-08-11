@@ -11,17 +11,27 @@ namespace Item.Tank
         public Color fullHealthColor = Color.green;         // 满血颜色
         public Color zeroHealthColor = Color.red;           // 没血颜色
         public ObjectPool tankExplosionPool;                // 坦克爆炸特效池
+        public ObjectPool tankBustedPool;                   // 坦克残骸池
 
         [HideInInspector]
         public bool getHurt = false;                        // 是否受伤
 
+        private PlayerManager playerManager;                // 玩家信息
         private float currentHealth;                        // 当前血量
-        private bool dead;                                  // 是否死掉
+        private bool isDead;                                // 是否死掉
 
         public float CurrentHealth
         {
             get { return currentHealth; }
             set { currentHealth = Mathf.Clamp(value, 0, startingHealth); }
+        }
+
+        /// <summary>
+        /// 获取玩家信息
+        /// </summary>
+        private void Awake()
+        {
+            playerManager = GetComponent<PlayerManager>();
         }
 
         /// <summary>
@@ -32,7 +42,7 @@ namespace Item.Tank
             slider.maxValue = startingHealth;
             CurrentHealth = startingHealth;
             getHurt = false;
-            dead = false;
+            isDead = false;
             SetHealthUI();
         }
 
@@ -54,7 +64,7 @@ namespace Item.Tank
             getHurt = true;
             CurrentHealth -= amount;
             SetHealthUI();
-            if (CurrentHealth <= 0f && !dead)
+            if (CurrentHealth <= 0f && !isDead)
                 OnDeath();
         }
 
@@ -82,11 +92,9 @@ namespace Item.Tank
         /// </summary>
         private void OnDeath()
         {
-            dead = true;
-
-            //获取爆炸特效，并显示之
-            tankExplosionPool.GetNextObject(transform: gameObject.transform);
-
+            isDead = true;
+            tankExplosionPool.GetNextObject(transform: gameObject.transform);   // 爆炸特效
+            tankBustedPool.GetNextObject().GetComponent<BustedTankMananger>().SetupBustedTank(transform, playerManager.RepresentColor);                 // 死后残骸
             gameObject.SetActive(false);
         }
     }

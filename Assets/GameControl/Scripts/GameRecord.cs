@@ -58,7 +58,7 @@ public class GameRecord
     }
 
     /// <summary>
-    /// 开始新的回合，增加当前回合数，设置获胜玩家ID为-1
+    /// 开始新的回合，增加当前回合数，设置清除获胜玩家
     /// </summary>
     public void StartRound()
     {
@@ -68,7 +68,7 @@ public class GameRecord
     }
 
     /// <summary>
-    /// 判断是否结束回合，并设置获胜者ID，平局设置ID为-1
+    /// 判断是否结束回合，并设置获胜者
     /// </summary>
     /// <returns>是否结束回合</returns>
     public bool IsEndOfTheRound()
@@ -184,7 +184,7 @@ public class GameRecord
         {
             message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
             foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
-                message.AppendFormat("{0} : {1} WINS\n", item.Key.ColoredPlayerName, item.Value);
+                message.AppendFormat("{0} : {1} WINS\n", item.Key.ColoredPlayerNameByTeam, item.Value);
         }
 
         return message.ToString();

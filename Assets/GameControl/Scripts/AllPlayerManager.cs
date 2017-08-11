@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "All Player Manager")]
+[CreateAssetMenu(menuName = "Game Configure/All Player Manager")]
 public class AllPlayerManager : ScriptableObject
 {
     static private AllPlayerManager instance;                           // 所有玩家列表单例

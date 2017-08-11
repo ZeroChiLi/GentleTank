@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Environment\Editor\MoveSceneViewCamera.cs" />
-    <Compile Include="Assets\GameControl\Editor\TanksToTeams.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Editor\AIStatsEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\AccountService.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\CullAreaEditor.cs" />

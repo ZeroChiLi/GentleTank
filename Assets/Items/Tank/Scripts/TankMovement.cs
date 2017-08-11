@@ -63,8 +63,8 @@ namespace Item.Tank
         {
             EngineAudio();
 
-            //Move(Input.GetAxis(movementAxisName));
-            //Turn(Input.GetAxis(turnAxisName));
+            Move(Input.GetAxis(movementAxisName));
+            Turn(Input.GetAxis(turnAxisName));
             Move(JoystickInput.Instance.GetAxis().y);
             Turn(JoystickInput.Instance.GetAxis().x);
         }
