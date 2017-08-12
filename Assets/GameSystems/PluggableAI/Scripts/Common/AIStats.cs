@@ -6,8 +6,6 @@ namespace GameSystem.AI
     public class AIStats : ScriptableObject
     {
         //导航控制
-        public float navRadius = 2f;                //导航物体半径
-        public float navHeight = 2f;               //导航物体高度
         public MinMaxValue navSpeed = new MinMaxValue(0f, 10f, 3f, 4f);                //移动速度
         public MinMaxValue navAngularSpeed = new MinMaxValue(-360f, 360f, 110f, 130f);  //旋转速度
         public MinMaxValue navAcceleration = new MinMaxValue(0f, 50f, 6f, 10f);         //加速度

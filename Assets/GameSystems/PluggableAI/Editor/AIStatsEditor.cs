@@ -35,7 +35,6 @@ namespace GameSystem.AI
         /// </summary>
         private void NavSetting()
         {
-            ShowNavAvoid(0, "Obstacle Avoidance");                          //障碍躲避（半径，高度）
             ShowMinMaxBox(1, ref stats.navSpeed, "Move Speed");             //移动速度
             ShowMinMaxBox(2, ref stats.navAngularSpeed, "Angular Speed");   //旋转速度
             ShowMinMaxBox(3, ref stats.navAcceleration, "Acceleration");    //加速度
@@ -50,19 +49,6 @@ namespace GameSystem.AI
             ShowMinMaxBox(5, ref stats.attackRate, "Attack Rate");          //攻击周期
             ShowMinMaxBox(6, ref stats.attackForce, "Attack Force");        //攻击力度
             ShowMinMaxBox(7, ref stats.attackDamage, "Attack Damage");      //攻击伤害
-        }
-
-        /// <summary>
-        /// 显示导航避免障碍设置
-        /// </summary>
-        /// <param name="order">开关顺序</param>
-        /// <param name="title">标题</param>
-        private void ShowNavAvoid(int order, string title)
-        {
-            if (!ShowUp(order, title))
-                return;
-            stats.navRadius = EditorGUILayout.FloatField("Nav Radius: ", stats.navRadius);
-            stats.navHeight = EditorGUILayout.FloatField("Nav Height: ", stats.navHeight);
         }
 
         /// <summary>

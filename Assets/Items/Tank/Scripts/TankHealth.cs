@@ -42,6 +42,11 @@ namespace Item.Tank
         }
 
         /// <summary>
+        /// 血量改变时，默认操作就好了
+        /// </summary>
+        protected override void OnHealthChanged() { }
+
+        /// <summary>
         /// 死亡事件（爆炸特性、产生残骸）
         /// </summary>
         protected override void OnDead()
@@ -50,5 +55,6 @@ namespace Item.Tank
             gameObject.SetActive(false);
             tankBustedPool.GetNextObject().GetComponent<BustedTankMananger>().SetupBustedTank(transform, playerManager.RepresentColor);
         }
+
     }
 }

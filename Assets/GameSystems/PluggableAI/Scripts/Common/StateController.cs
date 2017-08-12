@@ -26,7 +26,8 @@ namespace GameSystem.AI
         public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
         private PlayerManager playerManager;                    // 玩家信息
-        private TankManager tankManager;                        // 坦克信息
+        private HealthManager healthManager;                    // 玩家血量管理器
+        private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
@@ -36,7 +37,8 @@ namespace GameSystem.AI
         private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
-            tankManager = GetComponent<TankManager>();
+            healthManager = GetComponent<HealthManager>();
+            attackManager = GetComponent<AttackManager>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -66,8 +68,6 @@ namespace GameSystem.AI
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.enabled = true;
-            navMeshAgent.radius = defaultStats.navRadius;
-            navMeshAgent.height = defaultStats.navHeight;
             navMeshAgent.speed = defaultStats.navSpeed.GetRandomValue();
             navMeshAgent.angularSpeed = defaultStats.navAngularSpeed.GetRandomValue();
             navMeshAgent.acceleration = defaultStats.navAcceleration.GetRandomValue();
@@ -136,7 +136,7 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            tankManager.tankShooting.Fire(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
+            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace GameSystem.AI
         /// <returns>被攻击状态</returns>
         public bool IsFeelPain()
         {
-            return tankManager.tankHealth.IsFeelPain;
+            return healthManager.IsFeelPain;
         }
 
         /// <summary>

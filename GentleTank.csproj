@@ -96,7 +96,7 @@
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
     <Compile Include="Assets\Common\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Common\Scripts\Effect.cs" />
-    <Compile Include="Assets\Common\Scripts\InactiveWhileGameStart.cs" />
+    <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
     <Compile Include="Assets\CrossPlatformInput\Scripts\JoystickInput.cs" />
     <Compile Include="Assets\GameControl\Main Scripts\GameManager.cs" />
@@ -104,6 +104,7 @@
     <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPoolCreate.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
+    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\AttackManager.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\HealthManager.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerInfoUI.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerManager.cs" />

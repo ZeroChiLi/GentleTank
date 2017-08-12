@@ -20,7 +20,7 @@ public class TankFireButton : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        if (!tankShootingExistAndEnabled() || !tankShooting.CanFire())
+        if (!tankShootingExistAndEnabled() || tankShooting.IsCoolDown)
             return;
         if (image.color == disable)
             image.color = normal;
@@ -90,7 +90,7 @@ public class TankFireButton : MonoBehaviour
         if (!tankShootingExistAndEnabled())
             return;
         image.color = disable;
-        tankShooting.Fire();
+        tankShooting.Attack();
         readyToFire = false;
     }
 }

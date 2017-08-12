@@ -53,8 +53,8 @@ namespace Item.Tank
         {
             playerInfoUI.SetupNameAndColor();   // 配置玩家信息UI的名字和颜色
             ChangeColor.SelfAndChildrens(gameObject, playerManager.RepresentColor);         // 坦克颜色
-            tankMovement.SetupPlayerInput(playerManager.PlayerID);    // 配置坦克移动输入
-            tankShooting.SetupPlayerInput(playerManager.PlayerID);    // 配置坦克攻击输入
+            tankMovement.SetupPlayerInput(playerManager.PlayerID);              // 配置坦克移动输入
+            tankShooting.SetShortcutName("Fire" + playerManager.PlayerID);      // 配置坦克攻击输入
         }
 
         /// <summary>

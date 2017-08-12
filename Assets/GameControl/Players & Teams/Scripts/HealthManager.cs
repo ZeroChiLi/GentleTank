@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthManager : MonoBehaviour 
+public abstract class HealthManager : MonoBehaviour 
 {
     public float minHealth = 0f;                        // 血量最小值
     public float maxHealth = 100f;                      // 血量最大值
@@ -55,7 +55,7 @@ public class HealthManager : MonoBehaviour
     /// <summary>
     /// 通过Time.delta更新伤痛感受时间
     /// </summary>
-    virtual public void UpdateFeelPainByDeltaTime()
+    protected void UpdateFeelPainByDeltaTime()
     {
         if (!IsFeelPain)
             return;
@@ -68,12 +68,15 @@ public class HealthManager : MonoBehaviour
     /// 设置血量变化
     /// </summary>
     /// <param name="amount">变化值</param>
-    virtual public void SetHealthAmount(float amount)
+    public void SetHealthAmount(float amount)
     {
         if (amount == 0)                // 没变化
             return;
         if (amount < 0)
+        {
             isFeelPain = true;
+            timeElapsed = feelPainTime;
+        }
         CurrentHealth += amount;
         UpdateSlider();
         OnHealthChanged();
@@ -84,11 +87,11 @@ public class HealthManager : MonoBehaviour
     /// <summary>
     /// 血量变化时调用
     /// </summary>
-    virtual protected void OnHealthChanged() { }
+    abstract protected void OnHealthChanged();
 
     /// <summary>
     /// 玩家死掉时调用
     /// </summary>
-    virtual protected void OnDead() { }
+    abstract protected void OnDead();
 
 }

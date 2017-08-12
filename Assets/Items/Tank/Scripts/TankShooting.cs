@@ -1,10 +1,11 @@
-﻿using Item.Shell;
+﻿using System;
+using Item.Shell;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Item.Tank
 {
-    public class TankShooting : MonoBehaviour
+    public class TankShooting : AttackManager
     {
         public enum ShootState
         {
@@ -17,7 +18,6 @@ namespace Item.Tank
         public AudioSource shootingAudio;           // 当前射击音效
         public AudioClip chargingClip;              // 射击力度距离变化声音
         public AudioClip fireClip;                  // 射击时声音
-        public float fireRate = 0.8f;               // 发射间隔
         public float minLaunchForce = 15f;          // 最小发射力度
         public float maxLaunchForce = 30f;          // 最大发射力度
         public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
@@ -25,12 +25,9 @@ namespace Item.Tank
         public bool usingInputButton = true;        // 是否使用标准输入
 
         private ShootState shootState = ShootState.None;    // 当前射击状态
-        private PlayerManager playerManager;           // 玩家信息
+        private PlayerManager playerManager;        // 玩家信息
         private float currentLaunchForce;           // 当前发射力度
         private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
-        private float nextFireTime;                 // 下一发最早时间
-
-        private string fireButton = "Fire0";        // 发射子弹按钮是名字
 
         /// <summary>
         /// 获取坦克信息组件，计算力量变化率
@@ -43,16 +40,6 @@ namespace Item.Tank
             chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
         }
 
-        /// 配置玩家攻击输入属性
-        /// </summary>
-        /// <param name="id">玩家ID</param>
-        public void SetupPlayerInput(int id)
-        {
-            if (id < 0)
-                return;
-            fireButton = "Fire" + id;
-        }
-
         /// <summary>
         /// 更新射击力度
         /// </summary>
@@ -60,7 +47,8 @@ namespace Item.Tank
         {
             if (usingInputButton)
                 StateChangeByInput();
-            if (!CanFire())
+            UpdateCoolDownByDeltaTime();
+            if (IsCoolDown)
                 return;
             if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
@@ -83,20 +71,9 @@ namespace Item.Tank
                     Charging();
                     break;
                 case ShootState.Fire:
-                    Fire();
+                    Attack();
                     break;
             }
-        }
-
-        /// <summary>
-        /// 是否可以攻击
-        /// </summary>
-        /// <returns></returns>
-        public bool CanFire()
-        {
-            if (Time.time > nextFireTime)
-                return true;
-            return false;
         }
 
         /// <summary>
@@ -121,24 +98,24 @@ namespace Item.Tank
         }
 
         /// <summary>
-        /// 默认发射炮弹
+        /// 攻击实际效果
         /// </summary>
-        public void Fire()
+        protected override void OnAttack(params object[] values)
         {
-            Fire(currentLaunchForce, fireRate, maxDamage);
+            if (values == null || values.Length == 0)
+                Fire(currentLaunchForce, coolDownTime, maxDamage);
+            else if (values.Length == 3)
+                Fire((float)values[0], (float)values[1], (float)values[2]);
         }
 
         /// <summary>
         /// 发射炮弹，自定义参数变量
         /// </summary>
         /// <param name="launchForce">发射力度</param>
-        /// <param name="fireRate">发射后冷却时间</param>
+        /// <param name="coolDownTime">发射后冷却时间</param>
         /// <param name="fireDamage">伤害值</param>
-        public void Fire(float launchForce, float fireRate, float fireDamage)
+        private void Fire(float launchForce, float coolDownTime, float fireDamage)
         {
-            if (!CanFire())
-                return;
-
             //获取炮弹，并发射
             GameObject shell = shellPool.GetNextObject(transform: shellSpawn);
             shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
@@ -150,7 +127,7 @@ namespace Item.Tank
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
 
-            nextFireTime = Time.time + fireRate;
+            this.coolDownTime = coolDownTime;
         }
 
         /// <summary>
@@ -158,11 +135,11 @@ namespace Item.Tank
         /// </summary>
         private void StateChangeByInput()
         {
-            if (Input.GetButtonDown(fireButton))
+            if (Input.GetButtonDown(shortcutName))
                 shootState = ShootState.Normal;
-            else if (Input.GetButton(fireButton))
+            else if (Input.GetButton(shortcutName))
                 shootState = ShootState.Charge;
-            else if (Input.GetButtonUp(fireButton))
+            else if (Input.GetButtonUp(shortcutName))
                 shootState = ShootState.Fire;
             else
                 shootState = ShootState.None;
@@ -176,5 +153,6 @@ namespace Item.Tank
         {
             this.shootState = shootState;
         }
+
     }
 }
