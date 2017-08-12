@@ -1,35 +1,31 @@
-﻿using Item.Tank;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace GameSystem.AI
 {
-    [RequireComponent(typeof(NavMeshAgent))]
     public class StateController : MonoBehaviour
     {
         public State currentState;                              // 当前状态
         public State remainState;                               // 保持当前状态
         public AIStats defaultStats;                            // 默认状态信息
         public Transform eyes;                                  // 眼睛：拿来观察状态变化
+        public Rigidbody rigidbodySelf;                         // 自己的刚体
+        public Collider colliderSelf;                           // 自己的Collider
+        public NavMeshAgent navMeshAgent;                       // 导航组件
         public PointList wayPointList;                          // 所有巡逻点
 
         [HideInInspector]
-        public Rigidbody rigidbodySelf;       // 自己的刚体
-        [HideInInspector]
-        public Collider colliderSelf;         // 自己的Collider
-        [HideInInspector]
-        public NavMeshAgent navMeshAgent;     // 导航组件
-        [HideInInspector]
-        public Transform chaseTarget;         // 追踪目标
-
-        private int nextWayPointIndex;                          // 下一个巡逻点
-        public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
+        public Transform chaseTarget;                           // 追踪目标
+        public ObjectPreferences statePrefs;                     // 用于每次状态信息使用时
 
         private PlayerManager playerManager;                    // 玩家信息
         private HealthManager healthManager;                    // 玩家血量管理器
         private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
+
+        private int nextWayPointIndex;                          // 下一个巡逻点
+        public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
 
         /// <summary>
         /// 获取组件
@@ -42,6 +38,7 @@ namespace GameSystem.AI
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
+            statePrefs = new ObjectPreferences();
         }
 
         /// <summary>
@@ -82,7 +79,7 @@ namespace GameSystem.AI
         {
             enabled = enable;
             navMeshAgent.enabled = enable;
-            GetNewNextWayPoint(true);
+            UpdateNextWayPoint(true);
         }
 
         /// <summary>
@@ -104,6 +101,7 @@ namespace GameSystem.AI
         private void OnExitState()
         {
             stateTimeElapsed = 0;
+            statePrefs.Clear();
         }
 
         /// <summary>
@@ -118,11 +116,11 @@ namespace GameSystem.AI
         }
 
         /// <summary>
-        /// 获取下一个目标巡逻点
+        /// 更新下一个目标巡逻点
         /// </summary>
         /// <param name="isRandom">是否随机</param>
         /// <returns>返回下一个巡逻点</returns>
-        public Point GetNewNextWayPoint(bool isRandom)
+        public Point UpdateNextWayPoint(bool isRandom)
         {
             if (isRandom)
                 nextWayPointIndex = wayPointList.GetRandomDifferenceIndex(nextWayPointIndex, 0, wayPointList.Count);

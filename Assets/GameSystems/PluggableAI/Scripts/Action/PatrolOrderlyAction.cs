@@ -11,7 +11,7 @@ namespace GameSystem.AI
             controller.navMeshAgent.isStopped = false;
 
             if (controller.navMeshAgent.remainingDistance <= controller.navMeshAgent.stoppingDistance && !controller.navMeshAgent.pathPending)
-                controller.GetNewNextWayPoint(false);
+                controller.UpdateNextWayPoint(false);
         }
     }
 }

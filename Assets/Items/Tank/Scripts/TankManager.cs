@@ -15,35 +15,34 @@ namespace Item.Tank
         [HideInInspector]
         public TankShooting tankShooting;                       // 攻击
         [HideInInspector]
-        public HealthManager tankHealth;                        // 血量
+        public TankHealth tankHealth;                           // 血量
         [HideInInspector]
         public StateController stateController;                 // AI状态控制器
         [HideInInspector]
         public NavMeshAgent navMeshAgent;                       // AI导航
 
         /// <summary>
-        /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。
-        /// </summary>
-        public void Init()
-        {
-            SetupComponent();                               // 获取私有组件
-            SetupUIAndInput();                              // 配置玩家名、外部输入
-            SetControlEnable(true);                         // 激活相应的控制权
-        }
-
-        /// <summary>
         /// 获取所有要用到的私有组件
         /// </summary>
-        private void SetupComponent()
+        private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
             tankMovement = GetComponent<TankMovement>();
             tankShooting = GetComponent<TankShooting>();
-            tankHealth = GetComponent<HealthManager>();
+            tankHealth = GetComponent<TankHealth>();
             playerInfoUI = GetComponent<PlayerInfoUI>();
 
             stateController = GetComponent<StateController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+        }
+
+        /// <summary>
+        /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。
+        /// </summary>
+        public void Init()
+        {
+            SetupUIAndInput();                              // 配置玩家名、外部输入
+            SetControlEnable(true);                         // 激活相应的控制权
         }
 
         /// <summary>

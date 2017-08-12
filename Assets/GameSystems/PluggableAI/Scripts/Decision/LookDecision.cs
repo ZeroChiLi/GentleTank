@@ -5,7 +5,6 @@ namespace GameSystem.AI
     [CreateAssetMenu(menuName = "PluggableAI/Decisions/Look")]
     public class LookDecision : Decision
     {
-        [ColorUsage(false)]
         public Color debugColor = Color.green;          //调试颜色
         [Range(0, 360)]
         public float angle = 90f;                       //检测前方角度范围

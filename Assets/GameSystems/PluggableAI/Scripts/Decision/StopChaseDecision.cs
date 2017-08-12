@@ -13,13 +13,13 @@ namespace GameSystem.AI
         {
             if (controller.chaseTarget == null)
             {
-                controller.GetNewNextWayPoint(true);
+                controller.UpdateNextWayPoint(true);
                 return true;
             }
             if ((controller.transform.position - controller.chaseTarget.position).magnitude > distance)
             {
                 controller.chaseTarget = null;
-                controller.GetNewNextWayPoint(true);
+                controller.UpdateNextWayPoint(true);
                 return true;
             }
             return false;
