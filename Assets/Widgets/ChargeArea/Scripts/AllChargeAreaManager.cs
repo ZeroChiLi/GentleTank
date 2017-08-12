@@ -7,6 +7,7 @@ namespace Widget.ChargeArea
     {
         public PointList chargeAreaPointList;                       // 充电区产生的位置
         public GameObject chargeAreaPerfab;                         // 充电区预设
+        public ObjectPool fillAreaObjectPool;                       // 填充扇区池
 
         private List<ChargeAreaManager> chargeAreaList = new List<ChargeAreaManager>(); // 所有充电区
         private GameState lastGameState = GameState.None;           // 上一次回合状态，通过这个来触发充电区状态变化
@@ -17,6 +18,7 @@ namespace Widget.ChargeArea
         private void Awake()
         {
             CreateChargeAreas();
+            fillAreaObjectPool.CreateObjectPool(this.gameObject);
         }
 
         /// <summary>

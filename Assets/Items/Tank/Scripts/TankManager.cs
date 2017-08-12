@@ -7,19 +7,19 @@ namespace Item.Tank
     public class TankManager : MonoBehaviour
     {
         [HideInInspector]
-        public PlayerManager playerManager;                    // 玩家信息
+        public PlayerManager playerManager;                     // 玩家信息
         [HideInInspector]
-        public PlayerInfoUI playerInfoUI;                      // UI信息
+        public PlayerInfoUI playerInfoUI;                       // UI信息
         [HideInInspector]
-        public TankMovement tankMovement;                      // 移动
+        public TankMovement tankMovement;                       // 移动
         [HideInInspector]
-        public TankShooting tankShooting;                      // 攻击
+        public TankShooting tankShooting;                       // 攻击
         [HideInInspector]
-        public TankHealth tankHealth;                          // 血量
+        public HealthManager tankHealth;                        // 血量
         [HideInInspector]
-        public StateController stateController;                // AI状态控制器
+        public StateController stateController;                 // AI状态控制器
         [HideInInspector]
-        public NavMeshAgent navMeshAgent;                      // AI导航
+        public NavMeshAgent navMeshAgent;                       // AI导航
 
         /// <summary>
         /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。
@@ -39,7 +39,7 @@ namespace Item.Tank
             playerManager = GetComponent<PlayerManager>();
             tankMovement = GetComponent<TankMovement>();
             tankShooting = GetComponent<TankShooting>();
-            tankHealth = GetComponent<TankHealth>();
+            tankHealth = GetComponent<HealthManager>();
             playerInfoUI = GetComponent<PlayerInfoUI>();
 
             stateController = GetComponent<StateController>();

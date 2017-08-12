@@ -1,4 +1,3 @@
-using Item.Tank;
 using UnityEngine;
 
 namespace Item.Shell
@@ -16,7 +15,7 @@ namespace Item.Shell
         // 把每次需要用到的临时变量拉出来
         private Collider[] colliders;                       // 碰撞物体们
         private Rigidbody targetRigidbody;                  // 目标刚体
-        private TankHealth targetHealth;                    // 目标血量
+        private HealthManager targetHealth;                 // 目标血量
 
         // 当碰到任何物体
         private void OnTriggerEnter(Collider other)
@@ -51,10 +50,10 @@ namespace Item.Shell
         // 获取目标的血条，计算扣血量并给给扣血。
         private void TakeDamage(Collider collider)
         {
-            targetHealth = collider.GetComponent<TankHealth>();
+            targetHealth = collider.GetComponent<HealthManager>();
             if (!targetHealth)
                 return;
-            targetHealth.TakeDamage(CalculateDamage(targetRigidbody.position));
+            targetHealth.SetHealthAmount(-1 * CalculateDamage(targetRigidbody.position));
         }
 
         // 根据距离计算伤害

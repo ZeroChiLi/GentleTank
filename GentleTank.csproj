@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -102,6 +104,7 @@
     <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPoolCreate.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
+    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\HealthManager.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerInfoUI.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\TeamManager.cs" />
