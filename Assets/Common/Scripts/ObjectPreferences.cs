@@ -3,9 +3,9 @@
 /// <summary>
 /// 用于单个对象的信息列表存储
 /// </summary>
-public sealed class ObjectPreferences
+public class ObjectPreferences
 {
-    private Dictionary<string, object> preferences;             // 信息列表
+    protected Dictionary<string, object> preferences;           // 信息列表
 
     public object this[string key]                              // 信息索引器
     {

@@ -15,7 +15,8 @@ namespace GameSystem.AI
         {
             controller.navMeshAgent.isStopped = true;
             controller.transform.Rotate(0, rotatePerSecond * Time.deltaTime, 0);
-            return controller.CheckIfCountDownElapsed(searchDuration);
+
+            return CountDownTimer.IsCountDownEnd(controller.statePrefs, "ScanDecisionCD", searchDuration, Time.deltaTime,true);
         }
     }
 }

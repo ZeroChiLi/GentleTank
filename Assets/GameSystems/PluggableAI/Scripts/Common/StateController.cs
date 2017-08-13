@@ -22,7 +22,6 @@ namespace GameSystem.AI
         private HealthManager healthManager;                    // 玩家血量管理器
         private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
-        private float stateTimeElapsed;                         // 计时器，每次调用CheckIfCountDownElapsed加一个Time.delta
 
         private int nextWayPointIndex;                          // 下一个巡逻点
         public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
@@ -100,20 +99,9 @@ namespace GameSystem.AI
         /// </summary>
         private void OnExitState()
         {
-            stateTimeElapsed = 0;
             statePrefs.Clear();
         }
 
-        /// <summary>
-        /// 返回是否过了时间间隔
-        /// </summary>
-        /// <param name="duration">持续时间</param>
-        /// <returns>是否过了持续时间</returns>
-        public bool CheckIfCountDownElapsed(float duration)
-        {
-            stateTimeElapsed += Time.deltaTime;
-            return (stateTimeElapsed >= duration);
-        }
 
         /// <summary>
         /// 更新下一个目标巡逻点

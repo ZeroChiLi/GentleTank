@@ -11,7 +11,7 @@ namespace GameSystem.AI
         //判断是否超过延时时间
         public override bool Decide(StateController controller)
         {
-            return controller.CheckIfCountDownElapsed(delayTime);
+            return CountDownTimer.IsCountDownEnd(controller.statePrefs, "DelayDecisionCD", delayTime, Time.deltaTime, true);
         }
     }
 }
