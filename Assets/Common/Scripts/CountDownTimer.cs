@@ -91,10 +91,10 @@ public class CountDownTimer
     /// <returns>是否倒计时结束</returns>
     static private bool CalculateCountDown(ObjectPreferences prefs, string key, float interval)
     {
+        if ((float)prefs[key] <= 0)
+            return true;
         prefs[key] = (float)prefs[key] - interval;
-        if ((float)prefs[key] > 0)
-            return false;
-        return true;
+        return false;
     }
 
 }
