@@ -20,9 +20,10 @@ namespace GameSystem.AI
         public override void Act(StateController controller)
         {
             //如果瞄得很准，射线射正前方就可以一次抓到目标
-            if (LookDecision.LookAround(controller, Quaternion.identity, distance, debugColor))
+
+            if (controller.FindEnemy(Quaternion.identity, distance, debugColor))
                 controller.Attack();
-            else if (LookDecision.LookAround(controller, Quaternion.Euler(0, -angle / 2 + Mathf.Repeat(rotatePerSecond * Time.time, angle), 0), distance, debugColor))
+            else if (controller.FindEnemy(Quaternion.Euler(0, -angle / 2 + Mathf.Repeat(rotatePerSecond * Time.time, angle), 0), distance, debugColor))
                 controller.Attack();
         }
     }

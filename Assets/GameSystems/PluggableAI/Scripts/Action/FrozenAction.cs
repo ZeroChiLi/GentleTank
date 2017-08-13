@@ -19,7 +19,7 @@ namespace GameSystem.AI
                 controller.statePrefs["SoucePos"] = controller.transform.position;
 
             // 更新倒计时
-            if (!CountDownTimer.IsCountDownEnd(controller.statePrefs, "FrozenActionCD", checkTime, Time.deltaTime, true))
+            if (!CountDownTimer.UpdateTimer(controller.statePrefs, "FrozenActionCD", checkTime, Time.deltaTime, true))
                 return;
 
             // 判断如果过了检测时间后，当前位置和之前位置的距离是否小于限定距离

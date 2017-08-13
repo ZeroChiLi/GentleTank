@@ -13,7 +13,7 @@ namespace GameSystem.AI
 
         public override bool Decide(StateController controller)
         {
-            return CountDownTimer.IsCountDownEnd(controller.statePrefs, "DelayDecisionCD", delayTime, Time.deltaTime, true);
+            return CountDownTimer.UpdateTimer(controller.statePrefs, "DelayDecisionCD", delayTime, Time.deltaTime, true);
         }
     }
 }

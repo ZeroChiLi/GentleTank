@@ -21,6 +21,7 @@ namespace GameSystem.AI
         private HealthManager healthManager;                    // 玩家血量管理器
         private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
+        private Transform target;                               // 追踪目标
 
         private int nextWayPointIndex;                          // 下一个巡逻点
         public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
@@ -153,5 +154,19 @@ namespace GameSystem.AI
             return collider == colliderSelf;
         }
 
+        /// <summary>
+        /// 查找敌人，并存到instancePrefs
+        /// </summary>
+        /// <returns>是否查找到敌人</returns>
+        public bool FindEnemy(Quaternion anger, float radius, Color debugColor)
+        {
+            target = FindTarget.FindEnemy(eyes, playerManager, anger, radius, debugColor);
+            if (target != null)
+            {
+                instancePrefs.AddOrModifyValue("ChaseTarget", target);
+                return true;
+            }
+            return false;
+        }
     }
 }

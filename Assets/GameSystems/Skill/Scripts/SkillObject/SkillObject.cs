@@ -10,7 +10,7 @@ namespace GameSystem.Skill
         public float coolDownTime = 1f;                 // 冷却时间
         public Sprite CDFullSprite;                     // 技能滑动条充满时图片精灵
         public Sprite CDEmptySprite;                    // 技能滑动条空时图片精灵
-        public AimMode aimMode;                         // 技能对应的瞄准模型
+        public AimMode aimMode;                         // 技能对应的瞄准模式
 
         /// <summary>
         /// 通过属性配置创建技能按钮

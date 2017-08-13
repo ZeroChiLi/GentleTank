@@ -6,6 +6,7 @@
 public sealed class ObjectPreferences
 {
     private Dictionary<string, object> preferences;             // 信息列表
+    public Dictionary<string, object> Preferneces { get { return preferences; } }
 
     public object this[string key]                              // 信息索引器
     {

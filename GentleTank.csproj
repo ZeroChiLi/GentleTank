@@ -93,6 +93,7 @@
     <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiplayerCameraManager.cs" />
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
     <Compile Include="Assets\Common\Scripts\ChangeColor.cs" />
+    <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />
     <Compile Include="Assets\Common\Scripts\CountDownTimer.cs" />
     <Compile Include="Assets\Common\Scripts\Effect.cs" />
     <Compile Include="Assets\Common\Scripts\GameMathf.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\AIStats.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\FindTarget.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\MinMaxValue.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\StateController.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\ActiveStateDecision.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\HealSkill.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\ShellRainSkill.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillButtonManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillObject.cs" />
     <Compile Include="Assets\Items\Shell\Scripts\ShellManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />

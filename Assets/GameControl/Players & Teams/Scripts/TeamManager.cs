@@ -16,4 +16,5 @@ public class TeamManager : ScriptableObject
 
     // 带团队颜色的团队名称富文本
     public string ColoredTeamName { get { return "<color=#" + ColorUtility.ToHtmlStringRGB(TeamColor) + ">" + TeamName + " </color>"; } }
+
 }

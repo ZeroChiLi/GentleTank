@@ -22,30 +22,30 @@ namespace GameSystem.AI
         {
             float subAngle = angle / accuracy;          //每条射线需要检测的角度范围
             for (int i = 0; i < accuracy; i++)
-                if (LookAround(controller, Quaternion.Euler(0, -angle / 2 + i * subAngle + Mathf.Repeat(rotatePerSecond * Time.time, subAngle), 0), distance, debugColor))
+                if (controller.FindEnemy(Quaternion.Euler(0, -angle / 2 + i * subAngle + Mathf.Repeat(rotatePerSecond * Time.time, subAngle), 0), distance, debugColor))
                     return true;
             return false;
         }
 
-        /// <summary>
-        /// 查找敌人，并存到controller.instancePrefs 的 "ChaseTarget" 中，值为Transform。
-        /// </summary>
-        /// <param name="controller">检测者</param>
-        /// <param name="eulerAnger">检测角度范围</param>
-        /// <param name="distance">检测半径</param>
-        /// <param name="DebugColor">调试颜色</param>
-        /// <returns>是否检测到敌人</returns>
-        static public bool LookAround(StateController controller, Quaternion eulerAnger, float distance, Color DebugColor)
-        {
-            Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
+        ///// <summary>
+        ///// 查找敌人，并存到controller.instancePrefs 的 "ChaseTarget" 中，值为Transform。
+        ///// </summary>
+        ///// <param name="controller">检测者</param>
+        ///// <param name="eulerAnger">检测角度（正前方为0，顺时针为正）</param>
+        ///// <param name="distance">检测半径</param>
+        ///// <param name="DebugColor">调试颜色</param>
+        ///// <returns>是否检测到敌人</returns>
+        //static public bool LookAround(StateController controller, Quaternion eulerAnger, float distance, Color DebugColor)
+        //{
+        //    Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
 
-            RaycastHit hit;
-            if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance, LayerMask.GetMask("Level")) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider) && !controller.IsMyself(hit.collider))
-            {
-                controller.instancePrefs.AddOrModifyValue("ChaseTarget", hit.transform);
-                return true;
-            }
-            return false;
-        }
+        //    RaycastHit hit;
+        //    if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance, LayerMask.GetMask("Level")) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider) && !controller.IsMyself(hit.collider))
+        //    {
+        //        controller.instancePrefs.AddOrModifyValue("ChaseTarget", hit.transform);
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

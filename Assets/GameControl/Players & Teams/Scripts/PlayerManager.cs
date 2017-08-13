@@ -60,13 +60,29 @@ public class PlayerManager : MonoBehaviour
     /// <returns>是否是队友</returns>
     public bool IsTeammate(PlayerManager player)
     {
-        if (Team == null || player.Team == null)
+        if (player == null)                         // 不存在玩家，不是队友
             return false;
 
-        if (Team == player.Team)
+        if (this == player)                         // 自己，是队员
+            return true;
+
+        if (Team == null || player.Team == null)    // 任何一方没有队伍，不是队友
+            return false;
+
+        if (Team == player.Team)                    // 是一个队伍，是队员
             return true;
         else
-            return false;
+            return false;                           // 不是一个队伍，不是队友
     }
 
+    /// <summary>
+    /// 两人是否是队友
+    /// </summary>
+    /// <param name="player1">玩家1</param>
+    /// <param name="player2">玩家2</param>
+    /// <returns>是不是队友</returns>
+    static public bool IsTeammate(PlayerManager player1, PlayerManager player2)
+    {
+        return player1.IsTeammate(player2);
+    }
 }
