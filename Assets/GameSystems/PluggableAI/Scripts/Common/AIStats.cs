@@ -2,6 +2,9 @@
 
 namespace GameSystem.AI
 {
+    /// <summary>
+    /// AI状态信息设置
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/AI Stats")]
     public class AIStats : ScriptableObject
     {

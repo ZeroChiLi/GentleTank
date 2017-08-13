@@ -2,7 +2,9 @@
 
 namespace GameSystem.AI
 {
-    //包含要执行动作，下一个动作的决定
+    /// <summary>
+    /// 包含要执行动作，下一个动作的决定
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/State")]
     public class State : ScriptableObject
     {
@@ -10,21 +12,30 @@ namespace GameSystem.AI
         public Action[] actions;                        //动作：巡逻动作、
         public Transition[] transitions;                //通过决定，选择下一种动作决定。
 
-        //每一帧更新状态，在StateController的OnUpdate中调用。
+        /// <summary>
+        /// 每一帧更新状态，在StateController的OnUpdate中调用。
+        /// </summary>
+        /// <param name="controller">控制者</param>
         public void UpdateState(StateController controller)
         {
             DoActions(controller);                      //执行动作
             CheckTransition(controller);                //检测转换状态
         }
 
-        //顺序执行动作列表的动作。
+        /// <summary>
+        /// 顺序执行动作列表的动作
+        /// </summary>
+        /// <param name="controller">控制者</param>
         private void DoActions(StateController controller)
         {
             for (int i = 0; i < actions.Length; i++)
                 actions[i].Act(controller);
         }
 
-        //检查所有转换状态，并改变状态
+        /// <summary>
+        /// 检查所有转换状态，并改变状态
+        /// </summary>
+        /// <param name="controller">控制者</param>
         private void CheckTransition(StateController controller)
         {
             for (int i = 0; i < transitions.Length; i++)

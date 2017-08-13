@@ -23,7 +23,8 @@ namespace GameSystem.AI
                 return;
 
             // 判断如果过了检测时间后，当前位置和之前位置的距离是否小于限定距离
-            if (Vector3.SqrMagnitude((Vector3)controller.statePrefs["SoucePos"] - controller.transform.position) <= maxRadius * maxRadius)
+
+            if (GameMathf.TwoPosInRange((Vector3)controller.statePrefs["SoucePos"],controller.transform.position,maxRadius))
                 controller.UpdateNextWayPoint(true);
 
             controller.statePrefs.Remove("SoucePos");

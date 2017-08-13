@@ -2,6 +2,9 @@
 
 namespace GameSystem.AI
 {
+    /// <summary>
+    /// 顺序抵达巡逻点
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/Actions/OrderlyPatrol")]
     public class PatrolOrderlyAction : Action
     {

@@ -2,13 +2,22 @@
 
 namespace GameSystem.AI
 {
+    /// <summary>
+    /// 追踪的对象是否还活着（activeSelf）
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/Decisions/ActiveState")]
     public class ActiveStateDecision : Decision
     {
-        //追踪的对象是否还活着（active）
         public override bool Decide(StateController controller)
         {
-            return controller.chaseTarget.gameObject.activeSelf;
+            if (!controller.instancePrefs.Contains("ChaseTarget"))
+                return false;
+
+            if (controller.instancePrefs.GetValue<Transform>("ChaseTarget").gameObject.activeSelf)
+                return true;
+
+            controller.instancePrefs.Remove("ChaseTarget");     // 死掉了，删掉键值
+            return false;
         }
 
     }

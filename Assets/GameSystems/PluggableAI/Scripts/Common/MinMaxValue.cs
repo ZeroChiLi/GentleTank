@@ -2,10 +2,10 @@
 
 namespace GameSystem.AI
 {
-    [System.Serializable]
     /// <summary>
     /// 在最小和最大范围内的浮动值
     /// </summary>
+    [System.Serializable]
     public struct MinMaxValue
     {
         public float minLimit;

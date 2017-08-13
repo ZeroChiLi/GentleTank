@@ -2,23 +2,25 @@
 
 namespace GameSystem.AI
 {
+    /// <summary>
+    /// 超过追逐距离,改变下一个巡逻点（用来避免AI卡死）
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/Decisions/StopChase")]
     public class StopChaseDecision : Decision
     {
         [Range(0, 100)]
         public float distance = 30f;                //停止追逐的最远距离
 
-        //超过追逐距离,改变下一个巡逻点（用来避免AI卡死）
         public override bool Decide(StateController controller)
         {
-            if (controller.chaseTarget == null)
+            if (!controller.instancePrefs.Contains("ChaseTarget"))
             {
                 controller.UpdateNextWayPoint(true);
                 return true;
             }
-            if ((controller.transform.position - controller.chaseTarget.position).magnitude > distance)
+            if (!GameMathf.TwoPosInRange(controller.transform.position, controller.instancePrefs.GetValue<Transform>("ChaseTarget").position, distance))
             {
-                controller.chaseTarget = null;
+                controller.instancePrefs.Remove("ChaseTarget");
                 controller.UpdateNextWayPoint(true);
                 return true;
             }

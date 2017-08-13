@@ -14,9 +14,8 @@ namespace GameSystem.AI
         public NavMeshAgent navMeshAgent;                       // 导航组件
         public PointList wayPointList;                          // 所有巡逻点
 
-        [HideInInspector]
-        public Transform chaseTarget;                           // 追踪目标
-        public ObjectPreferences statePrefs;                     // 用于每次状态信息使用时
+        public ObjectPreferences statePrefs;                    // 用于每一次状态保存信息使用时（OnExitState时清除）
+        public ObjectPreferences instancePrefs;                 // 用于整个实例保存信息用（如ChaseTarget）
 
         private PlayerManager playerManager;                    // 玩家信息
         private HealthManager healthManager;                    // 玩家血量管理器
@@ -38,6 +37,7 @@ namespace GameSystem.AI
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
             statePrefs = new ObjectPreferences();
+            instancePrefs = new ObjectPreferences();
         }
 
         /// <summary>
@@ -101,7 +101,6 @@ namespace GameSystem.AI
         {
             statePrefs.Clear();
         }
-
 
         /// <summary>
         /// 更新下一个目标巡逻点

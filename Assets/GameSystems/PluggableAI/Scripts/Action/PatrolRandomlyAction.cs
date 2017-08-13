@@ -2,6 +2,9 @@
 
 namespace GameSystem.AI
 {
+    /// <summary>
+    /// 随机抵达下一个巡逻点
+    /// </summary>
     [CreateAssetMenu(menuName = "PluggableAI/Actions/RandomlyPatrol")]
     public class PatrolRandomlyAction : Action
     {
