@@ -1,31 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ChargeButtonMananger : MonoBehaviour
+public class ChargeButtonMananger : CoolDownButtonManager
 {
-    public Button button;
-    public Image buttonEmptyImg;
-    public Image buttonFullImg;
-    public float coolDownTime = 1f;
-    public Image sliderEmptyImg;
-    public Image sliderFullImg;
-    public float minValue = 50f;
-    public float maxValue = 100f;
-    public float changingRate = 10f;
+    public Image sliderFullImg;             // 蓄力变化的图片
+    public float minValue = 50f;            // 最小值
+    public float maxValue = 100f;           // 最大值
+    public float changingRate = 10f;        // 变化率
 
-    private CountDownTimer timer;
-    private readonly string coolDownTimer = "CoolDownTimer";
-    private bool isCharging;
-    private float currentChargeValue;
+    private bool isCharging;                // 是否正在变化
+    private float currentChargeValue;       // 当前值
 
     /// <summary>
     /// 初始化
     /// </summary>
     private void Start()
     {
-        timer = new CountDownTimer();
-        timer.AddOrResetTimer(coolDownTimer, 0);
-        buttonFullImg.fillAmount = 0f;
+        Init();
+        isCharging = false;
         ResetChargeValue();
     }
 
@@ -43,28 +35,10 @@ public class ChargeButtonMananger : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
-        {
-            timer.UpdateTimer(coolDownTimer, Time.deltaTime);
-            buttonFullImg.fillAmount = GameMathf.Persents(0, coolDownTime, timer[coolDownTimer]);
-            return;
-        }
-        button.enabled = true;
-        if (!isCharging)
+        if (!UpdateCoolDownAndCheck() || !isCharging)
             return;
         currentChargeValue += Time.deltaTime * changingRate;
         sliderFullImg.fillAmount = GameMathf.Persents(minValue, maxValue, currentChargeValue);
-    }
-
-    /// <summary>
-    /// 点击按钮时响应
-    /// </summary>
-    public void OnClick()
-    {
-        if (!timer.IsTimeUp(coolDownTimer))
-            return;
-        button.enabled = false;
-        timer.AddOrResetTimer(coolDownTimer, coolDownTime);
     }
 
     /// <summary>
