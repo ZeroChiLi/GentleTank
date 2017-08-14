@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameSystem.OnlineGame;
 using UnityEngine;
 using UnityEngine.UI;
 
