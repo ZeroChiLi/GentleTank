@@ -103,7 +103,8 @@
     <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
     <Compile Include="Assets\Common\Scripts\ObjectPreferences.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
-    <Compile Include="Assets\CrossPlatformInput\Scripts\JoystickInput.cs" />
+    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\JoystickInput.cs" />
     <Compile Include="Assets\GameControl\Main Scripts\GameManager.cs" />
     <Compile Include="Assets\GameControl\Main Scripts\GameRound.cs" />
     <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPool.cs" />

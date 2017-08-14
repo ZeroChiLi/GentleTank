@@ -15,11 +15,14 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            if (controller.statePrefs["SoucePos"] == null)           // 第一次进入决定时，设置初始位置，初始化倒计时
-                controller.statePrefs["SoucePos"] = controller.transform.position;
+            if (!controller.statePrefs.Contains("SoucePos"))           // 第一次进入决定时，设置初始位置，初始化倒计时
+                controller.statePrefs.AddValue("SoucePos", controller.transform.position);
+            if (!controller.statePrefs.Contains("FrozenActionCD"))
+                controller.statePrefs.AddValue("FrozenActionCD" , new CountDownTimer(checkTime, true));
+
 
             // 更新倒计时
-            if (!CountDownTimer.UpdateTimer(controller.statePrefs, "FrozenActionCD", checkTime, Time.deltaTime, true))
+            if (!((CountDownTimer)controller.statePrefs["FrozenActionCD"]).UpdateAndCheck(Time.deltaTime))
                 return;
 
             // 判断如果过了检测时间后，当前位置和之前位置的距离是否小于限定距离
@@ -27,7 +30,7 @@ namespace GameSystem.AI
             if (GameMathf.TwoPosInRange((Vector3)controller.statePrefs["SoucePos"],controller.transform.position,maxRadius))
                 controller.UpdateNextWayPoint(true);
 
-            controller.statePrefs.Remove("SoucePos");
+            controller.statePrefs["SoucePos"] = controller.transform.position;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace GameSystem.AI
             if (!controller.instancePrefs.Contains("ChaseTarget"))
                 return false;
 
-            if (controller.instancePrefs.GetValue<Transform>("ChaseTarget").gameObject.activeSelf)
+            if (((Transform)controller.instancePrefs["ChaseTarget"]).gameObject.activeSelf)
                 return true;
 
             controller.instancePrefs.Remove("ChaseTarget");     // 死掉了，删掉键值

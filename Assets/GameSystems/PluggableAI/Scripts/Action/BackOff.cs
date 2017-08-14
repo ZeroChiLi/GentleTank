@@ -15,7 +15,7 @@ namespace GameSystem.AI
         {
             if (!controller.instancePrefs.Contains("ChaseTarget"))
                 return;
-            if (GameMathf.TwoPosInRange(controller.instancePrefs.GetValue<Transform>("ChaseTarget").position, controller.transform.position, keepDistance))
+            if (GameMathf.TwoPosInRange(((Transform)controller.instancePrefs["ChaseTarget"]).position, controller.transform.position, keepDistance))
                 controller.rigidbodySelf.position += -1 * controller.transform.forward.normalized * controller.navMeshAgent.speed * Time.deltaTime;
         }
     }

@@ -18,7 +18,11 @@ namespace GameSystem.AI
             controller.navMeshAgent.isStopped = true;
             controller.transform.Rotate(0, rotatePerSecond * Time.deltaTime, 0);
 
-            return CountDownTimer.UpdateTimer(controller.statePrefs, "ScanDecisionCD", searchDuration, Time.deltaTime,true);
+            if (!controller.statePrefs.Contains("ScanDecisionCD"))
+                controller.statePrefs.AddValue("ScanDecisionCD", new CountDownTimer(searchDuration, true));
+
+            // 更新倒计时
+            return ((CountDownTimer)controller.statePrefs["ScanDecisionCD"]).UpdateAndCheck(Time.deltaTime);
         }
     }
 }

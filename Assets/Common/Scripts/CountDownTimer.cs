@@ -1,100 +1,80 @@
-﻿
+﻿using UnityEngine;
+
 /// <summary>
-/// 倒计时器
+/// 倒计时器。使用UpdateAndCheck来更新计时器
 /// </summary>
 public class CountDownTimer
 {
-    private ObjectPreferences timerPrefs = new ObjectPreferences();             // 计时器
+    public bool IsAutoCycle { get; private set; }                   // 是否自动循环（小于等于0后重置）
+    public float CurrentTime { get; private set; }                  // 当前时间
+    public bool IsTimeUp { get { return CurrentTime <= 0; } }       // 是否时间到
+    public bool IsStoped { get; private set; }                      // 是否暂停了
 
-    public float this[string key] { get { return (float)timerPrefs[key]; } }
-
-    /// <summary>
-    /// 添加或重置计时器
-    /// </summary>
-    /// <param name="key">计时器名称</param>
-    /// <param name="startTime">起始时间</param>
-    public void AddOrResetTimer(string key,float startTime)
+    private float startTime;                                        // 起始时间
+    public float StartTime
     {
-        timerPrefs.AddOrModifyValue(key, startTime);
-    }
-
-    /// <summary>
-    /// 获取剩余时间
-    /// </summary>
-    /// <param name="key">计时器名称</param>
-    /// <returns>返回剩余时间</returns>
-    public float GetTimeLeft(string key)
-    {
-        return (float)timerPrefs[key];
-    }
-
-    /// <summary>
-    /// 返回是否到时间结束（时间小于等于0）
-    /// </summary>
-    /// <param name="key">计时器名称</param>
-    /// <returns>是否到时间结束</returns>
-    public bool IsTimeUp(string key)
-    {
-        return (float)timerPrefs[key] <= 0;
-    }
-
-    /// <summary>
-    /// 更新计时器，并返回是否时间到 
-    /// </summary>
-    /// <param name="key">计时器名称</param>
-    /// <param name="interval">时间间隔</param>
-    /// <returns>是否到时间结束</returns>
-    public bool UpdateTimer(string key, float interval)
-    {
-        return CalculateCountDown(timerPrefs, key, interval);
-    }
-
-    /// <summary>
-    /// 更新所有计时器
-    /// </summary>
-    /// <param name="interval">时间间隔</param>
-    public void UpdateAllTimer(float interval)
-    {
-        foreach (var timer in timerPrefs.Preferneces)
-            CalculateCountDown(timerPrefs, timer.Key, interval);
-    }
-
-    /// <summary>
-    /// 使用其对象信息存储倒计时器,同时更新倒计时器，返回是否时间到
-    /// </summary>
-    /// <param name="prefs">对象信息列表</param>
-    /// <param name="key">计时器名字</param>
-    /// <param name="startTime">起始倒计时值</param>
-    /// <param name="interval">时间间隔</param>
-    /// <param name="recycle">是否循环（每次计时结束后重新赋值）</param>
-    /// <returns>是否倒计时结束</returns>
-    static public bool UpdateTimer(ObjectPreferences prefs,string key,float startTime,float interval,bool recycle = false)
-    {
-        if (!prefs.Contains(key))
-            prefs.AddValue(key, startTime);
-
-        if (CalculateCountDown(prefs,key,interval))
+        get { return startTime; }
+        set
         {
-            if (recycle)
-                prefs[key] = startTime;
+            startTime = value;
+            CurrentTime = startTime;
+        }
+    }
+
+    /// <summary>
+    /// 构造倒计时器
+    /// </summary>
+    /// <param name="startTime">起始时间</param>
+    /// <param name="autocycle">是否自动循环</param>
+    public CountDownTimer(float startTime,bool autocycle = false)
+    {
+        StartTime = Mathf.Max(0f, startTime);
+        IsAutoCycle = autocycle;
+    }
+
+    /// <summary>
+    /// 重置计时器
+    /// </summary>
+    public void Reset()
+    {
+        CurrentTime = StartTime;
+    }
+
+    /// <summary>
+    /// 更新倒计时，计时结束返回true
+    /// </summary>
+    /// <param name="interval">时间间隔</param>
+    /// <returns>返回是否几时结束</returns>
+    public bool UpdateAndCheck(float interval)
+    {
+        if (IsStoped)
+            return CurrentTime <= 0;
+        if (CurrentTime <= 0)
+        {
+            if (IsAutoCycle)
+                CurrentTime = StartTime;
             return true;
         }
+        CurrentTime -= interval;
         return false;
+    }
+    /// <summary>
+    /// 设置当前值为0
+    /// </summary>
+    public void End()
+    {
+        CurrentTime = 0f;
     }
 
     /// <summary>
-    /// 更新倒计时器，返回是否到达时间
+    /// 获取倒计时完成率（0为没开始计时，1为计时结束）
     /// </summary>
-    /// <param name="prefs">对象信息列表</param>
-    /// <param name="key">计时器名字</param>
-    /// <param name="interval">时间间隔</param
-    /// <returns>是否倒计时结束</returns>
-    static private bool CalculateCountDown(ObjectPreferences prefs, string key, float interval)
+    /// <returns></returns>
+    public float GetPercent()
     {
-        if ((float)prefs[key] <= 0)
-            return true;
-        prefs[key] = (float)prefs[key] - interval;
-        return false;
+        if (CurrentTime <= 0 || StartTime <= 0)
+            return 1f;
+        return 1 - CurrentTime / StartTime;
     }
 
 }

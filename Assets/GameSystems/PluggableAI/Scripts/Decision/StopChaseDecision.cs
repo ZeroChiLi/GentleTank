@@ -18,7 +18,7 @@ namespace GameSystem.AI
                 controller.UpdateNextWayPoint(true);
                 return true;
             }
-            if (!GameMathf.TwoPosInRange(controller.transform.position, controller.instancePrefs.GetValue<Transform>("ChaseTarget").position, distance))
+            if (!GameMathf.TwoPosInRange(controller.transform.position, ((Transform)controller.instancePrefs["ChaseTarget"]).position, distance))
             {
                 controller.instancePrefs.Remove("ChaseTarget");
                 controller.UpdateNextWayPoint(true);

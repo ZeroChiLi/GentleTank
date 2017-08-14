@@ -13,7 +13,7 @@ namespace GameSystem.AI
             if (!controller.instancePrefs.Contains("ChaseTarget"))
                 return;
 
-            controller.navMeshAgent.destination = controller.instancePrefs.GetValue<Transform>("ChaseTarget").position;
+            controller.navMeshAgent.destination = ((Transform)controller.instancePrefs["ChaseTarget"]).position;
             controller.navMeshAgent.isStopped = false;
         }
     }

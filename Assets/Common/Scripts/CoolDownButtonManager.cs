@@ -8,8 +8,7 @@ public class CoolDownButtonManager : MonoBehaviour
     public bool coolDownAtStart = true;         // 是否在开始时先冷却
     public float coolDownTime = 1f;             // 冷却时间
 
-    protected CountDownTimer timer;             // 计时器
-    protected readonly string coolDownTimer = "CoolDownTimer";      // 计时器名称
+    protected CountDownTimer coolDownTimer;     // 冷却时间计时器
 
     /// <summary>
     /// 初始化
@@ -32,8 +31,9 @@ public class CoolDownButtonManager : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        timer = new CountDownTimer();
-        timer.AddOrResetTimer(coolDownTimer, coolDownAtStart ? coolDownTime : 0);
+        coolDownTimer = new CountDownTimer(coolDownTime);
+        if (!coolDownAtStart)
+            coolDownTimer.End();
         buttonFullImg.fillAmount = coolDownAtStart ? 1 : 0;
         button.onClick.AddListener(OnClick);
     }
@@ -43,10 +43,10 @@ public class CoolDownButtonManager : MonoBehaviour
     /// </summary>
     public void OnClick()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
+        if (!coolDownTimer.IsTimeUp)
             return;
         button.interactable = false;
-        timer.AddOrResetTimer(coolDownTimer, coolDownTime);
+        coolDownTimer.Reset();
     }
 
     /// <summary>
@@ -55,10 +55,10 @@ public class CoolDownButtonManager : MonoBehaviour
     /// <returns>是否结束</returns>
     protected bool UpdateCoolDownAndCheck()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
+        if (!coolDownTimer.IsTimeUp)
         {
-            timer.UpdateTimer(coolDownTimer, Time.deltaTime);
-            buttonFullImg.fillAmount = GameMathf.Persents(0, coolDownTime, timer[coolDownTimer]);
+            coolDownTimer.UpdateAndCheck(Time.deltaTime);
+            buttonFullImg.fillAmount = 1 - coolDownTimer.GetPercent();
             return false;
         }
         button.interactable = true;

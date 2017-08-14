@@ -46,7 +46,7 @@ public class ChargeButtonMananger : CoolDownButtonManager
     /// </summary>
     public void OnPointerDown()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
+        if (!coolDownTimer.IsTimeUp)
             return;
         isCharging = true;
         ResetChargeValue();
@@ -57,7 +57,7 @@ public class ChargeButtonMananger : CoolDownButtonManager
     /// </summary>
     public void OnPointerUp()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
+        if (!coolDownTimer.IsTimeUp)
             return;
         isCharging = false;
         ResetChargeValue();
@@ -68,7 +68,7 @@ public class ChargeButtonMananger : CoolDownButtonManager
     /// </summary>
     public void OnPointerExit()
     {
-        if (!timer.IsTimeUp(coolDownTimer))
+        if (!coolDownTimer.IsTimeUp)
             return;
         isCharging = false;
         ResetChargeValue();
