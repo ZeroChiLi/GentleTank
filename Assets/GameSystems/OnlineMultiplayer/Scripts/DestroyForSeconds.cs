@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// 一段时间后，自动设置为不激活状态
-/// </summary>
-public class DestroyForSeconds : Photon.MonoBehaviour
+namespace GameSystem.OnlineGame
 {
-    public float lifeTime = 5f;
-
-    private float currentTime;
-
-    private void Update()
+    /// <summary>
+    /// 一段时间后，自动设置为不激活状态
+    /// </summary>
+    public class DestroyForSeconds : Photon.MonoBehaviour
     {
-        if (currentTime > lifeTime)
-            PhotonNetwork.Destroy(photonView);
-        currentTime += Time.deltaTime;
-    }
+        public float lifeTime = 5f;
 
+        private float currentTime;
+
+        private void Update()
+        {
+            if (currentTime > lifeTime)
+                PhotonNetwork.Destroy(photonView);
+            currentTime += Time.deltaTime;
+        }
+
+    }
 }
