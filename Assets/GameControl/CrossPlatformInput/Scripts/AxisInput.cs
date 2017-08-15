@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CrossPlatformInput
 {
@@ -16,9 +14,12 @@ namespace CrossPlatformInput
             set { axisValue = new Vector2(Mathf.Clamp01(value.x), Mathf.Clamp01(value.y)); }
         }
 
-        public AxisInput(string name)
+        /// <summary>
+        /// 登记摇杆
+        /// </summary>
+        public void Register()
         {
-            AxisName = name;
+            VirtualInput.RegisterAxis(this);
         }
 
         /// <summary>

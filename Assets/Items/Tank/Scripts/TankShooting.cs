@@ -1,7 +1,7 @@
-﻿using System;
-using Item.Shell;
+﻿using Item.Shell;
 using UnityEngine;
 using UnityEngine.UI;
+using CrossPlatformInput;
 
 namespace Item.Tank
 {
@@ -9,7 +9,7 @@ namespace Item.Tank
     {
         public enum ShootState
         {
-            None, Normal, Charge, Fire
+            None, Ready, Charge, Fire
         }
 
         public ObjectPool shellPool;                // 炮弹池
@@ -24,20 +24,22 @@ namespace Item.Tank
         public float maxDamage = 100f;              // 最大伤害
         public bool usingInputButton = true;        // 是否使用标准输入
 
+        public float ChargeRate { get { return chargeRate; } }
+
         private ShootState shootState = ShootState.None;    // 当前射击状态
         private PlayerManager playerManager;        // 玩家信息
         private float currentLaunchForce;           // 当前发射力度
-        private float chargeSpeed;                  // 力度变化速度（最小到最大力度 / 最大蓄力时间）
+        private float chargeRate;                   // 力度变化速度（最小到最大力度 / 最大蓄力时间）
 
         /// <summary>
         /// 获取坦克信息组件，计算力量变化率
         /// </summary>
-        private void Start()
+        private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
-            chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
+            chargeRate = (maxLaunchForce - minLaunchForce) / maxChargeTime;
         }
 
         /// <summary>
@@ -45,8 +47,11 @@ namespace Item.Tank
         /// </summary>
         private void Update()
         {
-            if (usingInputButton)
-                StateChangeByInput();
+            //if (usingInputButton)
+            //StateChangeByInput();
+            if (playerManager.IsMine)
+                ChangeByChargeButton();
+
             UpdateCoolDownByDeltaTime();
             if (IsCoolDown)
                 return;
@@ -64,7 +69,7 @@ namespace Item.Tank
                 currentLaunchForce = maxLaunchForce;
             switch (shootState)
             {
-                case ShootState.Normal:
+                case ShootState.Ready:
                     Ready();
                     break;
                 case ShootState.Charge:
@@ -93,7 +98,7 @@ namespace Item.Tank
         /// </summary>
         public void Charging()
         {
-            currentLaunchForce += chargeSpeed * Time.deltaTime;
+            currentLaunchForce += chargeRate * Time.deltaTime;
             aimSlider.value = currentLaunchForce;
         }
 
@@ -136,7 +141,7 @@ namespace Item.Tank
         private void StateChangeByInput()
         {
             if (Input.GetButtonDown(shortcutName))
-                shootState = ShootState.Normal;
+                shootState = ShootState.Ready;
             else if (Input.GetButton(shortcutName))
                 shootState = ShootState.Charge;
             else if (Input.GetButtonUp(shortcutName))
@@ -152,6 +157,28 @@ namespace Item.Tank
         public void ChangeState(ShootState shootState)
         {
             this.shootState = shootState;
+        }
+
+        /// <summary>
+        /// 通过虚拟按钮控制
+        /// </summary>
+        public void ChangeByChargeButton()
+        {
+            switch (VirtualInput.GetButtonState("TankShooting"))
+            {
+                case ButtonState.Down:
+                    shootState = ShootState.Ready;
+                    break;
+                case ButtonState.Pressed:
+                    shootState = ShootState.Charge;
+                    break;
+                case ButtonState.Up:
+                    shootState = ShootState.Fire;
+                    break;
+                default:
+                    shootState = ShootState.None;
+                    break;
+            }
         }
 
     }

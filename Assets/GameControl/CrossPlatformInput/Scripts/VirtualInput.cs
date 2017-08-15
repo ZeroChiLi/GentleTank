@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CrossPlatformInput
@@ -18,7 +17,7 @@ namespace CrossPlatformInput
         static public void RegisterAxis(AxisInput axisInput)
         {
             if (axisInputDic.ContainsKey(axisInput.AxisName))
-                Debug.LogError("RegisterAxis Error: " + axisInput.AxisName + " have been exists.");
+                Debug.LogErrorFormat("RegisterAxis Error: '{0}' have been exists.",axisInput.AxisName);
             else
                 axisInputDic.Add(axisInput.AxisName, axisInput);
         }
@@ -44,14 +43,27 @@ namespace CrossPlatformInput
         }
 
         /// <summary>
+        /// 获取输入轴
+        /// </summary>
+        /// <param name="axisName">轴名</param>
+        /// <returns>输入轴</returns>
+        static public AxisInput GetAxis(string axisName)
+        {
+            if (axisInputDic.ContainsKey(axisName))
+                return axisInputDic[axisName];
+            Debug.LogErrorFormat("Can't Find '{0}' Axis", axisName);
+            return null;
+        }
+
+        /// <summary>
         /// 获取轴值
         /// </summary>
-        /// <param name="name">输入轴的名称</param>
+        /// <param name="axisName">输入轴的名称</param>
         /// <returns></returns>
-        static Vector2 GetAxis(string name)
+        static public Vector2 GetAxisValue(string axisName)
         {
-            if (axisInputDic.ContainsKey(name))
-                return axisInputDic[name].AxisValue;
+            if (axisInputDic.ContainsKey(axisName))
+                return axisInputDic[axisName].AxisValue;
             return Vector2.zero;
         }
 
@@ -66,7 +78,7 @@ namespace CrossPlatformInput
         static public void RegisterButton(ButtonInput buttonInput)
         {
             if (buttonInputDic.ContainsKey(buttonInput.ButtonName))
-                Debug.LogError("RegisterButton Error: " + buttonInput.ButtonName + " have been exists.");
+                Debug.LogErrorFormat("RegisterButton Error: '{0}' have been exists.",buttonInput.ButtonName);
             else
                 buttonInputDic.Add(buttonInput.ButtonName, buttonInput);
         }
@@ -92,15 +104,40 @@ namespace CrossPlatformInput
         }
 
         /// <summary>
+        /// 获取按钮
+        /// </summary>
+        /// <param name="buttonName">按钮名称</param>
+        /// <returns>按钮</returns>
+        static public ButtonInput GetButton(string buttonName)
+        {
+            if (buttonInputDic.ContainsKey(buttonName))
+                return buttonInputDic[buttonName];
+            Debug.LogErrorFormat("Can't Find '{0}' Button", buttonName);
+            return null;
+        }
+
+        /// <summary>
         /// 获取按钮状态
         /// </summary>
         /// <param name="buttonName">按钮输入对象的名称</param>
         /// <returns>按钮状态</returns>
-        static ButtonInput.ButtonState GetButton(string buttonName)
+        static public ButtonState GetButtonState(string buttonName)
         {
             if (buttonInputDic.ContainsKey(buttonName))
                 return buttonInputDic[buttonName].State;
-            return ButtonInput.ButtonState.None;
+            return ButtonState.None;
+        }
+
+        /// <summary>
+        /// 获取按钮值
+        /// </summary>
+        /// <param name="buttonName">按钮名称</param>
+        /// <returns>按钮值</returns>
+        static public float GetButtonValue(string buttonName)
+        {
+            if (buttonInputDic.ContainsKey(buttonName))
+                return buttonInputDic[buttonName].Value;
+            return 0f;
         }
 
         #endregion

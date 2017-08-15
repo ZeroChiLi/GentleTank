@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Widget.Minimap;
 using System.Collections.Generic;
+using CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,9 +21,9 @@ public class GameManager : MonoBehaviour
     public MultiplayerCameraManager cameraControl;  // 相机控制组件
     public MinimapManager minimapManager;           // 小地图管理器
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
-    public TankFireButton tankFireButton;           // 坦克普通攻击按钮
 
     private List<TankManager> tankList;             // 所有玩家坦克
+    private TankManager myTank;                     // 自己的坦克
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
@@ -56,17 +57,19 @@ public class GameManager : MonoBehaviour
         {
             tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
             tankList[i].Init();
+            if (AllPlayerManager.Instance[i].IsMine && myTank == null)
+                myTank = tankList[i];
         }
-
-        // 为第一个坦克添加到UI控制
-        tankFireButton.tankShooting = AllPlayerManager.Instance[0].GetComponent<TankShooting>();
 
         cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
         cameraControl.SetStartPositionAndSize();
 
         minimapManager.SetupPlayerIconDic();
-        if (AllPlayerManager.Instance.GetMyPlayer() != null)
-            minimapManager.SetTarget(AllPlayerManager.Instance.GetMyPlayer().transform);
+        if (myTank != null)
+        {
+            minimapManager.SetTarget(myTank.transform);
+            ((ChargeButtonInput)VirtualInput.GetButton("TankShooting")).Setup(myTank.tankShooting.coolDownTime, myTank.tankShooting.minLaunchForce, myTank.tankShooting.maxLaunchForce, myTank.tankShooting.ChargeRate);
+        }
     }
 
     /// <summary>

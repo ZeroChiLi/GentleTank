@@ -5,11 +5,9 @@ public abstract class AttackManager : MonoBehaviour
     public string shortcutName = "Fire0";                           // 攻击键名称
     public float coolDownTime = 0.8f;                               // 冷却时间
 
-    public bool IsCoolDown { get { return isCoolDown; } }           // 是否正在冷却
+    public bool IsCoolDown { get { return timer == null || !timer.IsTimeUp; } }      // 是否正在冷却
 
-    protected bool isCoolDown;                                      // 是否正在冷却
-
-    private float timeElapsed;                                      // 计时器
+    private CountDownTimer timer;           
 
     /// <summary>
     /// 设置快捷键名称
@@ -25,11 +23,9 @@ public abstract class AttackManager : MonoBehaviour
     /// </summary>
     protected void UpdateCoolDownByDeltaTime()
     {
-        if (!isCoolDown)
-            return;
-        timeElapsed -= Time.deltaTime;
-        if (timeElapsed <= 0)
-            isCoolDown = false;
+        if (timer == null)
+            timer = new CountDownTimer(coolDownTime);
+        timer.UpdateAndCheck(Time.deltaTime);
     }
 
     /// <summary>
@@ -38,10 +34,9 @@ public abstract class AttackManager : MonoBehaviour
     /// <param name="values">参数列表</param>
     public void Attack(params object[] values)
     {
-        if (isCoolDown)
+        if (!timer.IsTimeUp)
             return;
-        timeElapsed = coolDownTime;
-        isCoolDown = true;
+        timer.Reset();
         OnAttack(values);
     }
 

@@ -6,10 +6,16 @@ public class ChargeButtonMananger : CoolDownButtonManager
     public Image sliderFullImg;             // 蓄力变化的图片
     public float minValue = 50f;            // 最小值
     public float maxValue = 100f;           // 最大值
-    public float changingRate = 10f;        // 变化率
+    public float chargeRate = 50f;          // 变化率
 
-    private bool isCharging;                // 是否正在变化
-    private float currentChargeValue;       // 当前值
+    protected float currentValue;           // 当前值
+    public float CurrentValue
+    {
+        get { return currentValue; }
+        set { currentValue = Mathf.Clamp(value, minValue, maxValue); }
+    }
+
+    public bool isCharging { get; protected set; }      // 是否正在变化
 
     /// <summary>
     /// 初始化
@@ -27,7 +33,7 @@ public class ChargeButtonMananger : CoolDownButtonManager
     public void ResetChargeValue()
     {
         sliderFullImg.fillAmount = 0f;
-        currentChargeValue = minValue;
+        CurrentValue = minValue;
     }
 
     /// <summary>
@@ -37,8 +43,9 @@ public class ChargeButtonMananger : CoolDownButtonManager
     {
         if (!UpdateCoolDownAndCheck() || !isCharging)
             return;
-        currentChargeValue += Time.deltaTime * changingRate;
-        sliderFullImg.fillAmount = GameMathf.Persents(minValue, maxValue, currentChargeValue);
+
+        CurrentValue += Time.deltaTime * chargeRate;
+        sliderFullImg.fillAmount = GameMathf.Persents(minValue, maxValue, CurrentValue);
     }
 
     /// <summary>
