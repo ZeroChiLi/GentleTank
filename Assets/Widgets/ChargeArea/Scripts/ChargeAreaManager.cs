@@ -29,7 +29,8 @@ namespace Widget.ChargeArea
         private List<PlayerManager> playerInfoList;           // 在区域内的所有玩家及其对应信息
         private List<PlayerManager> inactivePlayers;          // 失活的坦克
         private float updateTime = 0.5f;                        // 更新时间
-        private float elapsedTime = 0f;                         // 计时器
+        //private float elapsedTime = 0f;                         // 计时器
+        private CountDownTimer timer;                           // 计时器
         private PlayerManager occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
         private Dictionary<TeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
         private List<PlayerManager> occupyIndependentPlayer;  // 充电区范围内所有个人，权重为1
@@ -55,10 +56,18 @@ namespace Widget.ChargeArea
             inactivePlayers = new List<PlayerManager>();
             occupyTeamDic = new Dictionary<TeamManager, int>();
             occupyIndependentPlayer = new List<PlayerManager>();
-            slider.maxValue = maxValue;
             fillList = new List<Image>();
             effectController = GetComponent<EffectController>();
+        }
+
+        /// <summary>
+        /// 初始化数值
+        /// </summary>
+        private void Start()
+        {
+            slider.maxValue = maxValue;
             effectController.SetParticleShapeRaidus(radius);
+            timer = new CountDownTimer(updateTime,true);
         }
 
         /// <summary>
@@ -91,12 +100,8 @@ namespace Widget.ChargeArea
         private void Update()
         {
             ChargeAreaEffect();                 //旋转特效
-            if (elapsedTime > 0)
-            {
-                elapsedTime -= Time.deltaTime;
+            if (!timer.IsTimeUp)
                 return;
-            }
-            elapsedTime = updateTime;
             if (!ContainAnyPlayer())            // 不包含任何玩家，直接返回
             {
                 if (triggerState == true)       // 但需要更新扇区的话，更新扇区（僵持状态到没有任何玩家状态）

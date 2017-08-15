@@ -49,12 +49,11 @@ namespace Item.Tank
         {
             //if (usingInputButton)
             //StateChangeByInput();
-            if (playerManager.IsMine)
-                ChangeByChargeButton();
 
-            UpdateCoolDownByDeltaTime();
             if (IsCoolDown)
                 return;
+            if (playerManager.IsMine)
+                ChangeByChargeButton();
             if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
         }

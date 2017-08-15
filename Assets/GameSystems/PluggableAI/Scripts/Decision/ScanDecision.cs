@@ -22,7 +22,7 @@ namespace GameSystem.AI
                 controller.statePrefs.AddValue("ScanDecisionCD", new CountDownTimer(searchDuration, true));
 
             // 更新倒计时
-            return ((CountDownTimer)controller.statePrefs["ScanDecisionCD"]).UpdateAndCheck(Time.deltaTime);
+            return ((CountDownTimer)controller.statePrefs["ScanDecisionCD"]).IsTimeUp;
         }
     }
 }

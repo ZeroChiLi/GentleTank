@@ -17,7 +17,7 @@ namespace GameSystem.AI
                 controller.statePrefs.AddValue("DelayDecisionCD", new CountDownTimer(delayTime, true));
 
             // 更新倒计时
-            return ((CountDownTimer)controller.statePrefs["DelayDecisionCD"]).UpdateAndCheck(Time.deltaTime);
+            return ((CountDownTimer)controller.statePrefs["DelayDecisionCD"]).IsTimeUp;
         }
     }
 }

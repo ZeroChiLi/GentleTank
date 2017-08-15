@@ -22,9 +22,9 @@ namespace CrossPlatformInput
         { 
             get
             {
-                if (Time.frameCount - 1 == downFrame)
+                if (Time.frameCount == downFrame)
                     return ButtonState.Down;
-                else if (Time.frameCount - 1 == upFrame)
+                else if (Time.frameCount == upFrame)
                     return ButtonState.Up;
                 else if (downFrame < pressedFrame && upFrame < downFrame)
                     return ButtonState.Pressed;

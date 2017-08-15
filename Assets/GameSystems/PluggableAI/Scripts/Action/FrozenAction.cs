@@ -22,7 +22,7 @@ namespace GameSystem.AI
 
 
             // 更新倒计时
-            if (!((CountDownTimer)controller.statePrefs["FrozenActionCD"]).UpdateAndCheck(Time.deltaTime))
+            if (!((CountDownTimer)controller.statePrefs["FrozenActionCD"]).IsTimeUp)
                 return;
 
             // 判断如果过了检测时间后，当前位置和之前位置的距离是否小于限定距离

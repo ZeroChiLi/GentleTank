@@ -46,7 +46,7 @@ public class CoolDownButtonManager : MonoBehaviour
         if (!coolDownTimer.IsTimeUp)
             return;
         button.interactable = false;
-        coolDownTimer.Reset();
+        coolDownTimer.Start();
     }
 
     /// <summary>
@@ -57,10 +57,10 @@ public class CoolDownButtonManager : MonoBehaviour
     {
         if (!coolDownTimer.IsTimeUp)
         {
-            coolDownTimer.UpdateAndCheck(Time.deltaTime);
             buttonFullImg.fillAmount = 1 - coolDownTimer.GetPercent();
             return false;
         }
+        buttonFullImg.fillAmount = 0;
         button.interactable = true;
         return true;
     }

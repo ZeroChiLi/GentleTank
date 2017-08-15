@@ -5,9 +5,18 @@ public abstract class AttackManager : MonoBehaviour
     public string shortcutName = "Fire0";                           // 攻击键名称
     public float coolDownTime = 0.8f;                               // 冷却时间
 
-    public bool IsCoolDown { get { return timer == null || !timer.IsTimeUp; } }      // 是否正在冷却
+    public bool IsCoolDown { get { return !CDTimer.IsTimeUp; } }    // 是否正在冷却
 
-    private CountDownTimer timer;           
+    protected CountDownTimer cdTimer;                               // 冷却时间计时器
+    protected CountDownTimer CDTimer
+    {
+        get
+        {
+            if (cdTimer == null)
+                cdTimer = new CountDownTimer(coolDownTime);
+            return cdTimer;
+        }
+    }      
 
     /// <summary>
     /// 设置快捷键名称
@@ -19,24 +28,14 @@ public abstract class AttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过Time.deltaTime更新冷却时间
-    /// </summary>
-    protected void UpdateCoolDownByDeltaTime()
-    {
-        if (timer == null)
-            timer = new CountDownTimer(coolDownTime);
-        timer.UpdateAndCheck(Time.deltaTime);
-    }
-
-    /// <summary>
     /// 释放攻击，响应OnAttack事件
     /// </summary>
     /// <param name="values">参数列表</param>
     public void Attack(params object[] values)
     {
-        if (!timer.IsTimeUp)
+        if (!CDTimer.IsTimeUp)
             return;
-        timer.Reset();
+        CDTimer.Reset();
         OnAttack(values);
     }
 
