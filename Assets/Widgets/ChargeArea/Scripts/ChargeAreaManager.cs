@@ -16,6 +16,7 @@ namespace Widget.ChargeArea
     {
         public Canvas areaCanvas;               // 区域画布
         public Slider slider;                   // 滑动条
+        public Animator sliderAnimator;         // 滑动条旋转动画
         public Image fillImage;                 // 滑动条填充图片
         public FlagManager flagManager;         // 旗帜管理
         [Range(0f, 1f)]
@@ -29,13 +30,11 @@ namespace Widget.ChargeArea
         private List<PlayerManager> playerInfoList;           // 在区域内的所有玩家及其对应信息
         private List<PlayerManager> inactivePlayers;          // 失活的坦克
         private float updateTime = 0.5f;                        // 更新时间
-        //private float elapsedTime = 0f;                         // 计时器
         private CountDownTimer timer;                           // 计时器
         private PlayerManager occupyPlayer;                   // 占领区域玩家代表信息。（用于判断区域上一次占有的占有信息）
         private Dictionary<TeamManager, int> occupyTeamDic;     // 充电区范围内所有团队，及其对应团队权重
         private List<PlayerManager> occupyIndependentPlayer;  // 充电区范围内所有个人，权重为1
         private bool updateOccupyRate = false;                  // 是否已经更新占有扇区
-        private int effectRotateDiection = 1;                   // 特效旋转方向（1为顺时针，-1逆时针）
         private List<Image> fillList;                           // 填充扇区列表
         private bool triggerState;                              // 僵持和变化之间是否变化
         private float nextColorTime;                            // 僵持特性：下一次变化颜色的时间
@@ -99,7 +98,6 @@ namespace Widget.ChargeArea
         /// </summary>
         private void Update()
         {
-            ChargeAreaEffect();                 //旋转特效
             if (!timer.IsTimeUp)
                 return;
             if (!ContainAnyPlayer())            // 不包含任何玩家，直接返回
@@ -177,14 +175,14 @@ namespace Widget.ChargeArea
         {
             if (OnlyOneTeamHere())                      // 只有一支队伍，更新扇区            
             {
-                effectRotateDiection = 1;
+                sliderAnimator.SetBool("IsPositive", true);
                 if (triggerState == true)
                     triggerState = FillTrigger(false);
                 UpdateOccupy();
             }
             else                                        // 不止一支队伍，保持僵持状态
             {
-                effectRotateDiection = -1;
+                sliderAnimator.SetBool("IsPositive", false);
                 if (triggerState == false)
                     triggerState = FillTrigger(true);
                 KeepStalemate();
@@ -213,14 +211,6 @@ namespace Widget.ChargeArea
         {
             for (int i = 0; i < fillList.Count; i++)
                 fillList[i].gameObject.SetActive(active);
-        }
-
-        /// <summary>
-        /// 区域旋转的特效
-        /// </summary>
-        private void ChargeAreaEffect()
-        {
-            slider.transform.Rotate(0, 0, effectRotateDiection * 90f * Time.deltaTime);
         }
 
         #region 只有一支队伍，更新占领区域面积

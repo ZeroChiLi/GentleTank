@@ -8,7 +8,7 @@ public abstract class AttackManager : MonoBehaviour
     public bool IsCoolDown { get { return !CDTimer.IsTimeUp; } }    // 是否正在冷却
 
     protected CountDownTimer cdTimer;                               // 冷却时间计时器
-    protected CountDownTimer CDTimer
+    public CountDownTimer CDTimer
     {
         get
         {
