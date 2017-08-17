@@ -7,14 +7,6 @@ namespace CrossPlatformInput
         public new float Value { get { return chargeButtonManager.CurrentValue; } }
 
         /// <summary>
-        /// 登记按钮
-        /// </summary>
-        private void Awake()
-        {
-            Register();
-        }
-
-        /// <summary>
         /// 按钮按住时更新信息
         /// </summary>
         private void Update()

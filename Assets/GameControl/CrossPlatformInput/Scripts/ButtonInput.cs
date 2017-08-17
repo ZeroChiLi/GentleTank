@@ -36,6 +36,15 @@ namespace CrossPlatformInput
         /// <summary>
         /// 登记按钮
         /// </summary>
+        protected void Awake()
+        {
+            Register();
+        }
+
+
+        /// <summary>
+        /// 登记按钮
+        /// </summary>
         public void Register()
         {
             VirtualInput.RegisterButton(this);

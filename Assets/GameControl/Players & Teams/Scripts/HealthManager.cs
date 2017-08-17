@@ -31,10 +31,15 @@ public abstract class HealthManager : MonoBehaviour
 
     private float timeElapsed;                          // 计时器
 
+    protected void Start()
+    {
+        Init();
+    }
+
     /// <summary>
     /// 默认初始化
     /// </summary>
-    virtual public void Init()
+    public void Init()
     {
         isFeelPain = false;
         CurrentHealth = maxHealth;

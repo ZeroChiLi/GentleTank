@@ -17,6 +17,14 @@ namespace CrossPlatformInput
         /// <summary>
         /// 登记摇杆
         /// </summary>
+        private void Awake()
+        {
+            Register();
+        }
+
+        /// <summary>
+        /// 登记摇杆
+        /// </summary>
         public void Register()
         {
             VirtualInput.RegisterAxis(this);
