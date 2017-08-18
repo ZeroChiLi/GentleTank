@@ -8,44 +8,24 @@ namespace GameSystem.AI
     [CreateAssetMenu(menuName = "PluggableAI/Decisions/Look")]
     public class LookDecision : Decision
     {
-        public Color debugColor = Color.green;          //调试颜色
+        public Color debugColor = Color.green;          // 调试颜色
+        public bool fromEyes = true;                    // 是否从眼睛放出检测射线，否则是自身
         [Range(0, 360)]
-        public float angle = 90f;                       //检测前方角度范围
+        public float angle = 90f;                       // 检测前方角度范围
         [Range(1, 50)]
-        public int accuracy = 3;                        //检测精度
+        public int accuracy = 3;                        // 检测精度
         [Range(0, 100)]
-        public float distance = 25f;                    //检测距离
+        public float distance = 25f;                    // 检测距离
         [Range(0, 1800)]
-        public float rotatePerSecond = 90f;             //每秒旋转角度
+        public float rotatePerSecond = 90f;             // 每秒旋转角度
 
         public override bool Decide(StateController controller)
         {
-            float subAngle = angle / accuracy;          //每条射线需要检测的角度范围
+            float subAngle = angle / accuracy;          // 每条射线需要检测的角度范围
             for (int i = 0; i < accuracy; i++)
-                if (controller.FindEnemy(Quaternion.Euler(0, -angle / 2 + i * subAngle + Mathf.Repeat(rotatePerSecond * Time.time, subAngle), 0), distance, debugColor))
+                if (controller.FindEnemy(Quaternion.Euler(0, -angle / 2 + i * subAngle + Mathf.Repeat(rotatePerSecond * Time.time, subAngle), 0), distance, debugColor, fromEyes))
                     return true;
             return false;
         }
-
-        ///// <summary>
-        ///// 查找敌人，并存到controller.instancePrefs 的 "ChaseTarget" 中，值为Transform。
-        ///// </summary>
-        ///// <param name="controller">检测者</param>
-        ///// <param name="eulerAnger">检测角度（正前方为0，顺时针为正）</param>
-        ///// <param name="distance">检测半径</param>
-        ///// <param name="DebugColor">调试颜色</param>
-        ///// <returns>是否检测到敌人</returns>
-        //static public bool LookAround(StateController controller, Quaternion eulerAnger, float distance, Color DebugColor)
-        //{
-        //    Debug.DrawRay(controller.eyes.position, eulerAnger * controller.eyes.forward.normalized * distance, DebugColor);
-
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(controller.eyes.position, eulerAnger * controller.eyes.forward, out hit, distance, LayerMask.GetMask("Level")) && hit.collider.CompareTag("Player") && !controller.IsTeamMate(hit.collider) && !controller.IsMyself(hit.collider))
-        //    {
-        //        controller.instancePrefs.AddOrModifyValue("ChaseTarget", hit.transform);
-        //        return true;
-        //    }
-        //    return false;
-        //}
     }
 }

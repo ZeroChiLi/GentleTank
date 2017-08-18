@@ -6,7 +6,6 @@ namespace Item.Shell
     {
         public ObjectPool shellExplosionPool;               // 爆炸特性池
 
-        public LayerMask layerMask;                         // 坦克遮罩（"Level"）
         public float maxDamage = 100f;                      // 最大伤害
         public float explosionForce = 100f;                 // 爆炸中心的能量
         public float maxLifeTime = 2f;                      // 炸弹最大生存时间
@@ -27,7 +26,7 @@ namespace Item.Shell
             shellExplosionPool.GetNextObject(transform: transform);
 
             // 获取爆炸范围内所有碰撞体
-            colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMask);
+            colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
             for (int i = 0; i < colliders.Length; i++)
             {

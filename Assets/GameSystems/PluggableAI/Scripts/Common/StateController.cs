@@ -21,6 +21,7 @@ namespace GameSystem.AI
         private HealthManager healthManager;                    // 玩家血量管理器
         private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
+        private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
 
         private int nextWayPointIndex;                          // 下一个巡逻点
@@ -158,9 +159,12 @@ namespace GameSystem.AI
         /// 查找敌人，并存到instancePrefs
         /// </summary>
         /// <returns>是否查找到敌人</returns>
-        public bool FindEnemy(Quaternion anger, float radius, Color debugColor)
+        public bool FindEnemy(Quaternion anger, float radius, Color debugColor, bool isFromEyes = true)
         {
-            target = FindTarget.FindEnemy(eyes, playerManager, anger, radius, debugColor);
+            if (isFromEyes)
+                target = FindTarget.FindEnemy(out hit, eyes, playerManager, anger, radius, debugColor);
+            else
+                target = FindTarget.FindEnemy(out hit, transform, playerManager, anger, radius, debugColor);
             if (target != null)
             {
                 instancePrefs.AddOrModifyValue("ChaseTarget", target);
