@@ -79,35 +79,26 @@
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="AsyncBridge.Net35">
       <HintPath>Assets\Plugins\GitHub\AsyncBridge.Net35.dll</HintPath>
-    </Reference>
-    <Reference Include="Octokit">
-      <HintPath>Assets\Plugins\GitHub\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="GitHub.Api">
       <HintPath>Assets\Plugins\GitHub\GitHub.Api.dll</HintPath>
     </Reference>
+    <Reference Include="GitHub.Logging">
+      <HintPath>Assets\Plugins\GitHub\GitHub.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="GitHub.Unity">
       <HintPath>Assets\Plugins\GitHub\GitHub.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>Assets\Plugins\GitHub\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="sfw.net">
-      <HintPath>Assets\Plugins\GitHub\sfw.net.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\GitHub\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading">
-      <HintPath>Assets\Plugins\GitHub\System.Threading.dll</HintPath>
+    <Reference Include="Mono.Security">
+      <HintPath>Assets\Plugins\GitHub\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="GitHub.Logging">
-      <HintPath>Assets\Plugins\GitHub\GitHub.Logging.dll</HintPath>
+    <Reference Include="Octokit">
+      <HintPath>Assets\Plugins\GitHub\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="Rackspace.Threading">
       <HintPath>Assets\Plugins\GitHub\Rackspace.Threading.dll</HintPath>
@@ -115,8 +106,17 @@
     <Reference Include="ReadOnlyCollectionsInterfaces">
       <HintPath>Assets\Plugins\GitHub\ReadOnlyCollectionsInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>Assets\Plugins\GitHub\Mono.Security.dll</HintPath>
+    <Reference Include="sfw.net">
+      <HintPath>Assets\Plugins\GitHub\sfw.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>Assets\Plugins\GitHub\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>Assets\Plugins\GitHub\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiplayerCameraManager.cs" />
+    <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AbstractTargetFollower.cs" />
+    <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoCam.cs" />
+    <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\PivotBasedCameraRig.cs" />
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
     <Compile Include="Assets\Common\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />
@@ -137,24 +140,6 @@
     <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
     <Compile Include="Assets\Common\Scripts\ObjectPreferences.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
-    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\AxisInput.cs" />
-    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\ButtonInput.cs" />
-    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\ChargeButtonInput.cs" />
-    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\JoystickInput.cs" />
-    <Compile Include="Assets\GameControl\CrossPlatformInput\Scripts\VirtualInput.cs" />
-    <Compile Include="Assets\GameControl\Main Scripts\GameManager.cs" />
-    <Compile Include="Assets\GameControl\Main Scripts\GameRound.cs" />
-    <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPool.cs" />
-    <Compile Include="Assets\GameControl\Object Pool\Scripts\ObjectPoolCreate.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\AttackManager.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\HealthManager.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerInfoUI.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\GameControl\Players &amp; Teams\Scripts\TeamManager.cs" />
-    <Compile Include="Assets\GameControl\Point List\Scripts\Point.cs" />
-    <Compile Include="Assets\GameControl\Point List\Scripts\PointList.cs" />
-    <Compile Include="Assets\GameControl\Point List\Scripts\PointsDebugShow.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\CountDown.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\DestroyForSeconds.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
@@ -201,6 +186,24 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankShooting.cs" />
+    <Compile Include="Assets\Main\CrossPlatformInput\Scripts\AxisInput.cs" />
+    <Compile Include="Assets\Main\CrossPlatformInput\Scripts\ButtonInput.cs" />
+    <Compile Include="Assets\Main\CrossPlatformInput\Scripts\ChargeButtonInput.cs" />
+    <Compile Include="Assets\Main\CrossPlatformInput\Scripts\JoystickInput.cs" />
+    <Compile Include="Assets\Main\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\Main\Main Scripts\GameManager.cs" />
+    <Compile Include="Assets\Main\Main Scripts\GameRound.cs" />
+    <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPool.cs" />
+    <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPoolCreate.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AttackManager.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\HealthManager.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\PlayerInfoUI.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\TeamManager.cs" />
+    <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
+    <Compile Include="Assets\Main\Point List\Scripts\PointList.cs" />
+    <Compile Include="Assets\Main\Point List\Scripts\PointsDebugShow.cs" />
     <Compile Include="Assets\Menu\Scripts\AllRoommatesPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />

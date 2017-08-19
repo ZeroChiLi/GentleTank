@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour
                 myTank = tankList[i];
         }
 
-        cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
-        cameraControl.SetStartPositionAndSize();
+        //cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
+        //cameraControl.SetStartPositionAndSize();
 
         minimapManager.SetupPlayerIconDic();
         if (myTank != null)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerInfoUIWithOnGUI : MonoBehaviour
+public class PlayerInfoUI : MonoBehaviour
 {
     public bool showPlayerInfo = true;              // 是否显示玩家信息
     public Font font;                               // 文本字体

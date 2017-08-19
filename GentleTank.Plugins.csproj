@@ -79,35 +79,26 @@
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="AsyncBridge.Net35">
       <HintPath>Assets\Plugins\GitHub\AsyncBridge.Net35.dll</HintPath>
-    </Reference>
-    <Reference Include="Octokit">
-      <HintPath>Assets\Plugins\GitHub\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="GitHub.Api">
       <HintPath>Assets\Plugins\GitHub\GitHub.Api.dll</HintPath>
     </Reference>
+    <Reference Include="GitHub.Logging">
+      <HintPath>Assets\Plugins\GitHub\GitHub.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="GitHub.Unity">
       <HintPath>Assets\Plugins\GitHub\GitHub.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>Assets\Plugins\GitHub\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="sfw.net">
-      <HintPath>Assets\Plugins\GitHub\sfw.net.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\GitHub\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading">
-      <HintPath>Assets\Plugins\GitHub\System.Threading.dll</HintPath>
+    <Reference Include="Mono.Security">
+      <HintPath>Assets\Plugins\GitHub\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="GitHub.Logging">
-      <HintPath>Assets\Plugins\GitHub\GitHub.Logging.dll</HintPath>
+    <Reference Include="Octokit">
+      <HintPath>Assets\Plugins\GitHub\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="Rackspace.Threading">
       <HintPath>Assets\Plugins\GitHub\Rackspace.Threading.dll</HintPath>
@@ -115,8 +106,17 @@
     <Reference Include="ReadOnlyCollectionsInterfaces">
       <HintPath>Assets\Plugins\GitHub\ReadOnlyCollectionsInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>Assets\Plugins\GitHub\Mono.Security.dll</HintPath>
+    <Reference Include="sfw.net">
+      <HintPath>Assets\Plugins\GitHub\sfw.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>Assets\Plugins\GitHub\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>Assets\Plugins\GitHub\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

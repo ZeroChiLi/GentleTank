@@ -9,7 +9,7 @@ namespace Item.Tank
         [HideInInspector]
         public PlayerManager playerManager;                     // 玩家信息
         [HideInInspector]
-        public PlayerInfoUIWithOnGUI playerInfoUI;                       // UI信息
+        public PlayerInfoUI playerInfoUI;                       // UI信息
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
@@ -30,7 +30,7 @@ namespace Item.Tank
             tankMovement = GetComponent<TankMovement>();
             tankShooting = GetComponent<TankShooting>();
             tankHealth = GetComponent<TankHealth>();
-            playerInfoUI = GetComponent<PlayerInfoUIWithOnGUI>();
+            playerInfoUI = GetComponent<PlayerInfoUI>();
 
             stateController = GetComponent<StateController>();
             navMeshAgent = GetComponent<NavMeshAgent>();

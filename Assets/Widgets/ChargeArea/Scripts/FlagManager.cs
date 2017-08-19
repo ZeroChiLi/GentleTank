@@ -8,6 +8,7 @@ namespace Widget.ChargeArea
         public MeshRenderer flagMeshRender;     // 旗帜的渲染网格
 
         private Material flagMaterial;          // 旗帜的材质，拿来改颜色
+        private Camera targetCamera;            // 对着的镜头
 
         /// <summary>
         /// 旋转旗杆，使旗帜面对镜头
@@ -15,8 +16,15 @@ namespace Widget.ChargeArea
         private void Awake()
         {
             flagMaterial = flagMeshRender.material;
-            flagPole.transform.rotation = Quaternion.Euler(GameObject.FindGameObjectWithTag("MainCamera").transform.rotation.eulerAngles);
-            flagPole.transform.localEulerAngles = new Vector3(0f, flagPole.transform.localEulerAngles.y, flagPole.transform.localEulerAngles.z);
+            targetCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        }
+
+        /// <summary>
+        /// 更新旗杆旋转
+        /// </summary>
+        private void FixedUpdate()
+        {
+            flagPole.transform.rotation = Quaternion.Euler(0f,targetCamera.transform.rotation.eulerAngles.y,0f);
         }
 
         /// <summary>
