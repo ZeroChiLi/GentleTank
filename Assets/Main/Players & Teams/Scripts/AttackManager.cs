@@ -40,7 +40,7 @@ public abstract class AttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 真正的攻击效果
+    /// 真正的攻击效果，需要攻击时Attack()
     /// </summary>
     /// <param name="values">参数列表</param>
     abstract protected void OnAttack(params object[] values);
