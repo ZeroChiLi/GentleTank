@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public float endDelay = 3f;                     // 结束延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
     public MultiplayerCameraManager cameraControl;  // 相机控制组件
+    public AutoCam autoCam;                         // 玩家跟随相机
     public MinimapManager minimapManager;           // 小地图管理器
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
 
@@ -61,8 +62,8 @@ public class GameManager : MonoBehaviour
                 myTank = tankList[i];
         }
 
-        //cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
-        //cameraControl.SetStartPositionAndSize();
+        cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
+        cameraControl.SetStartPositionAndSize();
 
         minimapManager.SetupPlayerIconDic();
         if (myTank != null)
@@ -125,7 +126,8 @@ public class GameManager : MonoBehaviour
     {
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
-        spawnAllPopUpArrow.Spawn();      // 显示玩家箭头
+        spawnAllPopUpArrow.Spawn();                     // 显示玩家箭头
+        autoCam.SetTarget(myTank.transform);            // 设置跟随对象为自己的坦克
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;

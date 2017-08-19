@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Cameras
+namespace CameraRig
 {
     public abstract class AbstractTargetFollower : MonoBehaviour
     {
