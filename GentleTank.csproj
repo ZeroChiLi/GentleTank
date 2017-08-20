@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -126,7 +128,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiplayerCameraManager.cs" />
+    <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiCam.cs" />
+    <Compile Include="Assets\CameraRigs\Scripts\AllCameraRigManager.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AbstractTargetFollower.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoCam.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\PivotBasedCameraRig.cs" />

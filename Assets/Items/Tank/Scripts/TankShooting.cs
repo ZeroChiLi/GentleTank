@@ -47,13 +47,12 @@ namespace Item.Tank
         /// </summary>
         private void Update()
         {
-            //if (usingInputButton)
-            //StateChangeByInput();
-
-            if (IsCoolDown)
+            if (playerManager.IsAI || IsCoolDown)
                 return;
-            if (playerManager.IsMine)
-                ChangeByChargeButton();
+            if (usingInputButton)
+                StateChangeByInput();
+            if (shootState == ShootState.None && playerManager.IsMine)  // 优先选择键盘输入，若无，则再判断虚拟按钮输入
+                StateChangeByChargeButton();
             if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
         }
@@ -150,18 +149,9 @@ namespace Item.Tank
         }
 
         /// <summary>
-        /// 外部改变射击状态
-        /// </summary>
-        /// <param name="shootState"></param>
-        public void ChangeState(ShootState shootState)
-        {
-            this.shootState = shootState;
-        }
-
-        /// <summary>
         /// 通过虚拟按钮控制
         /// </summary>
-        public void ChangeByChargeButton()
+        public void StateChangeByChargeButton()
         {
             switch (VirtualInput.GetButtonState("TankShooting"))
             {

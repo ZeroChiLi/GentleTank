@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CameraRig;
+using UnityEngine;
 
 public class PlayerInfoUI : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PlayerInfoUI : MonoBehaviour
     public float labelMoveSpeed = 0.1f;             // 标签移动速度
 
     private PlayerManager playerManage;               // 玩家信息
-    private Camera targetCamera;                    // 显示对着的镜头（默认：主相机）
+    private Camera targetCamera { get { return AllCameraRigManager.Instance.CurrentCamera; } }
     private GUIStyle style;                         // GUI风格  
     private Vector2 nameLabelSize;                  // 文本大小
     private Vector3 lastScreenPosition = Vector3.zero;  // 上一帧文本对应屏幕位置
@@ -21,7 +22,6 @@ public class PlayerInfoUI : MonoBehaviour
     private void Awake()
     {
         playerManage = GetComponent<PlayerManager>();
-        targetCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         SetupGUIStyle();
     }
 
@@ -52,7 +52,7 @@ public class PlayerInfoUI : MonoBehaviour
     /// </summary>
     private void OnGUI()
     {
-        if (!showPlayerInfo)
+        if (targetCamera == null || !showPlayerInfo)
             return;
 
         //绘制名字

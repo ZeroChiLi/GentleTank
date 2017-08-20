@@ -12,6 +12,7 @@ namespace CameraRig
             ManualUpdate, // user must call to update camera
         }
 
+        public Camera controlCamera;
         [SerializeField] protected Transform m_Target;            // The target object to follow
         [SerializeField] private bool m_AutoTargetPlayer = true;  // Whether the rig should automatically target the player.
         [SerializeField] private UpdateType m_UpdateType;         // stores the selected update type

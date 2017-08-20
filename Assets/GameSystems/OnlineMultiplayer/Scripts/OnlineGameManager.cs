@@ -10,7 +10,7 @@ namespace GameSystem.OnlineGame
     {
         public GameObject playerPrefab;                         // 玩家预设
         public PointList pointList;                             // 玩家出生点列表
-        public MultiplayerCameraManager cameraControl;          // 镜头控制
+        public MultiCam cameraControl;          // 镜头控制
                                                                 //public OnlineShellPool onlineShellPool;               // 炮弹池
 
         private OnlineTankManager playerInstance;               // 玩家实例

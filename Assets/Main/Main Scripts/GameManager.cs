@@ -17,22 +17,24 @@ public class GameManager : MonoBehaviour
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
+    public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    public MultiplayerCameraManager cameraControl;  // 相机控制组件
-    public AutoCam autoCam;                         // 玩家跟随相机
+    public AllCameraRigManager allCameraRig;        // 所有镜头控制器
     public MinimapManager minimapManager;           // 小地图管理器
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
 
     private List<TankManager> tankList;             // 所有玩家坦克
     private TankManager myTank;                     // 自己的坦克
     private WaitForSeconds startWait;               // 开始回合延时
+    private WaitForSeconds changeCamWait;           // 转换镜头延时
     private WaitForSeconds endWait;                 // 结束回合延时
 
     private void Awake()
     {
         tankList = new List<TankManager>();
-        startWait = new WaitForSeconds(startDelay); // 游戏回合开始延时
-        endWait = new WaitForSeconds(endDelay);     // 游戏回合结束延时
+        startWait = new WaitForSeconds(startDelay);         // 游戏回合开始延时
+        endWait = new WaitForSeconds(endDelay);             // 游戏回合结束延时
+        changeCamWait = new WaitForSeconds(changeCamDelay); // 镜头转换延时
     }
 
     /// <summary>
@@ -62,8 +64,7 @@ public class GameManager : MonoBehaviour
                 myTank = tankList[i];
         }
 
-        cameraControl.targets = AllPlayerManager.Instance.GetAllPlayerTransform();
-        cameraControl.SetStartPositionAndSize();
+        allCameraRig.Init(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
 
         minimapManager.SetupPlayerIconDic();
         if (myTank != null)
@@ -100,6 +101,17 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 自己的坦克坏了，转换镜头
+    /// </summary>
+    private void OnMyTankBroken()
+    {
+        if (myTank == null)
+            return;
+        if (!myTank.isActiveAndEnabled)
+            allCameraRig.TurnToMultiCam();
+    }
+
+    /// <summary>
     /// 游戏的循环协程
     /// </summary>
     /// <returns></returns>
@@ -127,11 +139,12 @@ public class GameManager : MonoBehaviour
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
         spawnAllPopUpArrow.Spawn();                     // 显示玩家箭头
-        autoCam.SetTarget(myTank.transform);            // 设置跟随对象为自己的坦克
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
+        yield return changeCamWait;                     // 延时一段时间转换成单独镜头
+        allCameraRig.TurnToAutoCam();
         yield return startWait;                         // 延时一段时间再开始
     }
 
@@ -145,8 +158,11 @@ public class GameManager : MonoBehaviour
 
         messageText.text = string.Empty;                // 清空显示信息
 
-        while (!GameRound.Instance.IsEndOfTheRound())           // 回合没结束就继续
+        while (!GameRound.Instance.IsEndOfTheRound())   // 回合没结束就继续
+        {
+            OnMyTankBroken();
             yield return null;
+        }
     }
 
     /// <summary>
@@ -155,9 +171,11 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RoundEnding()
     {
-        SetTanksControlEnable(false);                               // 锁定玩家控制权
+        allCameraRig.TurnToMultiCam();
 
-        GameRound.Instance.UpdateWonData();                        // 更新获胜次数
+        SetTanksControlEnable(false);                   // 锁定玩家控制权
+
+        GameRound.Instance.UpdateWonData();             // 更新获胜次数
 
         messageText.text = GameRound.Instance.GetEndingMessage();  // 获取结束信息并显示之
 
