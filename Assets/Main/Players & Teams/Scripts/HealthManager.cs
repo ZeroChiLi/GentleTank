@@ -42,6 +42,8 @@ public abstract class HealthManager : MonoBehaviour
     public void Init()
     {
         isFeelPain = false;
+        healthSlider.minValue = minHealth;
+        healthSlider.maxValue = maxHealth;
         CurrentHealth = maxHealth;
         UpdateSlider();
     }

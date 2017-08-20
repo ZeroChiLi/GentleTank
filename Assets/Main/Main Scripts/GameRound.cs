@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 /// <summary>
 /// 游戏状态
@@ -144,11 +145,6 @@ public class GameRound
         for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             if (winner.Team == AllPlayerManager.Instance[i].Team)
                 playerWonTimes[AllPlayerManager.Instance[i]]++;
-        //for (int i = 0; i < wonTeam.Count; i++)
-        //{
-        //    if (playerWonTimes.ContainsKey(wonTeam[i]))     // 如果有玩家Active为False，那就不在字典里面
-        //        playerWonTimes[wonTeam[i]]++;
-        //}
 
     }
 
@@ -175,7 +171,10 @@ public class GameRound
         StringBuilder message;
 
         if (IsDraw())                                       // 平局，获取胜利者
+        {
             message = new StringBuilder("DRAW!\n\n");
+            return message.ToString();
+        }
 
         if (IsEndOfTheGame())                               // 如果是最后结束，输出最后赢最多的玩家
             message = new StringBuilder(GetWinnerName() + " WINS THE GAME!");
