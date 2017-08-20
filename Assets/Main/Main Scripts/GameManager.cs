@@ -11,8 +11,9 @@ using CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
-    public PointList spawnPointList;                // 坦克出生点
+    public GameManager Instance { get; private set; }
 
+    public PointList spawnPointList;                // 坦克出生点
     public AllPlayerManager allPlayerManager;       // 所有玩家
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -20,8 +21,10 @@ public class GameManager : MonoBehaviour
     public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
     public AllCameraRigManager allCameraRig;        // 所有镜头控制器
-    public MinimapManager minimapManager;           // 小地图管理器
+    public MinimapWitchCamera minimap;              // 小地图管理
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
+
+    public TankManager MyTank { get { return myTank; } }
 
     private List<TankManager> tankList;             // 所有玩家坦克
     private TankManager myTank;                     // 自己的坦克
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         tankList = new List<TankManager>();
         startWait = new WaitForSeconds(startDelay);         // 游戏回合开始延时
         endWait = new WaitForSeconds(endDelay);             // 游戏回合结束延时
@@ -66,10 +70,10 @@ public class GameManager : MonoBehaviour
 
         allCameraRig.Init(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
 
-        minimapManager.SetupPlayerIconDic();
         if (myTank != null)
         {
-            minimapManager.SetTarget(myTank.transform);
+            minimap.SetTarget(myTank.transform);
+            minimap.SetMinimapActive(true);
             ((ChargeButtonInput)VirtualInput.GetButton("TankShooting")).Setup(myTank.tankShooting.coolDownTime, myTank.tankShooting.minLaunchForce, myTank.tankShooting.maxLaunchForce, myTank.tankShooting.ChargeRate);
         }
     }
@@ -105,10 +109,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void OnMyTankBroken()
     {
-        if (myTank == null)
+        if (myTank == null || myTank.isActiveAndEnabled)
             return;
-        if (!myTank.isActiveAndEnabled)
-            allCameraRig.TurnToMultiCam();
+        minimap.SetMinimapActive(false);
+        allCameraRig.TurnToMultiCam();
     }
 
     /// <summary>
@@ -139,6 +143,7 @@ public class GameManager : MonoBehaviour
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
         spawnAllPopUpArrow.Spawn();                     // 显示玩家箭头
+        minimap.SetMinimapActive(true);
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;

@@ -37,6 +37,13 @@ namespace Item.Tank
         private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
+        }
+
+        /// <summary>
+        /// 激活时初始化
+        /// </summary>
+        private void OnEnable()
+        {
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
             chargeRate = (maxLaunchForce - minLaunchForce) / maxChargeTime;

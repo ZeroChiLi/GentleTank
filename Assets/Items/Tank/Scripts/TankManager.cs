@@ -4,10 +4,10 @@ using UnityEngine.AI;
 
 namespace Item.Tank
 {
-    public class TankManager : MonoBehaviour
+    public class TankManager : PlayerManager
     {
-        [HideInInspector]
-        public PlayerManager playerManager;                     // 玩家信息
+        public GameObject tankRenderers;                        // 坦克渲染部件
+        public MeshRenderer playerIconMesh;                     // 玩家图标材质
         [HideInInspector]
         public PlayerInfoUI playerInfoUI;                       // UI信息
         [HideInInspector]
@@ -26,7 +26,6 @@ namespace Item.Tank
         /// </summary>
         private void Awake()
         {
-            playerManager = GetComponent<PlayerManager>();
             tankMovement = GetComponent<TankMovement>();
             tankShooting = GetComponent<TankShooting>();
             tankHealth = GetComponent<TankHealth>();
@@ -50,10 +49,12 @@ namespace Item.Tank
         /// </summary>
         public void SetupUIAndInput()
         {
-            playerInfoUI.SetupNameAndColor();   // 配置玩家信息UI的名字和颜色
-            ChangeColor.SelfAndChildrens(gameObject, playerManager.RepresentColor);         // 坦克颜色
-            tankMovement.SetupPlayerInput(playerManager.PlayerID);              // 配置坦克移动输入
-            tankShooting.SetShortcutName("Fire" + playerManager.PlayerID);      // 配置坦克攻击输入
+            playerInfoUI.SetupNameAndColor();                       // 配置玩家信息UI的名字和颜色
+            ChangeColor.SelfAndChildrens(tankRenderers, RepresentColor);         // 坦克颜色
+            if (Team != null)
+                playerIconMesh.material.color = Team.TeamColor;     // 图标颜色
+            tankMovement.SetupPlayerInput(PlayerID);                // 配置坦克移动输入
+            tankShooting.SetShortcutName("Fire" + PlayerID);        // 配置坦克攻击输入
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Item.Tank
         /// <param name="enable">是否激活</param>
         public void SetControlEnable(bool enable)
         {
-            if (playerManager.IsAI)
+            if (IsAI)
                 SetAIControlEnable(enable);
             else
                 SetPlayerControlEnable(enable);

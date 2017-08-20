@@ -1,5 +1,4 @@
-﻿using CameraRig;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Widget.ChargeArea
 {
