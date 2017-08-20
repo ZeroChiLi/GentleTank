@@ -26,7 +26,6 @@ namespace Widget.ArrowPopUp
                 if (arrowPopUp == null)
                     continue;
                 arrowPopUp.SetPosition(AllPlayerManager.Instance[i].transform.position + AllCameraRigManager.Instance.CurrentCamera.transform.up * magnitude);
-                arrowPopUp.SetRotation(Quaternion.Euler(AllCameraRigManager.Instance.CurrentCamera.transform.rotation.eulerAngles + Vector3.right * 180));
                 arrowPopUp.SetColor(AllPlayerManager.Instance[i].RepresentColor);
                 arrowPopUp.SetText("P" + i);
             }

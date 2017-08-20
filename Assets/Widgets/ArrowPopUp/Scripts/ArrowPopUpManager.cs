@@ -14,6 +14,8 @@ namespace Widget.ArrowPopUp
         private void Update()
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - moveDistance / 2 + Mathf.PingPong(Time.time, moveDistance), transform.position.z);
+            if (AllCameraRigManager.Instance != null)
+                transform.rotation = Quaternion.Euler(AllCameraRigManager.Instance.CurrentCamera.transform.eulerAngles + Vector3.right * 180);
         }
 
         /// <summary>
