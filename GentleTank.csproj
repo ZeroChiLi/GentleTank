@@ -287,6 +287,8 @@
     <Compile Include="Assets\Widgets\ChargeArea\Scripts\FlagManager.cs" />
     <Compile Include="Assets\Widgets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\Widgets\Minimap\Scripts\MinimapWitchCamera.cs" />
+    <Compile Include="Assets\Widgets\PlayerNameLabel\Scripts\AllPlayerNameLabelManager.cs" />
+    <Compile Include="Assets\Widgets\PlayerNameLabel\Scripts\PlayerNameLabelManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />

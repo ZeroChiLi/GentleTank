@@ -8,8 +8,8 @@ namespace Item.Tank
     {
         public GameObject tankRenderers;                        // 坦克渲染部件
         public MeshRenderer playerIconMesh;                     // 玩家图标材质
-        [HideInInspector]
-        public PlayerInfoUI playerInfoUI;                       // UI信息
+        //[HideInInspector]
+        //public PlayerInfoUI playerInfoUI;                       // UI信息
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
@@ -29,7 +29,7 @@ namespace Item.Tank
             tankMovement = GetComponent<TankMovement>();
             tankShooting = GetComponent<TankShooting>();
             tankHealth = GetComponent<TankHealth>();
-            playerInfoUI = GetComponent<PlayerInfoUI>();
+            //playerInfoUI = GetComponent<PlayerInfoUI>();
 
             stateController = GetComponent<StateController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
@@ -49,7 +49,7 @@ namespace Item.Tank
         /// </summary>
         public void SetupUIAndInput()
         {
-            playerInfoUI.SetupNameAndColor();                       // 配置玩家信息UI的名字和颜色
+            //playerInfoUI.SetupNameAndColor();                       // 配置玩家信息UI的名字和颜色
             ChangeColor.SelfAndChildrens(tankRenderers, RepresentColor);         // 坦克颜色
             if (Team != null)
                 playerIconMesh.material.color = Team.TeamColor;     // 图标颜色
