@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public AllCameraRigManager allCameraRig;        // 所有镜头控制器
     public MinimapWitchCamera minimap;              // 小地图管理
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
-    public AllPlayerNameLabelManager allPlayerLabel;// 所有玩家标签UI
 
     public TankManager MyTank { get { return myTank; } }
 
@@ -69,7 +68,6 @@ public class GameManager : MonoBehaviour
         }
 
         allCameraRig.Init(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
-        allPlayerLabel.CreateAllPlayerLabels(AllPlayerManager.Instance);
 
         if (myTank != null)
         {

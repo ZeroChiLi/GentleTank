@@ -141,10 +141,12 @@
     <Compile Include="Assets\Common\Scripts\CoolDownButtonManager.cs" />
     <Compile Include="Assets\Common\Scripts\CountDownTimer.cs" />
     <Compile Include="Assets\Common\Scripts\Effect.cs" />
+    <Compile Include="Assets\Common\Scripts\FaceToCamera.cs" />
     <Compile Include="Assets\Common\Scripts\GameMathf.cs" />
     <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
     <Compile Include="Assets\Common\Scripts\ObjectPreferences.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
+    <Compile Include="Assets\Common\Scripts\WorldToScreenPos.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\CountDown.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\DestroyForSeconds.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\OnlineGameManager.cs" />
@@ -203,7 +205,6 @@
     <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
     <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AttackManager.cs" />
     <Compile Include="Assets\Main\Players &amp; Teams\Scripts\HealthManager.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\PlayerInfoUI.cs" />
     <Compile Include="Assets\Main\Players &amp; Teams\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Main\Players &amp; Teams\Scripts\TeamManager.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
@@ -290,8 +291,6 @@
     <Compile Include="Assets\Widgets\ChargeArea\Scripts\FlagManager.cs" />
     <Compile Include="Assets\Widgets\Minimap\Scripts\MinimapManager.cs" />
     <Compile Include="Assets\Widgets\Minimap\Scripts\MinimapWitchCamera.cs" />
-    <Compile Include="Assets\Widgets\PlayerNameLabel\Scripts\AllPlayerNameLabelManager.cs" />
-    <Compile Include="Assets\Widgets\PlayerNameLabel\Scripts\PlayerNameLabelManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />

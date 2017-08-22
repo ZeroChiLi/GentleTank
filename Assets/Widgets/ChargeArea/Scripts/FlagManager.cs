@@ -22,8 +22,8 @@ namespace Widget.ChargeArea
         /// </summary>
         private void FixedUpdate()
         {
-            if (AllCameraRigManager.Instance.CurrentCamera != null)
-                flagPole.transform.rotation = Quaternion.Euler(0f,AllCameraRigManager.Instance.CurrentCamera.transform.rotation.eulerAngles.y,0f);
+            if (Camera.current != null)
+                flagPole.transform.rotation = Quaternion.Euler(0f, Camera.current.transform.rotation.eulerAngles.y,0f);
         }
 
         /// <summary>

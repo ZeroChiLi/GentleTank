@@ -10,8 +10,6 @@ public class AllCameraRigManager : MonoBehaviour
     public AutoCam autoCam;
     public MultiCam multiCam;
 
-    public Camera CurrentCamera { get; private set; }
-
     /// <summary>
     /// 初始单例
     /// </summary>
@@ -46,7 +44,6 @@ public class AllCameraRigManager : MonoBehaviour
     {
         multiCam.gameObject.SetActive(false);
         autoCam.gameObject.SetActive(true);
-        CurrentCamera = autoCam.controlCamera;
     }
 
     /// <summary>
@@ -56,7 +53,6 @@ public class AllCameraRigManager : MonoBehaviour
     {
         autoCam.gameObject.SetActive(false);
         multiCam.gameObject.SetActive(true);
-        CurrentCamera = multiCam.controlCamera;
     }
 
     /// <summary>
