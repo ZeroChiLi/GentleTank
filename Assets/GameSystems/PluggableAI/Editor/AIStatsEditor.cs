@@ -77,9 +77,7 @@ namespace GameSystem.AI
             EditorGUI.indentLevel = 0;
             showTrigger[order] = EditorGUILayout.Foldout(showTrigger[order], title);
             EditorGUI.indentLevel = 1;
-            if (!showTrigger[order])
-                return false;
-            return true;
+            return showTrigger[order];
         }
     }
 }
