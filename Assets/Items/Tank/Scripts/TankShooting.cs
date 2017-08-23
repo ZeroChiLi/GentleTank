@@ -12,7 +12,7 @@ namespace Item.Tank
             None, Ready, Charge, Fire
         }
 
-        public ObjectPool shellPool;                // 炮弹池
+        public ObjectPool ammoPool;                 // 弹药池
         public Transform shellSpawn;                // 发射子弹的位置
         public Slider aimSlider;                    // 发射时显示黄色箭头
         public AudioSource shootingAudio;           // 当前射击音效
@@ -21,7 +21,7 @@ namespace Item.Tank
         public float minLaunchForce = 15f;          // 最小发射力度
         public float maxLaunchForce = 30f;          // 最大发射力度
         public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
-        public float maxDamage = 100f;              // 最大伤害
+        public float maxDamage = 50;                // 最大伤害
         public bool usingInputButton = true;        // 是否使用标准输入
 
         public float ChargeRate { get { return chargeRate; } }
@@ -30,6 +30,7 @@ namespace Item.Tank
         private PlayerManager playerManager;        // 玩家信息
         private float currentLaunchForce;           // 当前发射力度
         private float chargeRate;                   // 力度变化速度（最小到最大力度 / 最大蓄力时间）
+        private GameObject ammo;                    // 临时弹药
 
         /// <summary>
         /// 获取坦克信息组件，计算力量变化率
@@ -128,9 +129,10 @@ namespace Item.Tank
         private void Fire(float launchForce, float coolDownTime, float fireDamage)
         {
             //获取炮弹，并发射
-            GameObject shell = shellPool.GetNextObject(transform: shellSpawn);
-            shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
-            shell.GetComponent<ShellAmmo>().damage = fireDamage;
+            ammo = ammoPool.GetNextObject(false,shellSpawn);
+            ammo.GetComponent<AmmoBase>().Init(playerManager,fireDamage);
+            ammo.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
+            ammo.SetActive(true);
 
             shootingAudio.clip = fireClip;
             shootingAudio.Play();
@@ -138,7 +140,7 @@ namespace Item.Tank
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
 
-            this.coolDownTime = coolDownTime;
+            cdTimer.SetDuration(coolDownTime);
         }
 
         /// <summary>

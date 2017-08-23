@@ -12,7 +12,6 @@ public class PlayerAndTeamWindow : EditorWindow
 
     private bool showTeamList = true;           // 是否显示团队列表
     private Vector2 scrollPos;                  // 滑动面板位置
-    private bool openAllInfo;                   // 是打开所有玩家信息列表
     private bool[] playerShow;                  // 对应坦克管理是否显示在面板
     private GUIContent content;                 // 临时GUI内容
 

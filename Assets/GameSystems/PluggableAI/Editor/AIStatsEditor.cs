@@ -4,10 +4,10 @@ using System.Collections;
 
 namespace GameSystem.AI
 {
-    [CustomEditor(typeof(AIStats))]
+    [CustomEditor(typeof(AIState))]
     public class AIStatsEditor : Editor
     {
-        private AIStats stats;
+        private AIState stats;
 
         private bool[] showTrigger = new bool[8];
 
@@ -18,7 +18,7 @@ namespace GameSystem.AI
         {
             //全部初始化为true
             ArrayList.Repeat(true, showTrigger.Length).CopyTo(showTrigger);
-            stats = target as AIStats;
+            stats = target as AIState;
         }
 
         /// <summary>

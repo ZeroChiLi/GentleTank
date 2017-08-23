@@ -30,6 +30,15 @@ public class CountDownTimer
     }
 
     /// <summary>
+    /// 设置持续时间
+    /// </summary>
+    /// <param name="duration">持续时间</param>
+    public void SetDuration(float duration)
+    {
+        Duration = Mathf.Max(0f, duration);
+    }
+
+    /// <summary>
     /// 更新计时器时间
     /// </summary>
     /// <returns>返回剩余时间</returns>

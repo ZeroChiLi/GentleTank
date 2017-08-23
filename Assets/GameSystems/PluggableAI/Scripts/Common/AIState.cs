@@ -5,8 +5,8 @@ namespace GameSystem.AI
     /// <summary>
     /// AI状态信息设置
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/AI Stats")]
-    public class AIStats : ScriptableObject
+    [CreateAssetMenu(menuName = "PluggableAI/AI State")]
+    public class AIState : ScriptableObject
     {
         //导航控制
         public MinMaxValue navSpeed = new MinMaxValue(0f, 10f, 3f, 4f);                //移动速度

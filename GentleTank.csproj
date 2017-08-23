@@ -165,7 +165,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
-    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\AIStats.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\AIState.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\FindTarget.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\MinMaxValue.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\StateController.cs" />
@@ -187,6 +187,7 @@
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\ShellRainSkill.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillButtonManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillObject.cs" />
+    <Compile Include="Assets\Items\Ammo\ArrowAmmo\Scripts\ArrowAmmo.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoBase.cs" />
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />

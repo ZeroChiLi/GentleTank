@@ -5,7 +5,6 @@ namespace Item.Ammo
 {
     public class ShellAmmo : AmmoBase
     {
-        public new Rigidbody rigidbody;                     // 自己的刚体
         public ObjectPool shellExplosionPool;               // 爆炸特性池
         public float explosionForce = 100f;                 // 爆炸中心的能量
         public float explosionRadius = 5f;                  // 爆炸半径
@@ -14,15 +13,7 @@ namespace Item.Ammo
         private Collider[] colliders;                       // 碰撞物体们
         private HealthManager targetHealth;                 // 目标血量
 
-        /// <summary>
-        /// 炮弹爆炸后把刚体的力都清除掉
-        /// </summary>
-        private void OnDisable()
-        {
-            rigidbody.Sleep();
-        }
-
-        protected override IEnumerator OnCollision(Collision other)
+        protected override IEnumerator OnCollision(Collider other)
         {
             // 从爆炸池中获取对象，并设置位置，显示之
             shellExplosionPool.GetNextObject(transform: transform);
