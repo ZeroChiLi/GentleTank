@@ -5,12 +5,12 @@ using System.Text;
 
 public class PlayerAndTeamWindow : EditorWindow
 {
-    public AllPlayerManager players;
-    public List<PlayerInformation> playerInfoList;
-    public List<TeamManager> teams = new List<TeamManager>();
+    public AllPlayerManager players;                            // 玩家列表
+    public List<PlayerInformation> playerInfoList;              // 玩家信息列表
+    public int teamsSize = 0;                                   // 团队数量
+    public List<TeamManager> teams = new List<TeamManager>();   // 团队列表
 
     private bool showTeamList = true;           // 是否显示团队列表
-    private int teamsSize = 2;                  // 团队数量
     private Vector2 scrollPos;                  // 滑动面板位置
     private bool openAllInfo;                   // 是打开所有玩家信息列表
     private bool[] playerShow;                  // 对应坦克管理是否显示在面板
@@ -111,6 +111,7 @@ public class PlayerAndTeamWindow : EditorWindow
             if (teams.Count < teamsSize)                                    // 如果大了，添加
                 teams.Add(null);
             teams[i] = EditorGUILayout.ObjectField("Team " + i, teams[i], typeof(TeamManager), false) as TeamManager;
+            if (teams[i] != null)
             teams[i].TeamID = i;
         }
         EditorGUI.indentLevel = 0;

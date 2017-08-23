@@ -12,9 +12,11 @@ namespace Item.Ammo
 
         // 把每次需要用到的临时变量拉出来
         private Collider[] colliders;                       // 碰撞物体们
-        private Rigidbody targetRigidbody;                  // 目标刚体
         private HealthManager targetHealth;                 // 目标血量
 
+        /// <summary>
+        /// 炮弹爆炸后把刚体的力都清除掉
+        /// </summary>
         private void OnDisable()
         {
             rigidbody.Sleep();
@@ -29,23 +31,8 @@ namespace Item.Ammo
             colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
             for (int i = 0; i < colliders.Length; i++)
-            {
-                targetRigidbody = colliders[i].GetComponent<Rigidbody>();
-                //AddForce(colliders[i]);
                 TakeDamage(colliders[i]);
-            }
             yield return null;
-        }
-
-        /// <summary>
-        /// 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
-        /// </summary>
-        /// <param name="collider"></param>
-        private void AddForce(Collider collider)
-        {
-            if (!targetRigidbody)
-                return;
-            targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
         }
 
         /// <summary>
