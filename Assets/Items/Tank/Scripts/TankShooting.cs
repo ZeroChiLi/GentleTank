@@ -1,4 +1,4 @@
-﻿using Item.Shell;
+﻿using Item.Ammo;
 using UnityEngine;
 using UnityEngine.UI;
 using CrossPlatformInput;
@@ -58,7 +58,8 @@ namespace Item.Tank
                 return;
             if (usingInputButton)
                 StateChangeByInput();
-            if (shootState == ShootState.None && playerManager.IsMine)  // 优先选择键盘输入，若无，则再判断虚拟按钮输入
+            // 优先选择键盘输入，若无，则再判断虚拟按钮输入
+            if (shootState == ShootState.None && playerManager == AllPlayerManager.Instance.MyPlayer)  
                 StateChangeByChargeButton();
             if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
@@ -129,7 +130,7 @@ namespace Item.Tank
             //获取炮弹，并发射
             GameObject shell = shellPool.GetNextObject(transform: shellSpawn);
             shell.GetComponent<Rigidbody>().velocity = launchForce * shellSpawn.forward;
-            shell.GetComponent<ShellManager>().maxDamage = fireDamage;
+            shell.GetComponent<ShellAmmo>().damage = fireDamage;
 
             shootingAudio.clip = fireClip;
             shootingAudio.Play();

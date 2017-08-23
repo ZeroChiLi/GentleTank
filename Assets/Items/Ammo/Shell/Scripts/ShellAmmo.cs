@@ -1,14 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
-namespace Item.Shell
+namespace Item.Ammo
 {
-    public class ShellManager : MonoBehaviour
+    public class ShellAmmo : AmmoBase
     {
+        public new Rigidbody rigidbody;                     // 自己的刚体
         public ObjectPool shellExplosionPool;               // 爆炸特性池
-
-        public float maxDamage = 100f;                      // 最大伤害
         public float explosionForce = 100f;                 // 爆炸中心的能量
-        public float maxLifeTime = 2f;                      // 炸弹最大生存时间
         public float explosionRadius = 5f;                  // 爆炸半径
 
         // 把每次需要用到的临时变量拉出来
@@ -16,12 +15,13 @@ namespace Item.Shell
         private Rigidbody targetRigidbody;                  // 目标刚体
         private HealthManager targetHealth;                 // 目标血量
 
-        // 当碰到任何物体
-        private void OnTriggerEnter(Collider other)
+        private void OnDisable()
         {
-            if (other.CompareTag("Flag"))
-                return;
+            rigidbody.Sleep();
+        }
 
+        protected override IEnumerator OnCollision(Collision other)
+        {
             // 从爆炸池中获取对象，并设置位置，显示之
             shellExplosionPool.GetNextObject(transform: transform);
 
@@ -30,32 +30,41 @@ namespace Item.Shell
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                AddForce(colliders[i]);
+                targetRigidbody = colliders[i].GetComponent<Rigidbody>();
+                //AddForce(colliders[i]);
                 TakeDamage(colliders[i]);
             }
-
-            gameObject.SetActive(false);
+            yield return null;
         }
 
-        // 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
+        /// <summary>
+        /// 给一个爆炸力,对AI无效（NavMeshAgent导航的时候，下面这语句不会实现）
+        /// </summary>
+        /// <param name="collider"></param>
         private void AddForce(Collider collider)
         {
-            targetRigidbody = collider.GetComponent<Rigidbody>();
             if (!targetRigidbody)
                 return;
             targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
         }
 
-        // 获取目标的血条，计算扣血量并给给扣血。
+        /// <summary>
+        /// 获取目标的血条，计算扣血量并给给扣血。
+        /// </summary>
+        /// <param name="collider"></param>
         private void TakeDamage(Collider collider)
         {
             targetHealth = collider.GetComponent<HealthManager>();
             if (!targetHealth)
                 return;
-            targetHealth.SetHealthAmount(-1 * CalculateDamage(targetRigidbody.position));
+            targetHealth.SetHealthAmount(-1 * CalculateDamage(collider.transform.position));
         }
 
-        // 根据距离计算伤害
+        /// <summary>
+        /// 根据距离计算伤害值
+        /// </summary>
+        /// <param name="targetPosition">目标位置</param>
+        /// <returns></returns>
         private float CalculateDamage(Vector3 targetPosition)
         {
             // 计算爆炸中心距离和自己的距离
@@ -66,7 +75,7 @@ namespace Item.Shell
             float relativeDistance = (explosionRadius - explosionDistance) / explosionRadius;
 
             // 根据比例计算伤害
-            return Mathf.Max(0f, relativeDistance * maxDamage);
+            return Mathf.Max(0f, relativeDistance * damage);
         }
 
     }

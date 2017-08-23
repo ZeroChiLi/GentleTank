@@ -1,4 +1,4 @@
-﻿using Item.Shell;
+﻿using Item.Ammo;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,7 +56,7 @@ namespace GameSystem.Skill
             shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
             shell.transform.rotation = Quaternion.Euler(new Vector3(90f, 0, 0));
             shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);
-            shell.GetComponent<ShellManager>().maxDamage = attackDamage;
+            shell.GetComponent<ShellAmmo>().damage = attackDamage;
             yield return new WaitForSeconds(Random.Range(0, attackRate * 2));
         }
 

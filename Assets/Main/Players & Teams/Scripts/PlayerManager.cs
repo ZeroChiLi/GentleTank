@@ -5,7 +5,6 @@ public class PlayerInformation
 {
     public int id = -1;                     // 玩家ID
     public string name;                     // 玩家名称
-    public bool isMine = false;             // 玩家是否是自己控制的
     public bool isAI = false;               // 玩家是否是AI
     public GameObject perfab;               // 玩家预设
     public Color representColor;            // 玩家代表颜色
@@ -32,7 +31,6 @@ public class PlayerManager : MonoBehaviour
 
     public int PlayerID { get { return information.id; } }
     public string PlayerName { get { return information.name; } }
-    public bool IsMine { get { return information.isMine; } }
     public bool IsAI { get { return information.isAI; } }
     public GameObject Perfab { get { return information.perfab; } }
     public Color RepresentColor { get { return information.representColor; } }

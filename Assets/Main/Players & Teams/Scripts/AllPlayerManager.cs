@@ -17,7 +17,7 @@ public class AllPlayerManager : ScriptableObject
     /// <summary>
     /// 属于自己的玩家对象
     /// </summary>
-    public PlayerManager MyPlayer { get { return GameMathf.InRange(myPlayerIndex,0,Count-1) ? playerManagerList[myPlayerIndex] : null; } }
+    public PlayerManager MyPlayer { get { return GameMathf.InRange(myPlayerIndex, 0, Count - 1) ? playerManagerList[myPlayerIndex] : null; } }
 
     /// <summary>
     /// 配置单例

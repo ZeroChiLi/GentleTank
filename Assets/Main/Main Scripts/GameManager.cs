@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         {
             tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
             tankList[i].Init();
-            if (AllPlayerManager.Instance[i].IsMine && myTank == null)
+            if (AllPlayerManager.Instance[i] == AllPlayerManager.Instance.MyPlayer)
                 myTank = tankList[i];
         }
 
