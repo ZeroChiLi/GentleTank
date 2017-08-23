@@ -31,4 +31,16 @@ public static class GameMathf
         value = a < b ? Mathf.Clamp(value, a, b) : Mathf.Clamp(value, b, a);
         return (value - a) / (b - a);
     }
+
+    /// <summary>
+    /// 判断value是否在min和max的闭区间内
+    /// </summary>
+    /// <param name="value">需要判断的数值</param>
+    /// <param name="min">最小值</param>
+    /// <param name="max">最大值</param>
+    /// <returns>value是否在范围内</returns>
+    static public bool InRange(float value,float min,float max)
+    {
+        return value >= min && value <= max;
+    }
 }

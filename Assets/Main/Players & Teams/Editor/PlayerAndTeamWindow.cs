@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System.Text;
 
 public class PlayerAndTeamWindow : EditorWindow
 {
-    private AllPlayerManager players;
-    private List<PlayerInformation> playerInfoList;
-    private List<TeamManager> teams = new List<TeamManager>();
-    private bool showTeamList = true;
-    private int teamsSize;
-    private int lastSize;
+    public AllPlayerManager players;
+    public List<PlayerInformation> playerInfoList;
+    public List<TeamManager> teams = new List<TeamManager>();
+
+    private bool showTeamList = true;           // 是否显示团队列表
+    private int teamsSize = 2;                  // 团队数量
     private Vector2 scrollPos;                  // 滑动面板位置
-    private bool[] playerShow;            // 对应坦克管理是否显示在面板
+    private bool openAllInfo;                   // 是打开所有玩家信息列表
+    private bool[] playerShow;                  // 对应坦克管理是否显示在面板
+    private GUIContent content;                 // 临时GUI内容
 
     [MenuItem("Window/Player And Team")]
     static void ShowWindows()
@@ -25,8 +28,10 @@ public class PlayerAndTeamWindow : EditorWindow
     {
         if (!GetPlayers())
             return;
+        SelectedMyPlayer();
         GetTeams();
         GUILayout.Label("============================================================================================================");
+        OpenOrCloseAllPlayerInfo();
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         PlayersAndTeamsOperation();
         EditorGUILayout.EndScrollView();
@@ -43,12 +48,50 @@ public class PlayerAndTeamWindow : EditorWindow
             return false;
         playerInfoList = players.playerInfoList;
         if (playerInfoList == null || playerInfoList.Count <= 0)
+        {
+            EditorGUILayout.HelpBox("Waring : playerInfoList Is Empty", MessageType.Warning);
             return false;
+        }
         for (int i = 0; i < playerInfoList.Count; i++)
             playerInfoList[i].id = i;
-        if (playerShow == null)
-            playerShow = new bool[players.Count];
+        if (playerShow == null || playerShow.Length != playerInfoList.Count)
+            playerShow = new bool[playerInfoList.Count];
         return true;
+    }
+
+    /// <summary>
+    /// 选择我的玩家
+    /// </summary>
+    private void SelectedMyPlayer()
+    {
+        Horizontal(true);
+        EditorGUILayout.PrefixLabel("Select My Player : ");
+        if (EditorGUILayout.DropdownButton(GetContentByPlayerIndex(players.myPlayerIndex), FocusType.Passive))
+        {
+            GenericMenu menu = new GenericMenu();
+            menu.AddItem(new GUIContent("None"), false, () => { players.myPlayerIndex = -1; });
+            for (int i = 0; i < playerInfoList.Count; i++)
+            {
+                if (players.myPlayerIndex == i)
+                    continue;
+                menu.AddItem(GetContentByPlayerIndex(i), false, (object index) => { players.myPlayerIndex = (int)index; }, i);
+            }
+            menu.ShowAsContext();
+        }
+        Horizontal(false);
+    }
+
+    /// <summary>
+    /// 获取索引对应玩家内容信息（ID 和 名字），失败为空
+    /// </summary>
+    /// <param name="index">索引值</param>
+    /// <returns>返回信息</returns>
+    private GUIContent GetContentByPlayerIndex(int index)
+    {
+        content = new GUIContent();
+        if (GameMathf.InRange(index, 0, playerInfoList.Count - 1))
+            content.text = string.Format("ID : {0}   Name : {1}", playerInfoList[index].id, playerInfoList[index].name);
+        return content;
     }
 
     /// <summary>
@@ -66,10 +109,39 @@ public class PlayerAndTeamWindow : EditorWindow
         for (int i = 0; i < teamsSize; i++)
         {
             if (teams.Count < teamsSize)                                    // 如果大了，添加
-                teams.Add(new TeamManager());
+                teams.Add(null);
             teams[i] = EditorGUILayout.ObjectField("Team " + i, teams[i], typeof(TeamManager), false) as TeamManager;
+            teams[i].TeamID = i;
         }
         EditorGUI.indentLevel = 0;
+    }
+
+    /// <summary>
+    /// 打开我的玩家列表、全部打开、全部关闭玩家信息列表按钮
+    /// </summary>
+    private void OpenOrCloseAllPlayerInfo()
+    {
+        Horizontal(true);
+        if (GUILayout.Button("Open My Player") && GameMathf.InRange(players.myPlayerIndex, 0, playerInfoList.Count - 1))
+        {
+            AllPlayerInfoTrigger(false);
+            playerShow[players.myPlayerIndex] = true;
+        }
+        if (GUILayout.Button("Open All"))
+            AllPlayerInfoTrigger(true);
+        if (GUILayout.Button("Close All"))
+            AllPlayerInfoTrigger(false);
+        Horizontal(false);
+    }
+
+    /// <summary>
+    /// 所有玩家信息列表开关
+    /// </summary>
+    /// <param name="open">是否打开（否则关闭）</param>
+    private void AllPlayerInfoTrigger(bool open)
+    {
+        for (int i = 0; i < playerShow.Length; i++)
+            playerShow[i] = open;
     }
 
     /// <summary>
@@ -77,7 +149,7 @@ public class PlayerAndTeamWindow : EditorWindow
     /// </summary>
     private void PlayersAndTeamsOperation()
     {
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < playerInfoList.Count; i++)
         {
             EditorGUILayout.BeginVertical("Box");
             PlayerOperation(i);
@@ -134,7 +206,7 @@ public class PlayerAndTeamWindow : EditorWindow
     /// <param name="index">玩家索引</param>
     private void ShowDropdown(int index)
     {
-        GUIContent content = new GUIContent();
+        content = new GUIContent();
         //如果存在该队伍，直接显示在下拉菜单中
         if (playerInfoList[index].team != null)
             content.text = playerInfoList[index].team.TeamName;
