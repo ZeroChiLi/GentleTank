@@ -48,11 +48,11 @@ namespace Item.Ammo
         private void OnTriggerEnter(Collider other)
         {
             // 如果已经失活了，或者碰到自己，就跳过
-            if (!gameObject.activeInHierarchy || launcher == other.GetComponent<PlayerManager>())
+            if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()))
                 return;
             StartCoroutine(OnCollision(other));
             if (!IsLowerLevelAmmo(other))
-                gameObject.SetActive(false);
+                StartCoroutine(OnCrashed());
         }
 
         /// <summary>
@@ -74,5 +74,16 @@ namespace Item.Ammo
         /// <param name="other">碰撞到的别的物体</param>
         /// <returns></returns>
         protected abstract IEnumerator OnCollision(Collider other);
+
+        /// <summary>
+        /// 碰到非低级弹药时（大于等于自己等级或者不是弹药'AmmoBase'，自身弹药破碎）响应
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IEnumerator OnCrashed()
+        {
+            if (!gameObject.activeInHierarchy)
+                yield return null;
+            gameObject.SetActive(false);
+        }
     }
 }
