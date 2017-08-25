@@ -140,7 +140,7 @@ namespace Item.Tank
             currentLaunchForce = minLaunchForce;
             aimSlider.value = minLaunchForce;
 
-            cdTimer.SetDuration(coolDownTime);
+            cdTimer.Reset(coolDownTime);
         }
 
         /// <summary>

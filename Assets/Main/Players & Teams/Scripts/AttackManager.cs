@@ -35,7 +35,7 @@ public abstract class AttackManager : MonoBehaviour
     {
         if (!CDTimer.IsTimeUp)
             return;
-        CDTimer.Reset();
+        CDTimer.Start();
         OnAttack(values);
     }
 

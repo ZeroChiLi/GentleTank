@@ -10,8 +10,6 @@ namespace Item.Tank
         public GameObject tankRenderers;                        // 坦克渲染部件
         public MeshRenderer playerIconMesh;                     // 玩家图标材质
         public Text playerNameText;                             // 玩家名字UI
-        //[HideInInspector]
-        //public PlayerInfoUI playerInfoUI;                       // UI信息
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
@@ -52,7 +50,6 @@ namespace Item.Tank
         public void SetupUIAndInput()
         {
             playerNameText.text = PlayerName;
-            //playerInfoUI.SetupNameAndColor();                       // 配置玩家信息UI的名字和颜色
             ChangeColor.SelfAndChildrens(tankRenderers, RepresentColor);         // 坦克颜色
             if (Team != null)
             {

@@ -3,15 +3,19 @@ using UnityEngine;
 
 namespace Item.Ammo
 {
-    //[RequireComponent(typeof(Rigidbody),typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody), typeof(Collider))]
     public abstract class AmmoBase : MonoBehaviour
     {
         public PlayerManager launcher;      // 发射者
-        public int level = 50;              // 子弹等级（碰到低等级的子弹时，不会消失）
         public float damage = 50f;          // 伤害值
+        [SerializeField]
+        private int durability = 50;        // 子弹耐久度（碰到别的子弹，会根据别子弹的耐久值减去自己耐久值）
 
+        public int Durability { get { return durability; } }
+
+        private int currentDruability;      // 当前子弹耐久度
         private Rigidbody rigidbodySelf;    // 自己的刚体
-        private AmmoBase ohterAmmo;         // 临时别的子弹
+        private AmmoBase otherAmmo;         // 临时别的子弹
 
         /// <summary>
         /// 初始化弹药
@@ -33,6 +37,14 @@ namespace Item.Ammo
         }
 
         /// <summary>
+        /// 激活时重置耐久度
+        /// </summary>
+        private void OnEnable()
+        {
+            currentDruability = durability;
+        }
+
+        /// <summary>
         /// 失活时把刚体睡了
         /// </summary>
         protected void OnDisable()
@@ -51,21 +63,25 @@ namespace Item.Ammo
             if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()))
                 return;
             StartCoroutine(OnCollision(other));
-            if (!IsLowerLevelAmmo(other))
+            if (DruabilityLowerThanZero(other))
                 StartCoroutine(OnCrashed());
         }
 
         /// <summary>
-        /// 是否是比自己低级的弹药，否则是大于等于自己等级的弹药，或者不是弹药
+        /// 计算当前耐久值，返回是否小于等于0
         /// </summary>
         /// <param name="other">另一个碰撞体</param>
-        /// <returns>是否是比自己低级的弹药</returns>
-        protected bool IsLowerLevelAmmo(Collider other)
+        /// <returns>耐久值是否小于等于0</returns>
+        protected bool DruabilityLowerThanZero(Collider other)
         {
-            ohterAmmo = other.GetComponent<AmmoBase>();
-            if (ohterAmmo == null)
-                return false;
-            return ohterAmmo.level < level;
+            otherAmmo = other.GetComponent<AmmoBase>();
+            if (otherAmmo == null)
+            {
+                currentDruability = 0;
+                return true;
+            }
+            currentDruability -= otherAmmo.Durability;
+            return currentDruability <= 0;
         }
 
         /// <summary>

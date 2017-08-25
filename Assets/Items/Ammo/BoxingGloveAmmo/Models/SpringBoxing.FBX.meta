@@ -1,49 +1,22 @@
 fileFormatVersion: 2
-guid: 9a753df80205b5145ad074275cf7fcc1
-timeCreated: 1503554966
+guid: a77b14c836ec00b42aa30cde7f93e993
+timeCreated: 1503656100
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Bow
-    100002: Bowstring
+    100000: BoxingGlove
+    100002: Spring
     100004: //RootNode
-    100006: Handle
-    100008: SphereAxis
-    100010: TankChassis
-    100012: TankRenderers
-    100014: TankTracksLeft
-    100016: TankTracksRight
-    400000: Bow
-    400002: Bowstring
+    400000: BoxingGlove
+    400002: Spring
     400004: //RootNode
-    400006: Handle
-    400008: SphereAxis
-    400010: TankChassis
-    400012: TankRenderers
-    400014: TankTracksLeft
-    400016: TankTracksRight
-    2300000: Bow
-    2300002: Bowstring
-    2300004: Handle
-    2300006: SphereAxis
-    2300008: TankChassis
-    2300010: TankTracksLeft
-    2300012: TankTracksRight
-    3300000: Bow
-    3300002: Bowstring
-    3300004: Handle
-    3300006: SphereAxis
-    3300008: TankChassis
-    3300010: TankTracksLeft
-    3300012: TankTracksRight
-    4300000: TankTracksLeft
-    4300002: TankTracksRight
-    4300004: TankChassis
-    4300006: Handle
-    4300008: Bow
-    4300010: Bowstring
-    4300012: SphereAxis
+    2300000: BoxingGlove
+    2300002: Spring
+    3300000: BoxingGlove
+    3300002: Spring
+    4300000: Spring
+    4300002: BoxingGlove
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +43,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.4
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 倒计时器。使用UpdateAndCheck来更新计时器
+/// 倒计时器。
 /// </summary>
-public class CountDownTimer
+public sealed class CountDownTimer
 {
     public bool IsAutoCycle { get; private set; }                   // 是否自动循环（小于等于0后重置）
     public bool IsStoped { get; private set; }                      // 是否是否暂停了
@@ -30,15 +30,6 @@ public class CountDownTimer
     }
 
     /// <summary>
-    /// 设置持续时间
-    /// </summary>
-    /// <param name="duration">持续时间</param>
-    public void SetDuration(float duration)
-    {
-        Duration = Mathf.Max(0f, duration);
-    }
-
-    /// <summary>
     /// 更新计时器时间
     /// </summary>
     /// <returns>返回剩余时间</returns>
@@ -49,7 +40,7 @@ public class CountDownTimer
         if (currentTime <= 0)                                       // 小于等于0直接返回，如果循环那就重置时间
         {
             if (IsAutoCycle)
-                Reset();
+                Reset(Duration,false);
             return currentTime;
         }
         currentTime -= Time.time - lastTime;
@@ -71,17 +62,20 @@ public class CountDownTimer
     /// </summary>
     public void Start()
     {
-        Reset();
-        IsStoped = false;
+        Reset(Duration,false);
     }
 
     /// <summary>
-    /// 重置计时器，不影响暂停状态
+    /// 重置计时器
     /// </summary>
-    public void Reset()
+    /// <param name="duration">持续时间</param>
+    /// <param name="isStoped">是否暂停</param>
+    public void Reset(float duration,bool isStoped = false)
     {
         UpdateLastTimeInfo();
+        Duration = Mathf.Max(0f, duration);
         currentTime = Duration;
+        IsStoped = isStoped;
     }
 
     /// <summary>
