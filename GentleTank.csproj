@@ -188,6 +188,7 @@
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillButtonManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\SkillObject.cs" />
     <Compile Include="Assets\Items\Ammo\ArrowAmmo\Scripts\ArrowAmmo.cs" />
+    <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\SpringBoxingManager.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoBase.cs" />
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />

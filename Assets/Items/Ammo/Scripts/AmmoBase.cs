@@ -3,18 +3,17 @@ using UnityEngine;
 
 namespace Item.Ammo
 {
-    [RequireComponent(typeof(Rigidbody), typeof(Collider))]
     public abstract class AmmoBase : MonoBehaviour
     {
         public PlayerManager launcher;      // 发射者
+        public Rigidbody ammoRb;            // 自己的刚体
         public float damage = 50f;          // 伤害值
         [SerializeField]
-        private int durability = 50;        // 子弹耐久度（碰到别的子弹，会根据别子弹的耐久值减去自己耐久值）
+        protected int durability = 50;      // 子弹耐久度（碰到别的子弹，会根据别子弹的耐久值减去自己耐久值）
 
         public int Durability { get { return durability; } }
 
         private int currentDruability;      // 当前子弹耐久度
-        private Rigidbody rigidbodySelf;    // 自己的刚体
         private AmmoBase otherAmmo;         // 临时别的子弹
 
         /// <summary>
@@ -26,14 +25,6 @@ namespace Item.Ammo
         {
             this.launcher = launcher;
             this.damage = damage;
-        }
-
-        /// <summary>
-        /// 获取刚体组件
-        /// </summary>
-        protected void Awake()
-        {
-            rigidbodySelf = GetComponent<Rigidbody>();
         }
 
         /// <summary>
@@ -49,8 +40,8 @@ namespace Item.Ammo
         /// </summary>
         protected void OnDisable()
         {
-            if (rigidbodySelf != null)
-                rigidbodySelf.Sleep();
+            if (ammoRb != null)
+                ammoRb.Sleep();
         }
 
         /// <summary>
@@ -92,7 +83,7 @@ namespace Item.Ammo
         protected abstract IEnumerator OnCollision(Collider other);
 
         /// <summary>
-        /// 碰到非低级弹药时（大于等于自己等级或者不是弹药'AmmoBase'，自身弹药破碎）响应
+        /// 耐久值小于等于0时响应
         /// </summary>
         /// <returns></returns>
         protected virtual IEnumerator OnCrashed()
