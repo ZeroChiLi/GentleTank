@@ -13,7 +13,7 @@ namespace Item.Tank
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
-        public TankShooting tankShooting;                       // 攻击
+        public TankAttack tankAttack;                           // 攻击
         [HideInInspector]
         public TankHealth tankHealth;                           // 血量
         [HideInInspector]
@@ -27,10 +27,8 @@ namespace Item.Tank
         private void Awake()
         {
             tankMovement = GetComponent<TankMovement>();
-            tankShooting = GetComponent<TankShooting>();
+            tankAttack = GetComponent<TankAttack>();
             tankHealth = GetComponent<TankHealth>();
-            //playerInfoUI = GetComponent<PlayerInfoUI>();
-
             stateController = GetComponent<StateController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
         }
@@ -57,7 +55,7 @@ namespace Item.Tank
                 playerIconMesh.material.color = Team.TeamColor;     // 图标颜色
             }
             tankMovement.SetupPlayerInput(PlayerID);                // 配置坦克移动输入
-            tankShooting.SetShortcutName("Fire" + PlayerID);        // 配置坦克攻击输入
+            tankAttack.SetShortcutName("Fire" + PlayerID);        // 配置坦克攻击输入
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace Item.Tank
             else
                 SetPlayerControlEnable(enable);
 
-            tankShooting.enabled = enable;
+            tankAttack.enabled = enable;
             tankHealth.enabled = enable;
         }
 

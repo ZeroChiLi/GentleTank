@@ -28,13 +28,24 @@ public class PlayerInformation
 public class PlayerManager : MonoBehaviour
 {
     private PlayerInformation information;      // 玩家信息
+    public PlayerInformation Information
+    {
+        get
+        {
+            if (information == null)
+                information = new PlayerInformation();
+            return information;
+        }
 
-    public int PlayerID { get { return information.id; } }
-    public string PlayerName { get { return information.name; } }
-    public bool IsAI { get { return information.isAI; } }
-    public GameObject Perfab { get { return information.perfab; } }
-    public Color RepresentColor { get { return information.representColor; } }
-    public TeamManager Team { get { return information.team; } }
+        set { information = value; }
+    }
+
+    public int PlayerID { get { return Information.id; } }
+    public string PlayerName { get { return Information.name; } }
+    public bool IsAI { get { return Information.isAI; } }
+    public GameObject Perfab { get { return Information.perfab; } }
+    public Color RepresentColor { get { return Information.representColor; } }
+    public TeamManager Team { get { return Information.team; } }
 
     // 带玩家颜色的玩家名字富文本
     public string ColoredPlayerName { get { return "<color=#" + ColorUtility.ToHtmlStringRGB(RepresentColor) + ">" + PlayerName + "</color>"; } }
@@ -42,13 +53,14 @@ public class PlayerManager : MonoBehaviour
     // 带团队颜色的玩家名字富文本（若不存在团队，则为普通名字）
     public string ColoredPlayerNameByTeam { get { return Team == null ? PlayerName : "<color=#" + ColorUtility.ToHtmlStringRGB(Team.TeamColor) + ">" + PlayerName + "</color>"; } }
 
+
     /// <summary>
     /// 设置玩家信息
     /// </summary>
     /// <param name="playerInfo">玩家信息</param>
     public void SetInformation(PlayerInformation playerInfo)
     {
-        information = playerInfo;
+        Information = playerInfo;
     }
 
     /// <summary>

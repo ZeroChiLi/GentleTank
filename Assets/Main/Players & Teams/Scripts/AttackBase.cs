@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public abstract class AttackManager : MonoBehaviour 
+public abstract class AttackBase : MonoBehaviour 
 {
     public string shortcutName = "Fire0";                           // 攻击键名称
-    public float coolDownTime = 0.8f;                               // 冷却时间
+    public float coolDownTime = 1f;                               // 冷却时间
 
     public bool IsCoolDown { get { return !CDTimer.IsTimeUp; } }    // 是否正在冷却
 
@@ -31,12 +31,14 @@ public abstract class AttackManager : MonoBehaviour
     /// 释放攻击，响应OnAttack事件
     /// </summary>
     /// <param name="values">参数列表</param>
-    public void Attack(params object[] values)
+    /// <returns>是否成功攻击</returns>
+    public virtual bool Attack(params object[] values)
     {
         if (!CDTimer.IsTimeUp)
-            return;
+            return false;
         CDTimer.Start();
         OnAttack(values);
+        return true;
     }
 
     /// <summary>

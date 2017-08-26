@@ -19,7 +19,7 @@ namespace GameSystem.AI
 
         private PlayerManager playerManager;                    // 玩家信息
         private HealthManager healthManager;                    // 玩家血量管理器
-        private AttackManager attackManager;                    // 玩家攻击管理器
+        private AttackBase attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
@@ -34,7 +34,7 @@ namespace GameSystem.AI
         {
             playerManager = GetComponent<PlayerManager>();
             healthManager = GetComponent<HealthManager>();
-            attackManager = GetComponent<AttackManager>();
+            attackManager = GetComponent<AttackBase>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -123,7 +123,7 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackRate.GetRandomValue(), defaultStats.attackDamage.GetRandomValue());
+            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
         }
 
         /// <summary>

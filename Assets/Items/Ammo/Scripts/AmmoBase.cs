@@ -9,9 +9,12 @@ namespace Item.Ammo
         public Rigidbody ammoRb;            // 自己的刚体
         public float damage = 50f;          // 伤害值
         [SerializeField]
+        protected bool IsIndestructible;    // 是否无法摧毁的（不受耐久影响）
+        [SerializeField]
         protected int durability = 50;      // 子弹耐久度（碰到别的子弹，会根据别子弹的耐久值减去自己耐久值）
 
         public int Durability { get { return durability; } }
+        public int CurrentDurability { get { return currentDruability; } }
 
         private int currentDruability;      // 当前子弹耐久度
         private AmmoBase otherAmmo;         // 临时别的子弹
@@ -54,7 +57,7 @@ namespace Item.Ammo
             if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()))
                 return;
             StartCoroutine(OnCollision(other));
-            if (DruabilityLowerThanZero(other))
+            if (!IsIndestructible && DruabilityLowerThanZero(other))
                 StartCoroutine(OnCrashed());
         }
 

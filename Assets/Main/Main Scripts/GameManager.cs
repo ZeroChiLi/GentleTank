@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         {
             minimap.SetTarget(myTank.transform);
             minimap.SetMinimapActive(true);
-            ((ChargeButtonInput)VirtualInput.GetButton("TankShooting")).Setup(myTank.tankShooting.coolDownTime, myTank.tankShooting.minLaunchForce, myTank.tankShooting.maxLaunchForce, myTank.tankShooting.ChargeRate);
+            ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
         }
     }
 
