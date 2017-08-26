@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Item.Ammo
 {
+    [RequireComponent(typeof(Collider))]
     public abstract class AmmoBase : MonoBehaviour
     {
         public PlayerManager launcher;      // 发射者
@@ -16,7 +17,8 @@ namespace Item.Ammo
         public int Durability { get { return durability; } }
         public int CurrentDurability { get { return currentDruability; } }
 
-        private int currentDruability;      // 当前子弹耐久度
+        protected Collider ammoCollider;    // 子弹的碰撞体
+        protected int currentDruability;    // 当前子弹耐久度
         private AmmoBase otherAmmo;         // 临时别的子弹
 
         /// <summary>
@@ -31,9 +33,18 @@ namespace Item.Ammo
         }
 
         /// <summary>
+        /// 获取碰撞体，设置isTrigger，这样才能发生碰撞响应
+        /// </summary>
+        protected void Awake()
+        {
+            ammoCollider = GetComponent<Collider>();
+            ammoCollider.isTrigger = true;
+        }
+
+        /// <summary>
         /// 激活时重置耐久度
         /// </summary>
-        private void OnEnable()
+        protected void OnEnable()
         {
             currentDruability = durability;
         }

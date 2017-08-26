@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace Item.Ammo
 {
-    [RequireComponent(typeof(Collider))]
-    public class SpringBoxingAmmo : AmmoBase
+    public class BoxingAmmo : AmmoBase
     {
         /// <summary>
-        /// 初始化记录位置信息
+        /// 弹簧拳是金刚不坏拳，不会坏的
         /// </summary>
-        private void Start()
+        protected void Start()
         {
             IsIndestructible = true;
         }

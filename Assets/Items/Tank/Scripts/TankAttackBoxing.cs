@@ -6,14 +6,20 @@ namespace Item.Tank
 {
     public class TankAttackBoxing : TankAttack
     {
-        public SpringBoxingAmmo springBoxing;   // 弹簧拳组件
         public SpringManager springManager;     // 弹簧控制
+        public BoxingAmmo boxingGlove;          // 弹簧拳组件
         public Collider boxingCollider;         // 拳套
         public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.4f, 1);    // 发射距离比例
         public AnimationCurve backDistance = AnimationCurve.Linear(0, 1, 0.4f, 0);      // 回来距离比例
         public float launchTotalTime = 0.8f;    // 总共发射来回时间
 
         private float launchElapsed;            // 发射后经过的时间
+
+        protected new void OnEnable()
+        {
+            base.OnEnable();
+            springManager.fillAmount = 0;
+        }
 
         /// <summary>
         /// 攻击实际效果
@@ -34,6 +40,9 @@ namespace Item.Tank
         /// <param name="coolDownTime">发射后冷却时间</param>
         private void Launch(float launchForce, float fireDamage, float coolDownTime)
         {
+            springManager.maxDistance = launchForce / 10f;
+            boxingGlove.damage = fireDamage;
+
             StartCoroutine(LaunchBoxingGlove());
 
             cdTimer.Reset(coolDownTime);
@@ -46,7 +55,6 @@ namespace Item.Tank
         private IEnumerator LaunchBoxingGlove()
         {
             launchElapsed = 0f;
-            springManager.maxDistance = forceSlider.value / 10f;
             boxingCollider.enabled = true;
 
             while (launchElapsed < launchTotalTime)
