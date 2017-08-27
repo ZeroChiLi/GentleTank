@@ -77,9 +77,7 @@ namespace CrossPlatformInput
         /// <param name="buttonInput">按钮输入对象</param>
         static public void RegisterButton(ButtonInput buttonInput)
         {
-            if (buttonInputDic.ContainsKey(buttonInput.ButtonName))
-                Debug.LogErrorFormat("RegisterButton Error: '{0}' have been exists.",buttonInput.ButtonName);
-            else
+            if (!buttonInputDic.ContainsKey(buttonInput.ButtonName))
                 buttonInputDic.Add(buttonInput.ButtonName, buttonInput);
         }
 

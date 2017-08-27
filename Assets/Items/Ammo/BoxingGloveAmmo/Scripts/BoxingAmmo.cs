@@ -6,6 +6,8 @@ namespace Item.Ammo
     public class BoxingAmmo : AmmoBase
     {
         public ObjectPool effectPool;                   // 特效池
+        [HideInInspector]
+        public bool needTurnBack;                       // 请求弹簧拳返回（碰到物体了）
 
         private HealthManager targetHealth;             // 目标血量
 
@@ -16,8 +18,10 @@ namespace Item.Ammo
         {
             IsIndestructible = true;
         }
+
         protected override IEnumerator OnCollision(Collider other)
         {
+            needTurnBack = true;
             effectPool.GetNextObject(true,transform);
             targetHealth = other.GetComponent<HealthManager>();
             if (targetHealth != null)

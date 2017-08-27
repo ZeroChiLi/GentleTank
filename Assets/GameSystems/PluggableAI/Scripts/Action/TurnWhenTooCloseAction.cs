@@ -12,7 +12,7 @@ namespace GameSystem.AI
         {
             if (!controller.instancePrefs.Contains("ChaseTarget"))
                 return;
-            if (controller.navMeshAgent.remainingDistance <= controller.navMeshAgent.stoppingDistance && !controller.navMeshAgent.pathPending)
+            if (controller.navMeshAgent.remainingDistance < controller.navMeshAgent.stoppingDistance && !controller.navMeshAgent.pathPending)
             {
                 Vector3 direction = ((Transform)controller.instancePrefs["ChaseTarget"]).position - controller.transform.position;
                 direction.y = 0;

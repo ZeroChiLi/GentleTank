@@ -38,9 +38,25 @@ namespace Item.Tank
         }
 
         /// <summary>
-        /// 激活时初始化
+        /// 激活时重置信息
         /// </summary>
         protected void OnEnable()
+        {
+            ResetValue();
+        }
+
+        /// <summary>
+        /// 失活时重置信息
+        /// </summary>
+        protected void OnDisable()
+        {
+            ResetValue();
+        }
+
+        /// <summary>
+        /// 在激活和失活时重置信息
+        /// </summary>
+        protected void ResetValue()
         {
             forceSlider.minValue = minLaunchForce;
             forceSlider.maxValue = maxLaunchForce;

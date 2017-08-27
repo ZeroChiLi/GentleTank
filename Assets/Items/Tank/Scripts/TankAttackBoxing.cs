@@ -20,6 +20,12 @@ namespace Item.Tank
             springManager.fillAmount = 0;
         }
 
+        protected new void OnDisable()
+        {
+            base.OnDisable();
+            springManager.fillAmount = 0;
+        }
+
         /// <summary>
         /// 攻击实际效果
         /// </summary>
@@ -55,18 +61,30 @@ namespace Item.Tank
         {
             launchElapsed = 0f;
             boxingCollider.enabled = true;
+            boxingGlove.needTurnBack = false;
 
             while (launchElapsed < launchTotalTime)
             {
-                launchElapsed += Time.deltaTime;
-
-                if (launchElapsed < launchTotalTime / 2f)
+                if (!boxingGlove.needTurnBack && launchElapsed < launchTotalTime / 2f)
+                {
                     springManager.fillAmount = launchDistance.Evaluate(launchElapsed);
+                    launchElapsed += Time.deltaTime;
+                }
                 else
                 {
-                    springManager.fillAmount = launchDistance.Evaluate(launchTotalTime - launchElapsed);
+                    if (boxingGlove.needTurnBack)
+                    {
+                        launchElapsed -= Time.deltaTime;
+                        springManager.fillAmount = launchDistance.Evaluate(launchElapsed);
+                    }
+                    else
+                    {
+                        launchElapsed += Time.deltaTime;
+                        springManager.fillAmount = launchDistance.Evaluate(launchTotalTime - launchElapsed);
+                    }
                     boxingCollider.enabled = false;
                 }
+
                 yield return null;
             }
 
