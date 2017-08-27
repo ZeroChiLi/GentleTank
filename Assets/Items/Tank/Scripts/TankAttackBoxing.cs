@@ -9,8 +9,7 @@ namespace Item.Tank
         public SpringManager springManager;     // 弹簧控制
         public BoxingAmmo boxingGlove;          // 弹簧拳组件
         public Collider boxingCollider;         // 拳套
-        public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.4f, 1);    // 发射距离比例
-        public AnimationCurve backDistance = AnimationCurve.Linear(0, 1, 0.4f, 0);      // 回来距离比例
+        public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.4f, 1);    // 发射距离比例,来回对称
         public float launchTotalTime = 0.8f;    // 总共发射来回时间
 
         private float launchElapsed;            // 发射后经过的时间
@@ -65,7 +64,7 @@ namespace Item.Tank
                     springManager.fillAmount = launchDistance.Evaluate(launchElapsed);
                 else
                 {
-                    springManager.fillAmount = backDistance.Evaluate(launchElapsed - (launchTotalTime / 2f));
+                    springManager.fillAmount = launchDistance.Evaluate(launchTotalTime - launchElapsed);
                     boxingCollider.enabled = false;
                 }
                 yield return null;

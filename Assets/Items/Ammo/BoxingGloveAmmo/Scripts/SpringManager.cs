@@ -7,8 +7,8 @@ public class SpringManager : MonoBehaviour
 
     public Transform anchor;                        // 锚点
     public Transform spring;                        // 弹簧
-    public Vector3 anchorStartPos = new Vector3(0.37f, -0.05f,-0.15f);  // 起始锚点位置（本地）
-    public Vector3 springStartScale = new Vector3(100,100,700);         // 弹簧起始缩放（本地）
+    public Vector3 anchorStartPos = Vector3.zero;   // 起始锚点位置（本地）
+    public Vector3 springStartScale = Vector3.one;  // 弹簧起始缩放（本地）
     public Axis movableAxis = Axis.z;               // 可移动的轴
     public float scaleFactor = 200f;                // 弹簧缩放随锚点位置变化的缩放因子
     public float minDistance = 0f;                  // 最小距离

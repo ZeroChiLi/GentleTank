@@ -11,7 +11,7 @@ namespace Item.Ammo
 
         protected override IEnumerator OnCollision(Collider other)
         {
-            arrowHitPool.GetNextObject(transform: transform);
+            arrowHitPool.GetNextObject(true, transform);
             targetHealth = other.GetComponent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage);
