@@ -9,11 +9,12 @@ static public class ChangeColor
     /// </summary>
     /// <param name="gameObject">渲染对象</param>
     /// <param name="color">渲染颜色</param>
+    /// <param name="materialName">特定材质名称</param>
     /// <returns>返回变后颜色</returns>
-    static public Color SelfAndChildrens(GameObject gameObject,Color color)
+    static public Color SelfAndChildrens(GameObject gameObject,Color color,string materialName = null)
     {
         MeshRenderer selfMesh = gameObject.GetComponent<MeshRenderer>();
-        if (selfMesh != null)           // 自己本身有材质就染色
+        if (selfMesh != null && (materialName == null  ||  materialName == selfMesh.material.name ))   // 自己本身有材质就染色
             selfMesh.material.color = color;
 
         MeshRenderer[] meshRenderer = gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -25,7 +26,8 @@ static public class ChangeColor
         }
 
         for (int i = 0; i < meshRenderer.Length; i++)
-            meshRenderer[i].material.color = color;
+            if (materialName == null || materialName == meshRenderer[i].material.name)
+                meshRenderer[i].material.color = color;
         return color;
     }
 }

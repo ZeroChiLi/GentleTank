@@ -34,7 +34,8 @@ public class CoolDownButtonManager : MonoBehaviour
         coolDownTimer = new CountDownTimer(coolDownTime);
         if (!coolDownAtStart)
             coolDownTimer.End();
-        buttonFullImg.fillAmount = coolDownAtStart ? 1 : 0;
+        if (buttonFullImg != null)
+            buttonFullImg.fillAmount = coolDownAtStart ? 1 : 0;
         button.onClick.AddListener(OnClick);
     }
 

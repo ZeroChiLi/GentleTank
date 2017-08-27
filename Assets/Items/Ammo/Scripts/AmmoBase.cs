@@ -19,7 +19,7 @@ namespace Item.Ammo
 
         protected Collider ammoCollider;    // 子弹的碰撞体
         protected int currentDruability;    // 当前子弹耐久度
-        private AmmoBase otherAmmo;         // 临时别的子弹
+        protected AmmoBase otherAmmo;       // 临时别的子弹
 
         /// <summary>
         /// 初始化弹药
@@ -64,12 +64,12 @@ namespace Item.Ammo
         /// <param name="other">碰撞的其他物体</param>
         private void OnTriggerEnter(Collider other)
         {
-            // 如果已经失活了，或者碰到自己，就跳过
-            if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()))
+            // 如果已经失活了，或者碰到自己，或者标记无视弹药层、就跳过
+            if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()) || other.gameObject.layer == LayerMask.NameToLayer("IgnoreAmmo"))
                 return;
             StartCoroutine(OnCollision(other));
             if (!IsIndestructible && DruabilityLowerThanZero(other))
-                StartCoroutine(OnCrashed());
+                StartCoroutine(OnCrashed(other));
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Item.Ammo
         /// 耐久值小于等于0时响应
         /// </summary>
         /// <returns></returns>
-        protected virtual IEnumerator OnCrashed()
+        protected virtual IEnumerator OnCrashed(Collider other)
         {
             if (!gameObject.activeInHierarchy)
                 yield return null;
