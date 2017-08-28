@@ -19,14 +19,13 @@ namespace Item.Ammo
             IsIndestructible = true;
         }
 
-        protected override IEnumerator OnCollision(Collider other)
+        protected override void OnCollision(Collider other)
         {
             needTurnBack = true;
             effectPool.GetNextObject(true,transform);
             targetHealth = other.GetComponent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage);
-            yield break;
         }
     }
 }

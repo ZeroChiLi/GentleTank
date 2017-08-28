@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合
         if (GameRound.Instance.IsEndOfTheGame())
-            SceneManager.LoadScene(0);
+            AllSceneManager.LoadScene(GameScene.SoloScene);
         else
             StartCoroutine(GameLoop());
     }

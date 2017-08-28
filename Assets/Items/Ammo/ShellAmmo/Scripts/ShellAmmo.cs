@@ -13,7 +13,7 @@ namespace Item.Ammo
         private Collider[] colliders;                       // 碰撞物体们
         private HealthManager targetHealth;                 // 目标血量
 
-        protected override IEnumerator OnCollision(Collider other)
+        protected override void OnCollision(Collider other)
         {
             // 从爆炸池中获取对象，并设置位置，显示之
             shellExplosionPool.GetNextObject(transform: transform);
@@ -23,7 +23,6 @@ namespace Item.Ammo
 
             for (int i = 0; i < colliders.Length; i++)
                 TakeDamage(colliders[i]);
-            yield return null;
         }
 
         /// <summary>

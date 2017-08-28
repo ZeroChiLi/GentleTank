@@ -10,10 +10,10 @@ namespace GameSystem.AI
     {
         public override void Act(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseTarget"))
+            if (!controller.instancePrefs.Contains("ChaseEnemy"))
                 return;
 
-            controller.navMeshAgent.destination = ((Transform)controller.instancePrefs["ChaseTarget"]).position;
+            controller.navMeshAgent.destination = ((Transform)controller.instancePrefs["ChaseEnemy"]).position;
             controller.navMeshAgent.isStopped = false;
         }
     }

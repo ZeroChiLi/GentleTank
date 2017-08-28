@@ -47,6 +47,7 @@ namespace Item.Tank
         {
             springManager.maxDistance = launchForce / 10f;
             boxingGlove.damage = fireDamage;
+            boxingCollider.enabled = true;
 
             StartCoroutine(LaunchBoxingGlove());
 
@@ -60,10 +61,8 @@ namespace Item.Tank
         private IEnumerator LaunchBoxingGlove()
         {
             launchElapsed = 0f;
-            boxingCollider.enabled = true;
             boxingGlove.needTurnBack = false;
-
-            while (launchElapsed < launchTotalTime)
+            while (launchElapsed < launchTotalTime && launchElapsed >= 0f)
             {
                 if (!boxingGlove.needTurnBack && launchElapsed < launchTotalTime / 2f)
                 {
@@ -87,7 +86,6 @@ namespace Item.Tank
 
                 yield return null;
             }
-
             springManager.fillAmount = 0f;
             boxingCollider.enabled = false;
         }

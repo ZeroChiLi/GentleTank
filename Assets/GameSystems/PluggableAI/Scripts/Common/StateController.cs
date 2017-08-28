@@ -15,7 +15,7 @@ namespace GameSystem.AI
         public PointList wayPointList;                          // 所有巡逻点
 
         public ObjectPreferences<object> statePrefs;            // 用于每一次状态保存信息使用时（OnExitState时清除）
-        public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseTarget）
+        public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
 
         private PlayerManager playerManager;                    // 玩家信息
         private HealthManager healthManager;                    // 玩家血量管理器
@@ -167,7 +167,7 @@ namespace GameSystem.AI
                 target = FindTarget.FindEnemy(out hit, transform, playerManager, anger, radius, debugColor);
             if (target != null)
             {
-                instancePrefs.AddOrModifyValue("ChaseTarget", target);
+                instancePrefs.AddOrModifyValue("ChaseEnemy", target);
                 return true;
             }
             return false;

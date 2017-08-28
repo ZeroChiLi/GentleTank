@@ -10,13 +10,13 @@ namespace GameSystem.AI
     {
         public override bool Decide(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseTarget"))
+            if (!controller.instancePrefs.Contains("ChaseEnemy"))
                 return false;
 
-            if (((Transform)controller.instancePrefs["ChaseTarget"]).gameObject.activeSelf)
+            if (((Transform)controller.instancePrefs["ChaseEnemy"]).gameObject.activeSelf)
                 return true;
 
-            controller.instancePrefs.Remove("ChaseTarget");     // 死掉了，删掉键值
+            controller.instancePrefs.Remove("ChaseEnemy");     // 死掉了，删掉键值
             return false;
         }
 

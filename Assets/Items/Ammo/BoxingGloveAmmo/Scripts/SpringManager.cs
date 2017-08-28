@@ -16,12 +16,13 @@ public class SpringManager : MonoBehaviour
     [Range(0, 1)]
     public float fillAmount = 0.5f;                 // 距离插值
 
+    public float CurrentDistance { get { return currentDistance; } }
     private float currentDistance;                  // 当前距离
 
     /// <summary>
     /// 更新当前距离，弹簧缩放，锚点位置
     /// </summary>
-    private void Update()
+    private void LateUpdate()
     {
         currentDistance = Mathf.Lerp(minDistance, maxDistance, fillAmount);
         UpdateAnchorPosAndSpringScale();
