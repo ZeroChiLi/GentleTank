@@ -12,7 +12,6 @@ public class PlayerAndTeamWindow : EditorWindow
 
     private bool showTeamList = true;           // 是否显示团队列表
     private Vector2 scrollPos;                  // 滑动面板位置
-    private bool[] playerShow;                  // 对应坦克管理是否显示在面板
     private GUIContent content;                 // 临时GUI内容
 
     [MenuItem("Window/Player And Team")]
@@ -30,7 +29,6 @@ public class PlayerAndTeamWindow : EditorWindow
         SelectedMyPlayer();
         GetTeams();
         GUILayout.Label("============================================================================================================");
-        OpenOrCloseAllPlayerInfo();
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         PlayersAndTeamsOperation();
         EditorGUILayout.EndScrollView();
@@ -53,8 +51,6 @@ public class PlayerAndTeamWindow : EditorWindow
         }
         for (int i = 0; i < playerInfoList.Count; i++)
             playerInfoList[i].id = i;
-        if (playerShow == null || playerShow.Length != playerInfoList.Count)
-            playerShow = new bool[playerInfoList.Count];
         return true;
     }
 
@@ -117,34 +113,6 @@ public class PlayerAndTeamWindow : EditorWindow
     }
 
     /// <summary>
-    /// 打开我的玩家列表、全部打开、全部关闭玩家信息列表按钮
-    /// </summary>
-    private void OpenOrCloseAllPlayerInfo()
-    {
-        Horizontal(true);
-        if (GUILayout.Button("Open My Player") && GameMathf.InRange(players.myPlayerIndex, 0, playerInfoList.Count - 1))
-        {
-            AllPlayerInfoTrigger(false);
-            playerShow[players.myPlayerIndex] = true;
-        }
-        if (GUILayout.Button("Open All"))
-            AllPlayerInfoTrigger(true);
-        if (GUILayout.Button("Close All"))
-            AllPlayerInfoTrigger(false);
-        Horizontal(false);
-    }
-
-    /// <summary>
-    /// 所有玩家信息列表开关
-    /// </summary>
-    /// <param name="open">是否打开（否则关闭）</param>
-    private void AllPlayerInfoTrigger(bool open)
-    {
-        for (int i = 0; i < playerShow.Length; i++)
-            playerShow[i] = open;
-    }
-
-    /// <summary>
     /// 玩家和团队选择列表
     /// </summary>
     private void PlayersAndTeamsOperation()
@@ -163,41 +131,18 @@ public class PlayerAndTeamWindow : EditorWindow
     /// <param name="index">当前玩家索引</param>
     private void PlayerOperation(int index)
     {
-        if (!ShowPlayerTeamInfo(index))
-            return;
-        GUILayout.Space(5);
-        
         Horizontal(true);
-        EditorGUILayout.PrefixLabel("Select Player's Team : ");
-        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField(" ID : " + playerInfoList[index].id, GUILayout.Width(100));
 
-        ShowDropdown(index);                                    //显示下拉菜单
-        ShowTeamInfo(playerInfoList[index].team);               //显示选中团队信息
-
-        EditorGUILayout.EndVertical();
-        Horizontal(false);
-    }
-
-    /// <summary>
-    /// 显示玩家信息，并返回是否显示团队选择信息
-    /// </summary>
-    /// <param name="index">当前玩家索引</param>
-    /// <returns>是否显示团队选择信息</returns>
-    private bool ShowPlayerTeamInfo(int index)
-    {
-        Horizontal(true);
-        playerShow[index] = EditorGUILayout.Foldout(playerShow[index], " ID : " + playerInfoList[index].id);
-
-        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name);
+        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name, GUILayout.Width(200));
 
         EditorGUILayout.LabelField(" AI : ", GUILayout.Width(30));
-        playerInfoList[index].isAI = EditorGUILayout.Toggle(playerInfoList[index].isAI);
+        playerInfoList[index].isAI = EditorGUILayout.Toggle(playerInfoList[index].isAI, GUILayout.Width(70));
 
-        EditorGUILayout.LabelField(" Color : ", GUILayout.Width(50));
-        playerInfoList[index].representColor = EditorGUILayout.ColorField(playerInfoList[index].representColor, GUILayout.Width(100));
+        EditorGUILayout.LabelField(" Team : ", GUILayout.Width(50));
+        ShowDropdown(index);                                    //团队显示下拉菜单
 
         Horizontal(false);
-        return playerShow[index];
     }
 
     /// <summary>
@@ -227,23 +172,6 @@ public class PlayerAndTeamWindow : EditorWindow
         }
     }
 
-    /// <summary>
-    /// 显示团队ID、颜色
-    /// </summary>
-    /// <param name="team">团队</param>
-    private void ShowTeamInfo(TeamManager team)
-    {
-        if (team == null)
-        {
-            EditorGUILayout.Space();
-            return;
-        }
-
-        Horizontal(true);
-        EditorGUILayout.LabelField("Team ID : " + team.TeamID);
-        team.TeamColor = EditorGUILayout.ColorField(team.TeamColor);
-        Horizontal(false);
-    }
 
     /// <summary>
     /// 使用水平布局，参数是开始或结束
