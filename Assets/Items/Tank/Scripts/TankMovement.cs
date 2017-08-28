@@ -65,8 +65,11 @@ namespace Item.Tank
 
             Move(Input.GetAxis(movementAxisName));
             Turn(Input.GetAxis(turnAxisName));
-            Move(JoystickInput.Instance.GetAxis().y);
-            Turn(JoystickInput.Instance.GetAxis().x);
+            if (JoystickInput.Instance != null)
+            {
+                Move(JoystickInput.Instance.GetAxis().y);
+                Turn(JoystickInput.Instance.GetAxis().x);
+            }
         }
 
         /// <summary>

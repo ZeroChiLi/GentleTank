@@ -17,6 +17,9 @@ public class Effect : MonoBehaviour
             effectParticle = GetComponent<ParticleSystem>();
     }
 
+    /// <summary>
+    /// 激活时生效
+    /// </summary>
     void OnEnable()
     {
         // 开启爆炸音效
@@ -28,10 +31,12 @@ public class Effect : MonoBehaviour
             effectParticle.Play();
     }
 
-    //在粒子结束时，该对象设置失效。
+    /// <summary>
+    /// 在粒子结束时，该对象设置失效
+    /// </summary>
     void Update()
     {
-        if (ativeWithParticle && effectParticle.isStopped)
+        if (ativeWithParticle && effectParticle != null && effectParticle.isStopped)
             gameObject.SetActive(false);
     }
 }
