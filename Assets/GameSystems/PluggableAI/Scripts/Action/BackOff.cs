@@ -13,7 +13,7 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseTarget"))
+            if (!controller.instancePrefs.Contains("ChaseTarget") || controller.navMeshAgent.pathPending)
                 return;
             if (GameMathf.TwoPosInRange(((Transform)controller.instancePrefs["ChaseTarget"]).position, controller.transform.position, keepDistance))
                 controller.rigidbodySelf.position += -1 * controller.transform.forward.normalized * controller.navMeshAgent.speed * Time.deltaTime;

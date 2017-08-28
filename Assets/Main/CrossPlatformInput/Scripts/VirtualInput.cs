@@ -110,7 +110,7 @@ namespace CrossPlatformInput
         {
             if (buttonInputDic.ContainsKey(buttonName))
                 return buttonInputDic[buttonName];
-            Debug.LogErrorFormat("Can't Find '{0}' Button", buttonName);
+            Debug.LogWarningFormat("Can't Find '{0}' Button", buttonName);
             return null;
         }
 

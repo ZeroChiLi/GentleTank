@@ -10,9 +10,9 @@ namespace GameSystem.AI
     {
         public override void Act(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseTarget"))
+            if (!controller.instancePrefs.Contains("ChaseTarget") || controller.navMeshAgent.pathPending)
                 return;
-            if (controller.navMeshAgent.remainingDistance < controller.navMeshAgent.stoppingDistance && !controller.navMeshAgent.pathPending)
+            if (controller.navMeshAgent.remainingDistance < controller.navMeshAgent.stoppingDistance)
             {
                 Vector3 direction = ((Transform)controller.instancePrefs["ChaseTarget"]).position - controller.transform.position;
                 direction.y = 0;

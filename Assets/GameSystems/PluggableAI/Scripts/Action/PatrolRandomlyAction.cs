@@ -10,6 +10,7 @@ namespace GameSystem.AI
     {
         public override void Act(StateController controller)
         {
+            controller.navMeshAgent.enabled = true;
             controller.navMeshAgent.destination = controller.NextWayPoint.position;
             controller.navMeshAgent.isStopped = false;  //保持运动状态
 
