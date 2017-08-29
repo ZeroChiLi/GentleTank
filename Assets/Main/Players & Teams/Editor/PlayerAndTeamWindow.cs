@@ -59,7 +59,7 @@ public class PlayerAndTeamWindow : EditorWindow
     /// </summary>
     private void SelectedMyPlayer()
     {
-        Horizontal(true);
+        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("Select My Player : ");
         if (EditorGUILayout.DropdownButton(GetContentByPlayerIndex(players.myPlayerIndex), FocusType.Passive))
         {
@@ -73,7 +73,7 @@ public class PlayerAndTeamWindow : EditorWindow
             }
             menu.ShowAsContext();
         }
-        Horizontal(false);
+        EditorGUILayout.EndHorizontal();
     }
 
     /// <summary>
@@ -131,25 +131,28 @@ public class PlayerAndTeamWindow : EditorWindow
     /// <param name="index">当前玩家索引</param>
     private void PlayerOperation(int index)
     {
-        Horizontal(true);
-        EditorGUILayout.LabelField(" ID : " + playerInfoList[index].id, GUILayout.Width(100));
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(" ID : " + playerInfoList[index].id, GUILayout.Width(80));
 
-        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name, GUILayout.Width(200));
+        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name, GUILayout.Width(150));
 
         EditorGUILayout.LabelField(" AI : ", GUILayout.Width(30));
-        playerInfoList[index].isAI = EditorGUILayout.Toggle(playerInfoList[index].isAI, GUILayout.Width(70));
+        playerInfoList[index].isAI = EditorGUILayout.Toggle(playerInfoList[index].isAI, GUILayout.Width(50));
+
+        EditorGUILayout.LabelField(" Perfab : ", GUILayout.Width(55));
+        playerInfoList[index].perfab = EditorGUILayout.ObjectField(playerInfoList[index].perfab, typeof(GameObject), false, GUILayout.Width(125)) as GameObject;
 
         EditorGUILayout.LabelField(" Team : ", GUILayout.Width(50));
-        ShowDropdown(index);                                    //团队显示下拉菜单
+        TeamSelect(index);                                    //团队显示下拉菜单
 
-        Horizontal(false);
+        EditorGUILayout.EndHorizontal();
     }
 
     /// <summary>
     /// 显示团队下拉列表，第一项是玩家已经有队伍
     /// </summary>
     /// <param name="index">玩家索引</param>
-    private void ShowDropdown(int index)
+    private void TeamSelect(int index)
     {
         content = new GUIContent();
         //如果存在该队伍，直接显示在下拉菜单中
@@ -170,19 +173,6 @@ public class PlayerAndTeamWindow : EditorWindow
             }
             menu.ShowAsContext();
         }
-    }
-
-
-    /// <summary>
-    /// 使用水平布局，参数是开始或结束
-    /// </summary>
-    /// <param name="trigger">是否开始（否则结束）</param>
-    private void Horizontal(bool trigger)
-    {
-        if (trigger)
-            EditorGUILayout.BeginHorizontal();
-        else
-            EditorGUILayout.EndHorizontal();
     }
 
 }
