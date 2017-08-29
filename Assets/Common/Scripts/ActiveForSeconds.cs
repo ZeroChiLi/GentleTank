@@ -9,12 +9,12 @@ public class ActiveForSeconds : MonoBehaviour
 
     private float currentTime;
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         currentTime = 0f;
     }
 
-    private void Update()
+    protected void LateUpdate()
     {
         if (currentTime > lifeTime)
             gameObject.SetActive(false);

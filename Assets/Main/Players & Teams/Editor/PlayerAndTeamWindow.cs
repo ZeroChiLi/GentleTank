@@ -84,7 +84,7 @@ public class PlayerAndTeamWindow : EditorWindow
     private GUIContent GetContentByPlayerIndex(int index)
     {
         content = new GUIContent();
-        if (GameMathf.InRange(index, 0, playerInfoList.Count - 1))
+        if (GameMathf.ValueInRange(0, playerInfoList.Count - 1, index))
             content.text = string.Format("ID : {0}   Name : {1}", playerInfoList[index].id, playerInfoList[index].name);
         return content;
     }

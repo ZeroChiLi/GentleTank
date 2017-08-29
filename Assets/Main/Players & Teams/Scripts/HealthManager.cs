@@ -75,7 +75,8 @@ public abstract class HealthManager : MonoBehaviour
     /// 设置血量变化
     /// </summary>
     /// <param name="amount">变化值</param>
-    public void SetHealthAmount(float amount)
+    /// <param name="from">哪个玩家要改的（谁打的）</param>
+    public void SetHealthAmount(float amount,PlayerManager from = null)
     {
         if (amount == 0)                // 没变化
             return;
@@ -86,19 +87,19 @@ public abstract class HealthManager : MonoBehaviour
         }
         CurrentHealth += amount;
         UpdateSlider();
-        OnHealthChanged();
+        OnHealthChanged(from);
         if (IsDead)
-            OnDead();
+            OnDead(from);
     }
 
     /// <summary>
     /// 血量变化时调用
     /// </summary>
-    abstract protected void OnHealthChanged();
+    abstract protected void OnHealthChanged(PlayerManager from = null);
 
     /// <summary>
     /// 玩家死掉时调用
     /// </summary>
-    abstract protected void OnDead();
+    abstract protected void OnDead(PlayerManager from = null);
 
 }

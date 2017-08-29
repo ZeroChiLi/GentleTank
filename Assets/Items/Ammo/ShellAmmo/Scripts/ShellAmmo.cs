@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Item.Ammo
@@ -9,9 +10,14 @@ namespace Item.Ammo
         public float explosionForce = 100f;                 // 爆炸中心的能量
         public float explosionRadius = 5f;                  // 爆炸半径
 
-        // 把每次需要用到的临时变量拉出来
-        private Collider[] colliders;                       // 碰撞物体们
         private HealthManager targetHealth;                 // 目标血量
+        private List<HealthManager> validTargets;           // 临时有效玩家列表        
+
+        protected new void Awake()
+        {
+            base.Awake();
+            validTargets = new List<HealthManager>();
+        }
 
         protected override void OnCollision(Collider other)
         {
@@ -19,41 +25,40 @@ namespace Item.Ammo
             shellExplosionPool.GetNextObject(transform: transform);
 
             // 获取爆炸范围内所有碰撞体
-            colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+            FindValidTargets(Physics.OverlapSphere(transform.position, explosionRadius),ref validTargets);
 
+            for (int i = 0; i < validTargets.Count; i++)
+                TakeDamage(validTargets[i]);
+        }
+
+        /// <summary>
+        /// 查找有效对象列表
+        /// </summary>
+        /// <param name="colliders">所有碰撞体</param>
+        /// <param name="targets">输出的有效目标列表</param>
+        private void FindValidTargets(Collider[] colliders,ref List<HealthManager> targets)
+        {
+            targets.Clear();
             for (int i = 0; i < colliders.Length; i++)
-                TakeDamage(colliders[i]);
+            {
+                targetHealth = colliders[i].GetComponent<HealthManager>();
+                if (!targetHealth)
+                    continue;
+                if (!targets.Contains(targetHealth))
+                    targets.Add(targetHealth);
+            }
         }
 
         /// <summary>
         /// 获取目标的血条，计算扣血量并给给扣血。
         /// </summary>
-        /// <param name="collider"></param>
-        private void TakeDamage(Collider collider)
+        /// <param name="targetHealth">目标的血条</param>
+        private void TakeDamage(HealthManager targetHealth)
         {
-            targetHealth = collider.GetComponent<HealthManager>();
-            if (!targetHealth)
-                return;
-            targetHealth.SetHealthAmount(-1 * CalculateDamage(collider.transform.position));
+            // 计算目标距离爆炸中心比例值（0 ~ 1,0为中），越靠近伤害越大，线性的
+            targetHealth.SetHealthAmount(-1 * Mathf.Max(0f, GameMathf.Persents(explosionRadius, 0, (targetHealth.transform.position - transform.position).magnitude) * damage), launcher);
         }
 
-        /// <summary>
-        /// 根据距离计算伤害值
-        /// </summary>
-        /// <param name="targetPosition">目标位置</param>
-        /// <returns></returns>
-        private float CalculateDamage(Vector3 targetPosition)
-        {
-            // 计算爆炸中心距离和自己的距离
-            Vector3 explosionToTarget = targetPosition - transform.position;
-            float explosionDistance = explosionToTarget.magnitude;
-
-            // 转换成比例
-            float relativeDistance = (explosionRadius - explosionDistance) / explosionRadius;
-
-            // 根据比例计算伤害
-            return Mathf.Max(0f, relativeDistance * damage);
-        }
 
     }
 }

@@ -15,7 +15,7 @@ namespace Item.Ammo
             arrowHitPool.GetNextObject(true, transform);
             targetHealth = other.GetComponent<HealthManager>();
             if (targetHealth != null)
-                targetHealth.SetHealthAmount(-damage);
+                targetHealth.SetHealthAmount(-damage ,launcher);
         }
 
         /// <summary>

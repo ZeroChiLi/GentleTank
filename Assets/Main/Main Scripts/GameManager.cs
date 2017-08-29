@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
                 myTank = tankList[i];
         }
 
-        allCameraRig.Init(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
+        allCameraRig.Init(myTank== null ? null : myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
 
         if (myTank != null)
         {
@@ -149,7 +149,8 @@ public class GameManager : MonoBehaviour
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
-        allCameraRig.TurnToAutoCam();
+        if (myTank != null)
+            allCameraRig.TurnToAutoCam();
         yield return startWait;                         // 延时一段时间再开始
     }
 

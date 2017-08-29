@@ -44,16 +44,18 @@ namespace Item.Tank
         /// <summary>
         /// 血量改变时，默认操作就好了
         /// </summary>
-        protected override void OnHealthChanged() { }
+        protected override void OnHealthChanged(PlayerManager from = null) { }
 
         /// <summary>
         /// 死亡事件（爆炸特性、产生残骸）
         /// </summary>
-        protected override void OnDead()
+        protected override void OnDead(PlayerManager from = null)
         {
             tankExplosionPool.GetNextObject(transform: gameObject.transform);
             gameObject.SetActive(false);
             tankBustedPool.GetNextObject().GetComponent<BustedTankMananger>().SetupBustedTank(transform, playerManager.RepresentColor);
+            if (AllKillMessageManager.Instance != null && from != null)
+                AllKillMessageManager.Instance.AddKillMessage(from, playerManager);
         }
 
     }
