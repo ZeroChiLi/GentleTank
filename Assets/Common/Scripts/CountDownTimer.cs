@@ -58,7 +58,7 @@ public sealed class CountDownTimer
     }
 
     /// <summary>
-    /// 开始计时，取消暂停状态
+    /// 重置计时器，并开始计时
     /// </summary>
     public void Start()
     {

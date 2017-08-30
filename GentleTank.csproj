@@ -192,6 +192,7 @@
     <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\SpringManager.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoBase.cs" />
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttack.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackBoxing.cs" />
@@ -302,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Items\Tank\Shaders\Dissolve.shader" />
     <None Include="Assets\Plugins\GitHub\CREDITS.txt" />
     <None Include="Assets\Plugins\GitHub\EULA.txt" />
     <None Include="Assets\Plugins\Photon\Photon3Unity3D.xml" />

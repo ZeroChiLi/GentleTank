@@ -8,6 +8,9 @@ namespace GameSystem.AI
     [CreateAssetMenu(menuName = "PluggableAI/Actions/TurnWhenTooClose")]
     public class TurnWhenTooCloseAction : Action
     {
+        [Range(0, 30f)]
+        public float tolerance = 15f;      // 旋转角度的容差
+
         public override void Act(StateController controller)
         {
             if (!controller.instancePrefs.Contains("ChaseEnemy") || controller.navMeshAgent.pathPending)
@@ -17,6 +20,8 @@ namespace GameSystem.AI
                 Vector3 direction = ((Transform)controller.instancePrefs["ChaseEnemy"]).position - controller.transform.position;
                 direction.y = 0;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
+                if (targetRotation.AlmostEquals(controller.transform.rotation,tolerance))
+                    return;
                 controller.rigidbodySelf.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, controller.navMeshAgent.angularSpeed * Time.deltaTime);
             }
         }
