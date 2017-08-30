@@ -194,11 +194,13 @@
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankAssemble.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttack.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackBoxing.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackShooting.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankHealth.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModule.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\AxisInput.cs" />
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\ButtonInput.cs" />
