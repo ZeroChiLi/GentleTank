@@ -36,7 +36,6 @@ namespace Item.Tank
         /// </summary>
         private void OnEnable()
         {
-            tankRigidbody.isKinematic = false;
             movementInputValue = 0f;
             turnInputValue = 0f;
 
@@ -50,8 +49,6 @@ namespace Item.Tank
         /// </summary>
         private void OnDisable()
         {
-            tankRigidbody.isKinematic = true;
-
             for (int i = 0; i < particleSystems.Length; ++i)
                 particleSystems[i].Stop();
         }
