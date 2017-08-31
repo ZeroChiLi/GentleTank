@@ -14,7 +14,7 @@ public class ConnectAnchor
     public Vector3 rotation;
 }
 
-[CreateAssetMenu(menuName = "TankModule")]
+[CreateAssetMenu(menuName = "Tank/TankModule")]
 public class TankModule : ScriptableObject 
 {
     public GameObject prefab;
