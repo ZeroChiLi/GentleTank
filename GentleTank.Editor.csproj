@@ -176,6 +176,10 @@
       <Project>{695D727A-2C51-B7B0-45F3-1CC0D22E1DC8}</Project>
       <Name>GentleTank</Name>
     </ProjectReference>
+    <ProjectReference Include="GentleTank.Editor.Plugins.csproj">
+      <Project>{3814B13B-2F50-50F9-5477-ADA0FB700ECA}</Project>
+      <Name>GentleTank.Editor.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Environment\Editor\MoveSceneViewCamera.cs" />

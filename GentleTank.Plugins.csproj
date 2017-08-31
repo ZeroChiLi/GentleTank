@@ -126,6 +126,10 @@
     <Compile Include="Assets\Plugins\Photon\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Plugins\RuntimeNavMesh\Scripts\LocalNavMeshBuilder.cs" />
     <Compile Include="Assets\Plugins\RuntimeNavMesh\Scripts\NavMeshSourceTag.cs" />
+    <Compile Include="Assets\Plugins\UITween\Prefabs\Click Effect Pref\ClickedWaveAnimation.cs" />
+    <Compile Include="Assets\Plugins\UITween\Scripts\EasyTween.cs" />
+    <Compile Include="Assets\Plugins\UITween\Scripts\ReferencedFrom.cs" />
+    <Compile Include="Assets\Plugins\UITween\Scripts\UITween.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
