@@ -194,7 +194,6 @@
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />
-    <Compile Include="Assets\Items\Tank\Scripts\TankAssemble.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttack.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackBoxing.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackShooting.cs" />
@@ -223,6 +222,7 @@
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
+    <Compile Include="Assets\Menu\Scripts\CustomTankPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
@@ -231,6 +231,8 @@
     <Compile Include="Assets\Menu\Scripts\RoomInfoLabel.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomLabelsManager.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\TankModulePreviewManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\TankModulesTableManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />

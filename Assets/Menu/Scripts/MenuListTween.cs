@@ -20,6 +20,10 @@ public class MenuListTween : MonoBehaviour
         OpenCloseAll(true);
     }
 
+    /// <summary>
+    /// 打开或关闭菜单列表，参数为列表执行顺序
+    /// </summary>
+    /// <param name="positive">是否正序</param>
     public void OpenCloseAll(bool positive)
     {
         if (easyTweenList == null || easyTweenList.Count == 0)
@@ -27,6 +31,11 @@ public class MenuListTween : MonoBehaviour
         StartCoroutine(OpenCloseAllCoroutine(positive));
     }
 
+    /// <summary>
+    /// 菜单开关协程
+    /// </summary>
+    /// <param name="positive">是否正序</param>
+    /// <returns></returns>
     private IEnumerator OpenCloseAllCoroutine(bool positive)
     {
         index = positive ? 0 : (easyTweenList.Count - 1);

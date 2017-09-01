@@ -5,7 +5,6 @@ public class MainMenuManager : MonoBehaviour
 {
     public EasyTween title;                 // 标题
     public GameObject mainCanvas;           // 主菜单界面
-    public EasyTween mainMenu;              // 主菜单
     public GameObject mutiplayerCanvas;     // 多人模式菜单
 
     /// <summary>

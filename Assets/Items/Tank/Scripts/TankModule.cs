@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum ModuleType
+public enum TankModuleType
 {
     None, Turret, Body, WheelLeft,WheelRight
 }
@@ -9,19 +9,19 @@ public enum ModuleType
 [System.Serializable]
 public class ConnectAnchor
 {
-    public ModuleType type;
+    public TankModuleType type;
     public Vector3 anchor;
-    public Vector3 rotation;
 }
 
 [CreateAssetMenu(menuName = "Tank/TankModule")]
 public class TankModule : ScriptableObject 
 {
     public GameObject prefab;
-    public ModuleType type;
+    public Sprite preview;
+    public TankModuleType type;
     public List<ConnectAnchor> connectAnchor = new List<ConnectAnchor>();
 
-    public ConnectAnchor this[ModuleType type]
+    public ConnectAnchor this[TankModuleType type]
     {
         get
         {

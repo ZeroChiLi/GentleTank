@@ -56,10 +56,10 @@ public class TankAssembleWindow : EditorWindow
     /// <returns>只要存在无效的就返回false</returns>
     public bool Check()
     {
-        return (wheelLeftModule != null && wheelLeftModule.type == ModuleType.WheelLeft
-            && wheelRightModule != null && wheelRightModule.type == ModuleType.WheelRight
-            && bodyModule != null && bodyModule.type == ModuleType.Body
-            && turretModule != null && turretModule.type == ModuleType.Turret);
+        return (wheelLeftModule != null && wheelLeftModule.type == TankModuleType.WheelLeft
+            && wheelRightModule != null && wheelRightModule.type == TankModuleType.WheelRight
+            && bodyModule != null && bodyModule.type == TankModuleType.Body
+            && turretModule != null && turretModule.type == TankModuleType.Turret);
     }
 
     /// <summary>
@@ -101,9 +101,9 @@ public class TankAssembleWindow : EditorWindow
         wheelLeft = Instantiate(wheelLeftModule.prefab, newTank.transform);
         wheelRight = Instantiate(wheelRightModule.prefab, newTank.transform);
 
-        turret.transform.localPosition = bodyModule[ModuleType.Turret].anchor - turretModule[ModuleType.Body].anchor;
-        wheelLeft.transform.localPosition = bodyModule[ModuleType.WheelLeft].anchor - wheelLeftModule[ModuleType.Body].anchor;
-        wheelRight.transform.localPosition = bodyModule[ModuleType.WheelRight].anchor - wheelRightModule[ModuleType.Body].anchor;
+        turret.transform.localPosition = bodyModule[TankModuleType.Turret].anchor - turretModule[TankModuleType.Body].anchor;
+        wheelLeft.transform.localPosition = bodyModule[TankModuleType.WheelLeft].anchor - wheelLeftModule[TankModuleType.Body].anchor;
+        wheelRight.transform.localPosition = bodyModule[TankModuleType.WheelRight].anchor - wheelRightModule[TankModuleType.Body].anchor;
         return true;
     }
 
