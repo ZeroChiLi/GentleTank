@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour 
 {
-    public GameObject MainCanvas;           // 主菜单
-    public GameObject MutiplayerCanvas;     // 多人模式菜单
+    public EasyTween title;                 // 标题
+    public GameObject mainCanvas;           // 主菜单界面
+    public EasyTween mainMenu;              // 主菜单
+    public GameObject mutiplayerCanvas;     // 多人模式菜单
 
     /// <summary>
     /// 只显示主菜单
@@ -11,6 +14,11 @@ public class MainMenuManager : MonoBehaviour
     private void Awake()
     {
         BackToMainMenu();
+    }
+
+    private void Start()
+    {
+        title.OpenCloseObjectAnimation();
     }
 
     /// <summary>
@@ -26,8 +34,8 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void TurnToMutiplayerMenu()
     {
-        MainCanvas.SetActive(false);
-        MutiplayerCanvas.SetActive(true);
+        mainCanvas.SetActive(false);
+        mutiplayerCanvas.SetActive(true);
     }
 
     /// <summary>
@@ -35,8 +43,8 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void BackToMainMenu()
     {
-        MainCanvas.SetActive(true);
-        MutiplayerCanvas.SetActive(false);
+        mainCanvas.SetActive(true);
+        mutiplayerCanvas.SetActive(false);
     }
 
     /// <summary>

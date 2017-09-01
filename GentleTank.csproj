@@ -226,6 +226,7 @@
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\MenuListTween.cs" />
     <Compile Include="Assets\Menu\Scripts\PlayerPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomInfoLabel.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomLabelsManager.cs" />
