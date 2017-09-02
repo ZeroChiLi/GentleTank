@@ -3,11 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CustomTankPanelManager : MonoBehaviour 
+public class CustomTankMenuManager : MonoBehaviour 
 {
-    static private CustomTankPanelManager instance;
+    static private CustomTankMenuManager instance;
     [HideInInspector]
-    static public CustomTankPanelManager Instance { get { return instance; } }
+    static public CustomTankMenuManager Instance { get { return instance; } }
 
     public TextMeshProUGUI menuText;
     public Button changeBtn;

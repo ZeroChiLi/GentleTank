@@ -58,7 +58,7 @@ public class TankModulePreviewManager : MonoBehaviour
         if (isLocked)
             return;
         backgroundImage.color = pressedColor;
-        CustomTankPanelManager.Instance.SetSelectedModule(this);
+        CustomTankMenuManager.Instance.SetSelectedModule(this);
     }
 
 

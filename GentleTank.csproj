@@ -140,11 +140,13 @@
     <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />
     <Compile Include="Assets\Common\Scripts\CoolDownButtonManager.cs" />
     <Compile Include="Assets\Common\Scripts\CountDownTimer.cs" />
+    <Compile Include="Assets\Common\Scripts\EdgeDetectNormalsAndDepth.cs" />
     <Compile Include="Assets\Common\Scripts\Effect.cs" />
     <Compile Include="Assets\Common\Scripts\FaceToCamera.cs" />
     <Compile Include="Assets\Common\Scripts\GameMathf.cs" />
     <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
     <Compile Include="Assets\Common\Scripts\ObjectPreferences.cs" />
+    <Compile Include="Assets\Common\Scripts\PostEffectsBase.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
     <Compile Include="Assets\Common\Scripts\WorldToScreenPos.cs" />
     <Compile Include="Assets\GameSystems\OnlineMultiplayer\Scripts\CountDown.cs" />
@@ -218,11 +220,12 @@
     <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointList.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointsDebugShow.cs" />
+    <Compile Include="Assets\Menu\Scripts\AllCustomTankPreviewManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllRoommatesPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
-    <Compile Include="Assets\Menu\Scripts\CustomTankPanelManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\CustomTankMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
@@ -308,6 +311,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\Common\Shaders\EdgeDetectNormalAndDepth.shader" />
+    <None Include="Assets\Common\Shaders\ToonShading.shader" />
     <None Include="Assets\Items\Tank\Shaders\Dissolve.shader" />
     <None Include="Assets\Plugins\GitHub\CREDITS.txt" />
     <None Include="Assets\Plugins\GitHub\EULA.txt" />
