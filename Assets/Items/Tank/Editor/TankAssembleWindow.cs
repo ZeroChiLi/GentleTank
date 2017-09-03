@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class TankAssembleWindow : EditorWindow
 {
-    public string generatePath = "Items/Tank/CustomTank/";
-    public string tankName;
-    public TankModule bodyModule;
-    public TankModule turretModule;
-    public TankModule wheelLeftModule;
+    public string generatePath = "Items/Tank/CustomTank/";  // 生成预设的位置
+    public string tankName;                                 // 预设名称
+    public TankModule bodyModule;                           // 车身部件
+    public TankModule turretModule;                         // 头部部件
+    public TankModule wheelLeftModule;                      // 左边车轮部件
     public TankModule wheelRightModule;
 
-    private string relativePath;
-    private GameObject turret;
-    private GameObject wheelLeft;
-    private GameObject wheelRight;
+    private string relativePath;                            // 相对路径
+    private GameObject turret;                              // 临时头部对象
+    private GameObject wheelLeft;                           // 临时左边车轮对象
+    private GameObject wheelRight;                          // 临时右边车轮对象
+    private bool valid;                                     // 是否创建有效
 
-    private bool valid;
-    private Vector2 scrollPos;                  // 滑动面板位置
-    private GameObject newTankPrefab;
+    private Vector2 scrollPos;                              // 滑动面板位置
+    private GameObject newTankPrefab;                       // 创建的坦克预设
 
     [MenuItem("Window/Tank Assemble")]
     static void ShowWindows()

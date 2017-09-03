@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class TankModulesTableManager : MonoBehaviour
 {
-    public string tableName;
-    public string path = "/Items/Tank/TankModule/";
-    public TankModuleType moduleType;
-    public GameObject modulePreviewPrefab;
-    public List<TankModulePreviewManager> modulePreviewList;
+    public string tableName;                                    // 部件表名
+    public string path = "/Items/Tank/TankModule/";             // 部件相对地址
+    public TankModuleType moduleType;                           // 部件类型
+    public GameObject modulePreviewPrefab;                      // 部件预览图标
+    public List<TankModulePreviewManager> modulePreviewList;    // 部件预览列表    
 
-    private List<TankModule> moduleList;
-    private string fullPath { get { return Application.dataPath + path; } }
-    private TankModule temModule;
-    private TankModulePreviewManager temModulePreview;
+    private string fullPath { get { return Application.dataPath + path; } }     // 绝对地址
+    private List<TankModule> moduleList;                        // 部件列表
+    private TankModule temModule;                               // 临时坦克部件
+    private TankModulePreviewManager temModulePreview;          // 临时部件预览
 
     /// <summary>
     /// 读取文件列表，获取部件并填充到自定义坦克部件表中
