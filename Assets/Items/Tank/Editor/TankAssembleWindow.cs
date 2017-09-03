@@ -10,7 +10,7 @@ public class TankAssembleWindow : EditorWindow
     public TankModule wheelLeftModule;
     public TankModule wheelRightModule;
 
-    private string fullPath;
+    private string relativePath;
     private GameObject turret;
     private GameObject wheelLeft;
     private GameObject wheelRight;
@@ -41,7 +41,7 @@ public class TankAssembleWindow : EditorWindow
     {
         generatePath = EditorGUILayout.TextField("Generate Assets Path", generatePath);
         tankName = EditorGUILayout.TextField("Tank Renderers Name", tankName);
-        fullPath = string.Format("{0}{1}{2}", generatePath, tankName, ".prefab");
+        relativePath = string.Format("{0}{1}{2}", generatePath, tankName, ".prefab");
         valid &= string.IsNullOrEmpty(generatePath) & string.IsNullOrEmpty(tankName);
         bodyModule = EditorGUILayout.ObjectField("Body", bodyModule, typeof(TankModule), false) as TankModule;
         turretModule = EditorGUILayout.ObjectField("Turret", turretModule, typeof(TankModule), false) as TankModule;
@@ -74,17 +74,16 @@ public class TankAssembleWindow : EditorWindow
             Debug.LogErrorFormat("TankName Or Modules Be Empty. Or Module Set An Invalid ModuleType.");
             return;
         }
-        if (System.IO.File.Exists(string.Format("{0}{1}{2}", Application.dataPath, "/", fullPath)))
+        if (System.IO.File.Exists(string.Format("{0}{1}{2}", Application.dataPath, "/", relativePath)))
         {
-            Debug.LogErrorFormat("{0} Already Existed : {1}", tankName, fullPath);
+            Debug.LogErrorFormat("{0} Already Existed : {1}", tankName, relativePath);
             return;
         }
 
-        if (!AssembleTank(ref newTankPrefab) || PrefabUtility.CreatePrefab("Assets/" + fullPath, newTankPrefab) == null)
-        {
-            Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + fullPath);
-            return;
-        }
+        if (!AssembleTank(ref newTankPrefab) || PrefabUtility.CreatePrefab("Assets/" + relativePath, newTankPrefab) == null)
+            Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + relativePath);
+        else
+            Debug.LogFormat("Create Successed. {0}", "Assets/" + relativePath);
 
     }
 

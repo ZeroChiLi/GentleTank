@@ -34,7 +34,7 @@ public class TankModulesTableManager : MonoBehaviour
     {
         if (!Directory.Exists(fullPath))
         {
-            Debug.Log(fullPath + " Doesn't Exists");
+            Debug.LogError(fullPath + " Doesn't Exists");
             return;
         }
 
