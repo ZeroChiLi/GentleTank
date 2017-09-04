@@ -1,47 +1,44 @@
-﻿using System;
-using CameraRig;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 
-public class IntervalOffsetCam : MonoBehaviour
+namespace CameraRig
 {
-    public new Camera camera;
-    public Vector3 startPosition;
-    public Vector3 offset;
-    public int index;
-    public float smoothTime = 0.3f;
-    public bool enableSmooth;
-
-    private CountDownTimer timer;
-    private Vector3 velocity;
-    private Vector3 temPos;
-
-    /// <summary>
-    /// 立即变换位置
-    /// </summary>
-    /// <param name="index">索引值</param>
-    public void FollowImmediately(int index)
+    public class IntervalOffsetCam : MonoBehaviour
     {
-        enableSmooth = false;
-        transform.localPosition = startPosition + (index * offset);
-    }
+        public new Camera camera;           // 相机
+        public Vector3 startPosition;       // 起始位置
+        public Vector3 offset;              // 每次偏移量
+        public int index;                   // 当前索引
+        public float smoothTime = 0.3f;     // 平滑时间
+        public bool enableSmooth;           // 是否运行平滑
 
-    /// <summary>
-    /// 如果开启平滑移动，自动移动
-    /// </summary>
-    private void Update()
-    {
-        if (enableSmooth)
-            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, startPosition + (index * offset), ref velocity, smoothTime);
-    }
+        private Vector3 velocity;           // 当前平滑移动速度
 
-    /// <summary>
-    /// 跟随目标索引
-    /// </summary>
-    /// <param name="index">索引值</param>
-    public void FollowTarget(int index)
-    {
-        this.index = index;
-    }
+        /// <summary>
+        /// 立即变换位置
+        /// </summary>
+        /// <param name="index">索引值</param>
+        public void FollowImmediately(int index)
+        {
+            enableSmooth = false;
+            transform.localPosition = startPosition + (index * offset);
+        }
 
+        /// <summary>
+        /// 如果开启平滑移动，自动移动
+        /// </summary>
+        private void Update()
+        {
+            if (enableSmooth)
+                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, startPosition + (index * offset), ref velocity, smoothTime);
+        }
+
+        /// <summary>
+        /// 跟随目标索引
+        /// </summary>
+        /// <param name="index">索引值</param>
+        public void FollowTarget(int index)
+        {
+            this.index = index;
+        }
+    }
 }

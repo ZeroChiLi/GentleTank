@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CameraRig;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -12,9 +13,10 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public PostEffectsBase cameraEffect;                // 屏幕后处理特效
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public Transform allTanksParent;                    // 所有坦克的父对象
+    public Animator tankExhibition;                     // 坦克展台（自动旋转）
     public Vector3 tankStartPos;                        // 起始位置（相对）
     public Vector3 offset = new Vector3(10,0,0);        // 坦克之间偏移量
-    public Vector3 rotation = new Vector3(0, 150, 0);   // 坦克旋转角
+    public Vector3 tankStartRotation = new Vector3(0, 150, 0);      // 坦克初始旋转角
     public List<RenderTexture> textureList;             // 纹理列表
 
     private string fullDefaultTankPath { get { return Application.dataPath + defaultTankPath; } }
@@ -54,6 +56,14 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     {
         GetTanks(ref defaultTankList, fullDefaultTankPath, defaultTankPath);
         GetTanks(ref customTankList, fullCustomTankPath, customTankPath);
+    }
+
+    /// <summary>
+    /// 设置当前坦克
+    /// </summary>
+    private void Start()
+    {
+        SelectCurrentTank(0);
     }
 
     /// <summary>
@@ -108,7 +118,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     {
         tankTransform.SetParent(allTanksParent);
         tankTransform.localPosition = tankStartPos + (offset * index);
-        tankTransform.localRotation = Quaternion.Euler(rotation);
+        tankTransform.localRotation = Quaternion.Euler(tankStartRotation);
     }
 
     /// <summary>
@@ -141,6 +151,24 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         intervalCam.gameObject.SetActive(true);
         intervalCam.camera.Render();
         yield return delayTime;
+    }
+
+    /// <summary>
+    /// 选择当前坦克
+    /// </summary>
+    /// <param name="index">坦克索引值</param>
+    public void SelectCurrentTank(int index)
+    {
+        if (this[currentIndex] != null)
+            this[currentIndex].transform.SetParent(allTanksParent);
+        currentIndex = index;
+        if (this[index] != null)
+        {
+            this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
+            //tankExhibition.
+            tankExhibition.transform.localPosition = this[index].transform.localPosition;
+            this[index].transform.SetParent(tankExhibition.transform);
+        }
     }
 
 }
