@@ -8,9 +8,8 @@ public class AllCustomTankPreviewManager : MonoBehaviour
 {
     public string defaultTankPath = "/Items/Tank/Prefabs/DefaultTanks";     // 默认坦克相对路径
     public string customTankPath = "/Items/Tank/Prefabs/CustomTanks";       // 自定义坦克相对路径
-    public Camera previewCamera;                        // 预览相机
+    public IntervalOffsetCam intervalCam;               // 间隔变化相机
     public PostEffectsBase cameraEffect;                // 屏幕后处理特效
-    public Vector3 cameraStartPos = new Vector3(0, 3, -5);  // 相机其实位置
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public Transform allTanksParent;                    // 所有坦克的父对象
     public Vector3 tankStartPos;                        // 起始位置（相对）
@@ -35,7 +34,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
             return index < defaultTankList.Count ? defaultTankList[index] : customTankList[index - defaultTankList.Count];
         }
     }
-
 
     /// <summary>
     /// 获取所有坦克，设置好位置
@@ -125,6 +123,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
             yield return CameraCapture(textureList[i], i, true);
         }
         yield return CameraCapture(selectedTexture, 0, false);
+        intervalCam.enableSmooth = true;
     }
 
     /// <summary>
@@ -135,12 +134,13 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     /// <param name="effectActive">是否开启屏幕特效</param>
     private IEnumerator CameraCapture(RenderTexture targetTexture,int index,bool effectActive = false)
     {
-        previewCamera.gameObject.SetActive(false);
+        intervalCam.gameObject.SetActive(false);
         cameraEffect.enabled = effectActive;
-        previewCamera.targetTexture = targetTexture;
-        previewCamera.transform.localPosition = cameraStartPos + (index * offset);
-        previewCamera.gameObject.SetActive(true);
-        previewCamera.Render();
+        intervalCam.camera.targetTexture = targetTexture;
+        intervalCam.FollowImmediately(index);
+        intervalCam.gameObject.SetActive(true);
+        intervalCam.camera.Render();
         yield return delayTime;
     }
+
 }

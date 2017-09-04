@@ -132,6 +132,7 @@
     <Compile Include="Assets\CameraRigs\MinimapCameraRig\Scripts\FixedTargetFollower.cs" />
     <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiCam.cs" />
     <Compile Include="Assets\CameraRigs\Scripts\AllCameraRigManager.cs" />
+    <Compile Include="Assets\CameraRigs\SelectTankCameraRig\Scripts\IntervalOffsetCam.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AbstractTargetFollower.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoCam.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\PivotBasedCameraRig.cs" />
