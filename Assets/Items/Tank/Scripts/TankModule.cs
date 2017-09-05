@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum TankModuleType
 {
-    None, Turret, Body, WheelLeft, WheelRight, Other, Skin
+    None, Head, Body, WheelLeft, WheelRight, Other, Skin
 }
 
 [System.Serializable]

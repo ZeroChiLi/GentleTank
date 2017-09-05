@@ -5,8 +5,8 @@ public class TankAssembleWindow : EditorWindow
 {
     public string generatePath = "Items/Tank/CustomTank/";  // 生成预设的位置
     public string tankName;                                 // 预设名称
-    public TankModule bodyModule;                           // 车身部件
     public TankModule headModule;                           // 头部部件
+    public TankModule bodyModule;                           // 车身部件
     public TankModule wheelLeftModule;                      // 左边车轮部件
 
     private string relativePath;                            // 相对路径
@@ -59,7 +59,7 @@ public class TankAssembleWindow : EditorWindow
     {
         return (wheelLeftModule != null && wheelLeftModule.type == TankModuleType.WheelLeft
             && bodyModule != null && bodyModule.type == TankModuleType.Body
-            && headModule != null && headModule.type == TankModuleType.Turret);
+            && headModule != null && headModule.type == TankModuleType.Head);
     }
 
     /// <summary>
@@ -96,9 +96,9 @@ public class TankAssembleWindow : EditorWindow
     {
         newTank = new GameObject(tankName);
         InstantiateModules(newTank.transform);
-        SetupTankModuleManager(newTank).Setup(head, body, wheelLeft, wheelRight);
+        SetupTankModuleManager(newTank).Setup(headModule, bodyModule, wheelLeftModule, head, body, wheelLeft, wheelRight);
 
-        head.transform.localPosition = bodyModule[TankModuleType.Turret].anchor - headModule[TankModuleType.Body].anchor;
+        head.transform.localPosition = bodyModule[TankModuleType.Head].anchor - headModule[TankModuleType.Body].anchor;
         wheelLeft.transform.localPosition = bodyModule[TankModuleType.WheelLeft].anchor - wheelLeftModule[TankModuleType.Body].anchor;
         wheelRight.transform.localPosition = bodyModule[TankModuleType.WheelRight].anchor - wheelLeftModule[TankModuleType.Body].anchor;
         return true;
@@ -124,10 +124,10 @@ public class TankAssembleWindow : EditorWindow
     private void InstantiateModules(Transform parent)
     {
         body = SetTankModuleTypeTag(Instantiate(bodyModule.prefab, parent), TankModuleType.Body);
-        head = SetTankModuleTypeTag(Instantiate(headModule.prefab, parent),TankModuleType.Turret);
+        head = SetTankModuleTypeTag(Instantiate(headModule.prefab, parent), TankModuleType.Head);
         wheelLeft = SetTankModuleTypeTag(Instantiate(wheelLeftModule.prefab, parent), TankModuleType.WheelLeft);
-        wheelRight = SetTankModuleTypeTag(Instantiate(wheelLeftModule.prefab, parent),TankModuleType.WheelRight);
-        wheelRight.transform.localScale = new Vector3(-wheelRight.transform.localScale.x,wheelRight.transform.localScale.y,wheelRight.transform.localScale.z);
+        wheelRight = SetTankModuleTypeTag(Instantiate(wheelLeftModule.prefab, parent), TankModuleType.WheelRight);
+        wheelRight.transform.localScale = new Vector3(-wheelRight.transform.localScale.x, wheelRight.transform.localScale.y, wheelRight.transform.localScale.z);
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public class TankAssembleWindow : EditorWindow
     /// <param name="module">部件</param>
     /// <param name="type">类型</param>
     /// <returns>返回本身这个部件</returns>
-    private GameObject SetTankModuleTypeTag(GameObject module,TankModuleType type)
+    private GameObject SetTankModuleTypeTag(GameObject module, TankModuleType type)
     {
         temTypeTag = module.GetComponent<TankModuleTypeTag>();
         if (temTypeTag == null)
