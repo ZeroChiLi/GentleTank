@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum TankModuleType
 {
-    None, Turret, Body, WheelLeft,WheelRight
+    None, Turret, Body, WheelLeft, WheelRight, Other, Skin
 }
 
 [System.Serializable]
@@ -14,7 +14,7 @@ public class ConnectAnchor
 }
 
 [CreateAssetMenu(menuName = "Tank/TankModule")]
-public class TankModule : ScriptableObject 
+public class TankModule : ScriptableObject
 {
     public GameObject prefab;
     public Sprite preview;

@@ -6,18 +6,20 @@ public class TankAssembleWindow : EditorWindow
     public string generatePath = "Items/Tank/CustomTank/";  // 生成预设的位置
     public string tankName;                                 // 预设名称
     public TankModule bodyModule;                           // 车身部件
-    public TankModule turretModule;                         // 头部部件
+    public TankModule headModule;                           // 头部部件
     public TankModule wheelLeftModule;                      // 左边车轮部件
-    public TankModule wheelRightModule;
 
     private string relativePath;                            // 相对路径
-    private GameObject turret;                              // 临时头部对象
+    private GameObject head;                                // 临时头部对象
+    private GameObject body;                                // 临时身体对象
     private GameObject wheelLeft;                           // 临时左边车轮对象
     private GameObject wheelRight;                          // 临时右边车轮对象
     private bool valid;                                     // 是否创建有效
 
     private Vector2 scrollPos;                              // 滑动面板位置
     private GameObject newTankPrefab;                       // 创建的坦克预设
+    private TankModuleManager temTankModuleManager;         // 临时部件管理器
+    private TankModuleTypeTag temTypeTag;                   // 临时部件类型标记
 
     [MenuItem("Window/Tank Assemble")]
     static void ShowWindows()
@@ -44,9 +46,8 @@ public class TankAssembleWindow : EditorWindow
         relativePath = string.Format("{0}{1}{2}", generatePath, tankName, ".prefab");
         valid &= string.IsNullOrEmpty(generatePath) & string.IsNullOrEmpty(tankName);
         bodyModule = EditorGUILayout.ObjectField("Body", bodyModule, typeof(TankModule), false) as TankModule;
-        turretModule = EditorGUILayout.ObjectField("Turret", turretModule, typeof(TankModule), false) as TankModule;
+        headModule = EditorGUILayout.ObjectField("Turret", headModule, typeof(TankModule), false) as TankModule;
         wheelLeftModule = EditorGUILayout.ObjectField("Left Wheel", wheelLeftModule, typeof(TankModule), false) as TankModule;
-        wheelRightModule = EditorGUILayout.ObjectField("Right Wheel", wheelRightModule, typeof(TankModule), false) as TankModule;
         return Check();
     }
 
@@ -57,9 +58,8 @@ public class TankAssembleWindow : EditorWindow
     public bool Check()
     {
         return (wheelLeftModule != null && wheelLeftModule.type == TankModuleType.WheelLeft
-            && wheelRightModule != null && wheelRightModule.type == TankModuleType.WheelRight
             && bodyModule != null && bodyModule.type == TankModuleType.Body
-            && turretModule != null && turretModule.type == TankModuleType.Turret);
+            && headModule != null && headModule.type == TankModuleType.Turret);
     }
 
     /// <summary>
@@ -95,15 +95,54 @@ public class TankAssembleWindow : EditorWindow
     public bool AssembleTank(ref GameObject newTank)
     {
         newTank = new GameObject(tankName);
-        Instantiate(bodyModule.prefab, newTank.transform);
-        turret = Instantiate(turretModule.prefab, newTank.transform);
-        wheelLeft = Instantiate(wheelLeftModule.prefab, newTank.transform);
-        wheelRight = Instantiate(wheelRightModule.prefab, newTank.transform);
+        InstantiateModules(newTank.transform);
+        SetupTankModuleManager(newTank).Setup(head, body, wheelLeft, wheelRight);
 
-        turret.transform.localPosition = bodyModule[TankModuleType.Turret].anchor - turretModule[TankModuleType.Body].anchor;
+        head.transform.localPosition = bodyModule[TankModuleType.Turret].anchor - headModule[TankModuleType.Body].anchor;
         wheelLeft.transform.localPosition = bodyModule[TankModuleType.WheelLeft].anchor - wheelLeftModule[TankModuleType.Body].anchor;
-        wheelRight.transform.localPosition = bodyModule[TankModuleType.WheelRight].anchor - wheelRightModule[TankModuleType.Body].anchor;
+        wheelRight.transform.localPosition = bodyModule[TankModuleType.WheelRight].anchor - wheelLeftModule[TankModuleType.Body].anchor;
         return true;
+    }
+
+    /// <summary>
+    /// 配置坦克部件管理器
+    /// </summary>
+    /// <param name="tank">坦克对象</param>
+    /// <returns>返回对应部件管理器</returns>
+    private TankModuleManager SetupTankModuleManager(GameObject tank)
+    {
+        temTankModuleManager = tank.GetComponent<TankModuleManager>();
+        if (temTankModuleManager == null)
+            temTankModuleManager = tank.AddComponent<TankModuleManager>();
+        return temTankModuleManager;
+    }
+
+    /// <summary>
+    /// 创建部件们的实例
+    /// </summary>
+    /// <param name="parent">父对象</param>
+    private void InstantiateModules(Transform parent)
+    {
+        body = SetTankModuleTypeTag(Instantiate(bodyModule.prefab, parent), TankModuleType.Body);
+        head = SetTankModuleTypeTag(Instantiate(headModule.prefab, parent),TankModuleType.Turret);
+        wheelLeft = SetTankModuleTypeTag(Instantiate(wheelLeftModule.prefab, parent), TankModuleType.WheelLeft);
+        wheelRight = SetTankModuleTypeTag(Instantiate(wheelLeftModule.prefab, parent),TankModuleType.WheelRight);
+        wheelRight.transform.localScale = new Vector3(-wheelRight.transform.localScale.x,wheelRight.transform.localScale.y,wheelRight.transform.localScale.z);
+    }
+
+    /// <summary>
+    /// 设置坦克部件的类型标签
+    /// </summary>
+    /// <param name="module">部件</param>
+    /// <param name="type">类型</param>
+    /// <returns>返回本身这个部件</returns>
+    private GameObject SetTankModuleTypeTag(GameObject module,TankModuleType type)
+    {
+        temTypeTag = module.GetComponent<TankModuleTypeTag>();
+        if (temTypeTag == null)
+            temTypeTag = module.AddComponent<TankModuleTypeTag>();
+        temTypeTag.moduleType = type;
+        return module;
     }
 
 }

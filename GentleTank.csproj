@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -203,6 +205,8 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankHealth.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModule.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleTypeTag.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\AxisInput.cs" />
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\ButtonInput.cs" />

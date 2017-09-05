@@ -1,49 +1,39 @@
 fileFormatVersion: 2
-guid: 9a753df80205b5145ad074275cf7fcc1
-timeCreated: 1503554966
+guid: 295a85f910c70164d9cdcb7a12d5ed86
+timeCreated: 1504598310
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Bow
-    100002: Bowstring
-    100004: //RootNode
-    100006: Handle
-    100008: SphereAxis
-    100010: TankChassis
-    100012: TankRenderers
-    100014: TankTracksLeft
-    100016: TankTracksRight
-    400000: Bow
-    400002: Bowstring
-    400004: //RootNode
-    400006: Handle
-    400008: SphereAxis
-    400010: TankChassis
-    400012: TankRenderers
-    400014: TankTracksLeft
-    400016: TankTracksRight
-    2300000: Bow
-    2300002: Bowstring
-    2300004: Handle
-    2300006: SphereAxis
-    2300008: TankChassis
-    2300010: TankTracksLeft
-    2300012: TankTracksRight
-    3300000: Bow
-    3300002: Bowstring
-    3300004: Handle
-    3300006: SphereAxis
-    3300008: TankChassis
-    3300010: TankTracksLeft
-    3300012: TankTracksRight
+    100000: //RootNode
+    100002: CrossBow
+    100004: SphereAxis
+    100006: TankChassis
+    100008: TankRenderers
+    100010: TankTracksLeft
+    100012: TankTracksRight
+    400000: //RootNode
+    400002: CrossBow
+    400004: SphereAxis
+    400006: TankChassis
+    400008: TankRenderers
+    400010: TankTracksLeft
+    400012: TankTracksRight
+    2300000: CrossBow
+    2300002: SphereAxis
+    2300004: TankChassis
+    2300006: TankTracksLeft
+    2300008: TankTracksRight
+    3300000: CrossBow
+    3300002: SphereAxis
+    3300004: TankChassis
+    3300006: TankTracksLeft
+    3300008: TankTracksRight
     4300000: TankTracksLeft
     4300002: TankTracksRight
     4300004: TankChassis
-    4300006: Handle
-    4300008: Bow
-    4300010: Bowstring
-    4300012: SphereAxis
+    4300006: CrossBow
+    4300008: SphereAxis
   materials:
     importMaterials: 1
     materialName: 0

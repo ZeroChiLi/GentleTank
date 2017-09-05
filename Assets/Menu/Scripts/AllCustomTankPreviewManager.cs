@@ -23,7 +23,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     private string fullCustomTankPath { get { return Application.dataPath + customTankPath; } }
     private List<GameObject> defaultTankList;           // 默认坦克列表
     private List<GameObject> customTankList;            // 自定义坦克列表
-    private WaitForSeconds delayTime = new WaitForSeconds(0.1f);    // 渲染延迟
+    private WaitForSeconds delayTime = new WaitForSeconds(0.05f);   // 渲染延迟
     private int currentIndex;                           // 当前选中坦克索引
 
     // 坦克列表索引器（从默认到自定义）
@@ -127,11 +127,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     private IEnumerator SetupAllTankTexture()
     {
         for (int i = 0; i < textureList.Count; i++)
-        {
-            if (this[i] == null)
-                continue;
             yield return CameraCapture(textureList[i], i, true);
-        }
         yield return CameraCapture(selectedTexture, 0, false);
         intervalCam.enableSmooth = true;
     }
