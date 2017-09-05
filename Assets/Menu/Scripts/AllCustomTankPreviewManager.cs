@@ -159,15 +159,15 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     /// <param name="index">坦克索引值</param>
     public void SelectCurrentTank(int index)
     {
-        if (this[currentIndex] != null)
+        if (this[currentIndex] != null)     // 重置上一个选中的坦克位置
             this[currentIndex].transform.SetParent(allTanksParent);
         currentIndex = index;
         if (this[index] != null)
         {
-            this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
-            //tankExhibition.
             tankExhibition.transform.localPosition = this[index].transform.localPosition;
             this[index].transform.SetParent(tankExhibition.transform);
+            tankExhibition.SetTrigger("Reset");
+            this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
         }
     }
 
