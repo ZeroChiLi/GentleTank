@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TankModulePreviewManager : MonoBehaviour 
 {
-    public TankModule targetModule;
+    public TankModule module;
     public Image backgroundImage;
     public Image previewImage;
     public bool isLocked = false;
@@ -12,12 +12,19 @@ public class TankModulePreviewManager : MonoBehaviour
     public Color pressedColor = new Color(0.2f, 0.5f, 0.2f, 0.4f);
     public Color disabledColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 
+    private TankModuleManager currentTank;
+    private TankModule temModule;
+    private GameObject temModuleObj;
+
     private void OnEnable()
     {
-        ResetPreview();
+        ResetButtonColor();
     }
 
-    public void ResetPreview()
+    /// <summary>
+    /// 重置按钮颜色
+    /// </summary>
+    public void ResetButtonColor()
     {
         backgroundImage.color = isLocked ? disabledColor : normalColor;
     }
@@ -28,7 +35,7 @@ public class TankModulePreviewManager : MonoBehaviour
     /// <param name="module">目标部件</param>
     public void SetTargetModule(TankModule module)
     {
-        targetModule = module;
+        this.module = module;
         previewImage.sprite = module.preview;
     }
 
@@ -55,10 +62,19 @@ public class TankModulePreviewManager : MonoBehaviour
     /// </summary>
     public void OnPointerClicked()
     {
-        if (isLocked)
+        if (isLocked || CustomTankMenuManager.Instance.selectedModule == this)
             return;
         backgroundImage.color = pressedColor;
         CustomTankMenuManager.Instance.SetSelectedModule(this);
+        PreviewTankModule();
+    }
+
+    private void PreviewTankModule()
+    {
+        if (AllCustomTankPreviewManager.Instance.CurrentTank == null || module == null)
+            return;
+        currentTank = AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>();
+        currentTank.PreviewModule(module);
     }
 
 

@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class AllCustomTankPreviewManager : MonoBehaviour 
 {
+    static private AllCustomTankPreviewManager instance;
+    static public AllCustomTankPreviewManager Instance { get { return instance; } }
+
     public string defaultTankPath = "/Items/Tank/Prefabs/DefaultTanks";     // 默认坦克相对路径
     public string customTankPath = "/Items/Tank/Prefabs/CustomTanks";       // 自定义坦克相对路径
     public IntervalOffsetCam intervalCam;               // 间隔变化相机
@@ -37,11 +40,14 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         }
     }
 
+    public GameObject CurrentTank { get { return this[currentIndex]; } }
+
     /// <summary>
     /// 获取所有坦克，设置好位置
     /// </summary>
     private void Awake()
     {
+        instance = this;
         defaultTankList = new List<GameObject>();
         customTankList = new List<GameObject>();
         GetAllPrefabs();

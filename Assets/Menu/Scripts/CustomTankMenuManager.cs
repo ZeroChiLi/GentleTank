@@ -65,7 +65,7 @@ public class CustomTankMenuManager : MonoBehaviour
     {
         changeBtn.interactable = false;
         if (selectedModule != null)
-            selectedModule.ResetPreview();
+            selectedModule.ResetButtonColor();
     }
 
 

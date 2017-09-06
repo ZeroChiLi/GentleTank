@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MenuListTween : MonoBehaviour 
 {
+    public bool playOnStart = true;
     public float delay = 0.2f;
     public List<EasyTween> easyTweenList;
 
@@ -17,7 +18,8 @@ public class MenuListTween : MonoBehaviour
 
     public void Start()
     {
-        OpenCloseAll(true);
+        if (playOnStart)
+            OpenCloseAll(true);
     }
 
     /// <summary>
