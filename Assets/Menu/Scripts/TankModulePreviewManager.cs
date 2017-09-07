@@ -69,6 +69,9 @@ public class TankModulePreviewManager : MonoBehaviour
         PreviewTankModule();
     }
 
+    /// <summary>
+    /// 预览坦克部件
+    /// </summary>
     private void PreviewTankModule()
     {
         if (AllCustomTankPreviewManager.Instance.CurrentTank == null || module == null)

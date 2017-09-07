@@ -68,5 +68,20 @@ public class CustomTankMenuManager : MonoBehaviour
             selectedModule.ResetButtonColor();
     }
 
+    /// <summary>
+    /// 重置选中坦克的预览
+    /// </summary>
+    public void ResetCurrentPreviewTankModule()
+    {
+        AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().ResetPreviewModule();
+    }
+
+    /// <summary>
+    /// 提交修改
+    /// </summary>
+    public void CommitChange()
+    {
+        AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().CommitChange();
+    }
 
 }

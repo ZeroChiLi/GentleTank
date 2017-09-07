@@ -47,4 +47,30 @@ public static class GameMathf
         value = a < b ? Mathf.Clamp(value, a, b) : Mathf.Clamp(value, b, a);
         return Mathf.Clamp01((value - a) / (b - a));
     }
+
+    /// <summary>
+    /// 将Vector3中所有大于0，但又小于指定精度值的数置0
+    /// </summary>
+    /// <param name="value">值</param>
+    /// <param name="precision">精度</param>
+    /// <returns>返回计算后的值</returns>
+    static public Vector3 CeilZeroWithPrecision(Vector3 value, float precision = 3)
+    {
+        Vector3 newValue;
+        newValue.x = CeilZeroWithPrecision(value.x,precision);
+        newValue.y = CeilZeroWithPrecision(value.y,precision);
+        newValue.z = CeilZeroWithPrecision(value.z,precision);
+        return newValue;
+    }
+
+    /// <summary>
+    /// 将大于0，但又小于指定精度值的数置0
+    /// </summary>
+    /// <param name="value">值</param>
+    /// <param name="precision">精度</param>
+    /// <returns>返回计算后的值</returns>
+    static public float CeilZeroWithPrecision(float value,float precision = 3)
+    {
+        return value < Mathf.Pow(0.1f, precision) ? 0 : value;
+    }
 }

@@ -19,6 +19,14 @@ public class TankModule : ScriptableObject
     public GameObject prefab;
     public Sprite preview;
     public TankModuleType type;
+    public Vector3 center;
+    public Vector3 forward;
+    public Vector3 back;
+    public Vector3 left;
+    public Vector3 right;
+    public Vector3 up;
+    public Vector3 down;
+
     public List<ConnectAnchor> connectAnchor = new List<ConnectAnchor>();
 
     public ConnectAnchor this[TankModuleType type]

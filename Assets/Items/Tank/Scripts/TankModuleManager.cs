@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class TankModuleManager : MonoBehaviour
 {
@@ -11,9 +12,10 @@ public class TankModuleManager : MonoBehaviour
     public GameObject wheelLeft;        // 左车轮
     public GameObject wheelRight;       // 右车轮
 
-    private TankModule temModule;
-    private GameObject temObj;
-    private GameObject previewObj;
+    private TankModule preModule;
+    private GameObject preObj;
+    private TankModule newModule;
+    private GameObject newModuleObj;
 
     /// <summary>
     /// 配置坦克
@@ -135,19 +137,49 @@ public class TankModuleManager : MonoBehaviour
     /// <param name="module">部件</param>
     public void PreviewModule(TankModule module)
     {
-        if (previewObj != null)
-            Destroy(previewObj);
-        temModule = GetTankModule(module.type);
-        if (temModule == null)
+        newModule = module;
+        if (newModuleObj != null)
+            Destroy(newModuleObj);
+        preModule = GetTankModule(module.type);
+        if (preModule == null)
             return;
-        temObj = GetTankModuleObj(module.type);
-        if (temObj != null)
-            temObj.SetActive(false);
-        previewObj = Instantiate(module.prefab, transform);
-        if (!ConnectModuleObj(previewObj, temModule))
+        preObj = GetTankModuleObj(module.type);
+        if (preObj != null)
+            preObj.SetActive(false);
+        newModuleObj = Instantiate(module.prefab, transform);
+        if (!ConnectModuleObj(newModuleObj, preModule))
         {
-            Destroy(previewObj);
+            Destroy(newModuleObj);
+            newModule = null;
             Debug.Log("Failed");
         }
+    }
+
+    /// <summary>
+    /// 重置预览部件到初始状态
+    /// </summary>
+    public void ResetPreviewModule()
+    {
+        if (newModuleObj != null)
+            Destroy(newModuleObj);
+        if (preObj != null)
+            preObj.SetActive(true);
+    }
+
+    /// <summary>
+    /// 提交修改
+    /// </summary>
+    public void CommitChange()
+    {
+        if (newModuleObj == null || newModule == null)
+            return;
+        preModule = newModule;
+        Destroy(preObj);
+        preObj = newModuleObj;
+        //PrefabUtility.ConnectGameObjectToPrefab(preObj, preModule.prefab);
+        //PrefabUtility.RecordPrefabInstancePropertyModifications(preObj);
+        EditorUtility.SetDirty(preModule.prefab);
+        newModule = null;
+        newModuleObj = null;
     }
 }
