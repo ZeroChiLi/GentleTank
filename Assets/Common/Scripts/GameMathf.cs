@@ -49,28 +49,55 @@ public static class GameMathf
     }
 
     /// <summary>
-    /// 将Vector3中所有大于0，但又小于指定精度值的数置0
+    /// 将Vector3中所有接近0，但又小于指定精度值的数置0
     /// </summary>
     /// <param name="value">值</param>
     /// <param name="precision">精度</param>
     /// <returns>返回计算后的值</returns>
-    static public Vector3 CeilZeroWithPrecision(Vector3 value, float precision = 3)
+    static public Vector3 ClampZeroWithPrecision(Vector3 value, float precision = 3)
     {
         Vector3 newValue;
-        newValue.x = CeilZeroWithPrecision(value.x,precision);
-        newValue.y = CeilZeroWithPrecision(value.y,precision);
-        newValue.z = CeilZeroWithPrecision(value.z,precision);
+        newValue.x = ClampZeroWithPrecision(value.x,precision);
+        newValue.y = ClampZeroWithPrecision(value.y,precision);
+        newValue.z = ClampZeroWithPrecision(value.z,precision);
         return newValue;
     }
 
     /// <summary>
-    /// 将大于0，但又小于指定精度值的数置0
+    /// 将接近0，但又小于指定精度值的数置0
     /// </summary>
     /// <param name="value">值</param>
     /// <param name="precision">精度</param>
     /// <returns>返回计算后的值</returns>
-    static public float CeilZeroWithPrecision(float value,float precision = 3)
+    static public float ClampZeroWithPrecision(float value,float precision = 3)
     {
-        return value < Mathf.Pow(0.1f, precision) ? 0 : value;
+        return Mathf.Abs(value) < Mathf.Pow(0.1f, precision) ? 0 : value;
     }
+
+    /// <summary>
+    /// 将Vector3中所有接近0，但又小于指定范围值的数置0
+    /// </summary>
+    /// <param name="value">值</param>
+    /// <param name="round">范围</param>
+    /// <returns>计算后的值</returns>
+    static public Vector3 ClampZeroWithRound(Vector3 value,float round = 0.02f)
+    {
+        Vector3 newValue;
+        newValue.x = ClampZeroWithRound(value.x, round);
+        newValue.y = ClampZeroWithRound(value.y, round);
+        newValue.z = ClampZeroWithRound(value.z, round);
+        return newValue;
+    }
+
+    /// <summary>
+    /// 将接近0，但又小于指定范围值的数置0
+    /// </summary>
+    /// <param name="value">值</param>
+    /// <param name="round">范围</param>
+    /// <returns>计算后的值</returns>
+    static public float ClampZeroWithRound(float value,float round = 0.02f)
+    {
+        return Mathf.Abs(value) < round ? 0 : value;
+    }
+
 }

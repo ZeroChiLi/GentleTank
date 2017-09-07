@@ -176,9 +176,6 @@ public class TankModuleManager : MonoBehaviour
         preModule = newModule;
         Destroy(preObj);
         preObj = newModuleObj;
-        //PrefabUtility.ConnectGameObjectToPrefab(preObj, preModule.prefab);
-        //PrefabUtility.RecordPrefabInstancePropertyModifications(preObj);
-        EditorUtility.SetDirty(preModule.prefab);
         newModule = null;
         newModuleObj = null;
     }
