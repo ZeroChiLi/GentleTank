@@ -20,7 +20,7 @@ public class TankModuleEditor : Editor
         if (tankModule.prefab != null && targetPrefab != tankModule.prefab)
         {
             targetPrefab = tankModule.prefab;
-            SetDefaultValue();
+            //SetDefaultValue();
         }
         SetDefaultValueButton();
     }
@@ -42,12 +42,12 @@ public class TankModuleEditor : Editor
     {
         moduleBounds = tankModule.prefab.GetComponent<MeshFilter>().sharedMesh.bounds;
         tankModule.center = GameMathf.ClampZeroWithRound(moduleBounds.center);
-        tankModule.forward = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0,0,moduleBounds.extents.z));
-        tankModule.back = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0, 0, -moduleBounds.extents.z));
-        tankModule.left = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(-moduleBounds.extents.x, 0, 0));
-        tankModule.right = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(moduleBounds.extents.x, 0, 0));
-        tankModule.up = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0, moduleBounds.extents.y, 0));
-        tankModule.down = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0, -moduleBounds.extents.y, 0));
+        tankModule.forward = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(0,0,moduleBounds.extents.z));
+        tankModule.back = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(0, 0, -moduleBounds.extents.z));
+        tankModule.left = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(-moduleBounds.extents.x, 0, 0));
+        tankModule.right = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(moduleBounds.extents.x, 0, 0));
+        tankModule.up = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(0, moduleBounds.extents.y, 0));
+        tankModule.down = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(0, -moduleBounds.extents.y, 0));
     }
 
 }

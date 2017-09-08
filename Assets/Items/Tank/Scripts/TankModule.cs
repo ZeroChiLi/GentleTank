@@ -73,6 +73,9 @@ public class TankModule : ScriptableObject
     /// <param name="bodyObj">身体对象</param>
     static public void ConnectRightWheelToBody(TankModuleWheel rightWheel, GameObject rightObj, TankModuleBody body, GameObject bodyObj)
     {
-        rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.up;
+        if (rightWheel.wheelType == TankModuleWheel.WheelType.Left)
+            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - new Vector3(-rightWheel.up.x,rightWheel.up.y,rightWheel.up.z);
+        else
+            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.up;
     }
 }

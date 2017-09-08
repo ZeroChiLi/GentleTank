@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 自定义游戏数学库
@@ -16,6 +17,11 @@ public static class GameMathf
     static public bool ValueInRange(float min, float max, float value)
     {
         return value >= min && value <= max;
+    }
+
+    public static Vector3 ClampZeroWithRound(object p)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>

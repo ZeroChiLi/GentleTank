@@ -9,7 +9,7 @@ public class TankModuleWheelEditor : TankModuleEditor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        SwapLeftAndRightButton();
+        //SwapLeftAndRightButton();
     }
 
     public void SwapLeftAndRightButton()
