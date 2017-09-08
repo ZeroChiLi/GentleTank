@@ -6,25 +6,31 @@ public class TankModuleEditor : Editor
 {
     public TankModule tankModule;
 
-    private Bounds moduleBounds;
+    protected GameObject targetPrefab;
+    protected Bounds moduleBounds;
+
+    private void OnEnable()
+    {
+        tankModule = target as TankModule;
+    }
 
     public override void OnInspectorGUI()
     {
-        if (tankModule != target as TankModule)
+        base.OnInspectorGUI();
+        if (tankModule.prefab != null && targetPrefab != tankModule.prefab)
         {
-            tankModule = target as TankModule;
+            targetPrefab = tankModule.prefab;
             SetDefaultValue();
         }
-        base.OnInspectorGUI();
         SetDefaultValueButton();
     }
-    
+
     /// <summary>
     /// 通过预设来获取物体各基本点位置
     /// </summary>
-    public void SetDefaultValueButton()
+    virtual public void SetDefaultValueButton()
     {
-        if (tankModule.prefab == null || !GUILayout.Button("Set Default Value"))
+        if (!GUILayout.Button("Set Default Value") || tankModule.prefab == null)
             return;
         SetDefaultValue();
     }
@@ -32,7 +38,7 @@ public class TankModuleEditor : Editor
     /// <summary>
     /// 设置默认值
     /// </summary>
-    public void SetDefaultValue()
+    virtual public void SetDefaultValue()
     {
         moduleBounds = tankModule.prefab.GetComponent<MeshFilter>().sharedMesh.bounds;
         tankModule.center = GameMathf.ClampZeroWithRound(moduleBounds.center);
@@ -42,8 +48,6 @@ public class TankModuleEditor : Editor
         tankModule.right = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(moduleBounds.extents.x, 0, 0));
         tankModule.up = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0, moduleBounds.extents.y, 0));
         tankModule.down = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(0, -moduleBounds.extents.y, 0));
-        tankModule.downLeft = GameMathf.ClampZeroWithRound(tankModule.center + new Vector3(-moduleBounds.extents.x, -moduleBounds.extents.y, 0));
-        tankModule.downRight = GameMathf.ClampZeroWithPrecision(tankModule.center + new Vector3(moduleBounds.extents.x, -moduleBounds.extents.y, 0));
     }
 
 }
