@@ -1,24 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-public enum TankModuleType
-{
-    None, Head, Body, WheelLeft, WheelRight, Other, Skin
-}
-
-[System.Serializable]
-public class TankModuleConnectAnchor
-{
-    public TankModuleType type;
-    public Vector3 anchor;
-}
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "TankModule/Default")]
 public class TankModule : ScriptableObject
 {
     public GameObject prefab;
     public Sprite preview;
-    public TankModuleType type;
     public Vector3 center;
     public Vector3 forward;
     public Vector3 back;
@@ -26,19 +12,6 @@ public class TankModule : ScriptableObject
     public Vector3 right;
     public Vector3 up;
     public Vector3 down;
-
-    public List<TankModuleConnectAnchor> connectAnchor = new List<TankModuleConnectAnchor>();
-
-    public TankModuleConnectAnchor this[TankModuleType type]
-    {
-        get
-        {
-            for (int i = 0; i < connectAnchor.Count; i++)
-                if (connectAnchor[i].type == type)
-                    return connectAnchor[i];
-            return null;
-        }
-    }
 
     /// <summary>
     /// 连接头到身体
@@ -78,4 +51,10 @@ public class TankModule : ScriptableObject
         else
             rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.up;
     }
+    
+    static public void ConnectOtherModule(TankModuleOther other,GameObject obj,GameObject targetObj,Vector3 targetAnchor)
+    {
+        obj.transform.position = targetObj.transform.position + targetAnchor - other.connectAnchor;
+    }
+
 }

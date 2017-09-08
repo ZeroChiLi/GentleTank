@@ -3,5 +3,11 @@
 [CreateAssetMenu(menuName = "TankModule/Other")]
 public class TankModuleOther : TankModule
 {
-    public TankModule connectModule;
+    public enum TargetTankModuleType
+    {
+        Head,Body,LeftWheel,RightWheel
+    }
+    public TargetTankModuleType targetType;
+    public Vector3 connectAnchor;
+
 }

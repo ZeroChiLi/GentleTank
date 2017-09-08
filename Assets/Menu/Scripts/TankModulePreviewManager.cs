@@ -77,7 +77,7 @@ public class TankModulePreviewManager : MonoBehaviour
         if (AllCustomTankPreviewManager.Instance.CurrentTank == null || module == null)
             return;
         currentTank = AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>();
-        currentTank.PreviewModule(module);
+        //currentTank.PreviewModule(module);
     }
 
 

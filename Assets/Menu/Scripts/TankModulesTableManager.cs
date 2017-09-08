@@ -7,7 +7,6 @@ public class TankModulesTableManager : MonoBehaviour
 {
     public string tableName;                                    // 部件表名
     public string path = "/Items/Tank/TankModule/";             // 部件相对地址
-    public TankModuleType moduleType;                           // 部件类型
     public GameObject modulePreviewPrefab;                      // 部件预览图标
     public List<TankModulePreviewManager> modulePreviewList;    // 部件预览列表    
 

@@ -47,113 +47,113 @@ public class TankModuleManager : MonoBehaviour
         return head && body && wheelLeft && wheelRight;
     }
 
-    /// <summary>
-    /// 通过类型获取坦克部件
-    /// </summary>
-    /// <param name="type">部件类型</param>
-    /// <returns></returns>
-    public TankModule GetTankModule(TankModuleType type)
-    {
-        switch (type)
-        {
-            case TankModuleType.Head:
-                return headModule;
-            case TankModuleType.Body:
-                return bodyModule;
-            case TankModuleType.WheelLeft:
-                return wheelLeftModule;
-            case TankModuleType.WheelRight:
-                break;
-            case TankModuleType.Other:
-                break;
-            case TankModuleType.Skin:
-                break;
-        }
-        return null;
-    }
+    ///// <summary>
+    ///// 通过类型获取坦克部件
+    ///// </summary>
+    ///// <param name="type">部件类型</param>
+    ///// <returns></returns>
+    //public TankModule GetTankModule(TankModuleType type)
+    //{
+    //    switch (type)
+    //    {
+    //        case TankModuleType.Head:
+    //            return headModule;
+    //        case TankModuleType.Body:
+    //            return bodyModule;
+    //        case TankModuleType.WheelLeft:
+    //            return wheelLeftModule;
+    //        case TankModuleType.WheelRight:
+    //            break;
+    //        case TankModuleType.Other:
+    //            break;
+    //        case TankModuleType.Skin:
+    //            break;
+    //    }
+    //    return null;
+    //}
 
-    /// <summary>
-    /// 获取坦克部件对象
-    /// </summary>
-    /// <param name="type">部件类型</param>
-    /// <returns>部件对象</returns>
-    public GameObject GetTankModuleObj(TankModuleType type)
-    {
-        switch (type)
-        {
-            case TankModuleType.Head:
-                return head;
-            case TankModuleType.Body:
-                return body;
-            case TankModuleType.WheelLeft:
-                return wheelLeft;
-            case TankModuleType.WheelRight:
-                return wheelRight;
-            case TankModuleType.Other:
-                break;
-            case TankModuleType.Skin:
-                break;
-        }
-        return null;
-    }
+    ///// <summary>
+    ///// 获取坦克部件对象
+    ///// </summary>
+    ///// <param name="type">部件类型</param>
+    ///// <returns>部件对象</returns>
+    //public GameObject GetTankModuleObj(TankModuleType type)
+    //{
+    //    switch (type)
+    //    {
+    //        case TankModuleType.Head:
+    //            return head;
+    //        case TankModuleType.Body:
+    //            return body;
+    //        case TankModuleType.WheelLeft:
+    //            return wheelLeft;
+    //        case TankModuleType.WheelRight:
+    //            return wheelRight;
+    //        case TankModuleType.Other:
+    //            break;
+    //        case TankModuleType.Skin:
+    //            break;
+    //    }
+    //    return null;
+    //}
 
-    /// <summary>
-    /// 连接部件
-    /// </summary>
-    /// <param name="obj">部件对象</param>
-    /// <param name="module">部件信息</param>
-    /// <returns>是否连接成功</returns>
-    public bool ConnectModuleObj(GameObject obj, TankModule module)
-    {
-        switch (module.type)
-        {
-            case TankModuleType.Head:
-                if (bodyModule[TankModuleType.Head] != null && module[TankModuleType.Body] != null)
-                    obj.transform.localPosition = bodyModule[TankModuleType.Head].anchor - module[TankModuleType.Body].anchor;
-                return true;
-            case TankModuleType.Body:
-                //if (module[TankModuleType.Head] != null && headModule[TankModuleType.Body] != null)
-                //    obj.transform.localPosition = headModule[TankModuleType.Body].anchor - module[TankModuleType.Head].anchor;
-                return true;
-            case TankModuleType.WheelLeft:
-                if (module[TankModuleType.Body] != null && bodyModule[TankModuleType.WheelLeft] != null)
-                    obj.transform.localPosition = bodyModule[TankModuleType.WheelLeft].anchor - module[TankModuleType.Body].anchor;
-                return true;
-            case TankModuleType.WheelRight:
-                break;
-            case TankModuleType.Other:
-                break;
-            case TankModuleType.Skin:
-                break;
-            default:
-                break;
-        }
-        return false;
-    }
+    ///// <summary>
+    ///// 连接部件
+    ///// </summary>
+    ///// <param name="obj">部件对象</param>
+    ///// <param name="module">部件信息</param>
+    ///// <returns>是否连接成功</returns>
+    //public bool ConnectModuleObj(GameObject obj, TankModule module)
+    //{
+    //    switch (module.type)
+    //    {
+    //        case TankModuleType.Head:
+    //            //if (bodyModule[TankModuleType.Head] != null && module[TankModuleType.Body] != null)
+    //            //    obj.transform.localPosition = bodyModule[TankModuleType.Head].anchor - module[TankModuleType.Body].anchor;
+    //            return true;
+    //        case TankModuleType.Body:
+    //            //if (module[TankModuleType.Head] != null && headModule[TankModuleType.Body] != null)
+    //            //    obj.transform.localPosition = headModule[TankModuleType.Body].anchor - module[TankModuleType.Head].anchor;
+    //            return true;
+    //        case TankModuleType.WheelLeft:
+    //            //if (module[TankModuleType.Body] != null && bodyModule[TankModuleType.WheelLeft] != null)
+    //            //    obj.transform.localPosition = bodyModule[TankModuleType.WheelLeft].anchor - module[TankModuleType.Body].anchor;
+    //            return true;
+    //        case TankModuleType.WheelRight:
+    //            break;
+    //        case TankModuleType.Other:
+    //            break;
+    //        case TankModuleType.Skin:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    return false;
+    //}
 
-    /// <summary>
-    /// 预览组合部件
-    /// </summary>
-    /// <param name="module">部件</param>
-    public void PreviewModule(TankModule module)
-    {
-        newModule = module;
-        if (newModuleObj != null)
-            Destroy(newModuleObj);
-        preModule = GetTankModule(module.type);
-        if (preModule == null)
-            return;
-        preObj = GetTankModuleObj(module.type);
-        if (preObj != null)
-            preObj.SetActive(false);
-        newModuleObj = Instantiate(module.prefab, transform);
-        if (!ConnectModuleObj(newModuleObj, preModule))
-        {
-            Destroy(newModuleObj);
-            newModule = null;
-            Debug.Log("Failed");
-        }
-    }
+    ///// <summary>
+    ///// 预览组合部件
+    ///// </summary>
+    ///// <param name="module">部件</param>
+    //public void PreviewModule(TankModule module)
+    //{
+    //    newModule = module;
+    //    if (newModuleObj != null)
+    //        Destroy(newModuleObj);
+    //    preModule = GetTankModule(module.type);
+    //    if (preModule == null)
+    //        return;
+    //    preObj = GetTankModuleObj(module.type);
+    //    if (preObj != null)
+    //        preObj.SetActive(false);
+    //    newModuleObj = Instantiate(module.prefab, transform);
+    //    if (!ConnectModuleObj(newModuleObj, preModule))
+    //    {
+    //        Destroy(newModuleObj);
+    //        newModule = null;
+    //        Debug.Log("Failed");
+    //    }
+    //}
 
     /// <summary>
     /// 重置预览部件到初始状态
