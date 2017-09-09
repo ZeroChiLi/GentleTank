@@ -6,7 +6,6 @@ using UnityEngine;
 /// </summary>
 public static class GameMathf
 {
-
     /// <summary>
     /// 判断value是否在min和max的闭区间内
     /// </summary>
@@ -17,11 +16,6 @@ public static class GameMathf
     static public bool ValueInRange(float min, float max, float value)
     {
         return value >= min && value <= max;
-    }
-
-    public static Vector3 ClampZeroWithRound(object p)
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -54,56 +48,9 @@ public static class GameMathf
         return Mathf.Clamp01((value - a) / (b - a));
     }
 
-    /// <summary>
-    /// 将Vector3中所有接近0，但又小于指定精度值的数置0
-    /// </summary>
-    /// <param name="value">值</param>
-    /// <param name="precision">精度</param>
-    /// <returns>返回计算后的值</returns>
-    static public Vector3 ClampZeroWithPrecision(Vector3 value, float precision = 3)
+    static public Vector3 Round(Vector3 value,int precision = 2)
     {
-        Vector3 newValue;
-        newValue.x = ClampZeroWithPrecision(value.x,precision);
-        newValue.y = ClampZeroWithPrecision(value.y,precision);
-        newValue.z = ClampZeroWithPrecision(value.z,precision);
-        return newValue;
-    }
-
-    /// <summary>
-    /// 将接近0，但又小于指定精度值的数置0
-    /// </summary>
-    /// <param name="value">值</param>
-    /// <param name="precision">精度</param>
-    /// <returns>返回计算后的值</returns>
-    static public float ClampZeroWithPrecision(float value,float precision = 3)
-    {
-        return Mathf.Abs(value) < Mathf.Pow(0.1f, precision) ? 0 : value;
-    }
-
-    /// <summary>
-    /// 将Vector3中所有接近0，但又小于指定范围值的数置0
-    /// </summary>
-    /// <param name="value">值</param>
-    /// <param name="round">范围</param>
-    /// <returns>计算后的值</returns>
-    static public Vector3 ClampZeroWithRound(Vector3 value,float round = 0.02f)
-    {
-        Vector3 newValue;
-        newValue.x = ClampZeroWithRound(value.x, round);
-        newValue.y = ClampZeroWithRound(value.y, round);
-        newValue.z = ClampZeroWithRound(value.z, round);
-        return newValue;
-    }
-
-    /// <summary>
-    /// 将接近0，但又小于指定范围值的数置0
-    /// </summary>
-    /// <param name="value">值</param>
-    /// <param name="round">范围</param>
-    /// <returns>计算后的值</returns>
-    static public float ClampZeroWithRound(float value,float round = 0.02f)
-    {
-        return Mathf.Abs(value) < round ? 0 : value;
+        return new Vector3((float)Math.Round(value.x,precision), (float)Math.Round(value.y, precision), (float)Math.Round(value.z, precision));
     }
 
 }

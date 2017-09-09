@@ -10,7 +10,7 @@ public class TankModuleBodyEditor : TankModuleEditor
     {
         base.SetDefaultValue();
         body = target as TankModuleBody;
-        body.leftWheelTop = GameMathf.ClampZeroWithRound(moduleBounds.center + new Vector3(-moduleBounds.extents.x, -moduleBounds.extents.y, 0));
-        body.rightWheelTop = GameMathf.ClampZeroWithPrecision(moduleBounds.center + new Vector3(moduleBounds.extents.x, -moduleBounds.extents.y, 0));
+        body.leftWheelTop = GameMathf.Round(moduleBounds.center + new Vector3(-moduleBounds.extents.x, -moduleBounds.extents.y, 0));
+        body.rightWheelTop = GameMathf.Round(moduleBounds.center + new Vector3(moduleBounds.extents.x, -moduleBounds.extents.y, 0));
     }
 }

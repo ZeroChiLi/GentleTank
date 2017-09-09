@@ -227,6 +227,7 @@
     <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointList.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointsDebugShow.cs" />
+    <Compile Include="Assets\Menu\Scripts\AllCustomTankManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllCustomTankPreviewManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllRoommatesPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />

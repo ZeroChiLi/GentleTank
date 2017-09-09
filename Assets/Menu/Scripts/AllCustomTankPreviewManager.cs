@@ -124,7 +124,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     {
         tankTransform.SetParent(allTanksParent);
         tankTransform.localPosition = tankStartPos + (offset * index);
-        tankTransform.localRotation = Quaternion.Euler(tankStartRotation);
+        //tankTransform.localRotation = Quaternion.Euler(tankStartRotation);
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
             tankExhibition.transform.localPosition = this[index].transform.localPosition;
             this[index].transform.SetParent(tankExhibition.transform);
             tankExhibition.SetTrigger("Reset");
-            this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
+            //this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
         }
     }
 
