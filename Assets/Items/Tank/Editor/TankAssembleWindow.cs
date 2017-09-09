@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TankAssembleWindow : EditorWindow
 {
+    public bool createPrefab;                               // 是否创建预设
     public string generatePath = "Items/Tank/CustomTank/";  // 生成预设的位置
-    public string tankName;                                 // 预设名称
     public TankAssembleManager tankAssemble;
 
     private string relativePath;                            // 相对路径
@@ -24,7 +24,9 @@ public class TankAssembleWindow : EditorWindow
 
     private void OnGUI()
     {
-        valid = GetAllVariable();
+        createPrefab = EditorGUILayout.Toggle("Create Prefab", createPrefab);
+        valid = true;
+        valid &= GetAllVariable();
         CreateButton();
     }
 
@@ -34,10 +36,11 @@ public class TankAssembleWindow : EditorWindow
     /// <returns></returns>
     private bool GetAllVariable()
     {
-        generatePath = EditorGUILayout.TextField("Generate Assets Path", generatePath);
-        tankName = EditorGUILayout.TextField("Tank Renderers Name", tankName);
-        relativePath = string.Format("{0}{1}{2}", generatePath, tankName, ".prefab");
-        valid &= string.IsNullOrEmpty(generatePath) & string.IsNullOrEmpty(tankName);
+        if (createPrefab)
+        {
+            generatePath = EditorGUILayout.TextField("Generate Assets Path", generatePath);
+            valid &= string.IsNullOrEmpty(generatePath);
+        }
         tankAssemble = EditorGUILayout.ObjectField("TankAssmeble", tankAssemble, typeof(TankAssembleManager), false) as TankAssembleManager;
         return tankAssemble;
     }
@@ -54,16 +57,19 @@ public class TankAssembleWindow : EditorWindow
             Debug.LogErrorFormat("TankName Or Modules Be Empty. Or Module Set An Invalid ModuleType.");
             return;
         }
-        if (System.IO.File.Exists(string.Format("{0}{1}{2}", Application.dataPath, "/", relativePath)))
+
+        relativePath = string.Format("{0}{1}{2}", generatePath, tankAssemble.tankName, ".prefab");
+
+        if (createPrefab && System.IO.File.Exists(string.Format("{0}{1}{2}", Application.dataPath, "/", relativePath)))
         {
-            Debug.LogErrorFormat("{0} Already Existed : {1}", tankName, relativePath);
+            Debug.LogErrorFormat("{0} Already Existed : {1}", tankAssemble.tankName, relativePath);
             return;
         }
 
-        if (!AssembleTank(ref newTankPrefab) || PrefabUtility.CreatePrefab("Assets/" + relativePath, newTankPrefab) == null)
+        if (!AssembleTank(ref newTankPrefab))
             Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + relativePath);
-        else
-            Debug.LogFormat("Create Successed. {0}", "Assets/" + relativePath);
+        if (createPrefab && PrefabUtility.CreatePrefab("Assets/" + relativePath, newTankPrefab) == null)
+            Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + relativePath);
 
     }
 
@@ -74,7 +80,7 @@ public class TankAssembleWindow : EditorWindow
     /// <returns>是否创建成功</returns>
     public bool AssembleTank(ref GameObject newTank)
     {
-        newTank = new GameObject(tankName);
+        newTank = new GameObject(tankAssemble.tankName);
         tankAssemble.InstantiateModules(newTank.transform);
         tankAssemble.AssembleTank();
         return true;
