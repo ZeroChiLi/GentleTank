@@ -7,7 +7,12 @@ public class TankModuleOther : TankModule
     {
         Head,Body,LeftWheel,RightWheel
     }
-    public TargetTankModuleType targetType;
+    public enum TargetPos
+    {
+        Forward,Back,Left,Right,Up,Down,HeadLaunch
+    }
     public Vector3 connectAnchor;
+    public TargetTankModuleType targetType;
+    public TargetPos targetPos;
 
 }

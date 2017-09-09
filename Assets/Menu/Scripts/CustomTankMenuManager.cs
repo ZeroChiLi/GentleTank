@@ -73,7 +73,7 @@ public class CustomTankMenuManager : MonoBehaviour
     /// </summary>
     public void ResetCurrentPreviewTankModule()
     {
-        AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().ResetPreviewModule();
+        //AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().ResetPreviewModule();
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class CustomTankMenuManager : MonoBehaviour
     /// </summary>
     public void CommitChange()
     {
-        AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().CommitChange();
+        //AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().CommitChange();
     }
 
 }
