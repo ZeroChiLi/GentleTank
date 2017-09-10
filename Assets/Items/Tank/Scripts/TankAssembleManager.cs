@@ -16,6 +16,15 @@ public class TankAssembleManager : ScriptableObject
     private GameObject rightWheelObj;
     private List<GameObject> othersObj;
 
+    public TankAssembleManager(TankAssembleManager copySrc)
+    {
+        tankName = copySrc.tankName;
+        head = copySrc.head;
+        body = copySrc.body;
+        leftWheel = copySrc.leftWheel;
+        others = copySrc.others;
+    }
+
     /// <summary>
     /// 判断是否合格（可以组装成坦克）
     /// </summary>
@@ -29,7 +38,7 @@ public class TankAssembleManager : ScriptableObject
     /// 创建坦克对象
     /// </summary>
     /// <returns></returns>
-    public GameObject CreateTank()
+    public GameObject CreateTank(Transform parent)
     {
         if (!IsValid())
         {
@@ -37,6 +46,7 @@ public class TankAssembleManager : ScriptableObject
             return null;
         }
         GameObject newTank = new GameObject(tankName);
+        newTank.transform.SetParent(parent);
         InstantiateModules(newTank.transform);
         AssembleTank();
         return newTank;
@@ -76,7 +86,7 @@ public class TankAssembleManager : ScriptableObject
     /// </summary>
     /// <param name="module">部件信息</param>
     /// <param name="obj">部件对象</param>
-    public void AssembleOtherModule(TankModuleOther module,GameObject obj)
+    private void AssembleOtherModule(TankModuleOther module,GameObject obj)
     {
         switch (module.targetType)
         {

@@ -16,6 +16,8 @@ public class AllCustomTankManager : MonoBehaviour
     private List<GameObject> defaultTankList = new List<GameObject>();           // 默认坦克列表
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private int currentIndex;                           // 当前选中坦克索引
+    private TankAssembleManager temTankAssemble;
+    public TankAssembleManager CurrentTemAssemble { get { return temTankAssemble; } }
 
     // 坦克列表索引器（从默认到自定义）
     public GameObject this[int index]
@@ -28,7 +30,15 @@ public class AllCustomTankManager : MonoBehaviour
         }
     }
 
+    public int CurrentIndex { get { return currentIndex; } }
     public GameObject CurrentTank { get { return this[currentIndex]; } }
+    public TankAssembleManager CurrentTankAssemble { get { return GetTankAssemble(currentIndex); } }
+
+    private void Awake()
+    {
+        if (defaultTankAssembleList == null)
+            defaultTankAssembleList = new List<TankAssembleManager>();
+    }
 
     /// <summary>
     /// 创建所有坦克（默认和自定义）
@@ -49,10 +59,7 @@ public class AllCustomTankManager : MonoBehaviour
         if (assembleList == null)
             return;
         for (int i = 0; i < assembleList.Count; i++)
-        {
-            targetObjList.Add(assembleList[i].CreateTank());
-            targetObjList[targetObjList.Count - 1].transform.SetParent(transform);
-        }
+            targetObjList.Add(assembleList[i].CreateTank(transform));
     }
 
     /// <summary>
@@ -96,12 +103,11 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     /// <param name="tankTransform">坦克的转换信息</param>
     /// <param name="index">当前索引值</param>
-    private void SetupTankPos(Transform tankTransform, int index)
+    public void SetupTankPos(Transform tankTransform, int index)
     {
         tankTransform.localPosition = tankOffset * index;
         tankTransform.localRotation = Quaternion.Euler(tankStartRotation);
     }
-
 
     /// <summary>
     /// 选择当前坦克
@@ -114,10 +120,39 @@ public class AllCustomTankManager : MonoBehaviour
         currentIndex = index;
         if (this[index] != null)
         {
-            tankExhibition.transform.localPosition = this[index].transform.localPosition;
-            this[index].transform.SetParent(tankExhibition.transform);
-            tankExhibition.SetTrigger("Reset");
-            this[index].transform.localRotation = Quaternion.Euler(tankStartRotation);
+            ResetTemTankAssemble();
+            ResetCurrentTankAnimation();
         }
+    }
+
+    /// <summary>
+    /// 重置当前临时坦克组装
+    /// </summary>
+    public void ResetTemTankAssemble()
+    {
+        temTankAssemble = new TankAssembleManager(CurrentTankAssemble);
+    }
+
+    /// <summary>
+    /// 重置当前坦克展台动画
+    /// </summary>
+    public void ResetCurrentTankAnimation()
+    {
+        tankExhibition.transform.localPosition = this[currentIndex].transform.localPosition;
+        this[currentIndex].transform.SetParent(tankExhibition.transform);
+        tankExhibition.SetTrigger("Reset");
+        this[currentIndex].transform.localRotation = Quaternion.Euler(tankStartRotation);
+    }
+
+    /// <summary>
+    /// 获取坦克组合（包括默认和自定义）
+    /// </summary>
+    /// <param name="index">索引值</param>
+    /// <returns>坦克组合</returns>
+    public TankAssembleManager GetTankAssemble(int index)
+    {
+        if (index < 0 || index >= defaultTankList.Count + customTankList.Count)
+            return null;
+        return index < defaultTankAssembleList.Count ? defaultTankAssembleList[index] : customTankAssembleList[index - defaultTankList.Count];
     }
 }

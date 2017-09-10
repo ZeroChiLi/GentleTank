@@ -9,12 +9,13 @@ public class CustomTankMenuManager : MonoBehaviour
     [HideInInspector]
     static public CustomTankMenuManager Instance { get { return instance; } }
 
+    public AllCustomTankManager allCustomTank;
     public TextMeshProUGUI menuText;
     public Button changeBtn;
-    public TankModulePreviewManager selectedModule;
     public List<TankModulesTableManager> moduleTables;
 
     private int currentIndex;
+    private GameObject temPreviewTank;
 
     private void Awake()
     {
@@ -31,15 +32,21 @@ public class CustomTankMenuManager : MonoBehaviour
     {
         for (int i = 0; i < moduleTables.Count; i++)
             moduleTables[i].gameObject.SetActive(false);
-        selectedModule = null;
     }
 
     /// <summary>
-    /// 换页，参数为true为换下一页，否则为上一页
+    /// 换页，参数为true为换下一页，否则为上一页，循环的
     /// </summary>
     /// <param name="positive">是否下一页</param>
     public void SkipTable(bool positive)
     {
+        if (temPreviewTank != null)
+        {
+            allCustomTank.CurrentTank.SetActive(true);
+            allCustomTank.ResetTemTankAssemble();
+            Destroy(temPreviewTank);
+            temPreviewTank = null;
+        }
         SetAllTableInActive();
         currentIndex += (positive ? 1 : -1) + moduleTables.Count;       // 避免小于0
         currentIndex %= moduleTables.Count;
@@ -50,30 +57,50 @@ public class CustomTankMenuManager : MonoBehaviour
     /// <summary>
     /// 设置当前选择的部件
     /// </summary>
-    /// <param name="module">部件预览对象</param>
-    public void SetSelectedModule(TankModulePreviewManager module)
+    /// <param name="modulePreview">部件预览对象</param>
+    public void SetSelectedModule(TankModulePreviewManager modulePreview)
     {
-        CleanSelectedModule();
-        selectedModule = module;
-        changeBtn.interactable = selectedModule == null ? false : true;
+        switch (TankModule.GetModuleType(modulePreview.module))
+        {
+            case TankModule.TankModuleType.Head:
+                if (modulePreview.module == allCustomTank.CurrentTemAssemble.head)
+                    return;
+                else
+                    allCustomTank.CurrentTemAssemble.head = modulePreview.module as TankModuleHead;
+                break;
+            case TankModule.TankModuleType.Body:
+                if (modulePreview.module == allCustomTank.CurrentTemAssemble.body)
+                    return;
+                else
+                    allCustomTank.CurrentTemAssemble.body = modulePreview.module as TankModuleBody;
+                break;
+            case TankModule.TankModuleType.Wheel:
+                if (modulePreview.module == allCustomTank.CurrentTemAssemble.leftWheel)
+                    return;
+                else
+                    allCustomTank.CurrentTemAssemble.leftWheel = modulePreview.module as TankModuleWheel;
+                break;
+            //case TankModule.TankModuleType.Other:
+            //    break;
+            default:
+                return;
+        }
+
+        PreviewChange();
     }
 
-    /// <summary>
-    /// 清除当前选中的部件
-    /// </summary>
-    public void CleanSelectedModule()
+    public void PreviewChange()
     {
-        changeBtn.interactable = false;
-        if (selectedModule != null)
-            selectedModule.ResetButtonColor();
-    }
-
-    /// <summary>
-    /// 重置选中坦克的预览
-    /// </summary>
-    public void ResetCurrentPreviewTankModule()
-    {
-        //AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().ResetPreviewModule();
+        if (temPreviewTank != null)
+        {
+            Destroy(temPreviewTank);
+            temPreviewTank = null;
+        }
+        allCustomTank.CurrentTank.SetActive(false);
+        temPreviewTank = allCustomTank.CurrentTemAssemble.CreateTank(allCustomTank.tankExhibition.transform);
+        allCustomTank.ResetCurrentTankAnimation();
+        //GameMathf.ResetTransform(temPreviewTank.transform);
+        allCustomTank.SetupTankPos(temPreviewTank.transform,allCustomTank.CurrentIndex);
     }
 
     /// <summary>
@@ -82,6 +109,7 @@ public class CustomTankMenuManager : MonoBehaviour
     public void CommitChange()
     {
         //AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().CommitChange();
+        //allCustomTank.CurrentTankAssemble
     }
 
 }

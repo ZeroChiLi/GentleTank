@@ -48,9 +48,25 @@ public static class GameMathf
         return Mathf.Clamp01((value - a) / (b - a));
     }
 
+    /// <summary>
+    /// 四舍五入三维值
+    /// </summary>
+    /// <param name="value">值</param>
+    /// <param name="precision">精度</param>
+    /// <returns>返回处理后的值</returns>
     static public Vector3 Round(Vector3 value,int precision = 2)
     {
         return new Vector3((float)Math.Round(value.x,precision), (float)Math.Round(value.y, precision), (float)Math.Round(value.z, precision));
     }
 
+    /// <summary>
+    /// 重置默认转换（本地坐标）
+    /// </summary>
+    /// <param name="transform">转换</param>
+    static public void ResetTransform(Transform transform)
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+    }
 }
