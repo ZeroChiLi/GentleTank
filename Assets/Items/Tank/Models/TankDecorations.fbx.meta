@@ -1,0 +1,254 @@
+fileFormatVersion: 2
+guid: 1abfc3b229333f9478f059a6c2e52837
+timeCreated: 1505021770
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Prop_AnimalBalloons
+    100002: Prop_Balloons
+    100004: Prop_CarrotStick
+    100006: Prop_CarrotStick Shadow
+    100008: Prop_Cigar
+    100010: Prop_Cigar_Shadow
+    100012: Prop_Cigar_Textured
+    100014: Prop_Eyebrows
+    100016: Prop_Eyebrows_Shadow
+    100018: Prop_Goggles
+    100020: Prop_Goggles_Shadow
+    100022: Prop_Goggles_Textured
+    100024: Prop_HeartBalloons
+    100026: Prop_Helmet
+    100028: Prop_Helmet_Shadow
+    100030: Prop_Helmet_Strap
+    100032: Prop_Mohawk
+    100034: Prop_Mohawk_Shadow
+    100036: Prop_Monocle
+    100038: Prop_Monocle_Glass1
+    100040: Prop_Moustache
+    100042: Prop_Moustache_Shadow
+    100044: Prop_PropCap
+    100046: Prop_PropCap_Prop
+    100048: Prop_PropCap_Shadow
+    100050: Prop_PropCap_Textured
+    100052: Prop_Spoiler
+    100054: Prop_Spoiler_Shadow
+    100056: Prop_StarBalloons
+    100058: Prop_Tusks
+    100060: Prop_UnicornHorn
+    100062: Prop_UnicornHorn_Shadow
+    100064: Prop_VikingHat
+    100066: Prop_VikingHat_Shadow
+    100068: Prop_VikingHat_Textured
+    100070: //RootNode
+    400000: Prop_AnimalBalloons
+    400002: Prop_Balloons
+    400004: Prop_CarrotStick
+    400006: Prop_CarrotStick Shadow
+    400008: Prop_Cigar
+    400010: Prop_Cigar_Shadow
+    400012: Prop_Cigar_Textured
+    400014: Prop_Eyebrows
+    400016: Prop_Eyebrows_Shadow
+    400018: Prop_Goggles
+    400020: Prop_Goggles_Shadow
+    400022: Prop_Goggles_Textured
+    400024: Prop_HeartBalloons
+    400026: Prop_Helmet
+    400028: Prop_Helmet_Shadow
+    400030: Prop_Helmet_Strap
+    400032: Prop_Mohawk
+    400034: Prop_Mohawk_Shadow
+    400036: Prop_Monocle
+    400038: Prop_Monocle_Glass1
+    400040: Prop_Moustache
+    400042: Prop_Moustache_Shadow
+    400044: Prop_PropCap
+    400046: Prop_PropCap_Prop
+    400048: Prop_PropCap_Shadow
+    400050: Prop_PropCap_Textured
+    400052: Prop_Spoiler
+    400054: Prop_Spoiler_Shadow
+    400056: Prop_StarBalloons
+    400058: Prop_Tusks
+    400060: Prop_UnicornHorn
+    400062: Prop_UnicornHorn_Shadow
+    400064: Prop_VikingHat
+    400066: Prop_VikingHat_Shadow
+    400068: Prop_VikingHat_Textured
+    400070: //RootNode
+    2300000: Prop_AnimalBalloons
+    2300002: Prop_Balloons
+    2300004: Prop_CarrotStick
+    2300006: Prop_CarrotStick Shadow
+    2300008: Prop_Cigar
+    2300010: Prop_Cigar_Shadow
+    2300012: Prop_Cigar_Textured
+    2300014: Prop_Eyebrows
+    2300016: Prop_Eyebrows_Shadow
+    2300018: Prop_Goggles
+    2300020: Prop_Goggles_Shadow
+    2300022: Prop_Goggles_Textured
+    2300024: Prop_HeartBalloons
+    2300026: Prop_Helmet
+    2300028: Prop_Helmet_Shadow
+    2300030: Prop_Helmet_Strap
+    2300032: Prop_Mohawk
+    2300034: Prop_Mohawk_Shadow
+    2300036: Prop_Monocle
+    2300038: Prop_Monocle_Glass1
+    2300040: Prop_Moustache
+    2300042: Prop_Moustache_Shadow
+    2300044: Prop_PropCap
+    2300046: Prop_PropCap_Prop
+    2300048: Prop_PropCap_Shadow
+    2300050: Prop_PropCap_Textured
+    2300052: Prop_Spoiler
+    2300054: Prop_Spoiler_Shadow
+    2300056: Prop_StarBalloons
+    2300058: Prop_Tusks
+    2300060: Prop_UnicornHorn
+    2300062: Prop_UnicornHorn_Shadow
+    2300064: Prop_VikingHat
+    2300066: Prop_VikingHat_Shadow
+    2300068: Prop_VikingHat_Textured
+    3300000: Prop_AnimalBalloons
+    3300002: Prop_Balloons
+    3300004: Prop_CarrotStick
+    3300006: Prop_CarrotStick Shadow
+    3300008: Prop_Cigar
+    3300010: Prop_Cigar_Shadow
+    3300012: Prop_Cigar_Textured
+    3300014: Prop_Eyebrows
+    3300016: Prop_Eyebrows_Shadow
+    3300018: Prop_Goggles
+    3300020: Prop_Goggles_Shadow
+    3300022: Prop_Goggles_Textured
+    3300024: Prop_HeartBalloons
+    3300026: Prop_Helmet
+    3300028: Prop_Helmet_Shadow
+    3300030: Prop_Helmet_Strap
+    3300032: Prop_Mohawk
+    3300034: Prop_Mohawk_Shadow
+    3300036: Prop_Monocle
+    3300038: Prop_Monocle_Glass1
+    3300040: Prop_Moustache
+    3300042: Prop_Moustache_Shadow
+    3300044: Prop_PropCap
+    3300046: Prop_PropCap_Prop
+    3300048: Prop_PropCap_Shadow
+    3300050: Prop_PropCap_Textured
+    3300052: Prop_Spoiler
+    3300054: Prop_Spoiler_Shadow
+    3300056: Prop_StarBalloons
+    3300058: Prop_Tusks
+    3300060: Prop_UnicornHorn
+    3300062: Prop_UnicornHorn_Shadow
+    3300064: Prop_VikingHat
+    3300066: Prop_VikingHat_Shadow
+    3300068: Prop_VikingHat_Textured
+    4300000: Prop_Helmet_Strap
+    4300002: Prop_Spoiler
+    4300004: Prop_Spoiler_Shadow
+    4300006: Prop_Tusks
+    4300008: Prop_AnimalBalloons
+    4300010: Prop_StarBalloons
+    4300012: Prop_HeartBalloons
+    4300014: Prop_Balloons
+    4300016: Prop_Moustache_Shadow
+    4300018: Prop_Moustache
+    4300020: Prop_Mohawk_Shadow
+    4300022: Prop_Mohawk
+    4300024: Prop_PropCap_Shadow
+    4300026: Prop_PropCap
+    4300028: Prop_PropCap_Prop
+    4300030: Prop_PropCap_Textured
+    4300032: Prop_UnicornHorn_Shadow
+    4300034: Prop_UnicornHorn
+    4300036: Prop_Monocle
+    4300038: Prop_Monocle_Glass1
+    4300040: Prop_Cigar_Textured
+    4300042: Prop_Cigar_Shadow
+    4300044: Prop_Cigar
+    4300046: Prop_CarrotStick
+    4300048: Prop_CarrotStick Shadow
+    4300050: Prop_VikingHat
+    4300052: Prop_VikingHat_Shadow
+    4300054: Prop_VikingHat_Textured
+    4300056: Prop_Eyebrows_Shadow
+    4300058: Prop_Eyebrows
+    4300060: Prop_Goggles_Textured
+    4300062: Prop_Goggles_Shadow
+    4300064: Prop_Goggles
+    4300066: Prop_Helmet_Shadow
+    4300068: Prop_Helmet
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

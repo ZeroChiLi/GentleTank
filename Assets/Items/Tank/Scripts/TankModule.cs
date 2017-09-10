@@ -52,9 +52,9 @@ public class TankModule : ScriptableObject
             rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.up;
     }
     
-    static public void ConnectOtherModule(TankModuleOther other,GameObject obj,GameObject targetObj,Vector3 targetAnchor)
+    static public void ConnectOtherModule(TankModuleOther other,GameObject obj,TankModule targetModule,GameObject targetObj)
     {
-        obj.transform.position = targetObj.transform.position + targetAnchor - other.connectAnchor;
+        obj.transform.position = targetObj.transform.position + other.GetAnchor(targetModule) - other.connectAnchor;
     }
 
 }
