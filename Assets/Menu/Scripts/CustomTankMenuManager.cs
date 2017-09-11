@@ -21,7 +21,7 @@ public class CustomTankMenuManager : MonoBehaviour
         instance = this;
         currentIndex = 0;
         menuText.text = moduleTables[currentIndex].tableName;
-        changeBtn.interactable = false;
+        //changeBtn.interactable = false;
     }
 
     /// <summary>
