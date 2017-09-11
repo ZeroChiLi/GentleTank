@@ -28,7 +28,7 @@ public class TankModulePreviewManager : MonoBehaviour
     {
         //if (CustomTankMenuManager.Instance.selectedModule == this)
         //    return;
-        CustomTankMenuManager.Instance.SetSelectedModule(this);
+        AllCustomTankManager.Instance.PreviewNewModule(this);
         //PreviewTankModule();
     }
 

@@ -16,9 +16,12 @@ public class TankAssembleManager : ScriptableObject
     private GameObject rightWheelObj;
     private List<GameObject> othersObj;
 
-    public TankAssembleManager(TankAssembleManager copySrc)
+    /// <summary>
+    /// 复制坦克部件管理器
+    /// </summary>
+    /// <param name="copySrc">复制源</param>
+    public void CopyFrom(TankAssembleManager copySrc)
     {
-        tankName = copySrc.tankName;
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;

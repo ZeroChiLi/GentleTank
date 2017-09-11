@@ -15,7 +15,6 @@ public class CustomTankMenuManager : MonoBehaviour
     public List<TankModulesTableManager> moduleTables;
 
     private int currentIndex;
-    private GameObject temPreviewTank;
 
     private void Awake()
     {
@@ -40,67 +39,12 @@ public class CustomTankMenuManager : MonoBehaviour
     /// <param name="positive">是否下一页</param>
     public void SkipTable(bool positive)
     {
-        if (temPreviewTank != null)
-        {
-            allCustomTank.CurrentTank.SetActive(true);
-            allCustomTank.ResetTemTankAssemble();
-            Destroy(temPreviewTank);
-            temPreviewTank = null;
-        }
+        AllCustomTankManager.Instance.ResetCurrentTank(true);
         SetAllTableInActive();
         currentIndex += (positive ? 1 : -1) + moduleTables.Count;       // 避免小于0
         currentIndex %= moduleTables.Count;
         menuText.text = moduleTables[currentIndex].tableName;
         moduleTables[currentIndex].gameObject.SetActive(true);
-    }
-
-    /// <summary>
-    /// 设置当前选择的部件
-    /// </summary>
-    /// <param name="modulePreview">部件预览对象</param>
-    public void SetSelectedModule(TankModulePreviewManager modulePreview)
-    {
-        switch (TankModule.GetModuleType(modulePreview.module))
-        {
-            case TankModule.TankModuleType.Head:
-                if (modulePreview.module == allCustomTank.CurrentTemAssemble.head)
-                    return;
-                else
-                    allCustomTank.CurrentTemAssemble.head = modulePreview.module as TankModuleHead;
-                break;
-            case TankModule.TankModuleType.Body:
-                if (modulePreview.module == allCustomTank.CurrentTemAssemble.body)
-                    return;
-                else
-                    allCustomTank.CurrentTemAssemble.body = modulePreview.module as TankModuleBody;
-                break;
-            case TankModule.TankModuleType.Wheel:
-                if (modulePreview.module == allCustomTank.CurrentTemAssemble.leftWheel)
-                    return;
-                else
-                    allCustomTank.CurrentTemAssemble.leftWheel = modulePreview.module as TankModuleWheel;
-                break;
-            //case TankModule.TankModuleType.Other:
-            //    break;
-            default:
-                return;
-        }
-
-        PreviewChange();
-    }
-
-    public void PreviewChange()
-    {
-        if (temPreviewTank != null)
-        {
-            Destroy(temPreviewTank);
-            temPreviewTank = null;
-        }
-        allCustomTank.CurrentTank.SetActive(false);
-        temPreviewTank = allCustomTank.CurrentTemAssemble.CreateTank(allCustomTank.tankExhibition.transform);
-        allCustomTank.ResetCurrentTankAnimation();
-        //GameMathf.ResetTransform(temPreviewTank.transform);
-        allCustomTank.SetupTankPos(temPreviewTank.transform,allCustomTank.CurrentIndex);
     }
 
     /// <summary>

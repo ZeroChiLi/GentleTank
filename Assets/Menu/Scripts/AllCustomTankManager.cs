@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class AllCustomTankManager : MonoBehaviour 
 {
+    static private AllCustomTankManager instance;
+    [HideInInspector]
+    static public AllCustomTankManager Instance { get { return instance; } }
+
     public List<TankAssembleManager> defaultTankAssembleList;
     public string customTankPath = "/Items/Tank/TankAssemble/Custom";       // 自定义坦克相对路径
     public Animator tankExhibition;                     // 坦克展台（自动旋转）
@@ -18,6 +22,7 @@ public class AllCustomTankManager : MonoBehaviour
     private int currentIndex;                           // 当前选中坦克索引
     private TankAssembleManager temTankAssemble;
     public TankAssembleManager CurrentTemAssemble { get { return temTankAssemble; } }
+    private GameObject temTankObject;
 
     // 坦克列表索引器（从默认到自定义）
     public GameObject this[int index]
@@ -32,10 +37,19 @@ public class AllCustomTankManager : MonoBehaviour
 
     public int CurrentIndex { get { return currentIndex; } }
     public GameObject CurrentTank { get { return this[currentIndex]; } }
-    public TankAssembleManager CurrentTankAssemble { get { return GetTankAssemble(currentIndex); } }
+    public TankAssembleManager CurrentTankAssemble
+    {
+        get
+        {
+            if (currentIndex < 0 || currentIndex >= defaultTankList.Count + customTankList.Count)
+                return null;
+            return currentIndex < defaultTankAssembleList.Count ? defaultTankAssembleList[currentIndex] : customTankAssembleList[currentIndex - defaultTankList.Count];
+        }
+    }
 
     private void Awake()
     {
+        instance = this;
         if (defaultTankAssembleList == null)
             defaultTankAssembleList = new List<TankAssembleManager>();
     }
@@ -115,13 +129,16 @@ public class AllCustomTankManager : MonoBehaviour
     /// <param name="index">坦克索引值</param>
     public void SelectCurrentTank(int index)
     {
-        if (this[currentIndex] != null)     // 重置上一个选中的坦克位置
-            this[currentIndex].transform.SetParent(transform);
-        currentIndex = index;
-        if (this[index] != null)
+        if (CurrentTank != null)     // 重置上一个选中的坦克位置
         {
-            ResetTemTankAssemble();
-            ResetCurrentTankAnimation();
+            CurrentTank.transform.SetParent(transform);
+            CurrentTank.SetActive(true);
+        }
+        currentIndex = index;
+        if (CurrentTank != null)
+        {
+            ResetCurrentTank();
+            ResetExhibitionTank(CurrentTank.transform);
         }
     }
 
@@ -130,29 +147,93 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     public void ResetTemTankAssemble()
     {
-        temTankAssemble = new TankAssembleManager(CurrentTankAssemble);
+        temTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
+        temTankAssemble.CopyFrom(CurrentTankAssemble);
+        temTankAssemble.tankName = "TemporaryPreviewTank";
     }
 
     /// <summary>
-    /// 重置当前坦克展台动画
+    /// 重置展台坦克
     /// </summary>
-    public void ResetCurrentTankAnimation()
+    public void ResetExhibitionTank(Transform targetTank)
     {
-        tankExhibition.transform.localPosition = this[currentIndex].transform.localPosition;
-        this[currentIndex].transform.SetParent(tankExhibition.transform);
+        tankExhibition.transform.localPosition = targetTank.localPosition;
+        targetTank.SetParent(tankExhibition.transform);
         tankExhibition.SetTrigger("Reset");
-        this[currentIndex].transform.localRotation = Quaternion.Euler(tankStartRotation);
+        targetTank.localRotation = Quaternion.Euler(tankStartRotation);
     }
 
     /// <summary>
-    /// 获取坦克组合（包括默认和自定义）
+    /// 预览新的坦克部件
     /// </summary>
-    /// <param name="index">索引值</param>
-    /// <returns>坦克组合</returns>
-    public TankAssembleManager GetTankAssemble(int index)
+    /// <param name="modulePreview">目标部件</param>
+    public void PreviewNewModule(TankModulePreviewManager modulePreview)
     {
-        if (index < 0 || index >= defaultTankList.Count + customTankList.Count)
-            return null;
-        return index < defaultTankAssembleList.Count ? defaultTankAssembleList[index] : customTankAssembleList[index - defaultTankList.Count];
+        switch (TankModule.GetModuleType(modulePreview.module))
+        {
+            case TankModule.TankModuleType.Head:
+                if (modulePreview.module == CurrentTemAssemble.head)
+                    return;
+                else
+                    CurrentTemAssemble.head = modulePreview.module as TankModuleHead;
+                break;
+            case TankModule.TankModuleType.Body:
+                if (modulePreview.module == CurrentTemAssemble.body)
+                    return;
+                else
+                    CurrentTemAssemble.body = modulePreview.module as TankModuleBody;
+                break;
+            case TankModule.TankModuleType.Wheel:
+                if (modulePreview.module == CurrentTemAssemble.leftWheel)
+                    return;
+                else
+                    CurrentTemAssemble.leftWheel = modulePreview.module as TankModuleWheel;
+                break;
+            //case TankModule.TankModuleType.Other:
+            //    break;
+            default:
+                return;
+        }
+
+        PreviewTemporaryTank();
     }
+
+    /// <summary>
+    /// 清除临时坦克对象
+    /// </summary>
+    public void CleanTemTankObj()
+    {
+        if (temTankObject != null)
+        {
+            Destroy(temTankObject);
+            temTankObject = null;
+        }
+    }
+
+    /// <summary>
+    /// 预览临时坦克
+    /// </summary>
+    /// <param name="hideCurrentTank">是否隐藏当前坦克</param>
+    private void PreviewTemporaryTank(bool hideCurrentTank = true)
+    {
+        CleanTemTankObj();
+        if (hideCurrentTank && CurrentTank != null)
+            CurrentTank.SetActive(false);
+        temTankObject = CurrentTemAssemble.CreateTank(transform);
+        SetupTankPos(temTankObject.transform, currentIndex);
+        ResetExhibitionTank(temTankObject.transform);
+    }
+
+    /// <summary>
+    /// 重置当前坦克
+    /// </summary>
+    /// <param name="cleanTemTank">是否清除临时坦克</param>
+    public void ResetCurrentTank(bool cleanTemTank = true)
+    {
+        CurrentTank.SetActive(true);
+        ResetTemTankAssemble();
+        if (cleanTemTank)
+            CleanTemTankObj();
+    }
+
 }
