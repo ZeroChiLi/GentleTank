@@ -14,6 +14,7 @@ public class AllCustomTankManager : MonoBehaviour
     public Animator tankExhibition;                     // 坦克展台（自动旋转）
     public Vector3 tankOffset = new Vector3(10, 0, 0);        // 坦克之间偏移量
     public Vector3 tankStartRotation = new Vector3(0, 150, 0);      // 坦克初始旋转角
+    public SelectedImageManager selectedImage;
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
@@ -142,6 +143,7 @@ public class AllCustomTankManager : MonoBehaviour
             ResetCurrentTank();
             ResetExhibitionTank(CurrentTank.transform);
         }
+        selectedImage.nextIndex = currentIndex;
     }
 
     /// <summary>

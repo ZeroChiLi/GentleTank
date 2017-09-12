@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AllCustomTankPreviewManager : MonoBehaviour 
 {
@@ -64,4 +65,5 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         intervalCam.camera.Render();
         yield return delayTime;
     }
+
 }

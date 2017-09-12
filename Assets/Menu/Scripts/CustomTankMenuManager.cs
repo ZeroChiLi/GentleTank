@@ -21,7 +21,7 @@ public class CustomTankMenuManager : MonoBehaviour
         instance = this;
         currentIndex = 0;
         menuText.text = moduleTables[currentIndex].tableName;
-        //changeBtn.interactable = false;
+        changeBtn.interactable = false;
     }
 
     /// <summary>
@@ -39,6 +39,7 @@ public class CustomTankMenuManager : MonoBehaviour
     /// <param name="positive">是否下一页</param>
     public void SkipTable(bool positive)
     {
+        changeBtn.interactable = false;
         AllCustomTankManager.Instance.ResetCurrentTank(true);
         SetAllTableInActive();
         currentIndex += (positive ? 1 : -1) + moduleTables.Count;       // 避免小于0

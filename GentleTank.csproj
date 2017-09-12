@@ -242,6 +242,7 @@
     <Compile Include="Assets\Menu\Scripts\RoomInfoLabel.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomLabelsManager.cs" />
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\SelectedImageManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulePreviewManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulesTableManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
