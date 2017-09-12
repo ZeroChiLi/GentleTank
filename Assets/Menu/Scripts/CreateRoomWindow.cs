@@ -44,7 +44,7 @@ public class CreateRoomWindow : MonoBehaviour
     {
         if (string.IsNullOrEmpty(roomName.text) || string.IsNullOrEmpty(roomSize.text))
         {
-            toast.ShowToast(3f, "房间信息不完整。");
+            toast.ShowToast("房间信息不完整。");
             return false;
         }
         return true;
@@ -67,7 +67,7 @@ public class CreateRoomWindow : MonoBehaviour
     {
         Debug.Log("创建房间失败");
         createRoomButton.interactable = true;
-        toast.ShowToast(3f, "该房间已存在。");
+        toast.ShowToast("该房间已存在。");
     }
 
 

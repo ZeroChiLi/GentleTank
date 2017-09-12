@@ -233,6 +233,7 @@
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
+    <Compile Include="Assets\Menu\Scripts\CurrentTankPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\CustomTankMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />

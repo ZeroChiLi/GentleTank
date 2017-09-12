@@ -14,7 +14,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public AllCustomTankManager allCustomTank;
     public CatchTextureCam catchTextureCam;
     public IntervalOffsetCam intervalCam;               // 间隔变化相机
-    public PostEffectsBase cameraEffect;                // 屏幕后处理特效
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public List<RenderTexture> textureList;             // 纹理列表
 
@@ -42,21 +41,28 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     /// </summary>
     private IEnumerator SetupAllTankTexture()
     {
-        for (int i = 0; i < textureList.Count; i++)
+        for (int i = 0; i < allCustomTank.Count; i++)
         {
             while (catchTextureCam.IsCatching)
                 yield return null;
-            if (allCustomTank[i] == null)
-                continue;
             catchTextureCam.SetCatchTarget(allCustomTank[i].transform, textureList[i]);
         }
     }
 
     /// <summary>
-    /// 捕获新的纹理（当前坦克）
+    /// 捕获当前坦克的纹理
     /// </summary>
-    public void CatchNewTexture()
+    public void CatchCurrentTankTexture()
     {
-        catchTextureCam.SetCatchTarget(allCustomTank.CurrentTank.transform, textureList[allCustomTank.CurrentIndex]);
+        CatchTankTexture(allCustomTank.CurrentIndex);
+    }
+
+    /// <summary>
+    /// 捕获新的纹理
+    /// </summary>
+    /// <param name="index">指定索引值</param>
+    public void CatchTankTexture(int index)
+    {
+        catchTextureCam.SetCatchTarget(allCustomTank[index].transform, textureList[index]);
     }
 }

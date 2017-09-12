@@ -162,7 +162,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(playerName.text))
         {
-            toast.ShowToast(3f, "请输入玩家名称");
+            toast.ShowToast("请输入玩家名称");
             return;
         }
         SetPlayerName();
@@ -176,7 +176,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (roomLabelsManager.SelectedLabel == null)
         {
-            toast.ShowToast(3f, "未选中任何房间。");
+            toast.ShowToast("未选中任何房间。");
             return;
         }
         SetPlayerName();
@@ -199,7 +199,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void OnJoinedRoom()
     {
-        toast.ShowToast(3f, "成功加入房间。");
+        toast.ShowToast("成功加入房间。");
         LockButtons(false);
     }
 
@@ -213,16 +213,16 @@ public class LobbyManager : MonoBehaviour
         switch (int.Parse(cause[0].ToString()))
         {
             case ErrorCode.GameFull:
-                toast.ShowToast(3f, "加入失败，房间已满。");
+                toast.ShowToast("加入失败，房间已满。");
                 break;
             case ErrorCode.GameDoesNotExist:
-                toast.ShowToast(3f, "加入失败，房间不存在。");
+                toast.ShowToast("加入失败，房间不存在。");
                 break;
             case ErrorCode.GameClosed:
-                toast.ShowToast(3f, "加入失败，房间已关闭。");
+                toast.ShowToast("加入失败，房间已关闭。");
                 break;
             default:
-                toast.ShowToast(3f, "加入失败。" + cause[1]);
+                toast.ShowToast("加入失败。" + cause[1]);
                 break;
         }
     }
@@ -233,7 +233,7 @@ public class LobbyManager : MonoBehaviour
     public void OnPhotonRandomJoinFailed()
     {
         LockButtons(false);
-        toast.ShowToast(3f, "随机加入失败。");
+        toast.ShowToast("随机加入失败。");
     }
 
     /// <summary>
@@ -242,7 +242,7 @@ public class LobbyManager : MonoBehaviour
     public void OnDisconnectedFromPhoton()
     {
         LockButtons(true);
-        toast.ShowToast(3f, "连接中断。");
+        toast.ShowToast("连接中断。");
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ public class LobbyManager : MonoBehaviour
     {
         LockButtons(true);
         connectFailed = true;
-        toast.ShowToast(3f, "连接失败。 StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
+        toast.ShowToast("连接失败。 StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
 
     /// <summary>
@@ -261,7 +261,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void OnConnectedToMaster()
     {
-        toast.ShowToast(3f, "加入大厅。");
+        toast.ShowToast("加入大厅。");
         LockButtons(false);
         PhotonNetwork.JoinLobby();
     }

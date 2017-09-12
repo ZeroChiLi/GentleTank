@@ -48,5 +48,4 @@ public class CustomTankMenuManager : MonoBehaviour
         moduleTables[currentIndex].gameObject.SetActive(true);
     }
 
-
 }

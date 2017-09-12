@@ -69,7 +69,6 @@ public class TankAssembleWindow : EditorWindow
             Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + relativePath);
         if (createPrefab && PrefabUtility.CreatePrefab("Assets/" + relativePath, newTankPrefab) == null)
             Debug.LogErrorFormat("Create Failed. {0}", "Assets/" + relativePath);
-
     }
 
     /// <summary>

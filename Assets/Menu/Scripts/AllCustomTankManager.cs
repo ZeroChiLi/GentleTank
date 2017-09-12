@@ -3,13 +3,13 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class AllCustomTankManager : MonoBehaviour 
+public class AllCustomTankManager : MonoBehaviour
 {
     static private AllCustomTankManager instance;
     [HideInInspector]
     static public AllCustomTankManager Instance { get { return instance; } }
 
-    public List<TankAssembleManager> defaultTankAssembleList;
+    public int maxSize = 10;
     public string customTankPath = "/Items/Tank/TankAssemble/Custom";       // 自定义坦克相对路径
     public Animator tankExhibition;                     // 坦克展台（自动旋转）
     public Vector3 tankOffset = new Vector3(10, 0, 0);        // 坦克之间偏移量
@@ -18,43 +18,26 @@ public class AllCustomTankManager : MonoBehaviour
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
+    public GameObject TemporaryTankObject { get { return temTankObject; } set { temTankObject = value; } }
+    private GameObject temTankObject;
+    public int CurrentIndex { get { return currentIndex; } }
+    private int currentIndex;                           // 当前选中坦克索引
+
+    public int Count { get { return customTankAssembleList.Count; } }
+    public GameObject this[int index] { get { return index >= Count ? null : customTankList[index]; } set { customTankList[index] = value; } }
+    public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
+    public TankAssembleManager CurrentTankAssemble { get { return customTankAssembleList[currentIndex]; } set { customTankAssembleList[currentIndex] = value; } }
 
     private string fullCustomTankPath { get { return Application.dataPath + customTankPath; } }
     private List<TankAssembleManager> customTankAssembleList = new List<TankAssembleManager>();
-    private List<GameObject> defaultTankList = new List<GameObject>();           // 默认坦克列表
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
-    private int currentIndex;                           // 当前选中坦克索引
-    private GameObject temTankObject;
-
-    // 坦克列表索引器（从默认到自定义）
-    public GameObject this[int index]
-    {
-        get
-        {
-            if (IsValidIndex(index))
-                return index < defaultTankList.Count ? defaultTankList[index] : customTankList[index - defaultTankList.Count];
-            return null;
-        }
-        set
-        {
-            if (IsValidIndex(index))
-            {
-                if (index < defaultTankList.Count)
-                    defaultTankList[index] = value;
-                else
-                    customTankList[index - defaultTankList.Count] = value;
-            }
-        }
-    }
-
-    public int CurrentIndex { get { return currentIndex; } }
-    public GameObject CurrentTank { get { return this[currentIndex]; } private set { this[currentIndex] = value; } }
+    private GameObject newTank;
 
     private void Awake()
     {
         instance = this;
-        if (defaultTankAssembleList == null)
-            defaultTankAssembleList = new List<TankAssembleManager>();
+        if (customTankAssembleList == null)
+            customTankAssembleList = new List<TankAssembleManager>();
     }
 
     /// <summary>
@@ -62,21 +45,9 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     public void CreateAllTanks()
     {
-        CreateTanks(defaultTankAssembleList, defaultTankList);
         GetAllCustomTankAssemble();
-        CreateTanks(customTankAssembleList, customTankList);
-    }
-
-    /// <summary>
-    /// 创建坦克
-    /// </summary>
-    /// <param name="assembleList">坦克组合列表</param>
-    private void CreateTanks(List<TankAssembleManager> assembleList,List<GameObject> targetObjList)
-    {
-        if (assembleList == null)
-            return;
-        for (int i = 0; i < assembleList.Count; i++)
-            targetObjList.Add(assembleList[i].CreateTank(transform));
+        for (int i = 0; i < customTankAssembleList.Count; i++)
+            customTankList.Add(customTankAssembleList[i].CreateTank(transform));
     }
 
     /// <summary>
@@ -108,11 +79,8 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     public void SetupAllTanksPosition()
     {
-        for (int i = 0; i < defaultTankList.Count; i++)
-            SetupTankPos(defaultTankList[i].transform, i);
-
         for (int i = 0; i < customTankList.Count; i++)
-            SetupTankPos(customTankList[i].transform, i + defaultTankList.Count);
+            SetupTankPos(customTankList[i].transform, i);
     }
 
     /// <summary>
@@ -147,33 +115,12 @@ public class AllCustomTankManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 是否是有效索引（索引对应有坦克）
-    /// </summary>
-    /// <param name="index">索引值</param>
-    /// <returns>是否有效</returns>
-    public bool IsValidIndex(int index)
-    {
-        return index >= 0 && index < defaultTankList.Count + customTankList.Count;
-    }
-
-    /// <summary>
-    /// 获取当前坦克的组合装配
-    /// </summary>
-    /// <returns>当前坦克的组合</returns>
-    public TankAssembleManager GetCurrentTankAssemble()
-    {
-        if (currentIndex < 0 || currentIndex >= defaultTankList.Count + customTankList.Count)
-            return null;
-        return currentIndex < defaultTankAssembleList.Count ? defaultTankAssembleList[currentIndex] : customTankAssembleList[currentIndex - defaultTankList.Count];
-    }
-
-    /// <summary>
     /// 重置当前临时坦克组装
     /// </summary>
-    private void ResetTemTankAssemble()
+    public void ResetTemTankAssemble()
     {
         temTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
-        temTankAssemble.CopyFrom(GetCurrentTankAssemble());
+        temTankAssemble.CopyFrom(CurrentTankAssemble);
         temTankAssemble.tankName = "TemporaryPreviewTank";
     }
 
@@ -266,15 +213,27 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     public void CommitChange()
     {
-        if (temTankObject == null)
+        if (TemporaryTankObject == null)
             return;
-        TankAssembleManager tankAssemble = GetCurrentTankAssemble();
-        tankAssemble.CopyFrom(temTankAssemble);
+        CurrentTankAssemble.CopyFrom(TemporaryAssemble);
         Destroy(CurrentTank);
-        temTankObject.name = tankAssemble.tankName;
-        CurrentTank = temTankObject;
-        temTankObject = null;
+        TemporaryTankObject.name = CurrentTankAssemble.tankName;
+        CurrentTank = TemporaryTankObject;
+        TemporaryTankObject = null;
         ResetTemTankAssemble();
     }
 
+    /// <summary>
+    /// 添加新的坦克组装
+    /// </summary>
+    /// <param name="tankAssemble">目标坦克组装</param>
+    /// <returns>返回新的坦克</returns>
+    public GameObject AddNewTank(TankAssembleManager tankAssemble)
+    {
+        customTankAssembleList.Add(tankAssemble);
+        newTank = tankAssemble.CreateTank(transform);
+        customTankList.Add(newTank);
+        SetupTankPos(newTank.transform, Count - 1);
+        return newTank;
+    }
 }
