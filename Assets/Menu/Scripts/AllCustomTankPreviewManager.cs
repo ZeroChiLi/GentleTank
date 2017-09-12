@@ -18,8 +18,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public List<RenderTexture> textureList;             // 纹理列表
 
-    private WaitForSeconds delayTime = new WaitForSeconds(0.05f);   // 渲染延迟
-
     /// <summary>
     /// 获取所有坦克，设置好位置
     /// </summary>
@@ -54,5 +52,11 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 捕获新的纹理（当前坦克）
+    /// </summary>
+    public void CatchNewTexture()
+    {
+        catchTextureCam.SetCatchTarget(allCustomTank.CurrentTank.transform, textureList[allCustomTank.CurrentIndex]);
+    }
 }

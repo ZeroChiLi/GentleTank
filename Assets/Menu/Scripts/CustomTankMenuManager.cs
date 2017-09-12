@@ -48,13 +48,5 @@ public class CustomTankMenuManager : MonoBehaviour
         moduleTables[currentIndex].gameObject.SetActive(true);
     }
 
-    /// <summary>
-    /// 提交修改
-    /// </summary>
-    public void CommitChange()
-    {
-        //AllCustomTankPreviewManager.Instance.CurrentTank.GetComponent<TankModuleManager>().CommitChange();
-        //allCustomTank.CurrentTankAssemble
-    }
 
 }

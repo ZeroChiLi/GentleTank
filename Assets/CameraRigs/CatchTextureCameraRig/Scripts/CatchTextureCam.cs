@@ -8,18 +8,8 @@ public class CatchTextureCam : MonoBehaviour
     public Transform stage;
 
     public bool IsCatching { get { return isCatching; } }
-    public CountDownTimer Timer
-    {
-        get
-        {
-            if (timer == null)
-                timer = new CountDownTimer(duration, false, false);
-            return timer;
-        }
-    }
 
     private bool isCatching =false;
-    private CountDownTimer timer;
     private Transform currentTarget;
     private Transform lastParent;
     private Vector3 lastPosision;
@@ -44,7 +34,6 @@ public class CatchTextureCam : MonoBehaviour
         lastRotation = target.localRotation;
         target.SetParent(stage);
         GameMathf.ResetLocalTransform(target, true, true, false);
-        Timer.Start();
         camera.enabled = true;
         return true;
     }
@@ -54,12 +43,12 @@ public class CatchTextureCam : MonoBehaviour
     /// </summary>
     private void OnGUI()
     {
-        if (Timer.IsTimeUp)
+        if (currentTarget != null)
         {
-            Timer.Reset(duration, true);
             currentTarget.SetParent(lastParent);
             currentTarget.localPosition = lastPosision;
             currentTarget.localRotation = lastRotation;
+            currentTarget = null;
             isCatching = false;
             camera.enabled = false;
         }   

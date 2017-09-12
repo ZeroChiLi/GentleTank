@@ -12,7 +12,6 @@ public class TankAssembleWindow : EditorWindow
 
     private Vector2 scrollPos;                              // 滑动面板位置
     private GameObject newTankPrefab;                       // 创建的坦克预设
-    private TankModuleManager temTankModuleManager;         // 临时部件管理器
 
     [MenuItem("Window/Tank Assemble")]
     static void ShowWindows()

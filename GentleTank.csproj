@@ -207,7 +207,6 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankModule.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleBody.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleHead.cs" />
-    <Compile Include="Assets\Items\Tank\Scripts\TankModuleManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleOther.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleWheel.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
