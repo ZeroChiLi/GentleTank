@@ -9,27 +9,15 @@ namespace CameraRig
         public Vector3 offset;              // 每次偏移量
         public int index;                   // 当前索引
         public float smoothTime = 0.3f;     // 平滑时间
-        public bool enableSmooth;           // 是否运行平滑
 
         private Vector3 velocity;           // 当前平滑移动速度
-
-        /// <summary>
-        /// 立即变换位置
-        /// </summary>
-        /// <param name="index">索引值</param>
-        public void FollowImmediately(int index)
-        {
-            enableSmooth = false;
-            transform.localPosition = startPosition + (index * offset);
-        }
 
         /// <summary>
         /// 如果开启平滑移动，自动移动
         /// </summary>
         private void Update()
         {
-            if (enableSmooth)
-                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, startPosition + (index * offset), ref velocity, smoothTime);
+            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, startPosition + (index * offset), ref velocity, smoothTime);
         }
 
         /// <summary>

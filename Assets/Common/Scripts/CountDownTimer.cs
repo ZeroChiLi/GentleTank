@@ -25,8 +25,7 @@ public sealed class CountDownTimer
         IsStoped = true;
         Duration = Mathf.Max(0f, duration);
         IsAutoCycle = autocycle;
-        if (autoStart)
-            Start();
+        Reset(duration,!autoStart);
     }
 
     /// <summary>

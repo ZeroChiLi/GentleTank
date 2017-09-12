@@ -12,6 +12,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     static public AllCustomTankPreviewManager Instance { get { return instance; } }
 
     public AllCustomTankManager allCustomTank;
+    public CatchTextureCam catchTextureCam;
     public IntervalOffsetCam intervalCam;               // 间隔变化相机
     public PostEffectsBase cameraEffect;                // 屏幕后处理特效
     public RenderTexture selectedTexture;               // 选中的预览纹理
@@ -44,26 +45,14 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     private IEnumerator SetupAllTankTexture()
     {
         for (int i = 0; i < textureList.Count; i++)
-            yield return CameraCapture(textureList[i], i, true);
-        yield return CameraCapture(selectedTexture, 0, false);
-        intervalCam.enableSmooth = true;
+        {
+            while (catchTextureCam.IsCatching)
+                yield return null;
+            if (allCustomTank[i] == null)
+                continue;
+            catchTextureCam.SetCatchTarget(allCustomTank[i].transform, textureList[i]);
+        }
     }
 
-    /// <summary>
-    /// 捕获相机的画面到指定纹理中
-    /// </summary>
-    /// <param name="targetTexture">目标纹理</param>
-    /// <param name="index">当前索引</param>
-    /// <param name="effectActive">是否开启屏幕特效</param>
-    private IEnumerator CameraCapture(RenderTexture targetTexture,int index,bool effectActive = false)
-    {
-        intervalCam.gameObject.SetActive(false);
-        cameraEffect.enabled = effectActive;
-        intervalCam.camera.targetTexture = targetTexture;
-        intervalCam.FollowImmediately(index);
-        intervalCam.gameObject.SetActive(true);
-        intervalCam.camera.Render();
-        yield return delayTime;
-    }
 
 }

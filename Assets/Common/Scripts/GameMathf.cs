@@ -54,19 +54,25 @@ public static class GameMathf
     /// <param name="value">值</param>
     /// <param name="precision">精度</param>
     /// <returns>返回处理后的值</returns>
-    static public Vector3 Round(Vector3 value,int precision = 2)
+    static public Vector3 Round(Vector3 value, int precision = 2)
     {
-        return new Vector3((float)Math.Round(value.x,precision), (float)Math.Round(value.y, precision), (float)Math.Round(value.z, precision));
+        return new Vector3((float)Math.Round(value.x, precision), (float)Math.Round(value.y, precision), (float)Math.Round(value.z, precision));
     }
 
     /// <summary>
     /// 重置默认转换（本地坐标）
     /// </summary>
-    /// <param name="transform">转换</param>
-    static public void ResetTransform(Transform transform)
+    /// <param name="transform">转换目标</param>
+    /// <param name="pos">是否修改位置</param>
+    /// <param name="rotate">是否修改旋转</param>
+    /// <param name="scale">是否修改缩放</param>
+    static public void ResetLocalTransform(Transform transform, bool pos = true, bool rotate = true, bool scale = true)
     {
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
-        transform.localScale = Vector3.one;
+        if (pos)
+            transform.localPosition = Vector3.zero;
+        if (rotate)
+            transform.localRotation = Quaternion.identity;
+        if (scale)
+            transform.localScale = Vector3.one;
     }
 }
