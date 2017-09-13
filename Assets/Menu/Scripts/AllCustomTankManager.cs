@@ -9,12 +9,12 @@ public class AllCustomTankManager : MonoBehaviour
     [HideInInspector]
     static public AllCustomTankManager Instance { get { return instance; } }
 
-    public int maxSize = 10;
+    public int maxSize = 10;                                                // 最大坦克数量
     public string customTankPath = "/Items/Tank/TankAssemble/Custom";       // 自定义坦克相对路径
-    public Animator tankExhibition;                     // 坦克展台（自动旋转）
-    public Vector3 tankOffset = new Vector3(10, 0, 0);        // 坦克之间偏移量
-    public Vector3 tankStartRotation = new Vector3(0, 150, 0);      // 坦克初始旋转角
-    public SelectedImageManager selectedImage;
+    public Animator tankExhibition;                                         // 坦克展台（自动旋转）
+    public Vector3 tankOffset = new Vector3(10, 0, 0);                      // 坦克之间偏移量
+    public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
+    public CurrentTankPanelManager tankPanel;
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
@@ -111,7 +111,6 @@ public class AllCustomTankManager : MonoBehaviour
             ResetCurrentTank();
             ResetExhibitionTank(CurrentTank.transform);
         }
-        selectedImage.nextIndex = currentIndex;
     }
 
     /// <summary>
@@ -173,13 +172,15 @@ public class AllCustomTankManager : MonoBehaviour
     /// <summary>
     /// 清除临时坦克对象
     /// </summary>
-    public void CleanTemTankObj()
+    public void CleanTemTankObj(bool alsoAssemble = true)
     {
         if (temTankObject != null)
         {
             Destroy(temTankObject);
             temTankObject = null;
         }
+        if (alsoAssemble)
+            temTankAssemble = null;
     }
 
     /// <summary>
@@ -188,8 +189,8 @@ public class AllCustomTankManager : MonoBehaviour
     /// <param name="hideCurrentTank">是否隐藏当前坦克</param>
     private void PreviewTemporaryTank(bool hideCurrentTank = true)
     {
-        CleanTemTankObj();
-        if (hideCurrentTank && CurrentTank != null)
+        CleanTemTankObj(false);
+        if (hideCurrentTank)
             CurrentTank.SetActive(false);
         temTankObject = TemporaryAssemble.CreateTank(transform);
         SetupTankPos(temTankObject.transform, currentIndex);
@@ -202,10 +203,13 @@ public class AllCustomTankManager : MonoBehaviour
     /// <param name="cleanTemTank">是否清除临时坦克</param>
     public void ResetCurrentTank(bool cleanTemTank = true)
     {
-        CurrentTank.SetActive(true);
-        ResetTemTankAssemble();
         if (cleanTemTank)
             CleanTemTankObj();
+        if (CurrentTank != null)
+        {
+            CurrentTank.SetActive(true);
+            ResetTemTankAssemble();
+        }
     }
 
     /// <summary>
@@ -224,6 +228,26 @@ public class AllCustomTankManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 获取坦克组装资源路径
+    /// </summary>
+    /// <param name="index">坦克索引值</param>
+    /// <returns>坦克组装资源路径</returns>
+    public string GetTankAssembleAssetPath(int index)
+    {
+        return string.Format("Assets{0}/CustomTank{1}.asset", customTankPath, index);
+    }
+
+    /// <summary>
+    /// 获取坦克组装绝对路径
+    /// </summary>
+    /// <param name="index">坦克索引值</param>
+    /// <returns>坦克组装绝对路径</returns>
+    public string GetTankAssembleFullPath(int index)
+    {
+        return string.Format("{0}{1}/CustomTank{2}.asset", Application.dataPath, customTankPath, index);
+    }
+
+    /// <summary>
     /// 添加新的坦克组装
     /// </summary>
     /// <param name="tankAssemble">目标坦克组装</param>
@@ -235,7 +259,38 @@ public class AllCustomTankManager : MonoBehaviour
         newTank = tankAssemble.CreateTank(transform);
         customTankList.Add(newTank);
         SetupTankPos(newTank.transform, Count - 1);
-        AssetDatabase.CreateAsset(tankAssemble, string.Format("Assets{0}/{1}.asset", customTankPath, tankAssemble.tankName));
+        AssetDatabase.CreateAsset(tankAssemble, GetTankAssembleAssetPath(Count - 1));
         return newTank;
+    }
+
+    /// <summary>
+    /// 删除当前坦克
+    /// </summary>
+    public void DeleteCurrentTank()
+    {
+        if (CurrentTank == null)
+            return;
+        Destroy(CurrentTank);
+        customTankList.Remove(CurrentTank);
+        customTankAssembleList.Remove(CurrentTankAssemble);
+        AssetDatabase.DeleteAsset(GetTankAssembleAssetPath(currentIndex));
+        RenameTankAssembles(currentIndex + 1);
+        SetupAllTanksPosition();
+    }
+
+    /// <summary>
+    /// 重命名坦克组装（删除坦克后，后面的坦克名字尾数减一）
+    /// </summary>
+    /// <param name="startIndex">起始坦克组装索引</param>
+    private void RenameTankAssembles(int startIndex)
+    {
+        int j = startIndex;
+        for (int i = startIndex; i < maxSize; i++)
+        {
+            if (!File.Exists(GetTankAssembleFullPath(i)))
+                continue;
+            AssetDatabase.RenameAsset(GetTankAssembleAssetPath(i), "CustomTank" + (j - 1));
+            ++j;
+        }
     }
 }

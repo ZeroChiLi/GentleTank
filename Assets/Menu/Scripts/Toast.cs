@@ -8,7 +8,6 @@ public class Toast : MonoBehaviour
     public float duration = 3f;
 
     private CountDownTimer timer;
-    private bool isShowed;          // 是否正在显示
 
     public CountDownTimer Timer
     {
@@ -36,7 +35,6 @@ public class Toast : MonoBehaviour
     public void ShowToast(string content, float duration = 3f)
     {
         this.duration = duration;
-        isShowed = true;
         toastText.text = content;
         Timer.Start();
         gameObject.SetActive(true);

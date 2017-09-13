@@ -25,6 +25,8 @@ public class TankModulePreviewManager : MonoBehaviour
     /// </summary>
     public void OnClicked()
     {
+        if (AllCustomTankManager.Instance.CurrentTank == null)
+            return;
         AllCustomTankManager.Instance.PreviewNewModule(this);
         CustomTankMenuManager.Instance.changeBtn.interactable = true;
     }
