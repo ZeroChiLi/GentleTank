@@ -230,10 +230,12 @@ public class AllCustomTankManager : MonoBehaviour
     /// <returns>返回新的坦克</returns>
     public GameObject AddNewTank(TankAssembleManager tankAssemble)
     {
+        tankAssemble.tankName = "CustomTank" + Count;
         customTankAssembleList.Add(tankAssemble);
         newTank = tankAssemble.CreateTank(transform);
         customTankList.Add(newTank);
         SetupTankPos(newTank.transform, Count - 1);
+        AssetDatabase.CreateAsset(tankAssemble, string.Format("Assets{0}/{1}.asset", customTankPath, tankAssemble.tankName));
         return newTank;
     }
 }

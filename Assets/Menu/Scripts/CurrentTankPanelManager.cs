@@ -9,6 +9,8 @@ public class CurrentTankPanelManager : MonoBehaviour
     public AllCustomTankPreviewManager allCustomTankPreview;
     public TankAssembleManager defaultTankAssemble;
 
+    private TankAssembleManager newTankAssemble;
+
     public void CreateNewTank()
     {
         if (allCustomTank.Count >= allCustomTank.maxSize)
@@ -16,7 +18,9 @@ public class CurrentTankPanelManager : MonoBehaviour
             toast.ShowToast("坦克库已满。");
             return;
         }
-        allCustomTank.AddNewTank(defaultTankAssemble);
+        newTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
+        newTankAssemble.CopyFrom(defaultTankAssemble);
+        allCustomTank.AddNewTank(newTankAssemble);
         allCustomTankPreview.CatchTankTexture(allCustomTank.Count - 1);
     }
 
