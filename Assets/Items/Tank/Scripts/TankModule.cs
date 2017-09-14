@@ -4,6 +4,7 @@
 public class TankModuleProperty
 {
     public string moduleName;
+    public string description;
     public float weight = 10f;
 }
 

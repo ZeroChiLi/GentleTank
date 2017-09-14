@@ -33,12 +33,12 @@ public class TankModulePreviewManager : MonoBehaviour
 
     public void OnEnter()
     {
-        Debug.Log("Enter" + module.prefab.name);
+        TankModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.description,module.property.weight.ToString());
     }
 
     public void OnExit()
     {
-        Debug.Log("Exit" + module.prefab.name);
+        TankModulePropertyPanelManager.Instance.gameObject.SetActive(false);
 
     }
 
