@@ -113,7 +113,13 @@ public class TankModule : ScriptableObject
     /// <param name="targetObj">连接的目标部件对象</param>
     static public void ConnectOtherModule(TankModuleOther other,GameObject obj,TankModule targetModule,GameObject targetObj)
     {
+        obj.transform.SetParent(targetObj.transform);
+        Debug.Log(targetObj.transform.position.y);
+        Debug.Log(other.GetAnchor(targetModule).y);
+        Debug.Log(other.connectAnchor.y);
+        Debug.Log(obj.transform.position);
         obj.transform.position = targetObj.transform.position + other.GetAnchor(targetModule) - other.connectAnchor;
+        Debug.Log(obj.transform.position);
     }
 
 }

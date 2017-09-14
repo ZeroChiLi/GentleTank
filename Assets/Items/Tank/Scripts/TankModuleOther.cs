@@ -10,7 +10,7 @@ public class TankModuleOther : TankModule
 
     public enum TargetPos
     {
-        Center, Forward, Back, Left, Right, Up, Down, HeadLuanch, BodyLeftWheelTop, BodyRightWheelTop
+        Center, Forward, Back, Left, Right, Up, Down, HeadLuanch, HeadForwardUp, HeadBackUp, BodyLeftWheelTop, BodyRightWheelTop, BodyForwadUp,BodyBackUp
     }
 
     public Vector3 connectAnchor;
@@ -26,7 +26,17 @@ public class TankModuleOther : TankModule
     public Vector3 GetAnchor(TankModule module)
     {
         TankModuleHead head = module as TankModuleHead;
+        if (head != null)
+            return GetHeadAnchor(head);
         TankModuleBody body = module as TankModuleBody;
+        if (body != null)
+            return GetBodyAnchor(body);
+
+        return GetDefaultAnchor(module);
+    }
+
+    public Vector3 GetDefaultAnchor(TankModule module)
+    {
         switch (targetPos)
         {
             case TargetPos.Center:
@@ -40,16 +50,47 @@ public class TankModuleOther : TankModule
             case TargetPos.Right:
                 return module.anchors.right;
             case TargetPos.Up:
+                Debug.Log("Up  " + module.anchors.up);
                 return module.anchors.up;
             case TargetPos.Down:
                 return module.anchors.down;
-            case TargetPos.HeadLuanch:
-                return head == null ? Vector3.zero : head.launchPos;
-            case TargetPos.BodyLeftWheelTop:
-                return body == null ? Vector3.zero : body.leftWheelTop;
-            case TargetPos.BodyRightWheelTop:
-                return body == null ? Vector3.zero : body.rightWheelTop;
         }
+        return Vector3.zero;
+    }
+
+    public Vector3 GetHeadAnchor(TankModuleHead head)
+    {
+        Debug.Log("Head");
+        switch (targetPos)
+        {
+            case TargetPos.HeadLuanch:
+                return head.launchPos;
+            case TargetPos.HeadForwardUp:
+                return head.forwardUp;
+            case TargetPos.HeadBackUp:
+                return head.backUp;
+        }
+        Debug.Log("Get Default");
+        GetDefaultAnchor(head);
+        return Vector3.zero;
+    }
+
+    public Vector3 GetBodyAnchor(TankModuleBody body)
+    {
+        Debug.Log("Body");
+
+        switch (targetPos)
+        {
+            case TargetPos.BodyLeftWheelTop:
+                return body.leftWheelTop;
+            case TargetPos.BodyRightWheelTop:
+                return body.rightWheelTop;
+            case TargetPos.BodyForwadUp:
+                return body.forwardUp;
+            case TargetPos.BodyBackUp:
+                return body.backUp;
+        }
+        GetDefaultAnchor(body);
         return Vector3.zero;
     }
 

@@ -8,7 +8,7 @@ public class TankAssembleManager : ScriptableObject
     public TankModuleHead head;
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
-    public List<TankModuleOther> others;
+    public List<TankModuleOther> others = new List<TankModuleOther>();
 
     private GameObject headObj;
     private GameObject bodyObj;
