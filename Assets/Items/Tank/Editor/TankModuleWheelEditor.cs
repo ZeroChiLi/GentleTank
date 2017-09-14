@@ -16,9 +16,9 @@ public class TankModuleWheelEditor : TankModuleEditor
     {
         if (GUILayout.Button("SwapLeftAndRight"))
         {
-            tem = tankModule.left;
-            tankModule.left = tankModule.right;
-            tankModule.right = tem;
+            tem = tankModule.anchors.left;
+            tankModule.anchors.left = tankModule.anchors.right;
+            tankModule.anchors.right = tem;
         }
     }
 }

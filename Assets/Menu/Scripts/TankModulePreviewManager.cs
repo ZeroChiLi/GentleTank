@@ -31,4 +31,15 @@ public class TankModulePreviewManager : MonoBehaviour
         CustomTankMenuManager.Instance.changeBtn.interactable = true;
     }
 
+    public void OnEnter()
+    {
+        Debug.Log("Enter" + module.prefab.name);
+    }
+
+    public void OnExit()
+    {
+        Debug.Log("Exit" + module.prefab.name);
+
+    }
+
 }

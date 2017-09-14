@@ -1,5 +1,24 @@
 ﻿using UnityEngine;
 
+[System.Serializable]
+public class TankModuleProperty
+{
+    public string moduleName;
+    public float weight = 10f;
+}
+
+[System.Serializable]
+public struct TankModuleAnchors
+{
+    public Vector3 center;
+    public Vector3 forward;
+    public Vector3 back;
+    public Vector3 left;
+    public Vector3 right;
+    public Vector3 up;
+    public Vector3 down;
+}
+
 [CreateAssetMenu(menuName = "TankModule/Default")]
 public class TankModule : ScriptableObject
 {
@@ -10,13 +29,8 @@ public class TankModule : ScriptableObject
 
     public GameObject prefab;
     public Sprite preview;
-    public Vector3 center;
-    public Vector3 forward;
-    public Vector3 back;
-    public Vector3 left;
-    public Vector3 right;
-    public Vector3 up;
-    public Vector3 down;
+    public TankModuleProperty property;
+    public TankModuleAnchors anchors;
 
     /// <summary>
     /// 获取部件类型枚举值
@@ -47,7 +61,7 @@ public class TankModule : ScriptableObject
     /// <param name="bodyObj">身体部件对象</param>
     static public void ConnectHeadToBody(TankModuleHead head,GameObject headObj,TankModuleBody body,GameObject bodyObj)
     {
-        headObj.transform.position = bodyObj.transform.position + body.up - head.down;
+        headObj.transform.position = bodyObj.transform.position + body.anchors.up - head.anchors.down;
     }
 
     /// <summary>
@@ -59,7 +73,7 @@ public class TankModule : ScriptableObject
     /// <param name="bodyObj">身体对象</param>
     static public void ConnectLeftWheelToBody(TankModuleWheel leftWheel, GameObject leftWheelObj, TankModuleBody body, GameObject bodyObj)
     {
-        leftWheelObj.transform.position = bodyObj.transform.position + body.leftWheelTop - leftWheel.up;
+        leftWheelObj.transform.position = bodyObj.transform.position + body.leftWheelTop - leftWheel.anchors.up;
     }
 
     /// <summary>
@@ -72,9 +86,9 @@ public class TankModule : ScriptableObject
     static public void ConnectRightWheelToBody(TankModuleWheel rightWheel, GameObject rightObj, TankModuleBody body, GameObject bodyObj)
     {
         if (rightWheel.wheelType == TankModuleWheel.WheelType.Left)
-            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - new Vector3(-rightWheel.up.x,rightWheel.up.y,rightWheel.up.z);
+            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - new Vector3(-rightWheel.anchors.up.x,rightWheel.anchors.up.y,rightWheel.anchors.up.z);
         else
-            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.up;
+            rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.anchors.up;
     }
     
     /// <summary>

@@ -9,6 +9,6 @@ public class TankModuleHeadEditor : TankModuleEditor
     {
         base.SetDefaultValue();
         head = target as TankModuleHead;
-        head.launchPos = head.forward;
+        head.launchPos = head.anchors.forward;
     }
 }

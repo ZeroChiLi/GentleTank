@@ -30,7 +30,7 @@ public class TankModuleEditor : Editor
     /// </summary>
     virtual public void SetDefaultValueButton()
     {
-        if (!GUILayout.Button("Set Default Value") || tankModule.prefab == null)
+        if (!GUILayout.Button("Set Default Anchor Value") || tankModule.prefab == null)
             return;
         SetDefaultValue();
     }
@@ -41,13 +41,13 @@ public class TankModuleEditor : Editor
     virtual public void SetDefaultValue()
     {
         moduleBounds = tankModule.prefab.GetComponent<MeshFilter>().sharedMesh.bounds;
-        tankModule.center = GameMathf.Round(moduleBounds.center);
-        tankModule.forward = GameMathf.Round(moduleBounds.center + new Vector3(0,0,moduleBounds.extents.z));
-        tankModule.back = GameMathf.Round(moduleBounds.center + new Vector3(0, 0, -moduleBounds.extents.z));
-        tankModule.left = GameMathf.Round(moduleBounds.center + new Vector3(-moduleBounds.extents.x, 0, 0));
-        tankModule.right = GameMathf.Round(moduleBounds.center + new Vector3(moduleBounds.extents.x, 0, 0));
-        tankModule.up = GameMathf.Round(moduleBounds.center + new Vector3(0, moduleBounds.extents.y, 0));
-        tankModule.down = GameMathf.Round(moduleBounds.center + new Vector3(0, -moduleBounds.extents.y, 0));
+        tankModule.anchors.center = GameMathf.Round(moduleBounds.center);
+        tankModule.anchors.forward = GameMathf.Round(moduleBounds.center + new Vector3(0,0,moduleBounds.extents.z));
+        tankModule.anchors.back = GameMathf.Round(moduleBounds.center + new Vector3(0, 0, -moduleBounds.extents.z));
+        tankModule.anchors.left = GameMathf.Round(moduleBounds.center + new Vector3(-moduleBounds.extents.x, 0, 0));
+        tankModule.anchors.right = GameMathf.Round(moduleBounds.center + new Vector3(moduleBounds.extents.x, 0, 0));
+        tankModule.anchors.up = GameMathf.Round(moduleBounds.center + new Vector3(0, moduleBounds.extents.y, 0));
+        tankModule.anchors.down = GameMathf.Round(moduleBounds.center + new Vector3(0, -moduleBounds.extents.y, 0));
     }
 
 }

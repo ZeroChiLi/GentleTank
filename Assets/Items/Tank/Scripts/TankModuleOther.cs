@@ -30,19 +30,19 @@ public class TankModuleOther : TankModule
         switch (targetPos)
         {
             case TargetPos.Center:
-                return module.center;
+                return module.anchors.center;
             case TargetPos.Forward:
-                return module.forward;
+                return module.anchors.forward;
             case TargetPos.Back:
-                return module.back;
+                return module.anchors.back;
             case TargetPos.Left:
-                return module.left;
+                return module.anchors.left;
             case TargetPos.Right:
-                return module.right;
+                return module.anchors.right;
             case TargetPos.Up:
-                return module.up;
+                return module.anchors.up;
             case TargetPos.Down:
-                return module.down;
+                return module.anchors.down;
             case TargetPos.HeadLuanch:
                 return head == null ? Vector3.zero : head.launchPos;
             case TargetPos.BodyLeftWheelTop:
