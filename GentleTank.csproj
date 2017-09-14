@@ -245,6 +245,7 @@
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
     <Compile Include="Assets\Menu\Scripts\SelectedImageManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulePreviewManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\TankModulePropertyPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulesTableManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />

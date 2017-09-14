@@ -36,6 +36,7 @@ public class TankModulePropertyPanelManager : MonoBehaviour
             str.Append(properties[i]);
             str.Append("\n");
         }
+        propertyText.text = str.ToString();
         rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, titleText.preferredHeight + propertyText.preferredHeight);
     }
 }

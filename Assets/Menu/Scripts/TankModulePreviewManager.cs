@@ -33,7 +33,7 @@ public class TankModulePreviewManager : MonoBehaviour
 
     public void OnEnter()
     {
-        TankModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.description,module.property.weight.ToString());
+        TankModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.GetAllProperties());
     }
 
     public void OnExit()

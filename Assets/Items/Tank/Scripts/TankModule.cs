@@ -6,6 +6,18 @@ public class TankModuleProperty
     public string moduleName;
     public string description;
     public float weight = 10f;
+
+    /// <summary>
+    /// 获取所有属性字符串，不包括部件名字
+    /// </summary>
+    /// <returns>所有属性字符串</returns>
+    public string[] GetAllProperties()
+    {
+        string[] properties = new string[2];
+        properties[0] = "描述：" + description;
+        properties[1] = "重量：" + weight;
+        return properties;
+    }
 }
 
 [System.Serializable]
