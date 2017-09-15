@@ -25,7 +25,7 @@ public class TankAssembleManager : ScriptableObject
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;
-        others = copySrc.others;
+        others = new List<TankModuleOther>(copySrc.others);
     }
 
     /// <summary>

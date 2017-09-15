@@ -162,7 +162,7 @@ public class AllCustomTankManager : MonoBehaviour
                 break;
             case TankModule.TankModuleType.Other:
                 if (TemporaryAssemble.others.Contains(modulePreview.module as TankModuleOther))
-                    return;
+                    TemporaryAssemble.others.Remove(modulePreview.module as TankModuleOther);
                 else
                     TemporaryAssemble.others.Add(modulePreview.module as TankModuleOther);
                 break;
