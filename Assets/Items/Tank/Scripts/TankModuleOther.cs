@@ -50,7 +50,6 @@ public class TankModuleOther : TankModule
             case TargetPos.Right:
                 return module.anchors.right;
             case TargetPos.Up:
-                Debug.Log("Up  " + module.anchors.up);
                 return module.anchors.up;
             case TargetPos.Down:
                 return module.anchors.down;
@@ -60,7 +59,6 @@ public class TankModuleOther : TankModule
 
     public Vector3 GetHeadAnchor(TankModuleHead head)
     {
-        Debug.Log("Head");
         switch (targetPos)
         {
             case TargetPos.HeadLuanch:
@@ -70,15 +68,11 @@ public class TankModuleOther : TankModule
             case TargetPos.HeadBackUp:
                 return head.backUp;
         }
-        Debug.Log("Get Default");
-        GetDefaultAnchor(head);
-        return Vector3.zero;
+        return GetDefaultAnchor(head);
     }
 
     public Vector3 GetBodyAnchor(TankModuleBody body)
     {
-        Debug.Log("Body");
-
         switch (targetPos)
         {
             case TargetPos.BodyLeftWheelTop:
@@ -90,8 +84,7 @@ public class TankModuleOther : TankModule
             case TargetPos.BodyBackUp:
                 return body.backUp;
         }
-        GetDefaultAnchor(body);
-        return Vector3.zero;
+        return GetDefaultAnchor(body);
     }
 
 }

@@ -214,6 +214,7 @@
     <None Include="Assets\Common\Shaders\EdgeDetectNormalAndDepth.shader" />
     <None Include="Assets\Common\Shaders\ToonShading.shader" />
     <None Include="Assets\Items\Tank\Shaders\Dissolve.shader" />
+    <None Include="Assets\Items\Tank\Shaders\Strange.shader" />
     <None Include="Assets\Plugins\GitHub\CREDITS.txt" />
     <None Include="Assets\Plugins\GitHub\EULA.txt" />
     <None Include="Assets\Plugins\Photon\Photon3Unity3D.xml" />
