@@ -1,29 +1,15 @@
 fileFormatVersion: 2
-guid: 4b62215b6b4ae8e4099834c7643a5bc5
-timeCreated: 1505541095
+guid: 379dd67b0870c074a8e826ca21b6270d
+timeCreated: 1505553828
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Box12
-    100002: Box12_MeshPart0
-    100004: Box12_MeshPart1
-    100006: Cylinder01
-    100008: //RootNode
-    400000: Box12
-    400002: Box12_MeshPart0
-    400004: Box12_MeshPart1
-    400006: Cylinder01
-    400008: //RootNode
-    2300000: Box12_MeshPart0
-    2300002: Box12_MeshPart1
-    2300004: Cylinder01
-    3300000: Box12_MeshPart0
-    3300002: Box12_MeshPart1
-    3300004: Cylinder01
-    4300000: Box12_MeshPart0
-    4300002: Box12_MeshPart1
-    4300004: Cylinder01
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Body2
   materials:
     importMaterials: 1
     materialName: 0
@@ -50,7 +36,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.4
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

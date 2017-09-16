@@ -161,10 +161,10 @@ public class AllCustomTankManager : MonoBehaviour
                     TemporaryAssemble.leftWheel = modulePreview.module as TankModuleWheel;
                 break;
             case TankModule.TankModuleType.Other:
-                if (TemporaryAssemble.others.Contains(modulePreview.module as TankModuleOther))
-                    TemporaryAssemble.others.Remove(modulePreview.module as TankModuleOther);
+                if (TemporaryAssemble.Others.Contains(modulePreview.module as TankModuleOther))
+                    TemporaryAssemble.Others.Remove(modulePreview.module as TankModuleOther);
                 else
-                    TemporaryAssemble.others.Add(modulePreview.module as TankModuleOther);
+                    TemporaryAssemble.Others.Add(modulePreview.module as TankModuleOther);
                 break;
             default:
                 return;

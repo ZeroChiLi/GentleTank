@@ -2,19 +2,25 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "TankModule/TankAssemble")]
-public class TankAssembleManager : ScriptableObject 
+public class TankAssembleManager : ScriptableObject
 {
     public string tankName = "tank";
     public TankModuleHead head;
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
-    public List<TankModuleOther> others = new List<TankModuleOther>();
+    public List<TankModuleOther> Others
+    {
+        get { return others = others ?? new List<TankModuleOther>(); }
+        set { others = value; }
+    }
+    private List<TankModuleOther> others;
 
     private GameObject headObj;
     private GameObject bodyObj;
     private GameObject leftWheelObj;
     private GameObject rightWheelObj;
     private List<GameObject> othersObj;
+
 
     /// <summary>
     /// 复制坦克部件管理器
@@ -25,7 +31,7 @@ public class TankAssembleManager : ScriptableObject
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;
-        others = new List<TankModuleOther>(copySrc.others);
+        Others = new List<TankModuleOther>(copySrc.Others);
     }
 
     /// <summary>
@@ -67,9 +73,9 @@ public class TankAssembleManager : ScriptableObject
         rightWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj.transform.localScale = new Vector3(-rightWheelObj.transform.localScale.x, rightWheelObj.transform.localScale.y, rightWheelObj.transform.localScale.z);
         othersObj = new List<GameObject>();
-        if (others != null)
-            for (int i = 0; i < others.Count; i++)
-                othersObj.Add(Instantiate(others[i].prefab, parent));
+        if (Others != null)
+            for (int i = 0; i < Others.Count; i++)
+                othersObj.Add(Instantiate(Others[i].prefab, parent));
     }
 
     /// <summary>
@@ -81,7 +87,7 @@ public class TankAssembleManager : ScriptableObject
         TankModule.ConnectLeftWheelToBody(leftWheel, leftWheelObj, body, bodyObj);
         TankModule.ConnectRightWheelToBody(leftWheel, rightWheelObj, body, bodyObj);
         for (int i = 0; i < othersObj.Count; i++)
-            AssembleOtherModule(others[i], othersObj[i]);
+            AssembleOtherModule(Others[i], othersObj[i]);
     }
 
     /// <summary>
@@ -89,7 +95,7 @@ public class TankAssembleManager : ScriptableObject
     /// </summary>
     /// <param name="module">部件信息</param>
     /// <param name="obj">部件对象</param>
-    private void AssembleOtherModule(TankModuleOther module,GameObject obj)
+    private void AssembleOtherModule(TankModuleOther module, GameObject obj)
     {
         switch (module.targetType)
         {
