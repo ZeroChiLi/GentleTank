@@ -33,11 +33,32 @@ public class AllCustomTankManager : MonoBehaviour
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private GameObject newTank;
 
+    /// <summary>
+    /// 初始化单例
+    /// </summary>
     private void Awake()
     {
         instance = this;
         if (customTankAssembleList == null)
             customTankAssembleList = new List<TankAssembleManager>();
+    }
+
+    /// <summary>
+    /// 添加所有坦克配置完后事件
+    /// </summary>
+    private void Start()
+    {
+        AllCustomTankPreviewManager.Instance.allTankSetupHandle += SelectTankOnAllTankSetup;
+    }
+
+    /// <summary>
+    /// 在所有坦克配置完后选择坦克
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void SelectTankOnAllTankSetup(object sender, System.EventArgs e)
+    {
+        SelectCurrentTank(0);
     }
 
     /// <summary>
@@ -161,10 +182,10 @@ public class AllCustomTankManager : MonoBehaviour
                     TemporaryAssemble.leftWheel = modulePreview.module as TankModuleWheel;
                 break;
             case TankModule.TankModuleType.Other:
-                if (TemporaryAssemble.Others.Contains(modulePreview.module as TankModuleOther))
-                    TemporaryAssemble.Others.Remove(modulePreview.module as TankModuleOther);
+                if (TemporaryAssemble.others.Contains(modulePreview.module as TankModuleOther))
+                    TemporaryAssemble.others.Remove(modulePreview.module as TankModuleOther);
                 else
-                    TemporaryAssemble.Others.Add(modulePreview.module as TankModuleOther);
+                    TemporaryAssemble.others.Add(modulePreview.module as TankModuleOther);
                 break;
             default:
                 return;
@@ -229,6 +250,7 @@ public class AllCustomTankManager : MonoBehaviour
         CurrentTank = TemporaryTankObject;
         TemporaryTankObject = null;
         ResetTemTankAssemble();
+        EditorUtility.SetDirty(CurrentTankAssemble);
     }
 
     /// <summary>

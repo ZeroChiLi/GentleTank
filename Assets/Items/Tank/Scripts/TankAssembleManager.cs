@@ -8,19 +8,14 @@ public class TankAssembleManager : ScriptableObject
     public TankModuleHead head;
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
-    public List<TankModuleOther> Others
-    {
-        get { return others = others ?? new List<TankModuleOther>(); }
-        set { others = value; }
-    }
-    private List<TankModuleOther> others;
+    public List<TankModuleOther> others = new List<TankModuleOther>();
 
     private GameObject headObj;
     private GameObject bodyObj;
     private GameObject leftWheelObj;
     private GameObject rightWheelObj;
     private List<GameObject> othersObj;
-
+    private float totalWeight;
 
     /// <summary>
     /// 复制坦克部件管理器
@@ -31,7 +26,7 @@ public class TankAssembleManager : ScriptableObject
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;
-        Others = new List<TankModuleOther>(copySrc.Others);
+        others = new List<TankModuleOther>(copySrc.others);
     }
 
     /// <summary>
@@ -73,9 +68,9 @@ public class TankAssembleManager : ScriptableObject
         rightWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj.transform.localScale = new Vector3(-rightWheelObj.transform.localScale.x, rightWheelObj.transform.localScale.y, rightWheelObj.transform.localScale.z);
         othersObj = new List<GameObject>();
-        if (Others != null)
-            for (int i = 0; i < Others.Count; i++)
-                othersObj.Add(Instantiate(Others[i].prefab, parent));
+        if (others != null)
+            for (int i = 0; i < others.Count; i++)
+                othersObj.Add(Instantiate(others[i].prefab, parent));
     }
 
     /// <summary>
@@ -87,7 +82,7 @@ public class TankAssembleManager : ScriptableObject
         TankModule.ConnectLeftWheelToBody(leftWheel, leftWheelObj, body, bodyObj);
         TankModule.ConnectRightWheelToBody(leftWheel, rightWheelObj, body, bodyObj);
         for (int i = 0; i < othersObj.Count; i++)
-            AssembleOtherModule(Others[i], othersObj[i]);
+            AssembleOtherModule(others[i], othersObj[i]);
     }
 
     /// <summary>
@@ -114,5 +109,17 @@ public class TankAssembleManager : ScriptableObject
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// 获取总重量
+    /// </summary>
+    /// <returns>总重量</returns>
+    public float GetTotalWeight()
+    {
+        totalWeight = head.property.weight + body.property.weight + leftWheel.property.weight;
+        for (int i = 0; i < others.Count; i++)
+            totalWeight += others[i].property.weight;
+        return totalWeight;
     }
 }

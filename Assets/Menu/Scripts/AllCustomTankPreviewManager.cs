@@ -1,4 +1,5 @@
 ﻿using CameraRig;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public List<RenderTexture> textureList;             // 纹理列表
 
+    public event EventHandler allTankSetupHandle;       // 所有坦克配置完后事件
+
     /// <summary>
     /// 获取所有坦克，设置好位置
     /// </summary>
@@ -26,11 +29,11 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 设置当前坦克
+    /// 当所有坦克配置好之后响应
     /// </summary>
-    private void Start()
+    private void OnAllTankSetup()
     {
-        allCustomTank.SelectCurrentTank(0);
+        allTankSetupHandle(this, null);
     }
 
     /// <summary>
@@ -50,6 +53,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
                 yield return null;
             catchTextureCam.SetCatchTarget(allCustomTank[i].transform, textureList[i]);
         }
+        OnAllTankSetup();
     }
 
     /// <summary>
@@ -69,4 +73,5 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         if (allCustomTank[index] != null)
             catchTextureCam.SetCatchTarget(allCustomTank[index].transform, textureList[index]);
     }
+
 }

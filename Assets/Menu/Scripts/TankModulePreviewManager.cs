@@ -31,15 +31,20 @@ public class TankModulePreviewManager : MonoBehaviour
         CustomTankMenuManager.Instance.changeBtn.interactable = true;
     }
 
+    /// <summary>
+    /// 鼠标进入，显示信息
+    /// </summary>
     public void OnEnter()
     {
         TankModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.GetAllProperties());
     }
 
+    /// <summary>
+    /// 鼠标出去，关闭信息
+    /// </summary>
     public void OnExit()
     {
         TankModulePropertyPanelManager.Instance.gameObject.SetActive(false);
-
     }
 
 }

@@ -217,13 +217,14 @@
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Main\Main Scripts\GameManager.cs" />
     <Compile Include="Assets\Main\Main Scripts\GameRound.cs" />
+    <Compile Include="Assets\Main\Master\Scripts\MasterManager.cs" />
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPoolCreate.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AllPlayerManager.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\AttackBase.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\HealthManager.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Scripts\TeamManager.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\AllPlayerManager.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\AttackBase.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\HealthManager.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\TeamManager.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointList.cs" />
     <Compile Include="Assets\Main\Point List\Scripts\PointsDebugShow.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ButtonController.cs" />
     <Compile Include="Assets\Menu\Scripts\CreateRoomWindow.cs" />
+    <Compile Include="Assets\Menu\Scripts\CurrentTankInfoUIManager.cs" />
     <Compile Include="Assets\Menu\Scripts\CurrentTankPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\CustomTankMenuManager.cs" />
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />

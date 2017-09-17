@@ -190,7 +190,7 @@
     <Compile Include="Assets\Items\Tank\Editor\TankModuleHeadEditor.cs" />
     <Compile Include="Assets\Items\Tank\Editor\TankModuleOtherEditor.cs" />
     <Compile Include="Assets\Items\Tank\Editor\TankModuleWheelEditor.cs" />
-    <Compile Include="Assets\Main\Players &amp; Teams\Editor\PlayerAndTeamWindow.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Editor\PlayerAndTeamWindow.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\AccountService.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\CullAreaEditor.cs" />
     <Compile Include="Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonConverter.cs" />
