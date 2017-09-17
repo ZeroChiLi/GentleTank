@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class AllCustomTankManager : MonoBehaviour
 {
-    static private AllCustomTankManager instance;
-    [HideInInspector]
-    static public AllCustomTankManager Instance { get { return instance; } }
+    static public AllCustomTankManager Instance { get; private set; }
 
     public int maxSize = 10;                                                // 最大坦克数量
     public string customTankPath = "/Items/Tank/TankAssemble/Custom";       // 自定义坦克相对路径
@@ -38,7 +36,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         if (customTankAssembleList == null)
             customTankAssembleList = new List<TankAssembleManager>();
     }
@@ -318,5 +316,14 @@ public class AllCustomTankManager : MonoBehaviour
             AssetDatabase.RenameAsset(GetTankAssembleAssetPath(i), "CustomTank" + (j - 1));
             ++j;
         }
+    }
+
+    /// <summary>
+    /// 获取当前坦克与临时坦克的重量差值（当前 - 临时）
+    /// </summary>
+    /// <returns>当前坦克与临时坦克的重量差值</returns>
+    public float GetTemAndCurrentWeightDifference()
+    {
+        return TemporaryAssemble.GetTotalWeight() - CurrentTankAssemble.GetTotalWeight();
     }
 }

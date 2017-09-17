@@ -122,4 +122,5 @@ public class TankAssembleManager : ScriptableObject
             totalWeight += others[i].property.weight;
         return totalWeight;
     }
+
 }

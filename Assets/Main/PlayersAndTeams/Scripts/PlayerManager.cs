@@ -48,10 +48,10 @@ public class PlayerManager : MonoBehaviour
     public TeamManager Team { get { return Information.team; } }
 
     // 带玩家颜色的玩家名字富文本
-    public string ColoredPlayerName { get { return "<color=#" + ColorUtility.ToHtmlStringRGB(RepresentColor) + ">" + PlayerName + "</color>"; } }
+    public string ColoredPlayerName { get { return ColorTool.GetColorString(RepresentColor,PlayerName); } }
 
     // 带团队颜色的玩家名字富文本（若不存在团队，则为普通名字）
-    public string ColoredPlayerNameByTeam { get { return Team == null ? PlayerName : "<color=#" + ColorUtility.ToHtmlStringRGB(Team.TeamColor) + ">" + PlayerName + "</color>"; } }
+    public string ColoredPlayerNameByTeam { get { return Team == null ? PlayerName : ColorTool.GetColorString(Team.TeamColor, PlayerName); } }
 
 
     /// <summary>

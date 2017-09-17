@@ -48,7 +48,7 @@ namespace Item.Tank
         public void SetupUIAndInput()
         {
             playerNameText.text = PlayerName;
-            ChangeColor.SelfAndChildrens(gameObject, RepresentColor, colorMaterialName);         // 坦克颜色
+            ColorTool.ChangeSelfAndChildrens(gameObject, RepresentColor, colorMaterialName);         // 坦克颜色
             if (Team != null)
             {
                 playerNameText.color = Team.TeamColor;

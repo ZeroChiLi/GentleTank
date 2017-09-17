@@ -73,7 +73,7 @@ public class PlayerPanelManager : MonoBehaviour
     public void SetColor(Color color)
     {
         currentColor = color;
-        ChangeColor.SelfAndChildrens(tankRenderers, currentColor);
+        ColorTool.ChangeSelfAndChildrens(tankRenderers, currentColor);
     }
 
     /// <summary>

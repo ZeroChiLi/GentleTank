@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class AllCustomTankPreviewManager : MonoBehaviour 
 {
-    static private AllCustomTankPreviewManager instance;
-    static public AllCustomTankPreviewManager Instance { get { return instance; } }
+    static public AllCustomTankPreviewManager Instance { get; private set; }
 
     public AllCustomTankManager allCustomTank;          // 所有坦克管理器
     public CatchTextureCam catchTextureCam;             // 捕获纹理相机设备
@@ -22,7 +21,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         allCustomTank.CreateAllTanks();
         allCustomTank.SetupAllTanksPosition();
         StartCoroutine(SetupAllTankTexture());

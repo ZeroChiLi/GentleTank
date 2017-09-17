@@ -23,7 +23,7 @@ namespace GameSystem.OnlineGame
             isMine = photonView.isMine;
             //playerName = PhotonNetwork.playerName;
             playerColor = new Color(PlayerPrefs.GetFloat("colorR"), PlayerPrefs.GetFloat("colorG"), PlayerPrefs.GetFloat("colorB"));
-            ChangeColor.SelfAndChildrens(gameObject, playerColor);
+            ColorTool.ChangeSelfAndChildrens(gameObject, playerColor);
             EnableControl(isMine);
             //tankShooting.shellPool = shellPool;
         }
@@ -67,7 +67,7 @@ namespace GameSystem.OnlineGame
                 playerColor.r = (float)stream.ReceiveNext();
                 playerColor.g = (float)stream.ReceiveNext();
                 playerColor.b = (float)stream.ReceiveNext();
-                ChangeColor.SelfAndChildrens(gameObject, playerColor);
+                ColorTool.ChangeSelfAndChildrens(gameObject, playerColor);
             }
         }
     }
