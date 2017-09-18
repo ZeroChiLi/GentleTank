@@ -57,7 +57,7 @@ public class TankModulesTableManager : MonoBehaviour
             temModulePreview = Instantiate(modulePreviewPrefab, transform).GetComponent<TankModulePreviewManager>();
             if (temModulePreview == null)
                 continue;
-            temModulePreview.SetTargetModule(moduleList[i]);
+            temModulePreview.SetTarget(moduleList[i]);
             modulePreviewList.Add(temModulePreview);
         }
     }

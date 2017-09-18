@@ -24,7 +24,7 @@ public class AllCustomTankManager : MonoBehaviour
     public int Count { get { return customTankAssembleList.Count; } }
     public GameObject this[int index] { get { return index >= Count ? null : customTankList[index]; } set { customTankList[index] = value; } }
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
-    public TankAssembleManager CurrentTankAssemble { get { return customTankAssembleList[currentIndex]; } set { customTankAssembleList[currentIndex] = value; } }
+    public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : customTankAssembleList[currentIndex]; } set { customTankAssembleList[currentIndex] = value; } }
 
     private string fullCustomTankPath { get { return Application.dataPath + customTankPath; } }
     private List<TankAssembleManager> customTankAssembleList = new List<TankAssembleManager>();
@@ -149,31 +149,31 @@ public class AllCustomTankManager : MonoBehaviour
     /// <param name="modulePreview">目标部件</param>
     public void PreviewNewModule(TankModulePreviewManager modulePreview)
     {
-        switch (TankModule.GetModuleType(modulePreview.module))
+        switch (TankModule.GetModuleType(modulePreview.target as TankModule))
         {
             case TankModule.TankModuleType.Head:
-                if (modulePreview.module == TemporaryAssemble.head)
+                if (modulePreview.target == TemporaryAssemble.head)
                     return;
                 else
-                    TemporaryAssemble.head = modulePreview.module as TankModuleHead;
+                    TemporaryAssemble.head = modulePreview.target as TankModuleHead;
                 break;
             case TankModule.TankModuleType.Body:
-                if (modulePreview.module == TemporaryAssemble.body)
+                if (modulePreview.target == TemporaryAssemble.body)
                     return;
                 else
-                    TemporaryAssemble.body = modulePreview.module as TankModuleBody;
+                    TemporaryAssemble.body = modulePreview.target as TankModuleBody;
                 break;
             case TankModule.TankModuleType.Wheel:
-                if (modulePreview.module == TemporaryAssemble.leftWheel)
+                if (modulePreview.target == TemporaryAssemble.leftWheel)
                     return;
                 else
-                    TemporaryAssemble.leftWheel = modulePreview.module as TankModuleWheel;
+                    TemporaryAssemble.leftWheel = modulePreview.target as TankModuleWheel;
                 break;
             case TankModule.TankModuleType.Other:
-                if (TemporaryAssemble.others.Contains(modulePreview.module as TankModuleOther))
-                    TemporaryAssemble.others.Remove(modulePreview.module as TankModuleOther);
+                if (TemporaryAssemble.others.Contains(modulePreview.target as TankModuleOther))
+                    TemporaryAssemble.others.Remove(modulePreview.target as TankModuleOther);
                 else
-                    TemporaryAssemble.others.Add(modulePreview.module as TankModuleOther);
+                    TemporaryAssemble.others.Add(modulePreview.target as TankModuleOther);
                 break;
             default:
                 return;
