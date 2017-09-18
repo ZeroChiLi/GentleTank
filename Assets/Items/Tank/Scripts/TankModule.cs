@@ -1,49 +1,12 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-public class TankModuleProperty
-{
-    public string moduleName;
-    public string description;
-    public float weight = 10f;
-
-    /// <summary>
-    /// 获取所有属性字符串，不包括部件名字
-    /// </summary>
-    /// <returns>所有属性字符串</returns>
-    public string[] GetAllProperties()
-    {
-        string[] properties = new string[2];
-        properties[0] = "描述：" + description;
-        properties[1] = "重量：" + weight;
-        return properties;
-    }
-}
-
-[System.Serializable]
-public struct TankModuleAnchors
-{
-    public Vector3 center;
-    public Vector3 forward;
-    public Vector3 back;
-    public Vector3 left;
-    public Vector3 right;
-    public Vector3 up;
-    public Vector3 down;
-}
-
-[CreateAssetMenu(menuName = "TankModule/Default")]
-public class TankModule : ScriptableObject
+[CreateAssetMenu(menuName = "Module/TankModule/Default")]
+public class TankModule : ModuleBase
 {
     public enum TankModuleType
     {
         None,Default,Head, Body, Wheel, Other
     }
-
-    public GameObject prefab;
-    public Sprite preview;
-    public TankModuleProperty property;
-    public TankModuleAnchors anchors;
 
     /// <summary>
     /// 获取部件类型枚举值

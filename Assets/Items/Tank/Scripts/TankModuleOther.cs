@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "TankModule/Other")]
+[CreateAssetMenu(menuName = "Module/TankModule/Other")]
 public class TankModuleOther : TankModule
 {
     public enum TargetTankModuleType

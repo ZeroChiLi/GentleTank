@@ -17,19 +17,12 @@ public class CurrentTankInfoUIManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        AllCustomTankPreviewManager.Instance.allTankSetupHandle += ShowInfoOnAllTankSetup;
-    }
-
     /// <summary>
     /// 在所有坦克配置完后更新当前坦克重量
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ShowInfoOnAllTankSetup(object sender, System.EventArgs e)
+    private void Start()
     {
-        UpdateCurrentTankInfo();
+        AllCustomTankPreviewManager.Instance.allTankSetupHandle += (object sender, System.EventArgs e) => { UpdateCurrentTankInfo(); };
     }
 
     /// <summary>

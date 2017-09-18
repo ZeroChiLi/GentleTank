@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "TankModule/Body")]
+[CreateAssetMenu(menuName = "Module/TankModule/Body")]
 public class TankModuleBody : TankModule
 {
     public Vector3 leftWheelTop;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "TankModule/Wheel")]
+[CreateAssetMenu(menuName = "Module/TankModule/Wheel")]
 public class TankModuleWheel : TankModule 
 {
     public enum WheelType

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CustomEditor(typeof(TankModuleHead))]
-public class TankModuleHeadEditor : TankModuleEditor
+public class TankModuleHeadEditor : ModuleEditor
 {
     private TankModuleHead head;
 

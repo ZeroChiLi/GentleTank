@@ -42,21 +42,11 @@ public class AllCustomTankManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 添加所有坦克配置完后事件
+    /// 在所有坦克配置完后选择坦克
     /// </summary>
     private void Start()
     {
-        AllCustomTankPreviewManager.Instance.allTankSetupHandle += SelectTankOnAllTankSetup;
-    }
-
-    /// <summary>
-    /// 在所有坦克配置完后选择坦克
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void SelectTankOnAllTankSetup(object sender, System.EventArgs e)
-    {
-        SelectCurrentTank(0);
+        AllCustomTankPreviewManager.Instance.allTankSetupHandle += (object sender, System.EventArgs e) => { SelectCurrentTank(0); };
     }
 
     /// <summary>
