@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class AmmoPreviewManager : MonoBehaviour 
 {
+    public AmmoModule targetAmmoModule;
     public TankModuleHead targetHead;
     public Image previewImage;
     public AmmoBase ammo;

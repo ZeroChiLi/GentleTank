@@ -3,10 +3,10 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TankModulePropertyPanelManager : MonoBehaviour 
+public class ModulePropertyPanelManager : MonoBehaviour 
 {
-    static private TankModulePropertyPanelManager instance;
-    static public TankModulePropertyPanelManager Instance { get { return instance; } }
+    static private ModulePropertyPanelManager instance;
+    static public ModulePropertyPanelManager Instance { get { return instance; } }
 
     public RectTransform rectTransform;
     public Text titleText;
@@ -18,13 +18,15 @@ public class TankModulePropertyPanelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 显示信息，面板锚点为左上角
+    /// </summary>
+    /// <param name="pos">位置</param>
+    /// <param name="title">标题</param>
+    /// <param name="properties">信息字符串数组</param>
     public void Show(Vector3 pos, string title,params string[] properties)
     {
         gameObject.SetActive(true);

@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -195,6 +197,7 @@
     <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\BoxingAmmo.cs" />
     <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\SpringManager.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoBase.cs" />
+    <Compile Include="Assets\Items\Ammo\Scripts\AmmoModule.cs" />
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\ModuleBase\Scripts\ModuleBase.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
@@ -249,7 +252,7 @@
     <Compile Include="Assets\Menu\Scripts\RoomManager.cs" />
     <Compile Include="Assets\Menu\Scripts\SelectedImageManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulePreviewManager.cs" />
-    <Compile Include="Assets\Menu\Scripts\TankModulePropertyPanelManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\ModulePropertyPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\TankModulesTableManager.cs" />
     <Compile Include="Assets\Menu\Scripts\Toast.cs" />
     <Compile Include="Assets\Menu\Scripts\WindowPanel.cs" />

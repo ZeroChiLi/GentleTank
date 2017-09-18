@@ -37,7 +37,7 @@ public class TankModulePreviewManager : MonoBehaviour
     /// </summary>
     public void OnEnter()
     {
-        TankModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.GetAllProperties());
+        ModulePropertyPanelManager.Instance.Show(Input.mousePosition,module.property.moduleName,module.property.GetAllProperties());
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class TankModulePreviewManager : MonoBehaviour
     /// </summary>
     public void OnExit()
     {
-        TankModulePropertyPanelManager.Instance.gameObject.SetActive(false);
+        ModulePropertyPanelManager.Instance.gameObject.SetActive(false);
     }
 
 }

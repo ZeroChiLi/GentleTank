@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TankModule/TankAssemble")]
+[CreateAssetMenu(menuName = "TankModuleAssemble")]
 public class TankAssembleManager : ScriptableObject
 {
     public string tankName = "tank";
