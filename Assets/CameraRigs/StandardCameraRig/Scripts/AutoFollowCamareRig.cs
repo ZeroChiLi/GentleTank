@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CameraRig
 {
     [ExecuteInEditMode]
-    public class AutoCam : PivotBasedCameraRig
+    public class AutoFollowCamareRig : PivotBasedCameraRig
     {
         [SerializeField] private float m_MoveSpeed = 3; // How fast the rig will move to keep up with target's position
         [SerializeField] private float m_TurnSpeed = 1; // How fast the rig will turn to keep up with target's rotation

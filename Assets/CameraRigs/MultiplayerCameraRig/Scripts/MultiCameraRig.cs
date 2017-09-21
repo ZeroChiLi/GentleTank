@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CameraRig
 {
-    public class MultiCam : MonoBehaviour
+    public class MultiCameraRig : MonoBehaviour
     {
         public float dampTime = 0.2f;                   // 重新聚焦到的时间
         public float screenEdgeBuffer = 4f;             // 屏幕中最边界到玩家距离

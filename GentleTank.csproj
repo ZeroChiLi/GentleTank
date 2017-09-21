@@ -131,14 +131,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraRigs\CatchTextureCameraRig\Scripts\CatchTextureCam.cs" />
+    <Compile Include="Assets\CameraRigs\CatchTextureCameraRig\Scripts\CatchTextureCameraRig.cs" />
     <Compile Include="Assets\CameraRigs\MinimapCameraRig\Scripts\FixedTargetFollower.cs" />
-    <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiCam.cs" />
+    <Compile Include="Assets\CameraRigs\MultiplayerCameraRig\Scripts\MultiCameraRig.cs" />
     <Compile Include="Assets\CameraRigs\Scripts\AllCameraRigManager.cs" />
-    <Compile Include="Assets\CameraRigs\SelectTankCameraRig\Scripts\IntervalOffsetCam.cs" />
+    <Compile Include="Assets\CameraRigs\SelectTankCameraRig\Scripts\IntervalOffsetCameraRig.cs" />
     <Compile Include="Assets\CameraRigs\SprialTrackCameraRig\Scripts\SprialTrackCameraRig.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AbstractTargetFollower.cs" />
-    <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoCam.cs" />
+    <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoFollowCamareRig.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\PivotBasedCameraRig.cs" />
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
     <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />

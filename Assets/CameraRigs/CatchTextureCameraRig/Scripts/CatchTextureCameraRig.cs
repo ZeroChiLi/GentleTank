@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CatchTextureCam : MonoBehaviour 
+public class CatchTextureCameraRig : MonoBehaviour 
 {
     [Range(0.001f,0.1f)]
     public float duration = 0.05f;

@@ -9,8 +9,8 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     static public AllCustomTankPreviewManager Instance { get; private set; }
 
     public AllCustomTankManager allCustomTank;          // 所有坦克管理器
-    public CatchTextureCam catchTextureCam;             // 捕获纹理相机设备
-    public IntervalOffsetCam intervalCam;               // 间隔变化相机
+    public CatchTextureCameraRig catchTextureCam;             // 捕获纹理相机设备
+    public IntervalOffsetCameraRig intervalCam;               // 间隔变化相机
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public List<RenderTexture> textureList;             // 纹理列表
 

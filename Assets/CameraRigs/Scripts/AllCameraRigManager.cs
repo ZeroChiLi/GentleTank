@@ -7,9 +7,14 @@ public class AllCameraRigManager : MonoBehaviour
     static private AllCameraRigManager instance;
     static public AllCameraRigManager Instance { get { return instance; } }
 
-    public AutoCam autoCam;
-    public MultiCam multiCam;
+    public enum CameraRigType
+    {
+        AutoFollow, MultiTarget, SprialTarck
+    }
 
+    public SprialTrackCameraRig sprialTrackCameraRig;
+    public AutoFollowCamareRig autoCameraRig;
+    public MultiCameraRig multiCameraRig;
 
     /// <summary>
     /// 初始单例
@@ -24,7 +29,7 @@ public class AllCameraRigManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        TurnToMultiCam();
+        ChangeCameraRig(CameraRigType.MultiTarget);
     }
 
     /// <summary>
@@ -34,34 +39,57 @@ public class AllCameraRigManager : MonoBehaviour
     /// <param name="targets">所有对象</param>
     public void Init(Transform target, List<Transform> targets)
     {
-        autoCam.SetTarget(target);
-        multiCam.targets = targets;
+        sprialTrackCameraRig.SetTarget(target);
+        autoCameraRig.SetTarget(target);
+        multiCameraRig.targets = targets;
     }
 
     /// <summary>
-    /// 转为单独追踪
+    /// 关闭所有相机设备
     /// </summary>
-    public void TurnToAutoCam()
+    public void InactiveAllCameraRig()
     {
-        multiCam.gameObject.SetActive(false);
-        autoCam.gameObject.SetActive(true);
-    }
-
-    /// <summary>
-    /// 转为所有对象
-    /// </summary>
-    public void TurnToMultiCam()
-    {
-        autoCam.gameObject.SetActive(false);
-        multiCam.gameObject.SetActive(true);
+        autoCameraRig.gameObject.SetActive(false);
+        multiCameraRig.gameObject.SetActive(false);
+        sprialTrackCameraRig.gameObject.SetActive(false);
     }
 
     /// <summary>
     /// 设置单独追踪的对象
     /// </summary>
     /// <param name="target">单独追踪的对象</param>
-    public void SetAutoCamTarget(Transform target)
+    public void SetTarget(Transform target)
     {
-        autoCam.SetTarget(target);
+        autoCameraRig.SetTarget(target);
+        sprialTrackCameraRig.SetTarget(target);
+    }
+
+    /// <summary>
+    /// 变换相机设备
+    /// </summary>
+    /// <param name="cameraRigType">相机类型</param>
+    public void ChangeCameraRig(CameraRigType cameraRigType)
+    {
+        InactiveAllCameraRig();
+        switch (cameraRigType)
+        {
+            case CameraRigType.AutoFollow:
+                autoCameraRig.gameObject.SetActive(true);
+                break;
+            case CameraRigType.MultiTarget:
+                multiCameraRig.gameObject.SetActive(true);
+                break;
+            case CameraRigType.SprialTarck:
+                sprialTrackCameraRig.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 方便动画后的事件调用，转换到跟踪相机
+    /// </summary>
+    public void ChangeToAutoFollowCameraRig()
+    {
+        ChangeCameraRig(CameraRigType.AutoFollow);
     }
 }

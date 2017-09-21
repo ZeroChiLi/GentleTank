@@ -2,7 +2,7 @@
 
 namespace CameraRig
 {
-    public class IntervalOffsetCam : MonoBehaviour
+    public class IntervalOffsetCameraRig : MonoBehaviour
     {
         public new Camera camera;           // 相机
         public Vector3 startPosition;       // 起始位置

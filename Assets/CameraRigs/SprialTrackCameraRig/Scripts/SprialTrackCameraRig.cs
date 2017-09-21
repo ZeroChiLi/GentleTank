@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.Playables;
+using UnityEngine.Events;
+using System.Collections;
 
 public class SprialTrackCameraRig : MonoBehaviour 
 {
     static public SprialTrackCameraRig Instance { get; private set; }
 
-    public Transform target;
+    public PlayableDirector director;
     public CinemachineVirtualCamera virtualCamera;
-    public Camera targetCamera;
-    public CinemachinePath cameraTrack;
-    public float duration = 3f;
-    public bool playeAtOnEnable = true;
+    public Transform cameraTrackTransfrom;
+    public bool playeOnEnable = true;
+    public UnityEvent endOfAnimationEvent;
 
-    private float trackLength;
-    private float moveRate;
-    private float currentPos;
-    private bool isStop = true;
+    public Transform Target { get { return virtualCamera.LookAt; } set { virtualCamera.LookAt = value; } }
+
+    private bool isPlaying = false;
 
     /// <summary>
     /// 初始单例
@@ -24,8 +25,6 @@ public class SprialTrackCameraRig : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        trackLength = cameraTrack.MaxPos - cameraTrack.MinPos;
-        moveRate = trackLength / duration;
     }
 
     /// <summary>
@@ -33,45 +32,43 @@ public class SprialTrackCameraRig : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        if (playeAtOnEnable)
-        {
-            currentPos = cameraTrack.MinPos;
-            isStop = false;
-        }
+        if (playeOnEnable)
+            Play();
     }
 
     /// <summary>
     /// 设置相机目标
     /// </summary>
     /// <param name="target">相机目标</param>
-    public void SetTraget(Transform target)
+    public void SetTarget(Transform target)
     {
-        virtualCamera.LookAt = target;
-    }
-
-    /// <summary>
-    /// 更新轨道位置和相机在轨道的位置
-    /// </summary>
-    private void Update()
-    {
-        if (virtualCamera.LookAt == null || isStop)
-            return;
-        UpdateTrackAnchorPos();
-    }
-
-    /// <summary>
-    /// 更新轨道位置
-    /// </summary>
-    public void UpdateTrackAnchorPos()
-    {
-        GameMathf.CopyPositionAndRotation(virtualCamera.LookAt, cameraTrack.transform);
+        Target = target;
     }
 
     /// <summary>
     /// 更新相机位置
     /// </summary>
-    public void UpdateCameraPos()
+    public void Play()
     {
-        //virtualCamera.
+        if (Target == null || isPlaying)
+            return;
+        director.Play();
+        isPlaying = true;
+        StartCoroutine(UpdateTrackPosition());
+    }
+
+    /// <summary>
+    /// 更新轨道位置，以及结束后调用响应事件
+    /// </summary>
+    private IEnumerator UpdateTrackPosition()
+    {
+        while (director.state != PlayState.Paused)
+        {
+            GameMathf.CopyPositionAndRotation(virtualCamera.LookAt, transform);
+            yield return null;
+        }
+        isPlaying = false;
+        endOfAnimationEvent.Invoke();
+        yield return null;
     }
 }
