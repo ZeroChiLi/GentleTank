@@ -10,12 +10,11 @@ public class SprialTrackCameraRig : MonoBehaviour
     static public SprialTrackCameraRig Instance { get; private set; }
 
     public PlayableDirector director;
-    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera trackCamera;
+    public CinemachineVirtualCamera followCamera;
     public Transform cameraTrackTransfrom;
     public bool playeOnEnable = true;
     public UnityEvent endOfAnimationEvent;
-
-    public Transform Target { get { return virtualCamera.LookAt; } set { virtualCamera.LookAt = value; } }
 
     private bool isPlaying = false;
 
@@ -42,7 +41,9 @@ public class SprialTrackCameraRig : MonoBehaviour
     /// <param name="target">相机目标</param>
     public void SetTarget(Transform target)
     {
-        Target = target;
+        trackCamera.LookAt = target;
+        followCamera.LookAt = target;
+        followCamera.Follow = target;
     }
 
     /// <summary>
@@ -50,7 +51,7 @@ public class SprialTrackCameraRig : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        if (Target == null || isPlaying)
+        if (trackCamera.LookAt == null || isPlaying)
             return;
         director.Play();
         isPlaying = true;
@@ -64,7 +65,7 @@ public class SprialTrackCameraRig : MonoBehaviour
     {
         while (director.state != PlayState.Paused)
         {
-            GameMathf.CopyPositionAndRotation(virtualCamera.LookAt, transform);
+            GameMathf.CopyPositionAndRotation(trackCamera.LookAt, cameraTrackTransfrom);
             yield return null;
         }
         isPlaying = false;
