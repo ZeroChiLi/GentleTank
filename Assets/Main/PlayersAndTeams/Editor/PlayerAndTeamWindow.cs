@@ -13,6 +13,7 @@ public class PlayerAndTeamWindow : EditorWindow
     private bool showTeamList = true;           // 是否显示团队列表
     private Vector2 scrollPos;                  // 滑动面板位置
     private GUIContent content;                 // 临时GUI内容
+    private bool allAIEnableTrigger;
 
     [MenuItem("Window/Player And Team")]
     static void ShowWindows()
@@ -30,6 +31,7 @@ public class PlayerAndTeamWindow : EditorWindow
         GetTeams();
         GUILayout.Label("============================================================================================================");
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        SetAllAIEnableTrigger();
         PlayersAndTeamsOperation();
         EditorGUILayout.EndScrollView();
     }
@@ -110,6 +112,18 @@ public class PlayerAndTeamWindow : EditorWindow
             teams[i].TeamID = i;
         }
         EditorGUI.indentLevel = 0;
+    }
+
+    /// <summary>
+    /// 设置所有玩家AI是否激活
+    /// </summary>
+    private void SetAllAIEnableTrigger()
+    {
+        if (!GUILayout.Button("Set All AI Enable/Disable"))
+            return;
+        allAIEnableTrigger = !allAIEnableTrigger;
+        for (int i = 0; i < playerInfoList.Count; i++)
+            playerInfoList[i].isAI = allAIEnableTrigger;
     }
 
     /// <summary>

@@ -10,6 +10,7 @@ public class AllCameraRigManager : MonoBehaviour
     public AutoCam autoCam;
     public MultiCam multiCam;
 
+
     /// <summary>
     /// 初始单例
     /// </summary>

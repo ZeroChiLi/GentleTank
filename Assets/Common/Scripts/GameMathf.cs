@@ -75,4 +75,15 @@ public static class GameMathf
         if (scale)
             transform.localScale = Vector3.one;
     }
+
+    /// <summary>
+    /// 复制位置和旋转
+    /// </summary>
+    /// <param name="form">复制源</param>
+    /// <param name="to">目标转换</param>
+    static public void CopyPositionAndRotation(Transform form,Transform to)
+    {
+        to.position = form.position;
+        to.rotation = form.rotation;
+    }
 }
