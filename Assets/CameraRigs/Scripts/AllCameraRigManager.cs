@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using CameraRig;
+using Cinemachine;
+using UnityEngine.Playables;
+using System.Collections;
 
 public class AllCameraRigManager : MonoBehaviour
 {
@@ -14,8 +17,10 @@ public class AllCameraRigManager : MonoBehaviour
 
     public AutoFollowCamareRig autoCameraRig;
     public MultiCameraRig multiCameraRig;
+    public CinemachineBrain cmCameraBrain;
     public CMFollowCameraRig cmFollowCameraRig;
     public CMMultiTargetCameraRig cmMultiTargetCameraRig;
+    public CameraRigType currentCameraRigType = CameraRigType.CMMultiTarget;
 
     /// <summary>
     /// 初始单例
@@ -30,7 +35,7 @@ public class AllCameraRigManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        ChangeCameraRig(CameraRigType.CMMultiTarget);
+        //ChangeCameraRig(currentCameraRigType);
     }
 
     /// <summary>
@@ -53,8 +58,9 @@ public class AllCameraRigManager : MonoBehaviour
     {
         autoCameraRig.gameObject.SetActive(false);
         multiCameraRig.gameObject.SetActive(false);
-        cmFollowCameraRig.gameObject.SetActive(false);
-        cmMultiTargetCameraRig.gameObject.SetActive(false);
+        //cmFollowCameraRig.gameObject.SetActive(false);
+        //cmMultiTargetCameraRig.gameObject.SetActive(false);
+        //cmCameraBrain.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -73,6 +79,9 @@ public class AllCameraRigManager : MonoBehaviour
     /// <param name="cameraRigType">相机类型</param>
     public void ChangeCameraRig(CameraRigType cameraRigType)
     {
+        if (currentCameraRigType == cameraRigType)
+            return;
+        currentCameraRigType = cameraRigType;
         InactiveAllCameraRig();
         switch (cameraRigType)
         {
@@ -83,12 +92,27 @@ public class AllCameraRigManager : MonoBehaviour
                 multiCameraRig.gameObject.SetActive(true);
                 break;
             case CameraRigType.CMFollow:
-                cmFollowCameraRig.gameObject.SetActive(true);
+                cmFollowCameraRig.followCamera.enabled = true;
+                cmMultiTargetCameraRig.virtualCamera.enabled = false;
                 break;
             case CameraRigType.CMMultiTarget:
-                cmMultiTargetCameraRig.gameObject.SetActive(true);
+                cmFollowCameraRig.followCamera.enabled = false;
+                cmMultiTargetCameraRig.virtualCamera.enabled = true;
                 break;
         }
+    }
+
+    public void ActiveCMCameraRig()
+    {
+        cmCameraBrain.gameObject.SetActive(true);
+        cmFollowCameraRig.gameObject.SetActive(true);
+        cmMultiTargetCameraRig.gameObject.SetActive(true);
+    }
+
+    private void CMFollowMultiTrigger(bool isFollow)
+    {
+        cmFollowCameraRig.followCamera.enabled = isFollow;
+        cmMultiTargetCameraRig.virtualCamera.enabled = !isFollow;
     }
 
     /// <summary>
@@ -98,4 +122,5 @@ public class AllCameraRigManager : MonoBehaviour
     {
         ChangeCameraRig(CameraRigType.AutoFollow);
     }
+
 }

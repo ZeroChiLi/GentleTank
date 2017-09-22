@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
             return;
         minimap.SetMinimapActive(false);
         allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
+        //allCameraRig.ChangeCMFollowToCMMultiTrigger();
     }
 
     /// <summary>
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
         if (myTank != null)
             allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
+        //allCameraRig.ChangeCMFollowToCMMultiTrigger(false);
         yield return startWait;                         // 延时一段时间再开始
     }
 
@@ -178,6 +180,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator RoundEnding()
     {
         allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
+        //allCameraRig.ChangeCMFollowToCMMultiTrigger();
 
         SetTanksControlEnable(false);                   // 锁定玩家控制权
 
