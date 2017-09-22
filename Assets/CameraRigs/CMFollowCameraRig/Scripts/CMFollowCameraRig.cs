@@ -5,9 +5,9 @@ using UnityEngine.Playables;
 using UnityEngine.Events;
 using System.Collections;
 
-public class SprialTrackCameraRig : MonoBehaviour 
+public class CMFollowCameraRig : MonoBehaviour 
 {
-    static public SprialTrackCameraRig Instance { get; private set; }
+    static public CMFollowCameraRig Instance { get; private set; }
 
     public PlayableDirector director;
     public CinemachineVirtualCamera trackCamera;

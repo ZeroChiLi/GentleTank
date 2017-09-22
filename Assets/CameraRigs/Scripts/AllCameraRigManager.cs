@@ -9,12 +9,13 @@ public class AllCameraRigManager : MonoBehaviour
 
     public enum CameraRigType
     {
-        AutoFollow, MultiTarget, SprialTarck
+        AutoFollow, MultiTarget, CMFollow, CMMultiTarget
     }
 
-    public SprialTrackCameraRig sprialTrackCameraRig;
     public AutoFollowCamareRig autoCameraRig;
     public MultiCameraRig multiCameraRig;
+    public CMFollowCameraRig cmFollowCameraRig;
+    public CMMultiTargetCameraRig cmMultiTargetCameraRig;
 
     /// <summary>
     /// 初始单例
@@ -29,7 +30,7 @@ public class AllCameraRigManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        ChangeCameraRig(CameraRigType.MultiTarget);
+        ChangeCameraRig(CameraRigType.CMMultiTarget);
     }
 
     /// <summary>
@@ -39,9 +40,10 @@ public class AllCameraRigManager : MonoBehaviour
     /// <param name="targets">所有对象</param>
     public void Init(Transform target, List<Transform> targets)
     {
-        sprialTrackCameraRig.SetTarget(target);
         autoCameraRig.SetTarget(target);
         multiCameraRig.targets = targets;
+        cmFollowCameraRig.SetTarget(target);
+        cmMultiTargetCameraRig.SetTargets(targets.ToArray());
     }
 
     /// <summary>
@@ -51,7 +53,8 @@ public class AllCameraRigManager : MonoBehaviour
     {
         autoCameraRig.gameObject.SetActive(false);
         multiCameraRig.gameObject.SetActive(false);
-        sprialTrackCameraRig.gameObject.SetActive(false);
+        cmFollowCameraRig.gameObject.SetActive(false);
+        cmMultiTargetCameraRig.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -61,7 +64,7 @@ public class AllCameraRigManager : MonoBehaviour
     public void SetTarget(Transform target)
     {
         autoCameraRig.SetTarget(target);
-        sprialTrackCameraRig.SetTarget(target);
+        cmFollowCameraRig.SetTarget(target);
     }
 
     /// <summary>
@@ -79,8 +82,11 @@ public class AllCameraRigManager : MonoBehaviour
             case CameraRigType.MultiTarget:
                 multiCameraRig.gameObject.SetActive(true);
                 break;
-            case CameraRigType.SprialTarck:
-                sprialTrackCameraRig.gameObject.SetActive(true);
+            case CameraRigType.CMFollow:
+                cmFollowCameraRig.gameObject.SetActive(true);
+                break;
+            case CameraRigType.CMMultiTarget:
+                cmMultiTargetCameraRig.gameObject.SetActive(true);
                 break;
         }
     }

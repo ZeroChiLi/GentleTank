@@ -67,9 +67,10 @@ public class GameManager : MonoBehaviour
                 myTank = tankList[i];
         }
 
+        allCameraRig.Init(myTank?myTank.transform : null, AllPlayerManager.Instance.GetAllPlayerTransform());
+
         if (myTank != null)
         {
-            allCameraRig.Init(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
             minimap.SetTarget(myTank.transform);
             minimap.SetMinimapActive(true);
             if (VirtualInput.GetButton("Attack") != null)
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour
         if (myTank == null || myTank.isActiveAndEnabled)
             return;
         minimap.SetMinimapActive(false);
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
+        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
     }
 
     /// <summary>
@@ -149,7 +150,7 @@ public class GameManager : MonoBehaviour
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
         if (myTank != null)
-            allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.SprialTarck);
+            allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
         yield return startWait;                         // 延时一段时间再开始
     }
 
@@ -176,7 +177,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RoundEnding()
     {
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
+        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
 
         SetTanksControlEnable(false);                   // 锁定玩家控制权
 
