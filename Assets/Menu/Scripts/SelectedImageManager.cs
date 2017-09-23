@@ -11,6 +11,14 @@ public class SelectedImageManager : MonoBehaviour
     private Vector3 velocity;                   // 当前偏移速度
 
     /// <summary>
+    /// 平滑移动
+    /// </summary>
+    public void Update()
+    {
+        rectTransform.position = Vector3.SmoothDamp(rectTransform.position, targetList[index].position, ref velocity, smoothTime);
+    }
+
+    /// <summary>
     /// 设置目标索引值
     /// </summary>
     /// <param name="index"></param>
@@ -20,10 +28,12 @@ public class SelectedImageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 平滑移动
+    /// 立即移动目标到指定位置
     /// </summary>
-    public void Update()
+    /// <param name="index">索引值</param>
+    public void SetTargetImmediately(int index)
     {
-        rectTransform.position = Vector3.SmoothDamp(rectTransform.position, targetList[index].position, ref velocity, smoothTime);
+        this.index = index;
+        transform.position = targetList[index].position;
     }
 }

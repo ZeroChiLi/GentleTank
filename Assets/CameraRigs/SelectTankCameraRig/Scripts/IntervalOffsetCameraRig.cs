@@ -24,9 +24,19 @@ namespace CameraRig
         /// 跟随目标索引
         /// </summary>
         /// <param name="index">索引值</param>
-        public void FollowTarget(int index)
+        public void SetTarget(int index)
         {
             this.index = index;
+        }
+
+        /// <summary>
+        /// 立即移动目标到指定位置
+        /// </summary>
+        /// <param name="index">索引值</param>
+        public void SetTargetImmediately(int index)
+        {
+            this.index = index;
+            transform.localPosition = startPosition + (index * offset);
         }
     }
 }

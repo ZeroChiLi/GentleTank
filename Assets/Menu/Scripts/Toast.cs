@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Toast : MonoBehaviour
 {
+    static public Toast Instance { get; private set; }
     public Text toastText;          // 文本信息
     public EasyTween easyTween;
     public float duration = 3f;
@@ -13,6 +14,12 @@ public class Toast : MonoBehaviour
     {
         get { return timer = timer ?? new CountDownTimer(duration, false, false); }
         set { timer = value; }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+        gameObject.SetActive(false);
     }
 
     /// <summary>

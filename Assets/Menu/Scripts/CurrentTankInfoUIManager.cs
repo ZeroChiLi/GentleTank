@@ -18,14 +18,6 @@ public class CurrentTankInfoUIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 在所有坦克配置完后更新当前坦克重量
-    /// </summary>
-    private void Start()
-    {
-        AllCustomTankPreviewManager.Instance.allTankSetupHandle += (object sender, System.EventArgs e) => { UpdateCurrentTankInfo(); };
-    }
-
-    /// <summary>
     /// 更新当前坦克组合信息
     /// </summary>
     public void UpdateCurrentTankInfo()

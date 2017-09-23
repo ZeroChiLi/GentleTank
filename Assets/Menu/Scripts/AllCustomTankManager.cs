@@ -21,13 +21,13 @@ public class AllCustomTankManager : MonoBehaviour
     public int CurrentIndex { get { return currentIndex; } }
     private int currentIndex;                           // 当前选中坦克索引
 
-    public int Count { get { return customTankAssembleList.Count; } }
+    public int Count { get { return tankAssembleList.Count; } }
     public GameObject this[int index] { get { return index >= Count ? null : customTankList[index]; } set { customTankList[index] = value; } }
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
-    public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : customTankAssembleList[currentIndex]; } set { customTankAssembleList[currentIndex] = value; } }
+    public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : tankAssembleList[currentIndex]; } set { tankAssembleList[currentIndex] = value; } }
 
     private string fullCustomTankPath { get { return Application.dataPath + customTankPath; } }
-    private List<TankAssembleManager> customTankAssembleList = new List<TankAssembleManager>();
+    private List<TankAssembleManager> tankAssembleList = new List<TankAssembleManager>();
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private GameObject newTank;
 
@@ -37,16 +37,8 @@ public class AllCustomTankManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        if (customTankAssembleList == null)
-            customTankAssembleList = new List<TankAssembleManager>();
-    }
-
-    /// <summary>
-    /// 在所有坦克配置完后选择坦克
-    /// </summary>
-    private void Start()
-    {
-        AllCustomTankPreviewManager.Instance.allTankSetupHandle += (object sender, System.EventArgs e) => { SelectCurrentTank(0); };
+        if (tankAssembleList == null)
+            tankAssembleList = new List<TankAssembleManager>();
     }
 
     /// <summary>
@@ -55,8 +47,8 @@ public class AllCustomTankManager : MonoBehaviour
     public void CreateAllTanks()
     {
         GetAllCustomTankAssemble();
-        for (int i = 0; i < customTankAssembleList.Count; i++)
-            customTankList.Add(customTankAssembleList[i].CreateTank(transform));
+        for (int i = 0; i < tankAssembleList.Count; i++)
+            customTankList.Add(tankAssembleList[i].CreateTank(transform));
     }
 
     /// <summary>
@@ -77,7 +69,7 @@ public class AllCustomTankManager : MonoBehaviour
         {
             tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
             if (tankAssemble != null)
-                customTankAssembleList.Add(tankAssemble);
+                tankAssembleList.Add(tankAssemble);
             else
                 Debug.LogWarningFormat("Instantiate Failed. Assets{0}/{1}", customTankPath, files[i].Name);
         }
@@ -269,7 +261,7 @@ public class AllCustomTankManager : MonoBehaviour
     public GameObject AddNewTank(TankAssembleManager tankAssemble)
     {
         tankAssemble.tankName = "CustomTank" + Count;
-        customTankAssembleList.Add(tankAssemble);
+        tankAssembleList.Add(tankAssemble);
         newTank = tankAssemble.CreateTank(transform);
         customTankList.Add(newTank);
         SetupTankPos(newTank.transform, Count - 1);
@@ -286,7 +278,7 @@ public class AllCustomTankManager : MonoBehaviour
             return;
         Destroy(CurrentTank);
         customTankList.Remove(CurrentTank);
-        customTankAssembleList.Remove(CurrentTankAssemble);
+        tankAssembleList.Remove(CurrentTankAssemble);
         AssetDatabase.DeleteAsset(GetTankAssembleAssetPath(currentIndex));
         RenameTankAssembles(currentIndex + 1);
         SetupAllTanksPosition();
@@ -315,5 +307,29 @@ public class AllCustomTankManager : MonoBehaviour
     public float GetTemAndCurrentWeightDifference()
     {
         return TemporaryAssemble.GetTotalWeight() - CurrentTankAssemble.GetTotalWeight();
+    }
+
+    /// <summary>
+    /// 选择当前坦克组合，保存到主人配置中
+    /// </summary>
+    /// <returns>成功返回true</returns>
+    public bool SetCurrentTankToMaster()
+    {
+        if (CurrentTankAssemble == null)
+        {
+            Toast.Instance.ShowToast("选择失败。");
+            return false;
+        }
+        MasterManager.Instance.SelectedTank = CurrentTankAssemble;
+        return true;
+    } 
+
+    public void SelectedMasterTank()
+    {
+        if (MasterManager.Instance.SelectedTank == null)
+            SelectCurrentTank(0);
+        for (int i = 0; i < tankAssembleList.Count; i++)
+            if (MasterManager.Instance.SelectedTank == tankAssembleList[i])
+                SelectCurrentTank(i);
     }
 }

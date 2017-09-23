@@ -5,10 +5,8 @@ using UnityEngine;
 public class MasterData : ScriptableObject
 {
     public string masterName = "Master";
-    public TankAssembleManager selectTank;
+    public TankAssembleManager selectedTank;
     public int level = 1;
     public int money = 100;
-
-
 
 }

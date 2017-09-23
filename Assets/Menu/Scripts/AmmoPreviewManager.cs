@@ -10,14 +10,6 @@ public class AmmoPreviewManager : ModulePreviewManager
     public TankModuleHead targetHeadModule;     // 目标头部
 
     /// <summary>
-    /// 在所有坦克加载完后设置当前弹药类型
-    /// </summary>
-    private void Start()
-    {
-        AllCustomTankPreviewManager.Instance.allTankSetupHandle += (object sender, EventArgs e) => { SetTargetByCurrentTankAssemble(); };
-    }
-
-    /// <summary>
     /// 通过当前坦克组合设置弹药类型
     /// </summary>
     public void SetTargetByCurrentTankAssemble()
