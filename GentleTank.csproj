@@ -222,6 +222,7 @@
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Main\Main Scripts\GameManager.cs" />
     <Compile Include="Assets\Main\Main Scripts\GameRound.cs" />
+    <Compile Include="Assets\Main\Master\Scripts\MasterData.cs" />
     <Compile Include="Assets\Main\Master\Scripts\MasterManager.cs" />
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPoolCreate.cs" />

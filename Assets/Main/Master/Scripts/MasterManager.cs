@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Master")]
-public class MasterManager : ScriptableObject 
+public class MasterManager : MonoBehaviour 
 {
-    public string masterName = "Master";
-    public TankAssembleManager selectTank;
+    public MasterData data;
 
-
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
 }
