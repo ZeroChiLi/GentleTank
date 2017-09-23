@@ -100,6 +100,7 @@ public class AllCameraRigManager : MonoBehaviour
                 cmMultiTargetCameraRig.virtualCamera.enabled = true;
                 break;
         }
+
     }
 
     public void ActiveCMCameraRig()
