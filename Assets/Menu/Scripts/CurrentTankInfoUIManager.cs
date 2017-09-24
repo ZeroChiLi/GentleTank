@@ -30,7 +30,7 @@ public class CurrentTankInfoUIManager : MonoBehaviour
     /// <summary>
     /// 更新当前坦克组合的总重量
     /// </summary>
-    private void UpdateCurrentTankWeight()
+    public void UpdateCurrentTankWeight()
     {
         if (AllCustomTankManager.Instance.CurrentTankAssemble == null)
             return;
@@ -50,7 +50,7 @@ public class CurrentTankInfoUIManager : MonoBehaviour
     /// <summary>
     /// 更新临时坦克组合总重量
     /// </summary>
-    private void UpdateTemporaryTankWeight()
+    public void UpdateTemporaryTankWeight()
     {
         if (AllCustomTankManager.Instance.TemporaryAssemble == null)
             return;

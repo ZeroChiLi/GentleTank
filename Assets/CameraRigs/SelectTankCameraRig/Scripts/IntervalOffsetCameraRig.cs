@@ -38,5 +38,13 @@ namespace CameraRig
             this.index = index;
             transform.localPosition = startPosition + (index * offset);
         }
+
+        /// <summary>
+        /// 设置目标为当前坦克索引
+        /// </summary>
+        public void SetTargetByCurrentTankIndex()
+        {
+            index = AllCustomTankManager.Instance.CurrentIndex;
+        }
     }
 }

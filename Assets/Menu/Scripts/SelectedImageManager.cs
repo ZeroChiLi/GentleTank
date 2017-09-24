@@ -36,4 +36,12 @@ public class SelectedImageManager : MonoBehaviour
         this.index = index;
         transform.position = targetList[index].position;
     }
+
+    /// <summary>
+    /// 设置目标索引为当前坦克索引
+    /// </summary>
+    public void SetTargetIndexByCurrentTankIndex()
+    {
+        index = AllCustomTankManager.Instance.CurrentIndex;
+    }
 }
