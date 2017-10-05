@@ -65,6 +65,12 @@ public class CurrentTankPanelManager : MonoBehaviour
     {
         deleteButton.interactable = allCustomTank.CurrentTank == null ? false : true;
         selectButton.interactable = allCustomTank.CurrentTank == null ? false : true;
+        if (allCustomTank.CurrentTank == null)
+            selectButton.interactable = false;
+        else if (MasterManager.Instance.data.weightLimit < allCustomTank.CurrentTankAssemble.GetTotalWeight())
+            selectButton.interactable = false;
+        else
+            selectButton.interactable = true;
     }
 
 }

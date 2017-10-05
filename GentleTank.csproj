@@ -247,6 +247,7 @@
     <Compile Include="Assets\Menu\Scripts\LoadingPanel.cs" />
     <Compile Include="Assets\Menu\Scripts\LobbyManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MainMenuManager.cs" />
+    <Compile Include="Assets\Menu\Scripts\MasterPanelManager.cs" />
     <Compile Include="Assets\Menu\Scripts\MenuListTween.cs" />
     <Compile Include="Assets\Menu\Scripts\ModulePreviewManager.cs" />
     <Compile Include="Assets\Menu\Scripts\ModulePropertyPanelManager.cs" />
