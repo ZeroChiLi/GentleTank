@@ -54,8 +54,15 @@ public class CurrentTankPanelManager : MonoBehaviour
     /// </summary>
     public void SelectedCurrentTank()
     {
-        if (allCustomTank.SetCurrentTankToMaster())
-            selectSuccessedEvent.Invoke();
+        if (!allCustomTank.SetCurrentTankToMaster())
+            return;
+        if (MasterManager.Instance.data.weightLimit < allCustomTank.CurrentTankAssemble.GetTotalWeight())
+        {
+            Toast.Instance.ShowToast("超出承重。");
+            return;
+        }
+        selectSuccessedEvent.Invoke();
+
     }
 
     /// <summary>
@@ -65,12 +72,6 @@ public class CurrentTankPanelManager : MonoBehaviour
     {
         deleteButton.interactable = allCustomTank.CurrentTank == null ? false : true;
         selectButton.interactable = allCustomTank.CurrentTank == null ? false : true;
-        if (allCustomTank.CurrentTank == null)
-            selectButton.interactable = false;
-        else if (MasterManager.Instance.data.weightLimit < allCustomTank.CurrentTankAssemble.GetTotalWeight())
-            selectButton.interactable = false;
-        else
-            selectButton.interactable = true;
     }
 
 }

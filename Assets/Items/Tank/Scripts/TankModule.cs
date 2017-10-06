@@ -80,4 +80,27 @@ public class TankModule : ModuleBase
         obj.transform.position = targetObj.transform.position + other.GetAnchor(targetModule) - other.connectAnchor;
     }
 
+    static public void ConnectCapModule(TankModuleCap cap,GameObject capObj,TankModuleHead head,GameObject headObj)
+    {
+        capObj.transform.SetParent(headObj.transform);
+        capObj.transform.position = headObj.transform.position + cap.GetTargetAnchor(head) - cap.anchors.down;
+    }
+
+    static public void ConnectFaceModule(TankModuleFace face, GameObject faceObj, TankModuleHead head, GameObject headObj)
+    {
+        faceObj.transform.SetParent(headObj.transform);
+        faceObj.transform.position = headObj.transform.position + face.GetTargetAnchor(head) - face.anchors.back;
+    }
+
+    static public void ConnectBodyForwardModule(TankModuleBodyForward bodyForward, GameObject obj, TankModuleBody body, GameObject bodyObj)
+    {
+        obj.transform.SetParent(bodyObj.transform);
+        obj.transform.position = bodyObj.transform.position + bodyForward.GetTargetAnchor(body) - bodyForward.anchors.back;
+    }
+
+    static public void ConnectBodyBackModule(TankModuleBodyForward bodyBack, GameObject obj, TankModuleBody body, GameObject bodyObj)
+    {
+        obj.transform.SetParent(bodyObj.transform);
+        obj.transform.position = bodyObj.transform.position + bodyBack.GetTargetAnchor(body) - bodyBack.anchors.back;
+    }
 }

@@ -211,6 +211,10 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModule.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleBody.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleBodyBack.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleBodyForward.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleCap.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleFace.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleHead.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleOther.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleWheel.cs" />
