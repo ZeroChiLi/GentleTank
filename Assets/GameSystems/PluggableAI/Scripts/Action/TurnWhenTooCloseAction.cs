@@ -20,8 +20,8 @@ namespace GameSystem.AI
                 Vector3 direction = ((Transform)controller.instancePrefs["ChaseEnemy"]).position - controller.transform.position;
                 direction.y = 0;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                if (targetRotation.AlmostEquals(controller.transform.rotation,tolerance))
-                    return;
+                //if (targetRotation.AlmostEquals(controller.transform.rotation,tolerance))
+                //    return;
                 controller.rigidbodySelf.rotation = Quaternion.RotateTowards(controller.transform.rotation, targetRotation, controller.navMeshAgent.angularSpeed * Time.deltaTime);
             }
         }

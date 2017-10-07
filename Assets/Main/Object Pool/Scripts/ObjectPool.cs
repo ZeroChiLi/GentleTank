@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game Configure/Object Pool")]
-public class ObjectPool : ScriptableObject 
+public class ObjectPool : ScriptableObject
 {
     [Header("Before Using It.")]
     [Header("Please Call 'CrateObjectPool()' Function.")]
@@ -11,7 +11,6 @@ public class ObjectPool : ScriptableObject
     public GameObject objectPerfab;             //预设
     public int objectCount = 10;                //数量
     public bool autoIncrease = true;            //如果需要自动增加
-    public bool isPhotonView = false;           // 是否需要Photon同步
 
     [HideInInspector]
     public GameObject poolParent;               //对象池存放的父对象
@@ -40,13 +39,7 @@ public class ObjectPool : ScriptableObject
         for (int i = 0; i < objectCount; ++i)
         {
             GameObject obj;
-            if (isPhotonView)
-            {
-                obj = PhotonNetwork.Instantiate(objectPerfab.name, Vector3.zero, Quaternion.identity, 0);
-                obj.transform.parent = poolParent.transform;
-            }
-            else
-                obj = Instantiate(objectPerfab, poolParent.transform);
+            obj = Instantiate(objectPerfab, poolParent.transform);
             objectPool.Add(obj);
             obj.SetActive(false);
         }
@@ -74,7 +67,7 @@ public class ObjectPool : ScriptableObject
             if (!objectPool[index].activeInHierarchy)
             {
                 currentIndex = index;
-                return SetupObject(objectPool[index],active,transform);
+                return SetupObject(objectPool[index], active, transform);
             }
         }
         if (autoIncrease)
@@ -87,7 +80,7 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     /// <param name="transform">位置</param>
     /// <returns>放回这个对象</returns>
-    private GameObject SetupObject(GameObject obj,bool active, Transform transform)
+    private GameObject SetupObject(GameObject obj, bool active, Transform transform)
     {
         obj.SetActive(active);
         if (transform != null)
