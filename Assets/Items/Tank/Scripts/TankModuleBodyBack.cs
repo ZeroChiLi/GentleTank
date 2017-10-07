@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Module/TankModule/BodyBack")]
 public class TankModuleBodyBack : TankModule 
 {
-    public enum TargetPos { BodyForwardBack, BodyBack}
+    public enum TargetPos { BodyBackUp, BodyBack}
 
     public TargetPos targetPos;
 
@@ -12,7 +12,7 @@ public class TankModuleBodyBack : TankModule
     {
         switch (targetPos)
         {
-            case TargetPos.BodyForwardBack:
+            case TargetPos.BodyBackUp:
                 return body.backUp;
             case TargetPos.BodyBack:
                 return body.anchors.back;

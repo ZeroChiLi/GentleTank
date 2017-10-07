@@ -9,12 +9,21 @@ public class TankAssembleManager : ScriptableObject
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
     public List<TankModuleOther> others = new List<TankModuleOther>();
+    public TankModuleCap cap;
+    public TankModuleFace face;
+    public TankModuleBodyForward bodyForward;
+    public TankModuleBodyBack bodyBack;
 
     private GameObject headObj;
     private GameObject bodyObj;
     private GameObject leftWheelObj;
     private GameObject rightWheelObj;
     private List<GameObject> othersObj;
+    private GameObject capObj;
+    private GameObject faceObj;
+    private GameObject bodyForwardObj;
+    private GameObject bodyBackObj;
+
     private float totalWeight;
 
     /// <summary>
@@ -26,7 +35,11 @@ public class TankAssembleManager : ScriptableObject
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;
-        others = new List<TankModuleOther>(copySrc.others);
+        //others = new List<TankModuleOther>(copySrc.others);
+        cap = copySrc.cap;
+        face = copySrc.face;
+        bodyForward = copySrc.bodyForward;
+        bodyBack = copySrc.bodyBack;
     }
 
     /// <summary>
@@ -67,10 +80,18 @@ public class TankAssembleManager : ScriptableObject
         leftWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj.transform.localScale = new Vector3(-rightWheelObj.transform.localScale.x, rightWheelObj.transform.localScale.y, rightWheelObj.transform.localScale.z);
-        othersObj = new List<GameObject>();
-        if (others != null)
-            for (int i = 0; i < others.Count; i++)
-                othersObj.Add(Instantiate(others[i].prefab, parent));
+        //othersObj = new List<GameObject>();
+        //if (others != null)
+        //    for (int i = 0; i < others.Count; i++)
+        //        othersObj.Add(Instantiate(others[i].prefab, parent));
+        if (cap != null)
+            capObj = Instantiate(cap.prefab, headObj.transform);
+        if (face != null)
+            faceObj = Instantiate(face.prefab, headObj.transform);
+        if (bodyForward != null)
+            bodyForwardObj = Instantiate(bodyForward.prefab, bodyObj.transform);
+        if (bodyBack != null)
+            bodyBackObj = Instantiate(bodyBack.prefab, bodyObj.transform);
     }
 
     /// <summary>
@@ -81,8 +102,18 @@ public class TankAssembleManager : ScriptableObject
         TankModule.ConnectHeadToBody(head, headObj, body, bodyObj);
         TankModule.ConnectLeftWheelToBody(leftWheel, leftWheelObj, body, bodyObj);
         TankModule.ConnectRightWheelToBody(leftWheel, rightWheelObj, body, bodyObj);
-        for (int i = 0; i < othersObj.Count; i++)
-            AssembleOtherModule(others[i], othersObj[i]);
+
+        if (cap != null)
+            TankModule.ConnectCapModule(cap, capObj, head, headObj);
+        if (face != null)
+            TankModule.ConnectFaceModule(face, faceObj, head, headObj);
+        if (bodyForward != null)
+            TankModule.ConnectBodyForwardModule(bodyForward, bodyForwardObj, body, bodyObj);
+        if (bodyBack != null)
+            TankModule.ConnectBodyBackModule(bodyBack, bodyBackObj, body, bodyObj);
+
+        //for (int i = 0; i < othersObj.Count; i++)
+        //    AssembleOtherModule(others[i], othersObj[i]);
     }
 
     /// <summary>
@@ -118,8 +149,12 @@ public class TankAssembleManager : ScriptableObject
     public float GetTotalWeight()
     {
         totalWeight = head.property.weight + body.property.weight + leftWheel.property.weight;
-        for (int i = 0; i < others.Count; i++)
-            totalWeight += others[i].property.weight;
+        totalWeight += cap == null ? 0 : cap.property.weight;
+        totalWeight += face == null ? 0 : face.property.weight;
+        totalWeight += bodyForward == null ? 0 : bodyForward.property.weight;
+        totalWeight += bodyBack == null ? 0 : bodyBack.property.weight;
+        //for (int i = 0; i < others.Count; i++)
+        //    totalWeight += others[i].property.weight;
         return totalWeight;
     }
 

@@ -5,7 +5,7 @@ public class TankModule : ModuleBase
 {
     public enum TankModuleType
     {
-        None,Default,Head, Body, Wheel, Other
+        None,Default,Head, Body, Wheel, Other,Cap,Face,BodyForward,BodyBack
     }
 
     /// <summary>
@@ -23,6 +23,14 @@ public class TankModule : ModuleBase
             return TankModuleType.Wheel;
         else if (module.GetType() == typeof(TankModuleOther))
             return TankModuleType.Other;
+        else if (module.GetType() == typeof(TankModuleCap))
+            return TankModuleType.Cap;
+        else if (module.GetType() == typeof(TankModuleFace))
+            return TankModuleType.Face;
+        else if (module.GetType() == typeof(TankModuleBodyForward))
+            return TankModuleType.BodyForward;
+        else if (module.GetType() == typeof(TankModuleBodyBack))
+            return TankModuleType.BodyBack;
         else if (module.GetType() == typeof(TankModule))
             return TankModuleType.Default;
         return TankModuleType.None;
@@ -98,9 +106,9 @@ public class TankModule : ModuleBase
         obj.transform.position = bodyObj.transform.position + bodyForward.GetTargetAnchor(body) - bodyForward.anchors.back;
     }
 
-    static public void ConnectBodyBackModule(TankModuleBodyForward bodyBack, GameObject obj, TankModuleBody body, GameObject bodyObj)
+    static public void ConnectBodyBackModule(TankModuleBodyBack bodyBack, GameObject obj, TankModuleBody body, GameObject bodyObj)
     {
         obj.transform.SetParent(bodyObj.transform);
-        obj.transform.position = bodyObj.transform.position + bodyBack.GetTargetAnchor(body) - bodyBack.anchors.back;
+        obj.transform.position = bodyObj.transform.position + bodyBack.GetTargetAnchor(body) - bodyBack.anchors.forward;
     }
 }

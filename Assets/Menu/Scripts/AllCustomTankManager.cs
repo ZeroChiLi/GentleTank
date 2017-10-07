@@ -161,11 +161,23 @@ public class AllCustomTankManager : MonoBehaviour
                 else
                     TemporaryAssemble.leftWheel = modulePreview.target as TankModuleWheel;
                 break;
-            case TankModule.TankModuleType.Other:
-                if (TemporaryAssemble.others.Contains(modulePreview.target as TankModuleOther))
-                    TemporaryAssemble.others.Remove(modulePreview.target as TankModuleOther);
-                else
-                    TemporaryAssemble.others.Add(modulePreview.target as TankModuleOther);
+            //case TankModule.TankModuleType.Other:
+            //    if (TemporaryAssemble.others.Contains(modulePreview.target as TankModuleOther))
+            //        TemporaryAssemble.others.Remove(modulePreview.target as TankModuleOther);
+            //    else
+            //        TemporaryAssemble.others.Add(modulePreview.target as TankModuleOther);
+            //    break;
+            case TankModule.TankModuleType.Cap:
+                TemporaryAssemble.cap = modulePreview.target == TemporaryAssemble.cap ? null : modulePreview.target as TankModuleCap;
+                break;
+            case TankModule.TankModuleType.Face:
+                TemporaryAssemble.face = modulePreview.target == TemporaryAssemble.face ? null : modulePreview.target as TankModuleFace;
+                break;
+            case TankModule.TankModuleType.BodyForward:
+                TemporaryAssemble.bodyForward = modulePreview.target == TemporaryAssemble.bodyForward ? null : modulePreview.target as TankModuleBodyForward;
+                break;
+            case TankModule.TankModuleType.BodyBack:
+                TemporaryAssemble.bodyBack = modulePreview.target == TemporaryAssemble.bodyBack ? null : modulePreview.target as TankModuleBodyBack;
                 break;
             default:
                 return;
@@ -322,7 +334,7 @@ public class AllCustomTankManager : MonoBehaviour
         }
         MasterManager.Instance.SelectedTank = CurrentTankAssemble;
         return true;
-    } 
+    }
 
     public void SelectedMasterTank()
     {
