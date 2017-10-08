@@ -25,7 +25,7 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void LoadSoloScene()
     {
-        AllSceneManager.LoadScene(GameSceneType.SoloScene);
+        AllSceneManager.LoadScene(AllSceneManager.GameSceneType.SoloScene);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void LoadLobbyScene()
     {
-        AllSceneManager.LoadScene(GameSceneType.LobbyScene);
+        AllSceneManager.LoadScene(AllSceneManager.GameSceneType.LobbyScene);
     }
 
     /// <summary>
