@@ -201,6 +201,7 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleFace.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleHead.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleOther.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleProperty.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleWheel.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Main\CrossPlatformInput\Scripts\AxisInput.cs" />

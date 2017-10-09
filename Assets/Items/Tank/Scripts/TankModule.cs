@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankModule/Default")]
 public class TankModule : ModuleBase
 {
     public enum TankModuleType
     {
-        None,Default,Head, Body, Wheel, Other,Cap,Face,BodyForward,BodyBack
+        None, Default, Head, Body, Wheel, Other, Cap, Face, BodyForward, BodyBack
+    }
+
+    public TankModuleProperty property;
+
+    public override string GetProperties()
+    {
+        return property.GetAllPropertiesString();
     }
 
     /// <summary>
@@ -111,4 +119,5 @@ public class TankModule : ModuleBase
         obj.transform.SetParent(bodyObj.transform);
         obj.transform.position = bodyObj.transform.position + bodyBack.GetTargetAnchor(body) - bodyBack.anchors.forward;
     }
+
 }

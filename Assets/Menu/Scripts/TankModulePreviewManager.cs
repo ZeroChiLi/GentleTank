@@ -22,7 +22,7 @@ public class TankModulePreviewManager : ModulePreviewManager
     /// </summary>
     public override void OnEnter()
     {
-        ModulePropertyPanelManager.Instance.Show(Input.mousePosition,target.property.moduleName,target.property.GetAllProperties());
+        ModulePropertyPanelManager.Instance.Show(Input.mousePosition,target.moduleName,target.GetProperties());
     }
 
     /// <summary>

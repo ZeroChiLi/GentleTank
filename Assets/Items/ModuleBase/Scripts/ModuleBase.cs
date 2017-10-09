@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class ModuleProperty
+public abstract class ModuleProperty
 {
     public string moduleName;
     public string description;
-    public float weight = 10f;
 
     /// <summary>
     /// 获取所有属性字符串，不包括部件名字
     /// </summary>
-    /// <returns>所有属性字符串</returns>
-    virtual public string[] GetAllProperties()
-    {
-        string[] properties = new string[2];
-        properties[0] = "描述：" + description;
-        properties[1] = "重量：" + weight;
-        return properties;
-    }
+    abstract public string GetAllPropertiesString();
+    //{
+    //    string[] properties = new string[2];
+    //    properties[0] = "描述：" + description;
+    //    properties[1] = "重量：" + weight;
+    //    return properties;
+    //}
 }
 
 [System.Serializable]
@@ -32,11 +30,13 @@ public struct ModuleAnchors
     public Vector3 down;
 }
 
-[CreateAssetMenu(menuName = "Module/Base")]
-public class ModuleBase : ScriptableObject
+public abstract class ModuleBase : ScriptableObject
 {
+    public string moduleName;
     public GameObject prefab;
     public Sprite preview;
-    public ModuleProperty property;
+    //public ModuleProperty property;
     public ModuleAnchors anchors;
+
+    public abstract string GetProperties();
 }
