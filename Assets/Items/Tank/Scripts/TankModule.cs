@@ -13,7 +13,7 @@ public class TankModule : ModuleBase
 
     public override string GetProperties()
     {
-        return property.GetAllPropertiesString();
+        return property.GetPropertiesString();
     }
 
     /// <summary>

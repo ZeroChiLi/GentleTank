@@ -3,19 +3,12 @@
 [System.Serializable]
 public abstract class ModuleProperty
 {
-    public string moduleName;
     public string description;
 
     /// <summary>
-    /// 获取所有属性字符串，不包括部件名字
+    /// 获取所有属性字符串
     /// </summary>
-    abstract public string GetAllPropertiesString();
-    //{
-    //    string[] properties = new string[2];
-    //    properties[0] = "描述：" + description;
-    //    properties[1] = "重量：" + weight;
-    //    return properties;
-    //}
+    abstract public string GetPropertiesString();
 }
 
 [System.Serializable]
@@ -35,7 +28,6 @@ public abstract class ModuleBase : ScriptableObject
     public string moduleName;
     public GameObject prefab;
     public Sprite preview;
-    //public ModuleProperty property;
     public ModuleAnchors anchors;
 
     public abstract string GetProperties();

@@ -62,7 +62,7 @@ public class AmmoPreviewManager : ModulePreviewManager
     {
         if (targetHeadModule == null)
             return;
-        ModulePropertyPanelManager.Instance.Show(Input.mousePosition, targetAmmoModule.property.moduleName, targetAmmoModule.property.GetAllPropertiesString());
+        ModulePropertyPanelManager.Instance.Show(Input.mousePosition, targetAmmoModule.moduleName, targetAmmoModule.property.GetPropertiesString());
     }
 
     public override void OnExit()
