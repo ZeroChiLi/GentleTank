@@ -2,14 +2,20 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankModule/BodyBack")]
-public class TankModuleBodyBack : TankModule 
+public class TankModuleBodyBack : TankModuleDecoration
 {
     public enum TargetPos { BodyBackUp, BodyBack}
 
     public TargetPos targetPos;
 
-    public Vector3 GetTargetAnchor(TankModuleBody body)
+    public override Vector3 GetTargetAnchor(TankModule module)
     {
+        TankModuleBody body = module as TankModuleBody;
+        if (body == null)
+        {
+            Debug.LogError("TankModuleBodyBack.GetTargetAnchor() Parameter Should Be 'TankModuleBody'.");
+            return Vector3.zero;
+        }
         switch (targetPos)
         {
             case TargetPos.BodyBackUp:

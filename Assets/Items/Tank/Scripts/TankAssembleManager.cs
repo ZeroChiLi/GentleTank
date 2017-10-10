@@ -8,7 +8,6 @@ public class TankAssembleManager : ScriptableObject
     public TankModuleHead head;
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
-    public List<TankModuleOther> others = new List<TankModuleOther>();
     public TankModuleCap cap;
     public TankModuleFace face;
     public TankModuleBodyForward bodyForward;
@@ -18,7 +17,6 @@ public class TankAssembleManager : ScriptableObject
     private GameObject bodyObj;
     private GameObject leftWheelObj;
     private GameObject rightWheelObj;
-    private List<GameObject> othersObj;
     private GameObject capObj;
     private GameObject faceObj;
     private GameObject bodyForwardObj;
@@ -35,7 +33,6 @@ public class TankAssembleManager : ScriptableObject
         head = copySrc.head;
         body = copySrc.body;
         leftWheel = copySrc.leftWheel;
-        //others = new List<TankModuleOther>(copySrc.others);
         cap = copySrc.cap;
         face = copySrc.face;
         bodyForward = copySrc.bodyForward;
@@ -80,10 +77,6 @@ public class TankAssembleManager : ScriptableObject
         leftWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj = Instantiate(leftWheel.prefab, parent);
         rightWheelObj.transform.localScale = new Vector3(-rightWheelObj.transform.localScale.x, rightWheelObj.transform.localScale.y, rightWheelObj.transform.localScale.z);
-        //othersObj = new List<GameObject>();
-        //if (others != null)
-        //    for (int i = 0; i < others.Count; i++)
-        //        othersObj.Add(Instantiate(others[i].prefab, parent));
         if (cap != null)
             capObj = Instantiate(cap.prefab, headObj.transform);
         if (face != null)
@@ -104,42 +97,14 @@ public class TankAssembleManager : ScriptableObject
         TankModule.ConnectRightWheelToBody(leftWheel, rightWheelObj, body, bodyObj);
 
         if (cap != null)
-            TankModule.ConnectCapModule(cap, capObj, head, headObj);
+            TankModule.ConnectDecorationModule(cap, capObj, head, headObj);
         if (face != null)
-            TankModule.ConnectFaceModule(face, faceObj, head, headObj);
+            TankModule.ConnectDecorationModule(face, faceObj, head, headObj);
         if (bodyForward != null)
-            TankModule.ConnectBodyForwardModule(bodyForward, bodyForwardObj, body, bodyObj);
+            TankModule.ConnectDecorationModule(bodyForward, bodyForwardObj, body, bodyObj);
         if (bodyBack != null)
-            TankModule.ConnectBodyBackModule(bodyBack, bodyBackObj, body, bodyObj);
+            TankModule.ConnectDecorationModule(bodyBack, bodyBackObj, body, bodyObj);
 
-        //for (int i = 0; i < othersObj.Count; i++)
-        //    AssembleOtherModule(others[i], othersObj[i]);
-    }
-
-    /// <summary>
-    /// 组合其他类型部件
-    /// </summary>
-    /// <param name="module">部件信息</param>
-    /// <param name="obj">部件对象</param>
-    private void AssembleOtherModule(TankModuleOther module, GameObject obj)
-    {
-        switch (module.targetType)
-        {
-            case TankModuleOther.TargetTankModuleType.Head:
-                TankModule.ConnectOtherModule(module, obj, head, headObj);
-                break;
-            case TankModuleOther.TargetTankModuleType.Body:
-                TankModule.ConnectOtherModule(module, obj, body, bodyObj);
-                break;
-            case TankModuleOther.TargetTankModuleType.LeftWheel:
-                TankModule.ConnectOtherModule(module, obj, leftWheel, leftWheelObj);
-                break;
-            case TankModuleOther.TargetTankModuleType.RightWheel:
-                TankModule.ConnectOtherModule(module, obj, leftWheel, rightWheelObj);
-                break;
-            default:
-                break;
-        }
     }
 
     /// <summary>
@@ -153,8 +118,6 @@ public class TankAssembleManager : ScriptableObject
         totalWeight += face == null ? 0 : face.property.weight;
         totalWeight += bodyForward == null ? 0 : bodyForward.property.weight;
         totalWeight += bodyBack == null ? 0 : bodyBack.property.weight;
-        //for (int i = 0; i < others.Count; i++)
-        //    totalWeight += others[i].property.weight;
         return totalWeight;
     }
 

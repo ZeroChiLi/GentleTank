@@ -198,9 +198,9 @@
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleBodyBack.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleBodyForward.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleCap.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\TankModuleDecoration.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleFace.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleHead.cs" />
-    <Compile Include="Assets\Items\Tank\Scripts\TankModuleOther.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleProperty.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankModuleWheel.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankMovement.cs" />

@@ -29,8 +29,6 @@ public class TankModule : ModuleBase
             return TankModuleType.Body;
         else if (module.GetType() == typeof(TankModuleWheel))
             return TankModuleType.Wheel;
-        else if (module.GetType() == typeof(TankModuleOther))
-            return TankModuleType.Other;
         else if (module.GetType() == typeof(TankModuleCap))
             return TankModuleType.Cap;
         else if (module.GetType() == typeof(TankModuleFace))
@@ -82,42 +80,18 @@ public class TankModule : ModuleBase
         else
             rightObj.transform.position = bodyObj.transform.position + body.rightWheelTop - rightWheel.anchors.up;
     }
-    
+
     /// <summary>
-    /// 连接其他类型的部件
+    /// 连接装饰部件
     /// </summary>
-    /// <param name="other">其他部件</param>
-    /// <param name="obj">部件对象</param>
-    /// <param name="targetModule">连接的目标部件</param>
-    /// <param name="targetObj">连接的目标部件对象</param>
-    static public void ConnectOtherModule(TankModuleOther other,GameObject obj,TankModule targetModule,GameObject targetObj)
+    /// <param name="decoration">装饰部件</param>
+    /// <param name="decorationObj">装饰部件对象</param>
+    /// <param name="targetModule">连接目标部件</param>
+    /// <param name="targetObj">连接目标部件对象</param>
+    static public void ConnectDecorationModule(TankModuleDecoration decoration,GameObject decorationObj, TankModule targetModule,GameObject targetObj)
     {
-        obj.transform.SetParent(targetObj.transform);
-        obj.transform.position = targetObj.transform.position + other.GetAnchor(targetModule) - other.connectAnchor;
-    }
-
-    static public void ConnectCapModule(TankModuleCap cap,GameObject capObj,TankModuleHead head,GameObject headObj)
-    {
-        capObj.transform.SetParent(headObj.transform);
-        capObj.transform.position = headObj.transform.position + cap.GetTargetAnchor(head) - cap.anchors.down;
-    }
-
-    static public void ConnectFaceModule(TankModuleFace face, GameObject faceObj, TankModuleHead head, GameObject headObj)
-    {
-        faceObj.transform.SetParent(headObj.transform);
-        faceObj.transform.position = headObj.transform.position + face.GetTargetAnchor(head) - face.anchors.back;
-    }
-
-    static public void ConnectBodyForwardModule(TankModuleBodyForward bodyForward, GameObject obj, TankModuleBody body, GameObject bodyObj)
-    {
-        obj.transform.SetParent(bodyObj.transform);
-        obj.transform.position = bodyObj.transform.position + bodyForward.GetTargetAnchor(body) - bodyForward.anchors.back;
-    }
-
-    static public void ConnectBodyBackModule(TankModuleBodyBack bodyBack, GameObject obj, TankModuleBody body, GameObject bodyObj)
-    {
-        obj.transform.SetParent(bodyObj.transform);
-        obj.transform.position = bodyObj.transform.position + bodyBack.GetTargetAnchor(body) - bodyBack.anchors.forward;
+        decorationObj.transform.SetParent(targetObj.transform);
+        decorationObj.transform.position = targetObj.transform.position + decoration.GetTargetAnchor(targetModule) - decoration.connectAnchor;
     }
 
 }

@@ -2,14 +2,20 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankModule/Cap")]
-public class TankModuleCap : TankModule
+public class TankModuleCap : TankModuleDecoration
 {
     public enum TargetPos { HeadForwardUp, HeadUp, HeadBackUp }
 
     public TargetPos targetPos;
 
-    public Vector3 GetTargetAnchor(TankModuleHead head)
+    public override Vector3 GetTargetAnchor(TankModule module)
     {
+        TankModuleHead head = module as TankModuleHead;
+        if (head == null)
+        {
+            Debug.LogError("TankModuleCap.GetTargetAnchor() Parameter Should Be 'TankModuleHead'.");
+            return Vector3.zero;
+        }
         switch (targetPos)
         {
             case TargetPos.HeadForwardUp:
