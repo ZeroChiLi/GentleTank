@@ -5,7 +5,7 @@ namespace Widget.ChargeArea
 {
     public class AllChargeAreaManager : MonoBehaviour
     {
-        public PointList chargeAreaPointList;                       // 充电区产生的位置
+        public Points chargeAreaPoints;                       // 充电区产生的位置
         public GameObject chargeAreaPerfab;                         // 充电区预设
         public ObjectPool fillAreaObjectPool;                       // 填充扇区池
 
@@ -26,8 +26,8 @@ namespace Widget.ChargeArea
         /// </summary>
         private void CreateChargeAreas()
         {
-            for (int i = 0; i < chargeAreaPointList.Count; i++)
-                chargeAreaList.Add(Instantiate(chargeAreaPerfab, chargeAreaPointList[i].position, chargeAreaPointList[i].Rotation, transform).GetComponent<ChargeAreaManager>());
+            for (int i = 0; i < chargeAreaPoints.Count; i++)
+                chargeAreaList.Add(Instantiate(chargeAreaPerfab, chargeAreaPoints[i].position, chargeAreaPoints[i].rotation, transform).GetComponent<ChargeAreaManager>());
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace GameSystem.AI
         public override void Act(StateController controller)
         {
             controller.navMeshAgent.enabled = true;
-            controller.navMeshAgent.destination = controller.NextWayPoint.position;
+            controller.navMeshAgent.destination = controller.NextWaypoint.position;
             controller.navMeshAgent.isStopped = false;  //保持运动状态
 
             //navMeshAgent调用setDestination 后，会有一个计算路径的时间，计算过程中pathPending为true. 

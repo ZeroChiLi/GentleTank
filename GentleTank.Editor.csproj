@@ -180,6 +180,7 @@
     <Compile Include="Assets\Items\Tank\Editor\TankModuleBodyEditor.cs" />
     <Compile Include="Assets\Items\Tank\Editor\TankModuleHeadEditor.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Editor\PlayerAndTeamWindow.cs" />
+    <Compile Include="Assets\Main\Points\Editor\PointsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Common\Fonts\Bowlby_One\OFL.txt" />

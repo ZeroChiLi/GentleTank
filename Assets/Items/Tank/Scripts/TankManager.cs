@@ -36,16 +36,16 @@ namespace Item.Tank
         /// <summary>
         /// 初始化坦克,设置坦克Perfabs、获取玩家所在团队、获取实例的必要组件、激活控制权、渲染坦克颜色。
         /// </summary>
-        public void Init()
+        public void Init(Points waypoints)
         {
-            SetupUIAndInput();                              // 配置玩家名、外部输入
+            SetupUIAndInput(waypoints);                              // 配置玩家名、外部输入
             SetControlEnable(true);                         // 激活相应的控制权
         }
 
         /// <summary>
         /// 配置信息UI、移动、攻击输入
         /// </summary>
-        public void SetupUIAndInput()
+        public void SetupUIAndInput(Points waypoints)
         {
             playerNameText.text = PlayerName;
             ColorTool.ChangeSelfAndChildrens(gameObject, RepresentColor, colorMaterialName);         // 坦克颜色
@@ -56,6 +56,7 @@ namespace Item.Tank
             }
             tankMovement.SetupPlayerInput(PlayerID);                // 配置坦克移动输入
             tankAttack.SetShortcutName("Fire" + PlayerID);        // 配置坦克攻击输入
+            stateController.SetWaypoints(waypoints);
         }
 
         /// <summary>
@@ -107,10 +108,10 @@ namespace Item.Tank
         /// 重置出生点以及激活状态
         /// </summary>
         /// <param name="spawnPoint">出生点</param>
-        public void ResetSpawnPoint(Point spawnPoint)
+        public void ResetToSpawnPoint(Point spawnPoint)
         {
             transform.position = spawnPoint.position;
-            transform.rotation = spawnPoint.Rotation;
+            transform.rotation = spawnPoint.rotation;
 
             //先设置False，因为如果获胜了的玩家本身就是true，重置就会调用OnEnable函数。
             gameObject.SetActive(false);

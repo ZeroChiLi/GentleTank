@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
 {
     public GameManager Instance { get; private set; }
 
-    public PointList spawnPointList;                // 坦克出生点
+    public Points spawnPoints;
+    public Points wayPoints;
     public AllPlayerManager allPlayerManager;       // 所有玩家
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
         {
             tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
-            tankList[i].Init();
+            tankList[i].Init(wayPoints);
             if (AllPlayerManager.Instance[i] == AllPlayerManager.Instance.MyPlayer)
                 myTank = tankList[i];
         }
@@ -83,15 +84,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ResetAllTanksSpawnPoint()
     {
-        spawnPointList.EnableAllPoints();                     // 初始化出生点
-        for (int i = 0; i < tankList.Count; i++)
-        {
-            //获取有效随机出生点，且每个坦克位置不一样
-            Point spawnPoint = spawnPointList.GetRandomPoint(false, true);
-            if (spawnPoint == null)
-                continue;
-            tankList[i].ResetSpawnPoint(spawnPoint);
-        }
+        for (int i = 0; i < spawnPoints.Count; i++)
+            tankList[i].ResetToSpawnPoint(spawnPoints.GetNextPoint());
     }
 
     /// <summary>

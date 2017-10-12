@@ -220,9 +220,8 @@
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\HealthManager.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\TeamManager.cs" />
-    <Compile Include="Assets\Main\Point List\Scripts\Point.cs" />
-    <Compile Include="Assets\Main\Point List\Scripts\PointList.cs" />
-    <Compile Include="Assets\Main\Point List\Scripts\PointsDebugShow.cs" />
+    <Compile Include="Assets\Main\Points\Scripts\Point.cs" />
+    <Compile Include="Assets\Main\Points\Scripts\Points.cs" />
     <Compile Include="Assets\Menu\Scripts\AllCustomTankManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllCustomTankPreviewManager.cs" />
     <Compile Include="Assets\Menu\Scripts\AllSceneManager.cs" />

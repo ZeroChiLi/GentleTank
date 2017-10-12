@@ -12,7 +12,7 @@ namespace GameSystem.AI
         public Rigidbody rigidbodySelf;                         // 自己的刚体
         public Collider colliderSelf;                           // 自己的Collider
         public NavMeshAgent navMeshAgent;                       // 导航组件
-        public PointList wayPointList;                          // 所有巡逻点
+        public Points waypoints;
 
         public ObjectPreferences<object> statePrefs;            // 用于每一次状态保存信息使用时（OnExitState时清除）
         public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
@@ -24,8 +24,8 @@ namespace GameSystem.AI
         private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
 
-        private int nextWayPointIndex;                          // 下一个巡逻点
-        public Point NextWayPoint { get { return wayPointList[nextWayPointIndex]; } }
+        private int nextWaypointIndex;                          // 下一个巡逻点
+        public Point NextWaypoint { get { return waypoints[nextWaypointIndex]; } }
 
         /// <summary>
         /// 获取组件
@@ -57,6 +57,14 @@ namespace GameSystem.AI
         private void Update()
         {
             currentState.UpdateState(this);                     //更新状态
+        }
+
+        /// <summary>
+        /// 设置巡逻点
+        /// </summary>
+        public void SetWaypoints(Points points)
+        {
+            waypoints = points;
         }
 
         /// <summary>
@@ -111,11 +119,8 @@ namespace GameSystem.AI
         /// <returns>返回下一个巡逻点</returns>
         public Point UpdateNextWayPoint(bool isRandom)
         {
-            if (isRandom)
-                nextWayPointIndex = wayPointList.GetRandomDifferenceIndex(nextWayPointIndex, 0, wayPointList.Count);
-            else
-                nextWayPointIndex = (nextWayPointIndex + 1) % wayPointList.Count;
-            return wayPointList[nextWayPointIndex];
+            nextWaypointIndex = isRandom ? Random.Range(0, waypoints.Count - 1) : (nextWaypointIndex + 1) % waypoints.Count;
+            return waypoints[nextWaypointIndex];
         }
 
         /// <summary>

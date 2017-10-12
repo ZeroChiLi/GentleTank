@@ -10,7 +10,7 @@ namespace GameSystem.AI
     {
         public override void Act(StateController controller)
         {
-            controller.navMeshAgent.destination = controller.NextWayPoint.position;
+            controller.navMeshAgent.destination = controller.NextWaypoint.position;
             controller.navMeshAgent.isStopped = false;
 
             if (controller.navMeshAgent.remainingDistance <= controller.navMeshAgent.stoppingDistance && !controller.navMeshAgent.pathPending)
