@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public TankManager MyTank { get { return myTank; } }
 
     private List<TankManager> tankList;             // 所有玩家坦克
+    private List<int> spawnIndexList = new List<int>();
     private TankManager myTank;                     // 自己的坦克
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds changeCamWait;           // 转换镜头延时
@@ -84,8 +85,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ResetAllTanksSpawnPoint()
     {
+        spawnIndexList.Clear();
         for (int i = 0; i < spawnPoints.Count; i++)
-            tankList[i].ResetToSpawnPoint(spawnPoints.GetNextPoint());
+            spawnIndexList.Add(i);
+
+        int randomI = 0;
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
+            tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
+            spawnIndexList.Remove(randomI);
+        }
     }
 
     /// <summary>
