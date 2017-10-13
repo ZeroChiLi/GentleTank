@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetupGame();                                // 配置游戏
+        CreateMasterTank();
 
         new GameRound(numRoundsToWin);             // 创建一个游戏纪录实例
         GameRound.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
@@ -78,6 +79,14 @@ public class GameManager : MonoBehaviour
             if (VirtualInput.GetButton("Attack") != null)
                 ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
         }
+    }
+
+    private void CreateMasterTank()
+    {
+        if (MasterManager.Instance == null)
+            Debug.Log("Shit");
+        GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
+        MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
     }
 
     /// <summary>
