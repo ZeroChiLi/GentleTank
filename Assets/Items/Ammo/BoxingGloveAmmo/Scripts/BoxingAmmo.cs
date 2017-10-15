@@ -23,7 +23,7 @@ namespace Item.Ammo
         {
             needTurnBack = true;
             effectPool.GetNextObject(true,transform);
-            targetHealth = other.GetComponent<HealthManager>();
+            targetHealth = other.GetComponentInParent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage,launcher);
         }

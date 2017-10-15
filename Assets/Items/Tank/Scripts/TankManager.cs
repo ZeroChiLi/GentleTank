@@ -9,6 +9,7 @@ namespace Item.Tank
     {
         public string colorMaterialName = "TankColour (Instance)";  // 坦克渲染名字
         public MeshRenderer playerIconMesh;                     // 玩家图标材质
+        public Slider aimSlider;
         public Text playerNameText;                             // 玩家名字UI
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动

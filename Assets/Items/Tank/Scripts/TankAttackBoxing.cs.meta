@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: 110df4241fa3c514b9ff7357cca4f01f
-timeCreated: 1503727699
+timeCreated: 1508044718
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - chargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
+  - fireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
+  - forceSlider: {instanceID: 0}
+  - springManager: {instanceID: 0}
+  - boxingGlove: {instanceID: 0}
+  - boxingCollider: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

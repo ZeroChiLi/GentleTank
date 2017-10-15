@@ -28,6 +28,7 @@ public abstract class HealthManager : MonoBehaviour
 
     protected float currentHealth;                      // 当前血量
     protected bool isFeelPain = false;                  // 是否感受到伤害
+    protected int lastPainFrame;
 
     private float timeElapsed;                          // 计时器
 
@@ -78,12 +79,13 @@ public abstract class HealthManager : MonoBehaviour
     /// <param name="from">哪个玩家要改的（谁打的）</param>
     public void SetHealthAmount(float amount,PlayerManager from = null)
     {
-        if (amount == 0)                // 没变化
+        if (amount == 0 || lastPainFrame == Time.frameCount)        // 每一帧最多只接收一次伤害
             return;
         if (amount < 0)
         {
             isFeelPain = true;
             timeElapsed = feelPainTime;
+            lastPainFrame = Time.frameCount;
         }
         CurrentHealth += amount;
         UpdateSlider();

@@ -10,7 +10,7 @@ namespace Item.Tank
         None, Ready, Charge, Luanch
     }
 
-    public abstract class TankAttack : AttackBase
+    public abstract class TankAttack : AttackManager
     {
         public AudioClip chargingClip;              // 射击力度距离变化声音
         public AudioClip fireClip;                  // 射击时声音

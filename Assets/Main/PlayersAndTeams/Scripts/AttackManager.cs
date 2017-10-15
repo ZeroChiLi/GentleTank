@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class AttackBase : MonoBehaviour 
+public abstract class AttackManager : MonoBehaviour 
 {
     public string shortcutName = "Fire0";                           // 攻击键名称
     public float coolDownTime = 1f;                               // 冷却时间

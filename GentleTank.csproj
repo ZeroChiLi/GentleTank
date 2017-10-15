@@ -217,7 +217,7 @@
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Main\Object Pool\Scripts\ObjectPoolCreate.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\AllPlayerManager.cs" />
-    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\AttackBase.cs" />
+    <Compile Include="Assets\Main\PlayersAndTeams\Scripts\AttackManager.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\HealthManager.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Main\PlayersAndTeams\Scripts\TeamManager.cs" />

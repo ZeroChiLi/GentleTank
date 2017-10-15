@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
     {
         GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
         MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
+        tank.AddComponent(MasterManager.Instance.SelectedTank.head.attackScript.GetClass());
+        tank.GetComponent<TankAttack>().forceSlider = tank.GetComponent<TankManager>().aimSlider;
     }
 
     /// <summary>
