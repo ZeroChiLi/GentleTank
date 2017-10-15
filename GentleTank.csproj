@@ -136,6 +136,7 @@
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
     <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />
     <Compile Include="Assets\Common\Scripts\ColorTool.cs" />
+    <Compile Include="Assets\Common\Scripts\ComponentUtility.cs" />
     <Compile Include="Assets\Common\Scripts\CoolDownButtonManager.cs" />
     <Compile Include="Assets\Common\Scripts\CountDownTimer.cs" />
     <Compile Include="Assets\Common\Scripts\EdgeDetectNormalsAndDepth.cs" />

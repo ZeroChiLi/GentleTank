@@ -83,8 +83,6 @@ public class GameManager : MonoBehaviour
 
     private void CreateMasterTank()
     {
-        if (MasterManager.Instance == null)
-            Debug.Log("Shit");
         GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
         MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
     }

@@ -25,28 +25,10 @@ namespace Item.Ammo
             shellExplosionPool.GetNextObject(transform: transform);
 
             // 获取爆炸范围内所有碰撞体
-            FindValidTargets(Physics.OverlapSphere(transform.position, explosionRadius),ref validTargets);
+            ComponentUtility.GetUniquelyComponentInParent(Physics.OverlapSphere(transform.position, explosionRadius), ref validTargets);
 
             for (int i = 0; i < validTargets.Count; i++)
                 TakeDamage(validTargets[i]);
-        }
-
-        /// <summary>
-        /// 查找有效对象列表
-        /// </summary>
-        /// <param name="colliders">所有碰撞体</param>
-        /// <param name="targets">输出的有效目标列表</param>
-        private void FindValidTargets(Collider[] colliders,ref List<HealthManager> targets)
-        {
-            targets.Clear();
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                targetHealth = colliders[i].GetComponent<HealthManager>();
-                if (!targetHealth)
-                    continue;
-                if (!targets.Contains(targetHealth))
-                    targets.Add(targetHealth);
-            }
         }
 
         /// <summary>
