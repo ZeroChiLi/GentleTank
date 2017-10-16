@@ -6,7 +6,7 @@ namespace GameSystem.AI
     /// 在最小和最大范围内的浮动值
     /// </summary>
     [System.Serializable]
-    public struct MinMaxValue
+    public class MinMaxValue
     {
         public float minLimit;
         public float maxLimit;

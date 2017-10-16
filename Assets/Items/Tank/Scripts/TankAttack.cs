@@ -58,9 +58,12 @@ namespace Item.Tank
         /// </summary>
         protected void ResetValue()
         {
-            forceSlider.minValue = minLaunchForce;
-            forceSlider.maxValue = maxLaunchForce;
-            forceSlider.value = minLaunchForce;
+            if (forceSlider)
+            {
+                forceSlider.minValue = minLaunchForce;
+                forceSlider.maxValue = maxLaunchForce;
+                forceSlider.value = minLaunchForce;
+            }
             chargeRate = (maxLaunchForce - minLaunchForce) / maxChargeTime;
         }
 
