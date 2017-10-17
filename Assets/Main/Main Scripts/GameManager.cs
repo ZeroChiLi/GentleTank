@@ -125,7 +125,8 @@ public class GameManager : MonoBehaviour
         if (myTank == null || myTank.isActiveAndEnabled)
             return;
         minimap.SetMinimapActive(false);
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
+        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
+        //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
         //allCameraRig.ChangeCMFollowToCMMultiTrigger();
     }
 
@@ -164,8 +165,8 @@ public class GameManager : MonoBehaviour
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
         if (myTank != null)
-            allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
-        //allCameraRig.ChangeCMFollowToCMMultiTrigger(false);
+            //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
+            allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.AutoFollow);
         yield return startWait;                         // 延时一段时间再开始
     }
 
@@ -192,7 +193,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RoundEnding()
     {
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
+        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
+        //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
         //allCameraRig.ChangeCMFollowToCMMultiTrigger();
 
         SetTanksControlEnable(false);                   // 锁定玩家控制权

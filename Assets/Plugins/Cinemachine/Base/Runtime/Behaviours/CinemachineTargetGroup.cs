@@ -15,7 +15,7 @@ namespace Cinemachine
     [SaveDuringPlay][ExecuteInEditMode]
     public class CinemachineTargetGroup : MonoBehaviour
     {
-        public bool checkActive;
+        public bool checkActive = true;
         /// <summary>Holds the information that represents a member of the group</summary>
         [DocumentationSorting(19.1f, DocumentationSortingAttribute.Level.UserRef)]
         [Serializable] public struct Target
