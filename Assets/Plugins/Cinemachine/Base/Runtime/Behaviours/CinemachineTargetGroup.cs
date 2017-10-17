@@ -15,6 +15,7 @@ namespace Cinemachine
     [SaveDuringPlay][ExecuteInEditMode]
     public class CinemachineTargetGroup : MonoBehaviour
     {
+        public bool checkActive;
         /// <summary>Holds the information that represents a member of the group</summary>
         [DocumentationSorting(19.1f, DocumentationSortingAttribute.Level.UserRef)]
         [Serializable] public struct Target
@@ -70,7 +71,7 @@ namespace Cinemachine
                 Bounds b = new Bounds();
                 for (int i = 0; i < m_Targets.Length; ++i)
                 {
-                    if (m_Targets[i].target != null)
+                    if (m_Targets[i].target != null && (!checkActive ||  m_Targets[i].target.gameObject.activeInHierarchy))
                     {
                         float d = m_Targets[i].radius * 2;
                         Bounds b2 = new Bounds(m_Targets[i].target.position, new Vector3(d, d, d));
@@ -95,7 +96,7 @@ namespace Cinemachine
             Bounds b = new Bounds();
             for (int i = 0; i < m_Targets.Length; ++i)
             {
-                if (m_Targets[i].target != null)
+                if (m_Targets[i].target != null && (!checkActive ||  m_Targets[i].target.gameObject.activeInHierarchy))
                 {
                     float d = m_Targets[i].radius * 2;
                     Vector4 p = inverseView.MultiplyPoint3x4(m_Targets[i].target.position);
@@ -116,7 +117,7 @@ namespace Cinemachine
             float weight = 0;
             for (int i = 0; i < m_Targets.Length; ++i)
             {
-                if (m_Targets[i].target != null)
+                if (m_Targets[i].target != null && (!checkActive ||  m_Targets[i].target.gameObject.activeInHierarchy))
                 {
                     weight += m_Targets[i].weight;
                     pos += m_Targets[i].target.position * m_Targets[i].weight;
@@ -132,7 +133,7 @@ namespace Cinemachine
             Quaternion r = Quaternion.identity;
             for (int i = 0; i < m_Targets.Length; ++i)
             {
-                if (m_Targets[i].target != null)
+                if (m_Targets[i].target != null && (!checkActive ||  m_Targets[i].target.gameObject.activeInHierarchy))
                 {
                     float w = m_Targets[i].weight;
                     Quaternion q = m_Targets[i].target.rotation;
