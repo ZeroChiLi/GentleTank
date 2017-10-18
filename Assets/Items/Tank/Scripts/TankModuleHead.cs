@@ -9,4 +9,6 @@ public class TankModuleHead : TankModule
     public Vector3 backUp;
 
     public MonoScript attackScript;
+    public AudioClip chargingClip;
+    public AudioClip fireClip;
 }

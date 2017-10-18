@@ -186,6 +186,7 @@
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
     <Compile Include="Assets\Items\ModuleBase\Scripts\HeadAmmoMap.cs" />
     <Compile Include="Assets\Items\ModuleBase\Scripts\ModuleBase.cs" />
+    <Compile Include="Assets\Items\ModuleBase\Scripts\ModulePropety.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAssembleManager.cs" />
