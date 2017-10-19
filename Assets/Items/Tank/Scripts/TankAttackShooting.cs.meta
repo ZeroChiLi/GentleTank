@@ -1,16 +1,15 @@
 fileFormatVersion: 2
 guid: 184d72ea2424d1443bca885930fe844a
-timeCreated: 1497587241
+timeCreated: 1508382246
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - shellPool: {fileID: 11400000, guid: 13c316b03ad02734fbc4c1f51089fafb, type: 2}
-  - shellSpawn: {fileID: 435794, guid: 35f9b00335d1a534d989d0f2a7cef78a, type: 2}
-  - aimSlider: {instanceID: 0}
-  - shootingAudio: {fileID: 8261418, guid: 35f9b00335d1a534d989d0f2a7cef78a, type: 2}
   - chargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
   - fireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
+  - forceSlider: {instanceID: 0}
+  - ammoPool: {instanceID: 0}
+  - shellSpawn: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

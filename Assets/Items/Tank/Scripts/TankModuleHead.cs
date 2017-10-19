@@ -11,4 +11,7 @@ public class TankModuleHead : TankModule
     public MonoScript attackScript;
     public AudioClip chargingClip;
     public AudioClip fireClip;
+
+    [HideInInspector]
+    public ObjectPool ammoPool;
 }

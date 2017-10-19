@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Item.Tank;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankAssemble")]
@@ -46,24 +47,6 @@ public class TankAssembleManager : ScriptableObject
     public bool IsValid()
     {
         return !string.IsNullOrEmpty(tankName) && head && body && leftWheel;
-    }
-
-    /// <summary>
-    /// 创建坦克对象
-    /// </summary>
-    /// <returns></returns>
-    public GameObject CreateTank(Transform parent)
-    {
-        if (!IsValid())
-        {
-            Debug.LogErrorFormat("Cerate Tank Filed. TankName Or Head Or Body Or LeftWheel Should Not Be Null.");
-            return null;
-        }
-        GameObject newTank = new GameObject(tankName);
-        newTank.transform.SetParent(parent);
-        InstantiateModules(newTank.transform);
-        AssembleTank();
-        return newTank;
     }
 
     /// <summary>
@@ -119,6 +102,40 @@ public class TankAssembleManager : ScriptableObject
         totalWeight += bodyForward == null ? 0 : bodyForward.property.weight;
         totalWeight += bodyBack == null ? 0 : bodyBack.property.weight;
         return totalWeight;
+    }
+
+    /// <summary>
+    /// 创建坦克对象
+    /// </summary>
+    /// <returns></returns>
+    public GameObject CreateTank(Transform parent)
+    {
+        if (!IsValid())
+        {
+            Debug.LogErrorFormat("Cerate Tank Filed. TankName Or Head Or Body Or LeftWheel Should Not Be Null.");
+            return null;
+        }
+        GameObject newTank = new GameObject(tankName);
+        newTank.transform.SetParent(parent);
+        InstantiateModules(newTank.transform);
+        AssembleTank();
+        return newTank;
+    }
+
+    public void InitTankComponents(TankManager tank)
+    {
+        if (tank == null)
+            return;
+        tank.tankAttack = tank.gameObject.AddComponent(MasterManager.Instance.SelectedTank.head.attackScript.GetClass()) as TankAttack;
+        tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
+        tank.tankAttack.chargingClip = MasterManager.Instance.SelectedTank.head.chargingClip;
+        tank.tankAttack.fireClip = MasterManager.Instance.SelectedTank.head.fireClip;
+        if (tank.tankAttack.GetType() == typeof(TankAttackShooting))
+        {
+            TankAttackShooting attack = tank.tankAttack as TankAttackShooting;
+            attack.ammoPool = head.ammoPool;
+            attack.ammoSpawn = tank.ammoSpawn;
+        }
     }
 
 }

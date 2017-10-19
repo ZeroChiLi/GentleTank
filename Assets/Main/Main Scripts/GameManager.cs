@@ -85,11 +85,8 @@ public class GameManager : MonoBehaviour
     {
         GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
         MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
-        tank.AddComponent(MasterManager.Instance.SelectedTank.head.attackScript.GetClass());
-        TankAttack attack = tank.GetComponent<TankAttack>();
-        attack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
-        attack.chargingClip = MasterManager.Instance.SelectedTank.head.chargingClip;
-        attack.fireClip = MasterManager.Instance.SelectedTank.head.fireClip;
+        MasterManager.Instance.SelectedTank.InitTankComponents(tank.GetComponent<TankManager>());
+
     }
 
     /// <summary>
