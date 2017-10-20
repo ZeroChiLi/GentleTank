@@ -6,9 +6,7 @@ namespace Item.Tank
 {
     public class TankAttackBoxing : TankAttack
     {
-        public SpringManager springManager;     // 弹簧控制
-        public BoxingAmmo boxingGlove;          // 弹簧拳组件
-        public Collider boxingCollider;         // 拳套
+        public SpringBoxingGloveManager springBoxingGlove;     // 弹簧控制
         public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.4f, 1);    // 发射距离比例,来回对称
         public float launchTotalTime = 0.8f;    // 总共发射来回时间
 
@@ -17,13 +15,13 @@ namespace Item.Tank
         protected new void OnEnable()
         {
             base.OnEnable();
-            springManager.fillAmount = 0;
+            springBoxingGlove.fillAmount = 0;
         }
 
         protected new void OnDisable()
         {
             base.OnDisable();
-            springManager.fillAmount = 0;
+            springBoxingGlove.fillAmount = 0;
         }
 
         /// <summary>
@@ -45,9 +43,9 @@ namespace Item.Tank
         /// <param name="coolDownTime">发射后冷却时间</param>
         private void Launch(float launchForce, float fireDamage, float coolDownTime)
         {
-            springManager.maxDistance = launchForce / 10f;
-            boxingGlove.damage = fireDamage;
-            boxingCollider.enabled = true;
+            springBoxingGlove.maxDistance = launchForce / 10f;
+            springBoxingGlove.ammo.damage = fireDamage;
+            springBoxingGlove.glove.enabled = true;
 
             StartCoroutine(LaunchBoxingGlove());
 
@@ -61,33 +59,33 @@ namespace Item.Tank
         private IEnumerator LaunchBoxingGlove()
         {
             launchElapsed = 0f;
-            boxingGlove.needTurnBack = false;
+            springBoxingGlove.ammo.needTurnBack = false;
             while (launchElapsed < launchTotalTime && launchElapsed >= 0f)
             {
-                if (!boxingGlove.needTurnBack && launchElapsed < launchTotalTime / 2f)
+                if (!springBoxingGlove.ammo.needTurnBack && launchElapsed < launchTotalTime / 2f)
                 {
-                    springManager.fillAmount = launchDistance.Evaluate(launchElapsed);
+                    springBoxingGlove.fillAmount = launchDistance.Evaluate(launchElapsed);
                     launchElapsed += Time.deltaTime;
                 }
                 else
                 {
-                    if (boxingGlove.needTurnBack)
+                    if (springBoxingGlove.ammo.needTurnBack)
                     {
                         launchElapsed -= Time.deltaTime;
-                        springManager.fillAmount = launchDistance.Evaluate(launchElapsed);
+                        springBoxingGlove.fillAmount = launchDistance.Evaluate(launchElapsed);
                     }
                     else
                     {
                         launchElapsed += Time.deltaTime;
-                        springManager.fillAmount = launchDistance.Evaluate(launchTotalTime - launchElapsed);
+                        springBoxingGlove.fillAmount = launchDistance.Evaluate(launchTotalTime - launchElapsed);
                     }
-                    boxingCollider.enabled = false;
+                    springBoxingGlove.glove.enabled = false;
                 }
 
                 yield return null;
             }
-            springManager.fillAmount = 0f;
-            boxingCollider.enabled = false;
+            springBoxingGlove.fillAmount = 0f;
+            springBoxingGlove.glove.enabled = false;
         }
     }
 }
