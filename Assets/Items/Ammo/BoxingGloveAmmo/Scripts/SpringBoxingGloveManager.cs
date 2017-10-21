@@ -31,7 +31,7 @@ public class SpringBoxingGloveManager : MonoBehaviour
     private void UpdateAnchorPosAndSpringScale()
     {
         glove.transform.localPosition = new Vector3(0, 0, currentDistance);
-        spring.localScale = new Vector3(0, 0, scaleFactor * glove.transform.localPosition.z);
+        spring.localScale = new Vector3(1, 1, scaleFactor * glove.transform.localPosition.z + 1);
     }
 
 }
