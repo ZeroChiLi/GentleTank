@@ -7,21 +7,23 @@ namespace Item.Tank
     public class TankAttackBoxing : TankAttack
     {
         public SpringBoxingGloveManager springBoxingGlove;     // 弹簧控制
-        public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.4f, 1);    // 发射距离比例,来回对称
-        public float launchTotalTime = 0.8f;    // 总共发射来回时间
+        public AnimationCurve launchDistance = AnimationCurve.Linear(0, 0, 0.3f, 1);    // 发射距离比例,来回对称
+        public float launchTotalTime = 0.6f;    // 总共发射来回时间
 
         private float launchElapsed;            // 发射后经过的时间
 
         protected new void OnEnable()
         {
             base.OnEnable();
-            springBoxingGlove.fillAmount = 0;
+            if (springBoxingGlove)
+                springBoxingGlove.fillAmount = 0;
         }
 
         protected new void OnDisable()
         {
             base.OnDisable();
-            springBoxingGlove.fillAmount = 0;
+            if (springBoxingGlove)
+                springBoxingGlove.fillAmount = 0;
         }
 
         /// <summary>

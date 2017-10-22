@@ -9,7 +9,7 @@ public class SpringBoxingGloveManager : MonoBehaviour
     public Transform spring;                        // 弹簧
     public float scaleFactor = 200f;                // 弹簧缩放随锚点位置变化的缩放因子
     public float minDistance = 0f;                  // 最小距离
-    public float maxDistance = 5f;                  // 最大距离
+    public float maxDistance = 6f;                  // 最大距离
     [Range(0, 1)]
     public float fillAmount = 0.5f;                 // 距离插值
 

@@ -130,11 +130,17 @@ public class TankAssembleManager : ScriptableObject
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
         tank.tankAttack.chargingClip = MasterManager.Instance.SelectedTank.head.chargingClip;
         tank.tankAttack.fireClip = MasterManager.Instance.SelectedTank.head.fireClip;
-        if (tank.tankAttack.GetType() == typeof(TankAttackShooting))
+        System.Type type = tank.tankAttack.GetType();
+        if (type == typeof(TankAttackShooting))
         {
             TankAttackShooting attack = tank.tankAttack as TankAttackShooting;
             attack.ammoPool = head.ammoPool;
             attack.ammoSpawn = tank.ammoSpawn;
+        }
+        else if (type == typeof(TankAttackBoxing))
+        {
+            TankAttackBoxing attack = tank.tankAttack as TankAttackBoxing;
+            attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
         }
     }
 

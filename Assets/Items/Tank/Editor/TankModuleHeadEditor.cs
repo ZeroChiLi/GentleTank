@@ -23,6 +23,7 @@ public class TankModuleHeadEditor : ModuleEditor
             return;
         if (head.attackScript.GetClass() == typeof(TankAttackShooting))
             head.ammoPool = EditorGUILayout.ObjectField("Ammo Object Pool", head.ammoPool, typeof(ObjectPool), false) as ObjectPool;
+        EditorUtility.SetDirty(target);
     }
 
 }
