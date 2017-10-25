@@ -191,6 +191,7 @@
     <Compile Include="Assets\Items\ModuleBase\Scripts\ModulePropety.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BurnHelper.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\BustedTankMananger.cs" />
+    <Compile Include="Assets\Items\Tank\Scripts\EncapsulateBodyAndWheels.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAssembleManager.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttack.cs" />
     <Compile Include="Assets\Items\Tank\Scripts\TankAttackBoxing.cs" />

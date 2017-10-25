@@ -18,5 +18,10 @@ public static class ComponentUtility
         }
     }
 
+    static public void DestroyIfExist<T>(GameObject target) where T: Object
+    {
+        if (target.GetComponent<T>() != null)
+            Object.Destroy(target.GetComponent<T>());
+    }
 
 }

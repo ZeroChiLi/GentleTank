@@ -142,6 +142,20 @@ public class TankAssembleManager : ScriptableObject
             TankAttackBoxing attack = tank.tankAttack as TankAttackBoxing;
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
         }
+        EncapsulateBodyAndWheel(ref tank.boxCollider);
+    }
+
+    public void EncapsulateBodyAndWheel(ref BoxCollider collider)
+    {
+        Bounds bounds = new Bounds();
+        bounds = bodyObj.GetComponent<MeshRenderer>().bounds;
+        bounds.Encapsulate(leftWheelObj.GetComponent<BoxCollider>().bounds);
+        bounds.Encapsulate(rightWheelObj.GetComponent<BoxCollider>().bounds);
+        collider.center = bounds.center;
+        collider.size = bounds.size;
+        ComponentUtility.DestroyIfExist<BoxCollider>(bodyObj);
+        ComponentUtility.DestroyIfExist<BoxCollider>(leftWheelObj);
+        ComponentUtility.DestroyIfExist<BoxCollider>(rightWheelObj);
     }
 
 }

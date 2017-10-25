@@ -14,10 +14,21 @@ public abstract class ModuleBase : ScriptableObject
         public Vector3 down;
     }
 
+    public Vector3 MinAnchor { get { return new Vector3(anchors.left.x, anchors.down.y, anchors.back.z); } }
+    public Vector3 MaxAnchor { get { return new Vector3(anchors.right.x, anchors.up.y, anchors.forward.z); } }
+
     public string moduleName;
     public GameObject prefab;
     public Sprite preview;
     public ModuleAnchors anchors;
 
     public abstract string GetProperties();
+
+    public Bounds GetBounds()
+    {
+        Bounds bounds = new Bounds();
+        bounds.center = anchors.center;
+        bounds.SetMinMax(MinAnchor,MaxAnchor);
+        return bounds;
+    }
 }
