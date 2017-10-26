@@ -143,6 +143,7 @@ public class TankAssembleManager : ScriptableObject
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
         }
         EncapsulateBodyAndWheel(ref tank.boxCollider);
+        AdjustHeadToBody(tank.boxCollider.bounds);
     }
 
     public void EncapsulateBodyAndWheel(ref BoxCollider collider)
@@ -156,6 +157,16 @@ public class TankAssembleManager : ScriptableObject
         ComponentUtility.DestroyIfExist<BoxCollider>(bodyObj);
         ComponentUtility.DestroyIfExist<BoxCollider>(leftWheelObj);
         ComponentUtility.DestroyIfExist<BoxCollider>(rightWheelObj);
+    }
+
+    public void AdjustHeadToBody(Bounds body)
+    {
+        BoxCollider head = headObj.GetComponent<BoxCollider>();
+        float diff = body.max.y - head.bounds.min.y;
+        if (diff < 0.05f)
+            return;
+        head.center += new Vector3(0, diff / 2f + 0.05f, 0);
+        head.size -= new Vector3(0, diff, 0);
     }
 
 }
