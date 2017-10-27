@@ -59,14 +59,23 @@ namespace Item.Tank
         private void Update()
         {
             EngineAudio();
+        }
 
+        private void FixedUpdate()
+        {
             Move(Input.GetAxis(movementAxisName));
             Turn(Input.GetAxis(turnAxisName));
+
             if (JoystickInput.Instance != null)
             {
                 Move(JoystickInput.Instance.GetAxis().y);
                 Turn(JoystickInput.Instance.GetAxis().x);
             }
+        }
+
+        private void LateUpdate()
+        {
+            FixTransform();
         }
 
         /// <summary>
@@ -124,6 +133,15 @@ namespace Item.Tank
         {
             turnRotation = Quaternion.Euler(0f, turnValue * turnSpeed * Time.deltaTime, 0f);
             tankRigidbody.MoveRotation(tankRigidbody.rotation * turnRotation);
+        }
+
+        /// <summary>
+        /// 固定位置高度，旋转xz值
+        /// </summary>
+        private void FixTransform()
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, 0.05f, transform.localPosition.z);
+            transform.localRotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
         }
     }
 }
