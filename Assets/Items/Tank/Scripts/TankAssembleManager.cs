@@ -136,6 +136,7 @@ public class TankAssembleManager : ScriptableObject
             TankAttackShooting attack = tank.tankAttack as TankAttackShooting;
             attack.ammoPool = head.ammoPool;
             attack.ammoSpawn = tank.ammoSpawn;
+            attack.ammoSpawn.position = headObj.transform.position + head.launchPos;
         }
         else if (type == typeof(TankAttackBoxing))
         {

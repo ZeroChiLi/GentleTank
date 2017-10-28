@@ -65,7 +65,7 @@ namespace Item.Ammo
         private void OnTriggerEnter(Collider other)
         {
             // 如果已经失活了，或者碰到自己，或者标记无视弹药层、就跳过
-            if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponent<PlayerManager>()) || other.gameObject.layer == LayerMask.NameToLayer("IgnoreAmmo"))
+            if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponentInParent<PlayerManager>()) || other.gameObject.layer == LayerMask.NameToLayer("IgnoreAmmo"))
                 return;
             OnCollision(other);
             if (!IsIndestructible && DruabilityLowerThanZero(other))
