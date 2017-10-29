@@ -101,8 +101,9 @@ public class GameManager : MonoBehaviour
         int randomI = 0;
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
-            tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
+            //randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
+            //tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
+            tankList[i].ResetToSpawnPoint(spawnPoints[(i + GameRound.Instance.CurrentRound * spawnPoints.Count / 2) % spawnPoints.Count]);
             spawnIndexList.Remove(randomI);
         }
     }

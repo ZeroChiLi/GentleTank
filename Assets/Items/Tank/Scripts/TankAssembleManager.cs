@@ -122,6 +122,10 @@ public class TankAssembleManager : ScriptableObject
         return newTank;
     }
 
+    /// <summary>
+    /// 初始化坦克组件属性
+    /// </summary>
+    /// <param name="tank">目标坦克</param>
     public void InitTankComponents(TankManager tank)
     {
         if (tank == null)
@@ -142,17 +146,18 @@ public class TankAssembleManager : ScriptableObject
         {
             TankAttackBoxing attack = tank.tankAttack as TankAttackBoxing;
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
-            attack.minLaunchForce = 20f;
-            attack.maxLaunchForce = 60f;
-            attack.maxChargeTime = 0.3f;
             attack.damage = 40f;
             attack.coolDownTime = 0.6f;
-            attack.ResetValue();
+            attack.ResetValue(20f,60f,0.3f);
         }
         EncapsulateBodyAndWheel(ref tank.boxCollider);
         AdjustHeadToBody(tank.boxCollider.bounds);
     }
 
+    /// <summary>
+    /// 包装身体部件和轮子部件，重新计算AABB。删除子BoxCollider
+    /// </summary>
+    /// <param name="collider"></param>
     public void EncapsulateBodyAndWheel(ref BoxCollider collider)
     {
         Bounds bounds = new Bounds();
@@ -166,6 +171,10 @@ public class TankAssembleManager : ScriptableObject
         ComponentUtility.DestroyIfExist<BoxCollider>(rightWheelObj);
     }
 
+    /// <summary>
+    /// 调整头部部件碰撞体高度，避免和身体一直相交。
+    /// </summary>
+    /// <param name="body"></param>
     public void AdjustHeadToBody(Bounds body)
     {
         BoxCollider head = headObj.GetComponent<BoxCollider>();
