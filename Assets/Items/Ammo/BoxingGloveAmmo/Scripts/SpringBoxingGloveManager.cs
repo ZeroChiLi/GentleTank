@@ -19,7 +19,7 @@ public class SpringBoxingGloveManager : MonoBehaviour
     /// <summary>
     /// 更新当前距离，弹簧缩放，锚点位置
     /// </summary>
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         currentDistance = Mathf.Lerp(minDistance, maxDistance, fillAmount);
         UpdateAnchorPosAndSpringScale();

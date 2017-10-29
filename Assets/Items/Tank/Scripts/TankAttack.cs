@@ -56,7 +56,7 @@ namespace Item.Tank
         /// <summary>
         /// 在激活和失活时重置信息
         /// </summary>
-        protected void ResetValue()
+        public void ResetValue()
         {
             if (forceSlider)
             {

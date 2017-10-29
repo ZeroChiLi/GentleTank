@@ -142,6 +142,12 @@ public class TankAssembleManager : ScriptableObject
         {
             TankAttackBoxing attack = tank.tankAttack as TankAttackBoxing;
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
+            attack.minLaunchForce = 20f;
+            attack.maxLaunchForce = 60f;
+            attack.maxChargeTime = 0.3f;
+            attack.damage = 40f;
+            attack.coolDownTime = 0.6f;
+            attack.ResetValue();
         }
         EncapsulateBodyAndWheel(ref tank.boxCollider);
         AdjustHeadToBody(tank.boxCollider.bounds);
