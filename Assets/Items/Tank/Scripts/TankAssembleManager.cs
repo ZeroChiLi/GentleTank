@@ -149,6 +149,7 @@ public class TankAssembleManager : ScriptableObject
             attack.damage = 40f;
             attack.coolDownTime = 0.6f;
             attack.ResetValue(20f,60f,0.3f);
+            attack.launchDistance = new AnimationCurve(new Keyframe(0, 0, 0, 3.5f), new Keyframe(0.3f, 1, 0, 0));
         }
         EncapsulateBodyAndWheel(ref tank.boxCollider);
         AdjustHeadToBody(tank.boxCollider.bounds);

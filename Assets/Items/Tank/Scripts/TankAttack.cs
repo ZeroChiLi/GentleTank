@@ -42,7 +42,7 @@ namespace Item.Tank
         /// </summary>
         protected void OnEnable()
         {
-            ResetValue(minLaunchForce,maxLaunchForce,maxChargeTime);
+            ResetValue(minLaunchForce, maxLaunchForce, maxChargeTime);
         }
 
         /// <summary>
@@ -56,14 +56,15 @@ namespace Item.Tank
         /// <summary>
         /// 在激活和失活时重置信息
         /// </summary>
-        public void ResetValue(float min,float max,float time)
+        public void ResetValue(float min, float max, float time)
         {
             if (forceSlider)
             {
-                forceSlider.minValue = min;
-                forceSlider.maxValue = max;
+                forceSlider.minValue = minLaunchForce = min;
+                forceSlider.maxValue = maxLaunchForce = max;
                 forceSlider.value = min;
             }
+            maxChargeTime = time;
             chargeRate = (max - min) / time;
         }
 
@@ -128,7 +129,7 @@ namespace Item.Tank
             forceSlider.value += chargeRate * Time.deltaTime;
             forceSlider.value = forceSlider.value;
         }
-        
+
         /// <summary>
         /// 攻击
         /// </summary>
