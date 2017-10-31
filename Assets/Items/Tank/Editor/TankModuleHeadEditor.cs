@@ -19,10 +19,10 @@ public class TankModuleHeadEditor : ModuleEditor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        if (head == null || head.attackScript == null)
+        if (head == null || head.attackProperties == null)
             return;
-        if (head.attackScript.GetClass() == typeof(TankAttackShooting))
-            head.ammoPool = EditorGUILayout.ObjectField("Ammo Object Pool", head.ammoPool, typeof(ObjectPool), false) as ObjectPool;
+        if (head.attackProperties.attackScript != null && head.attackProperties.attackScript.GetClass() == typeof(TankAttackShooting))
+            head.attackProperties.ammoPool = EditorGUILayout.ObjectField("Ammo Object Pool", head.attackProperties.ammoPool, typeof(ObjectPool), false) as ObjectPool;
         EditorUtility.SetDirty(target);
     }
 

@@ -130,15 +130,20 @@ public class TankAssembleManager : ScriptableObject
     {
         if (tank == null)
             return;
-        tank.tankAttack = tank.gameObject.AddComponent(MasterManager.Instance.SelectedTank.head.attackScript.GetClass()) as TankAttack;
+        tank.tankAttack = tank.gameObject.AddComponent(MasterManager.Instance.SelectedTank.head.attackProperties.attackScript.GetClass()) as TankAttack;
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
-        tank.tankAttack.chargingClip = MasterManager.Instance.SelectedTank.head.chargingClip;
-        tank.tankAttack.fireClip = MasterManager.Instance.SelectedTank.head.fireClip;
+        TankModuleHead.AttackProperties properties = MasterManager.Instance.SelectedTank.head.attackProperties;
+        tank.tankAttack.chargingClip = properties.chargingClip;
+        tank.tankAttack.fireClip = properties.fireClip;
+        tank.tankAttack.ResetSliderValue(properties.minLaunchForce, properties.maxLaunchForce, properties.maxChargeTime);
+        tank.tankAttack.damage = properties.damage;
+        tank.tankAttack.coolDownTime = properties.coolDownTime;
+        tank.tankAttack.CDTimer.Reset(properties.coolDownTime);
         System.Type type = tank.tankAttack.GetType();
         if (type == typeof(TankAttackShooting))
         {
             TankAttackShooting attack = tank.tankAttack as TankAttackShooting;
-            attack.ammoPool = head.ammoPool;
+            attack.ammoPool = head.attackProperties.ammoPool;
             attack.ammoSpawn = tank.ammoSpawn;
             attack.ammoSpawn.position = headObj.transform.position + head.launchPos;
         }
@@ -146,9 +151,6 @@ public class TankAssembleManager : ScriptableObject
         {
             TankAttackBoxing attack = tank.tankAttack as TankAttackBoxing;
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
-            attack.damage = 40f;
-            attack.coolDownTime = 0.6f;
-            attack.ResetValue(20f,60f,0.3f);
             attack.launchDistance = new AnimationCurve(new Keyframe(0, 0, 0, 3.5f), new Keyframe(0.3f, 1, 0, 0));
         }
         EncapsulateBodyAndWheel(ref tank.boxCollider);

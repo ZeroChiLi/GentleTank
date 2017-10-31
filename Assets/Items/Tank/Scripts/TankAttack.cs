@@ -42,7 +42,7 @@ namespace Item.Tank
         /// </summary>
         protected void OnEnable()
         {
-            ResetValue(minLaunchForce, maxLaunchForce, maxChargeTime);
+            ResetSliderValue(minLaunchForce, maxLaunchForce, maxChargeTime);
         }
 
         /// <summary>
@@ -50,13 +50,13 @@ namespace Item.Tank
         /// </summary>
         protected void OnDisable()
         {
-            ResetValue(minLaunchForce, maxLaunchForce, maxChargeTime);
+            ResetSliderValue(minLaunchForce, maxLaunchForce, maxChargeTime);
         }
 
         /// <summary>
         /// 在激活和失活时重置信息
         /// </summary>
-        public void ResetValue(float min, float max, float time)
+        public void ResetSliderValue(float min, float max, float time)
         {
             if (forceSlider)
             {
