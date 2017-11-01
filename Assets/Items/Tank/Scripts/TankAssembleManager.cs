@@ -130,9 +130,20 @@ public class TankAssembleManager : ScriptableObject
     {
         if (tank == null)
             return;
-        tank.tankAttack = tank.gameObject.AddComponent(MasterManager.Instance.SelectedTank.head.attackProperties.attackScript.GetClass()) as TankAttack;
+        InitTankAttack(tank, head.attackProperties);
+        InitTankHealth(tank, body.healthProperties);
+        InitTankMove(tank, leftWheel.moveProperties);
+        EncapsulateBodyAndWheel(ref tank.boxCollider);
+        AdjustHeadToBody(tank.boxCollider.bounds);
+    }
+
+    /// <summary>
+    /// 初始化坦克攻击组件
+    /// </summary>
+    private void InitTankAttack(TankManager tank, TankModuleHead.AttackProperties properties)
+    {
+        tank.tankAttack = tank.gameObject.AddComponent(properties.attackScript.GetClass()) as TankAttack;
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
-        TankModuleHead.AttackProperties properties = MasterManager.Instance.SelectedTank.head.attackProperties;
         tank.tankAttack.chargingClip = properties.chargingClip;
         tank.tankAttack.fireClip = properties.fireClip;
         tank.tankAttack.ResetSliderValue(properties.minLaunchForce, properties.maxLaunchForce, properties.maxChargeTime);
@@ -153,15 +164,30 @@ public class TankAssembleManager : ScriptableObject
             attack.springBoxingGlove = headObj.GetComponentInChildren<SpringBoxingGloveManager>();
             attack.launchDistance = new AnimationCurve(new Keyframe(0, 0, 0, 3.5f), new Keyframe(0.3f, 1, 0, 0));
         }
-        EncapsulateBodyAndWheel(ref tank.boxCollider);
-        AdjustHeadToBody(tank.boxCollider.bounds);
+    }
+
+    /// <summary>
+    /// 初始化坦克移动组件
+    /// </summary>
+    private void InitTankMove(TankManager tank,TankModuleWheel.MoveProperties properties)
+    {
+        tank.tankMovement.speed = properties.speed;
+        tank.tankMovement.turnSpeed = properties.turnSpeed;
+    }
+
+    /// <summary>
+    /// 初始化坦克生命值组件
+    /// </summary>
+    private void InitTankHealth(TankManager tank, TankModuleBody.HealthProperties properties)
+    {
+        tank.tankHealth.maxHealth = properties.maxHealth;
     }
 
     /// <summary>
     /// 包装身体部件和轮子部件，重新计算AABB。删除子BoxCollider
     /// </summary>
     /// <param name="collider"></param>
-    public void EncapsulateBodyAndWheel(ref BoxCollider collider)
+    private void EncapsulateBodyAndWheel(ref BoxCollider collider)
     {
         Bounds bounds = new Bounds();
         bounds = bodyObj.GetComponent<MeshRenderer>().bounds;
@@ -178,7 +204,7 @@ public class TankAssembleManager : ScriptableObject
     /// 调整头部部件碰撞体高度，避免和身体一直相交。
     /// </summary>
     /// <param name="body"></param>
-    public void AdjustHeadToBody(Bounds body)
+    private void AdjustHeadToBody(Bounds body)
     {
         BoxCollider head = headObj.GetComponent<BoxCollider>();
         float diff = body.max.y - head.bounds.min.y;
