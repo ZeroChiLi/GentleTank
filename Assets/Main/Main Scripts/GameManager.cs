@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetupGame();                                // 配置游戏
-        CreateMasterTank();
+        //CreateMasterTank();
 
         new GameRound(numRoundsToWin);             // 创建一个游戏纪录实例
         GameRound.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
@@ -60,14 +60,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SetupGame()
     {
+        myTank = CreateMasterTank();
         allPlayerManager.SetupInstance();
-        AllPlayerManager.Instance.CreatePlayerGameObjects(new GameObject("Tanks").transform);
-        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+        AllPlayerManager.Instance.CreatePlayerGameObjects(new GameObject("Tanks").transform, myTank);
+        tankList.Add(myTank);
+        myTank.Init(wayPoints);
+        for (int i = 1; i < AllPlayerManager.Instance.Count; i++)
         {
             tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
             tankList[i].Init(wayPoints);
-            if (AllPlayerManager.Instance[i] == AllPlayerManager.Instance.MyPlayer)
-                myTank = tankList[i];
+            //if (AllPlayerManager.Instance[i] == AllPlayerManager.Instance.MyPlayer)
+            //    myTank = tankList[i];
         }
 
         allCameraRig.Init(myTank?myTank.transform : null, AllPlayerManager.Instance.GetAllPlayerTransform());
@@ -81,12 +84,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CreateMasterTank()
+    /// <summary>
+    /// 创建玩家坦克
+    /// </summary>
+    private TankManager CreateMasterTank()
     {
         GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
         MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
-        MasterManager.Instance.SelectedTank.InitTankComponents(tank.GetComponent<TankManager>());
 
+        TankManager manager = tank.GetComponent<TankManager>();
+        MasterManager.Instance.SelectedTank.InitTankComponents(manager);
+
+        MasterData data = MasterManager.Instance.data;
+        manager.Information = new PlayerInformation(0, data.masterName, data.representColor, data.team);
+        return manager;
     }
 
     /// <summary>

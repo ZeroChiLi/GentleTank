@@ -10,6 +10,16 @@ public class PlayerInformation
     public Color representColor;            // 玩家代表颜色
     public TeamManager team;                // 玩家所在的团队，没有则为null
 
+    public PlayerInformation() { }
+
+    public PlayerInformation(int id,string name,Color color,TeamManager team)
+    {
+        this.id = id;
+        this.name = name;
+        this.representColor = color;
+        this.team = team;
+    }
+
     /// <summary>
     /// 创建游戏对象实例，并把该玩家信息作为组件（PlayerManager）添加进去
     /// </summary>
