@@ -15,11 +15,8 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            if (!controller.statePrefs.Contains("SoucePos"))           // 第一次进入决定时，设置初始位置，初始化倒计时
-                controller.statePrefs.AddValue("SoucePos", controller.transform.position);
-            if (!controller.statePrefs.Contains("FrozenActionCD"))
-                controller.statePrefs.AddValue("FrozenActionCD" , new CountDownTimer(checkTime, true));
-
+            controller.statePrefs.AddValueIfNotContains("SoucePos", controller.transform.position);
+            controller.statePrefs.AddValueIfNotContains("FrozenActionCD" , new CountDownTimer(checkTime, true));
 
             // 更新倒计时
             if (!((CountDownTimer)controller.statePrefs["FrozenActionCD"]).IsTimeUp)

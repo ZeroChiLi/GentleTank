@@ -7,7 +7,7 @@ namespace Item.Tank
 {
     public class TankManager : PlayerManager
     {
-        public string colorMaterialName = "TankColour (Instance)";  // 坦克渲染名字
+        public string colorMaterialName = "TankColour";  // 坦克渲染名字
         public MeshRenderer playerIconMesh;                     // 玩家图标材质
         public BoxCollider boxCollider;
         public Slider aimSlider;

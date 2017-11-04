@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -153,6 +151,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\Action.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\AttackAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BackOff.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BroadcastAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\ChaseAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\FrozenAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />

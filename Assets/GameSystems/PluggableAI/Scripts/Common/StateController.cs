@@ -17,7 +17,8 @@ namespace GameSystem.AI
         public ObjectPreferences<object> statePrefs;            // 用于每一次状态保存信息使用时（OnExitState时清除）
         public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
 
-        private PlayerManager playerManager;                    // 玩家信息
+        [HideInInspector]
+        public PlayerManager playerManager;                    // 玩家信息
         private HealthManager healthManager;                    // 玩家血量管理器
         private AttackManager attackManager;                    // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
@@ -26,6 +27,8 @@ namespace GameSystem.AI
 
         private int nextWaypointIndex;                          // 下一个巡逻点
         public Point NextWaypoint { get { return waypoints[nextWaypointIndex]; } }
+
+        public TeamManager Team { get{ return playerManager.Team; } }
 
         /// <summary>
         /// 获取组件

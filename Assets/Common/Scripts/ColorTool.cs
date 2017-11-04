@@ -26,7 +26,7 @@ static public class ColorTool
         }
 
         for (int i = 0; i < meshRenderer.Length; i++)
-            if (materialName == null || materialName == meshRenderer[i].material.name)
+            if (materialName == null || materialName == meshRenderer[i].material.name || materialName+ " (Instance)" == meshRenderer[i].material.name)
                 meshRenderer[i].material.color = color;
         return color;
     }

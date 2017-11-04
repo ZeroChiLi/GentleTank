@@ -48,7 +48,7 @@ public sealed class ObjectPreferences<T>
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public void AddValue(string key, T value)
+    public void AddValueIfNotContains(string key, T value)
     {
         if (!preferences.ContainsKey(key))
             preferences.Add(key, value);
