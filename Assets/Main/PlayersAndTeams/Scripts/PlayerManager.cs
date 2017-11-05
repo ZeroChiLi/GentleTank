@@ -12,10 +12,11 @@ public class PlayerInformation
 
     public PlayerInformation() { }
 
-    public PlayerInformation(int id,string name,Color color,TeamManager team)
+    public PlayerInformation(int id,string name,bool isAI,Color color,TeamManager team)
     {
         this.id = id;
         this.name = name;
+        this.isAI = isAI;
         this.representColor = color;
         this.team = team;
     }

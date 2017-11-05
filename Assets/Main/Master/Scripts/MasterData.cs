@@ -9,6 +9,7 @@ public class MasterData : ScriptableObject
     public TankAssembleManager selectedTank;
     public GameObject standardPerfab;
     public Color representColor;
+    public bool isAI;
     public int level = 1;
     public int money = 100;
     public float weightLimit = 50f;

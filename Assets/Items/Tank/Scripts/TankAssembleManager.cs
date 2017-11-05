@@ -143,6 +143,7 @@ public class TankAssembleManager : ScriptableObject
     private void InitTankAttack(TankManager tank, TankModuleHead.AttackProperties properties)
     {
         tank.tankAttack = tank.gameObject.AddComponent(properties.attackScript.GetClass()) as TankAttack;
+        tank.stateController.attackManager = tank.tankAttack;
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
         tank.tankAttack.chargingClip = properties.chargingClip;
         tank.tankAttack.fireClip = properties.fireClip;

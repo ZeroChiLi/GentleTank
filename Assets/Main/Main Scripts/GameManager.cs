@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
         MasterManager.Instance.SelectedTank.InitTankComponents(manager);
 
         MasterData data = MasterManager.Instance.data;
-        manager.Information = new PlayerInformation(0, data.masterName, data.representColor, data.team);
+        manager.Information = new PlayerInformation(0, data.masterName,data.isAI, data.representColor, data.team);
         return manager;
     }
 
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
-        if (myTank != null)
+        if (myTank != null &&!myTank.IsAI)
             //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
             allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.AutoFollow);
         yield return startWait;                         // 延时一段时间再开始

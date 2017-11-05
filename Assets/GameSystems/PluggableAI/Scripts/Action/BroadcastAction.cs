@@ -23,8 +23,8 @@ namespace GameSystem.AI
             for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             {
                 if (AllPlayerManager.Instance[i] != controller.playerManager
-                    || AllPlayerManager.Instance[i].gameObject.activeInHierarchy
-                    || GameMathf.TwoPosInRange(controller.transform.position, AllPlayerManager.Instance[i].transform.position, radius))
+                    && AllPlayerManager.Instance[i].gameObject.activeInHierarchy
+                    && GameMathf.TwoPosInRange(controller.transform.position, AllPlayerManager.Instance[i].transform.position, radius))
                 {
                     TankManager target = AllPlayerManager.Instance[i] as TankManager;
                     if (target == null)
@@ -43,8 +43,8 @@ namespace GameSystem.AI
                                 return;
                             break;
                     }
+                    Debug.Log(controller.playerManager.PlayerName + " Call " + target.PlayerName + " For Help.");
                     target.stateController.statePrefs.AddValueIfNotContains("BroadcastMessage", messages);
-                    Debug.Log(controller.playerManager.PlayerName+ " Call " + target.PlayerName + " For Help.");
                 }
             }
         }
