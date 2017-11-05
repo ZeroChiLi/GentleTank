@@ -1,5 +1,4 @@
 ﻿using Item.Tank;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameSystem.AI
@@ -25,12 +24,27 @@ namespace GameSystem.AI
             {
                 if (AllPlayerManager.Instance[i] != controller.playerManager
                     || AllPlayerManager.Instance[i].gameObject.activeInHierarchy
-                    || AllPlayerManager.Instance[i].Team == controller.Team
-                    || Vector3.Distance(controller.transform.position, AllPlayerManager.Instance[i].transform.position) > radius)
+                    || GameMathf.TwoPosInRange(controller.transform.position, AllPlayerManager.Instance[i].transform.position, radius))
                 {
                     TankManager target = AllPlayerManager.Instance[i] as TankManager;
-                    if (target)
-                        target.stateController.statePrefs.AddValueIfNotContains("BroadcastMessage", messages);
+                    if (target == null)
+                        return;
+
+                    switch (acceptType)
+                    {
+                        case AcceptType.All:
+                            break;
+                        case AcceptType.Teammates:
+                            if (AllPlayerManager.Instance[i].Team != controller.Team)
+                                return;
+                            break;
+                        case AcceptType.Enemy:
+                            if (AllPlayerManager.Instance[i].Team == controller.Team)
+                                return;
+                            break;
+                    }
+                    target.stateController.statePrefs.AddValueIfNotContains("BroadcastMessage", messages);
+                    Debug.Log(controller.playerManager.PlayerName+ " Call " + target.PlayerName + " For Help.");
                 }
             }
         }

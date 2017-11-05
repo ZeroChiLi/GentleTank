@@ -152,6 +152,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\AttackAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BackOff.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BroadcastAction.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\BroadcastIfHurtAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\ChaseAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\FrozenAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolOrderlyAction.cs" />
