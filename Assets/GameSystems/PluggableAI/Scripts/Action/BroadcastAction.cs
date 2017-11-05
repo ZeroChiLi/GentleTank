@@ -1,34 +1,37 @@
-﻿using GameSystem.AI;
-using Item.Tank;
+﻿using Item.Tank;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BroadcastAction : Action
+namespace GameSystem.AI
 {
-    public enum AcceptType { All, Teammates, Enemy }
-
-    public float radius = 30f;
-    public AcceptType acceptType;
-    [Range(0.1f, 10f)]
-    public float period = 3f;
-    string messages;
-
-    public override void Act(StateController controller)
+    [CreateAssetMenu(menuName = "PluggableAI/Actions/Broadcast")]
+    public class BroadcastAction : Action
     {
-        controller.statePrefs.AddValueIfNotContains("BroadcastActionCD", new CountDownTimer(period, true));
+        public enum AcceptType { All, Teammates, Enemy }
 
-        if (!((CountDownTimer)controller.statePrefs["BroadcastActionCD"]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
-            return;
-        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+        public float radius = 30f;
+        public AcceptType acceptType;
+        [Range(0.1f, 10f)]
+        public float period = 3f;
+        public string messages;
+
+        public override void Act(StateController controller)
         {
-            if (AllPlayerManager.Instance[i] != controller.playerManager
-                || AllPlayerManager.Instance[i].gameObject.activeInHierarchy
-                || AllPlayerManager.Instance[i].Team == controller.Team
-                || Vector3.Distance(controller.transform.position, AllPlayerManager.Instance[i].transform.position) > radius)
+            controller.statePrefs.AddValueIfNotContains("BroadcastActionCD", new CountDownTimer(period, true));
+
+            if (!((CountDownTimer)controller.statePrefs["BroadcastActionCD"]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
+                return;
+            for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             {
-                TankManager target = AllPlayerManager.Instance[i] as TankManager;
-                if (target)
-                    target.stateController.statePrefs.AddValueIfNotContains("ReceiveBroadcast", messages);
+                if (AllPlayerManager.Instance[i] != controller.playerManager
+                    || AllPlayerManager.Instance[i].gameObject.activeInHierarchy
+                    || AllPlayerManager.Instance[i].Team == controller.Team
+                    || Vector3.Distance(controller.transform.position, AllPlayerManager.Instance[i].transform.position) > radius)
+                {
+                    TankManager target = AllPlayerManager.Instance[i] as TankManager;
+                    if (target)
+                        target.stateController.statePrefs.AddValueIfNotContains("BroadcastMessage", messages);
+                }
             }
         }
     }

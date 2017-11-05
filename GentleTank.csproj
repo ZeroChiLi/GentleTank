@@ -165,6 +165,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\Decision.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\DelayDecision.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\HurtDecision.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\ListenDecision.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\LookDecision.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\ScanDecision.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Decision\StopChaseDecision.cs" />
