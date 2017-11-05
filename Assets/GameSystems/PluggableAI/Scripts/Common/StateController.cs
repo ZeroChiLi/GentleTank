@@ -18,11 +18,11 @@ namespace GameSystem.AI
         public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
 
         [HideInInspector]
-        public PlayerManager playerManager;                    // 玩家信息
+        public PlayerManager playerManager;                     // 玩家信息
         [HideInInspector]
-        public HealthManager healthManager;                    // 玩家血量管理器
+        public HealthManager healthManager;                     // 玩家血量管理器
         [HideInInspector]
-        public AttackManager attackManager;                    // 玩家攻击管理器
+        public AttackManager attackManager;                     // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标

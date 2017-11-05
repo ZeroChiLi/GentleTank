@@ -7,12 +7,13 @@ namespace Item.Tank
 {
     public class TankManager : PlayerManager
     {
-        public string colorMaterialName = "TankColour";  // 坦克渲染名字
+        public string colorMaterialName = "TankColour";         // 坦克渲染名字
         public MeshRenderer playerIconMesh;                     // 玩家图标材质
-        public BoxCollider boxCollider;
-        public Slider aimSlider;
-        public Transform ammoSpawn;
+        public BoxCollider boxCollider;                         // 碰撞体
+        public Slider aimSlider;                                // 瞄准滑动条
+        public Transform ammoSpawn;                             // 子弹发射位置
         public Text playerNameText;                             // 玩家名字UI
+        public SignImageManager signImage;                      // 符号图标
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
