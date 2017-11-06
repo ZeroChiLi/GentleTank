@@ -173,6 +173,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Common\Editor\SpriteProcessor.cs" />
     <Compile Include="Assets\Environment\Editor\MoveSceneViewCamera.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Editor\AIStatsEditor.cs" />
     <Compile Include="Assets\Items\ModuleBase\Editor\ModuleEditor.cs" />
