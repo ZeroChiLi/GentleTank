@@ -6,7 +6,7 @@ namespace Item.Tank
     public class TankAttackShooting : TankAttack
     {
         public ObjectPool ammoPool;                 // 弹药池
-        public Transform ammoSpawn;                // 发射子弹的位置
+        public Point ammoSpawnPoint;                // 发射子弹的位置
 
         private GameObject ammo;                    // 临时弹药
 
@@ -30,9 +30,9 @@ namespace Item.Tank
         private void Launch(float launchForce, float fireDamage, float coolDownTime)
         {
             //获取炮弹，并发射
-            ammo = ammoPool.GetNextObject(false,ammoSpawn);
+            ammo = ammoPool.GetNextObject(false,new Point(transform.TransformPoint(ammoSpawnPoint.position), transform.rotation * ammoSpawnPoint.rotation ));
             ammo.GetComponent<AmmoBase>().Init(playerManager,fireDamage);
-            ammo.GetComponent<Rigidbody>().velocity = launchForce * ammoSpawn.forward;
+            ammo.GetComponent<Rigidbody>().velocity = launchForce * transform.forward;
             ammo.SetActive(true);
             cdTimer.Reset(coolDownTime);
         }

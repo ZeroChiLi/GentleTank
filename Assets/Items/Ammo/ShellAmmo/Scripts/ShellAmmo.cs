@@ -22,7 +22,7 @@ namespace Item.Ammo
         protected override void OnCollision(Collider other)
         {
             // 从爆炸池中获取对象，并设置位置，显示之
-            shellExplosionPool.GetNextObject(transform: transform);
+            shellExplosionPool.GetNextObject(true,transform);
 
             // 获取爆炸范围内所有碰撞体
             ComponentUtility.GetUniquelyComponentInParent(Physics.OverlapSphere(transform.position, explosionRadius), ref validTargets);

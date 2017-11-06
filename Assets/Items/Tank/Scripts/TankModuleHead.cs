@@ -21,9 +21,9 @@ public class TankModuleHead : TankModule
         public ObjectPool ammoPool;
     }
 
-    public Vector3 launchPos;
     public Vector3 forwardUp;
     public Vector3 backUp;
+    public Point ammoSpawnPoint;
 
     public AttackProperties attackProperties;
 }

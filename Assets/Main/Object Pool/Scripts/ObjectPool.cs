@@ -59,7 +59,15 @@ public class ObjectPool : ScriptableObject
     /// 获取下一个可用对象。
     /// </summary>
     /// <returns>返回有可用对象</returns>
-    public GameObject GetNextObject(bool active = true, Transform transform = null)
+    public GameObject GetNextObject(bool active, Transform transform)
+    {
+        return GetNextObject(active,new Point(transform.position,transform.rotation));
+    }
+
+    /// <summary>
+    /// 获取下一个可用对象。
+    /// </summary>
+    public GameObject GetNextObject(bool active = true, Point point = null)
     {
         for (int i = 0; i < objectPool.Count; i++)
         {
@@ -67,27 +75,27 @@ public class ObjectPool : ScriptableObject
             if (!objectPool[index].activeInHierarchy)
             {
                 currentIndex = index;
-                return SetupObject(objectPool[index], active, transform);
+                return SetupObject(objectPool[index], active, point);
             }
         }
         if (autoIncrease)
-            return SetupObject(AddOneMoreObject(), active, transform);
+            return SetupObject(AddOneMoreObject(), active, point);
         return null;
     }
+
 
     /// <summary>
     /// 获取下一个可用对象同时激活，以及设置位置，并返回该对象
     /// </summary>
-    /// <param name="transform">位置</param>
+    /// <param name="point">位置</param>
     /// <returns>放回这个对象</returns>
-    private GameObject SetupObject(GameObject obj, bool active, Transform transform)
+    private GameObject SetupObject(GameObject obj, bool active, Point point)
     {
         obj.SetActive(active);
-        if (transform != null)
+        if (point != null)
         {
-            obj.transform.position = transform.position;
-            obj.transform.rotation = transform.rotation;
-            obj.transform.localScale = transform.localScale;
+            obj.transform.position = point.position;
+            obj.transform.rotation = point.rotation;
         }
         return obj;
     }
