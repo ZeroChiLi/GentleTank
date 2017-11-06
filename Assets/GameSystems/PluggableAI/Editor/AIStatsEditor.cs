@@ -28,6 +28,7 @@ namespace GameSystem.AI
         {
             NavSetting();
             AttackSetting();
+            EditorUtility.SetDirty(this);
         }
 
         /// <summary>

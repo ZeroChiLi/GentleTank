@@ -20,7 +20,8 @@ public class SignImageManager : MonoBehaviour
     /// </summary>
     /// <param name="type">符号类型</param>
     /// <param name="time">持续时间</param>
-    public void ShowForSecond(SignType type,float time)
+    /// <param name="color">色彩颜色</param>
+    public void ShowForSecond(SignType type,float time,Color color)
     {
         switch (type)
         {
@@ -31,6 +32,7 @@ public class SignImageManager : MonoBehaviour
                 image.sprite = questionSprite;
                 break;
         }
+        image.color = color;
         image.gameObject.SetActive(true);
         StartCoroutine(WaitToInactive(time));
     }

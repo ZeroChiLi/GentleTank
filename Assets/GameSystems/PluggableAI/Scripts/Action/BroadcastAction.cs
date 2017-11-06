@@ -20,7 +20,7 @@ namespace GameSystem.AI
 
             if (!((CountDownTimer)controller.statePrefs["BroadcastActionCD"]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
                 return;
-            (controller.playerManager as TankManager).signImage.ShowForSecond(SignImageManager.SignType.Exclamation,2f);
+            (controller.playerManager as TankManager).signImage.ShowForSecond(SignImageManager.SignType.Exclamation,2f, controller.playerManager.RepresentColor);
             for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             {
                 if (AllPlayerManager.Instance[i] != controller.playerManager

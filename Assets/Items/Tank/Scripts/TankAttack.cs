@@ -22,6 +22,7 @@ namespace Item.Tank
         public bool usingInputButton = true;        // 是否使用标准输入
 
         public float ChargeRate { get { return chargeRate; } }
+        public float ForceSliderLength { get { return forceSlider.maxValue - forceSlider.minValue; } }
 
         protected PlayerManager playerManager;         // 玩家信息
         protected AudioSource attackAudio;             // 当前射击音效
