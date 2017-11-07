@@ -15,19 +15,19 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            controller.statePrefs.AddValueIfNotContains("SoucePos", controller.transform.position);
-            controller.statePrefs.AddValueIfNotContains("FrozenActionCD" , new CountDownTimer(checkTime, true));
+            controller.statePrefs.AddIfNotContains(CommonCode.SoucePos, controller.transform.position);
+            controller.statePrefs.AddIfNotContains(CommonCode.FrozenActionCD , new CountDownTimer(checkTime, true));
 
             // 更新倒计时
-            if (!((CountDownTimer)controller.statePrefs["FrozenActionCD"]).IsTimeUp)
+            if (!((CountDownTimer)controller.statePrefs[CommonCode.FrozenActionCD]).IsTimeUp)
                 return;
 
             // 判断如果过了检测时间后，当前位置和之前位置的距离是否小于限定距离
 
-            if (GameMathf.TwoPosInRange((Vector3)controller.statePrefs["SoucePos"],controller.transform.position,maxRadius))
+            if (GameMathf.TwoPosInRange((Vector3)controller.statePrefs[CommonCode.SoucePos],controller.transform.position,maxRadius))
                 controller.UpdateNextWayPoint(true);
 
-            controller.statePrefs["SoucePos"] = controller.transform.position;
+            controller.statePrefs[CommonCode.SoucePos] = controller.transform.position;
         }
     }
 }

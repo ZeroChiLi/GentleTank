@@ -13,14 +13,14 @@ namespace GameSystem.AI
 
         public override bool Decide(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseEnemy"))
+            if (!controller.instancePrefs.Contains(CommonCode.ChaseEnemy))
             {
                 controller.UpdateNextWayPoint(true);
                 return true;
             }
-            if (!GameMathf.TwoPosInRange(controller.transform.position, ((Transform)controller.instancePrefs["ChaseEnemy"]).position, distance))
+            if (!GameMathf.TwoPosInRange(controller.transform.position, ((Transform)controller.instancePrefs[CommonCode.ChaseEnemy]).position, distance))
             {
-                controller.instancePrefs.Remove("ChaseEnemy");
+                controller.instancePrefs.Remove(CommonCode.ChaseEnemy);
                 controller.UpdateNextWayPoint(true);
                 return true;
             }

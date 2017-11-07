@@ -16,9 +16,9 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            controller.statePrefs.AddValueIfNotContains("BroadcastActionCD", new CountDownTimer(period, true));
+            controller.statePrefs.AddIfNotContains(CommonCode.BroadcastActionCD, new CountDownTimer(period, true));
 
-            if (!((CountDownTimer)controller.statePrefs["BroadcastActionCD"]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
+            if (!((CountDownTimer)controller.statePrefs[CommonCode.BroadcastActionCD]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
                 return;
             (controller.playerManager as TankManager).signImage.ShowForSecond(SignImageManager.SignType.Exclamation,2f, controller.playerManager.RepresentColor);
             for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
@@ -45,7 +45,7 @@ namespace GameSystem.AI
                             break;
                     }
                     Debug.Log(controller.playerManager.PlayerName + " Call " + target.PlayerName + " For Help.");
-                    target.stateController.statePrefs.AddValueIfNotContains("BroadcastMessage", messages);
+                    target.stateController.statePrefs.AddIfNotContains(CommonCode.BroadcastMessage, messages);
                 }
             }
         }

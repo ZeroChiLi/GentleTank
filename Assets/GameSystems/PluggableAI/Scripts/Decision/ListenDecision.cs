@@ -9,14 +9,14 @@ namespace GameSystem.AI
 
         public override bool Decide(StateController controller)
         {
-            if (controller.statePrefs.Contains("BroadcastMessage")/* && controller.statePrefs["BroadcastMessage"] as string == message*/)
+            if (controller.statePrefs.Contains(CommonCode.BroadcastMessage)/* && controller.statePrefs[CommonCode.BroadcastMessage] as string == message*/)
             {
-                Debug.Log(controller.playerManager.PlayerName + " Get Someone Call " + controller.statePrefs["BroadcastMessage"] as string);
+                Debug.Log(controller.playerManager.PlayerName + " Get Someone Call " + controller.statePrefs[CommonCode.BroadcastMessage] as string);
                 return true;
             }
             return false;
-            //return (controller.statePrefs.Contains("BroadcastMessage") 
-            //    && controller.statePrefs["BroadcastMessage"] as string == message);
+            //return (controller.statePrefs.Contains(CommonCode.BroadcastMessage) 
+            //    && controller.statePrefs[CommonCode.BroadcastMessage] as string == message);
         }
     }
 }

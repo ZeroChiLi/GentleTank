@@ -13,10 +13,11 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            // 直接返回：没有目标、正在计算路程、眼前没有捕获到敌人
-            if (!controller.instancePrefs.Contains("ChaseEnemy") || controller.navMeshAgent.pathPending || (bool)controller.statePrefs["CatchEnemy"] == false)
-                return;
-            if (GameMathf.TwoPosInRange(((Transform)controller.instancePrefs["ChaseEnemy"]).position, controller.transform.position, controller.navMeshAgent.stoppingDistance - tolerance))
+            // 有目标、没有正在计算路程、眼前捕获到敌人（避免拐角处两个卡死）、两者距离在停留范围内
+            if (controller.instancePrefs.Contains(CommonCode.ChaseEnemy) &&
+                !controller.navMeshAgent.pathPending &&
+                (bool)controller.statePrefs[CommonCode.CatchEnemy] == true &&
+                GameMathf.TwoPosInRange(((Transform)controller.instancePrefs[CommonCode.ChaseEnemy]).position, controller.transform.position, controller.navMeshAgent.stoppingDistance - tolerance))
                 controller.rigidbodySelf.position += -1 * controller.transform.forward.normalized * controller.navMeshAgent.speed * Time.deltaTime;
         }
     }

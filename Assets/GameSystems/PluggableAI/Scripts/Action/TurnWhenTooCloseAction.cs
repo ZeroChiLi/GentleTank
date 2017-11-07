@@ -13,11 +13,11 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            if (!controller.instancePrefs.Contains("ChaseEnemy") || controller.navMeshAgent.pathPending)
+            if (!controller.instancePrefs.Contains(CommonCode.ChaseEnemy) || controller.navMeshAgent.pathPending)
                 return;
             if (controller.navMeshAgent.remainingDistance < controller.navMeshAgent.stoppingDistance)
             {
-                Vector3 direction = ((Transform)controller.instancePrefs["ChaseEnemy"]).position - controller.transform.position;
+                Vector3 direction = ((Transform)controller.instancePrefs[CommonCode.ChaseEnemy]).position - controller.transform.position;
                 direction.y = 0;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 //if (targetRotation.AlmostEquals(controller.transform.rotation,tolerance))

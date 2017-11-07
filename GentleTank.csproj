@@ -144,8 +144,8 @@
     <Compile Include="Assets\Common\Scripts\FaceToCamera.cs" />
     <Compile Include="Assets\Common\Scripts\GameMathf.cs" />
     <Compile Include="Assets\Common\Scripts\InactiveWithGameState.cs" />
-    <Compile Include="Assets\Common\Scripts\ObjectPreferences.cs" />
     <Compile Include="Assets\Common\Scripts\PostEffectsBase.cs" />
+    <Compile Include="Assets\Common\Scripts\SafeDictionary.cs" />
     <Compile Include="Assets\Common\Scripts\UIDirectionControl.cs" />
     <Compile Include="Assets\Common\Scripts\WorldToScreenPos.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\Action.cs" />
@@ -159,6 +159,7 @@
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\PatrolRandomlyAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Action\TurnWhenTooCloseAction.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\AIState.cs" />
+    <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\CommonCode.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\FindTarget.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\MinMaxValue.cs" />
     <Compile Include="Assets\GameSystems\PluggableAI\Scripts\Common\StateController.cs" />

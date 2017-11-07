@@ -14,8 +14,8 @@ namespace GameSystem.AI
         public NavMeshAgent navMeshAgent;                       // 导航组件
         public Points waypoints;
 
-        public ObjectPreferences<object> statePrefs;            // 用于每一次状态保存信息使用时（OnExitState时清除）
-        public ObjectPreferences<object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
+        public SafeDictionary<CommonCode, object> statePrefs;           // 用于每一次状态保存信息使用时（OnExitState时清除）
+        public SafeDictionary<CommonCode, object> instancePrefs;        // 用于整个实例保存信息用（如ChaseEnemy）
 
         [HideInInspector]
         public PlayerManager playerManager;                     // 玩家信息
@@ -43,8 +43,8 @@ namespace GameSystem.AI
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
-            statePrefs = new ObjectPreferences<object>();
-            instancePrefs = new ObjectPreferences<object>();
+            statePrefs = new SafeDictionary<CommonCode, object>();
+            instancePrefs = new SafeDictionary<CommonCode, object>();
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace GameSystem.AI
                 target = FindTarget.FindEnemy(out hit, transform, playerManager, anger, radius, debugColor);
             if (target != null)
             {
-                instancePrefs.AddOrModifyValue("ChaseEnemy", target);
+                instancePrefs.AddOrModifyValue(CommonCode.ChaseEnemy, target);
                 return true;
             }
             return false;
