@@ -8,7 +8,7 @@ namespace GameSystem.AI
         public State currentState;                              // 当前状态
         public State remainState;                               // 保持当前状态
         public AIState defaultStats;                            // 默认状态信息
-        public Transform eyes;                                  // 眼睛：拿来观察状态变化
+        public Point eyesPoint;                                 // 眼睛：拿来观察状态变化
         public Rigidbody rigidbodySelf;                         // 自己的刚体
         public Collider colliderSelf;                           // 自己的Collider
         public NavMeshAgent navMeshAgent;                       // 导航组件
@@ -172,9 +172,9 @@ namespace GameSystem.AI
         public bool FindEnemy(Quaternion anger, float radius, Color debugColor, bool isFromEyes = true)
         {
             if (isFromEyes)
-                target = FindTarget.FindEnemy(out hit, eyes, playerManager, anger, radius, debugColor);
+                target = FindTarget.FindEnemy(out hit, eyesPoint.GetWorldPosition(transform),eyesPoint.GetWorldForward(transform), playerManager, anger, radius, debugColor);
             else
-                target = FindTarget.FindEnemy(out hit, transform, playerManager, anger, radius, debugColor);
+                target = FindTarget.FindEnemy(out hit, transform.position,transform.forward, playerManager, anger, radius, debugColor);
             if (target != null)
             {
                 instancePrefs.AddOrModifyValue(CommonCode.ChaseEnemy, target);

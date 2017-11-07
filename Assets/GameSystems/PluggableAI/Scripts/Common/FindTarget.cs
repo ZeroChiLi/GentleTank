@@ -12,16 +12,17 @@ namespace GameSystem.AI
         /// </summary>
         /// <param name="hit">射线捕获</param>
         /// <param name="source">检测源</param>
+        /// <param name="direction">检测方向</param>
         /// <param name="player">检测者</param>
         /// <param name="controller">检测者</param>
         /// <param name="angle">检测角度（正前方为0，顺时针为正）</param>
         /// <param name="radius">检测半径</param>
         /// <param name="debugColor">调试颜色</param>
         /// <returns>返回目标的Transform</returns>
-        static public Transform FindEnemy(out RaycastHit hit, Transform source, PlayerManager player, Quaternion angle, float radius, Color debugColor)
+        static public Transform FindEnemy(out RaycastHit hit, Vector3 source,Vector3 direction, PlayerManager player, Quaternion angle, float radius, Color debugColor)
         {
-            DebugDarwRay(source, angle, radius, debugColor);
-            if (Physics.Raycast(source.position, angle * source.forward, out hit, radius) && HitEnemy(hit, player))
+            DebugDarwRay(source, direction, angle, radius, debugColor);
+            if (Physics.Raycast(source, angle * direction, out hit, radius) && HitEnemy(hit, player))
                 return hit.transform;
             return null;
         }
@@ -29,13 +30,13 @@ namespace GameSystem.AI
         /// <summary>
         /// 调试绘制射线
         /// </summary>
-        /// <param name="src">源</param>
-        /// <param name="angle">角度</param>
+        /// <param name="source">源</param>
+        /// <param name="direction">检测方向</param>
         /// <param name="radius">半径</param>
         /// <param name="color">颜色</param>
-        static public void DebugDarwRay(Transform src, Quaternion angle, float radius, Color color)
+        static public void DebugDarwRay(Vector3 source, Vector3 direction, Quaternion angle, float radius, Color color)
         {
-            Debug.DrawRay(src.position, angle * src.forward * radius, color);
+            Debug.DrawRay(source, angle * direction * radius, color);
         }
 
         /// <summary>
