@@ -54,6 +54,7 @@ namespace Item.Ammo
         /// </summary>
         protected void OnDisable()
         {
+            gameObject.SetActive(false);
             if (ammoRb != null)
                 ammoRb.Sleep();
         }
