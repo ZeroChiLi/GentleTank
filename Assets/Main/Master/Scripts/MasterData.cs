@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using GameSystem.AI;
 
 [CreateAssetMenu(menuName = "MasterData")]
 public class MasterData : ScriptableObject
@@ -10,6 +11,7 @@ public class MasterData : ScriptableObject
     public GameObject standardPerfab;
     public Color representColor;
     public bool isAI;
+    public AIState aiState;
     public int level = 1;
     public int money = 100;
     public float weightLimit = 50f;

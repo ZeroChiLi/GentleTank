@@ -9,7 +9,6 @@ public class WorldToScreenPos : MonoBehaviour
     {
         if (Camera.current == null)
             return;
-        transform.position = Camera.current.WorldToScreenPoint(target.transform.position);
-        transform.position += offset;
+        transform.position = Camera.current.WorldToScreenPoint(target.transform.position) + offset;
     }
 }

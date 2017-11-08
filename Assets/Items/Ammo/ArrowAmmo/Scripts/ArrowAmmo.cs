@@ -11,6 +11,22 @@ namespace Item.Ammo
         private HealthManager targetHealth;                 // 目标血量
         private Transform preParent;
 
+        private new void OnEnable()
+        {
+            base.OnEnable();
+            if (preParent != null)
+            {
+                transform.SetParent(preParent);
+                preParent = null;
+            }
+        }
+
+        private new void OnDisable()
+        {
+            base.OnDisable();
+            gameObject.SetActive(false);
+        }
+
         protected override void OnCollision(Collider other)
         {
             arrowHitPool.GetNextObject(true, transform);

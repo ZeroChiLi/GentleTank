@@ -97,6 +97,8 @@ public class GameManager : MonoBehaviour
 
         MasterData data = MasterManager.Instance.data;
         manager.Information = new PlayerInformation(0, data.masterName,data.isAI, data.representColor, data.team);
+        manager.stateController.defaultStats = data.aiState;
+
         return manager;
     }
 
