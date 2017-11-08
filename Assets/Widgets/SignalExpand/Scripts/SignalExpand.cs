@@ -10,18 +10,23 @@ public class SignalExpand : MonoBehaviour
     public AnimationCurve changeCurve = new AnimationCurve(new Keyframe(0, 0, 0, 2f), new Keyframe(1f, 1, 0, 0));
 
     private CountDownTimer timer;
-
     public CountDownTimer Timer
     {
         get { return timer = timer == null ? new CountDownTimer(changeTime, false, false) : timer; }
         set { timer = value; }
     }
 
+    /// <summary>
+    /// 开始信号显示
+    /// </summary>
     public void Play()
     {
         Play(startScale, endScale, changeTime);
     }
 
+    /// <summary>
+    /// 开始信号显示
+    /// </summary>
     public void Play(Vector3 startScale, Vector3 endScale, float time)
     {
         this.startScale = startScale;
@@ -32,6 +37,13 @@ public class SignalExpand : MonoBehaviour
         StartCoroutine(PlaySignalExpand());
     }
 
+    /// <summary>
+    /// 开始信号显示
+    /// </summary>
+    /// <param name="startScale">起始缩放</param>
+    /// <param name="endScale">结束时缩放</param>
+    /// <param name="time">显示时间</param>
+    /// <param name="color">显示颜色</param>
     public void Play(Vector3 startScale, Vector3 endScale, float time, Color color)
     {
         Play(startScale, endScale, time);

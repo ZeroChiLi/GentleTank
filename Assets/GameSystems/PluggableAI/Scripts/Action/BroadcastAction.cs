@@ -22,7 +22,7 @@ namespace GameSystem.AI
                 return;
             TankManager tank = controller.playerManager as TankManager;
             tank.signImage.ShowForSecond(SignImageManager.SignType.Exclamation,2f, controller.playerManager.RepresentColor);
-            tank.PlaySignalExpand(radius, period);
+            tank.PlaySignalExpand(radius * 2f, period);
             for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             {
                 if (AllPlayerManager.Instance[i] != controller.playerManager
@@ -31,22 +31,20 @@ namespace GameSystem.AI
                 {
                     TankManager target = AllPlayerManager.Instance[i] as TankManager;
                     if (target == null)
-                        return;
-
+                        continue;
                     switch (acceptType)
                     {
                         case AcceptType.All:
                             break;
                         case AcceptType.Teammates:
                             if (AllPlayerManager.Instance[i].Team != controller.Team)
-                                return;
+                                continue;
                             break;
                         case AcceptType.Enemy:
                             if (AllPlayerManager.Instance[i].Team == controller.Team)
-                                return;
+                                continue;
                             break;
                     }
-                    Debug.Log(controller.playerManager.PlayerName + " Call " + target.PlayerName + " For Help.");
                     target.stateController.statePrefs.AddIfNotContains(CommonCode.BroadcastMessage, messages);
                 }
             }

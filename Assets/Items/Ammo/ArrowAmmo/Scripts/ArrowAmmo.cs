@@ -14,11 +14,11 @@ namespace Item.Ammo
         private new void OnEnable()
         {
             base.OnEnable();
-            //if (preParent != null)
-            //{
-            //    transform.SetParent(preParent);
-            //    preParent = null;
-            //}
+            if (preParent != null)
+            {
+                transform.SetParent(preParent);
+                preParent = null;
+            }
         }
 
         private new void OnDisable()
