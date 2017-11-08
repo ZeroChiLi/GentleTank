@@ -14,11 +14,11 @@ namespace Item.Ammo
         private new void OnEnable()
         {
             base.OnEnable();
-            if (preParent != null)
-            {
-                transform.SetParent(preParent);
-                preParent = null;
-            }
+            //if (preParent != null)
+            //{
+            //    transform.SetParent(preParent);
+            //    preParent = null;
+            //}
         }
 
         private new void OnDisable()
@@ -63,14 +63,14 @@ namespace Item.Ammo
 
             yield return new WaitForSeconds(inactiveDelay);
 
-            ammoRb.isKinematic = false;
-            ammoCollider.enabled = true;
             if (preParent != null)
             {
                 transform.SetParent(preParent);
                 preParent = null;
             }
             base.OnCrashed(other);
+            ammoRb.isKinematic = false;
+            ammoCollider.enabled = true;
         }
 
     }
