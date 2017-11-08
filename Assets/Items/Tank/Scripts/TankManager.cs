@@ -13,6 +13,7 @@ namespace Item.Tank
         public Slider aimSlider;                                // 瞄准滑动条
         public Text playerNameText;                             // 玩家名字UI
         public SignImageManager signImage;                      // 符号图标
+        public ObjectPool signalExpandPool;                     // 信号扩展对象池
         [HideInInspector]
         public TankMovement tankMovement;                       // 移动
         [HideInInspector]
@@ -119,6 +120,15 @@ namespace Item.Tank
             //先设置False，因为如果获胜了的玩家本身就是true，重置就会调用OnEnable函数。
             gameObject.SetActive(false);
             gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// 显示信号扩展
+        /// </summary>
+        public void PlaySignalExpand(float radius,float time)
+        {
+            SignalExpand signal = signalExpandPool.GetNextObject(true, transform).GetComponent<SignalExpand>();
+            signal.Play(Vector3.one, Vector3.one * radius, time,Team == null? Color.white : Team.TeamColor);
         }
     }
 }
