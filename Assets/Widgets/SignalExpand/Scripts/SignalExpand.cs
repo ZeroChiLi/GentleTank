@@ -16,6 +16,8 @@ public class SignalExpand : MonoBehaviour
         set { timer = value; }
     }
 
+    public float CurrentPercent { get { return changeCurve.Evaluate(timer.GetPercent()); } }
+
     /// <summary>
     /// 开始信号显示
     /// </summary>
@@ -54,7 +56,7 @@ public class SignalExpand : MonoBehaviour
     {
         while (!Timer.IsTimeUp)
         {
-            transform.localScale = Vector3.Lerp(startScale, endScale, changeCurve.Evaluate(timer.GetPercent()));
+            transform.localScale = Vector3.Lerp(startScale, endScale, CurrentPercent);
             yield return null;
         }
         gameObject.SetActive(false);
