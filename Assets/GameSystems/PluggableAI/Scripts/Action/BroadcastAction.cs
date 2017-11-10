@@ -18,14 +18,14 @@ namespace GameSystem.AI
 
         public override void Act(StateController controller)
         {
-            controller.statePrefs.AddIfNotContains(CommonCode.BroadcastActionCD, new CountDownTimer(period, true));
+            controller.statePrefs.AddIfNotContains(CommonCode.BroadcastActionCD, new CountDownTimer(0, false));
 
             if (!((CountDownTimer)controller.statePrefs[CommonCode.BroadcastActionCD]).IsTimeUp || string.IsNullOrEmpty(messages) || AllPlayerManager.Instance == null || controller.Team == null)
                 return;
+            (controller.statePrefs[CommonCode.BroadcastActionCD] as CountDownTimer).Reset(period, true);
             TankManager tank = controller.playerManager as TankManager;
             tank.signImage.ShowForSecond(SignImageManager.SignType.Exclamation, 2f, controller.playerManager.RepresentColor);
             PlaySignalExpand(controller, radius, period);
-            //FindAndSend(controller/*, controller.statePrefs[CommonCode.BroadcastActionCD] as CountDownTimer*/);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace GameSystem.AI
             SignalExpand signal = signalExpandPool.GetNextObject(true).GetComponent<SignalExpand>();
             signal.transform.position = controller.transform.position;
             signal.Play(Vector3.one, Vector3.one * radius * 2f, time, controller.playerManager.Team == null ? Color.white : controller.playerManager.Team.TeamColor);
-            controller.StartCoroutine( FindAndSend(controller, signal));
+            controller.StartCoroutine(FindAndSend(controller, signal));
         }
 
         /// <summary>
