@@ -26,8 +26,6 @@ namespace Item.Ammo
             StartCoroutine(CrashCoroutine());
         }
 
-        protected override void OnCrashed(Collider other) { }
-
         private IEnumerator CrashCoroutine()
         {
             while (!timer.IsTimeUp)

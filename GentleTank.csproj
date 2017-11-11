@@ -186,6 +186,7 @@
     <Compile Include="Assets\Items\Ammo\ArrowAmmo\Scripts\ArrowAmmo.cs" />
     <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\BoxingAmmo.cs" />
     <Compile Include="Assets\Items\Ammo\BoxingGloveAmmo\Scripts\SpringBoxingGloveManager.cs" />
+    <Compile Include="Assets\Items\Ammo\GrenadeAmmo\Scripts\GrenadeAmmo.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoBase.cs" />
     <Compile Include="Assets\Items\Ammo\Scripts\AmmoModule.cs" />
     <Compile Include="Assets\Items\Ammo\ShellAmmo\Scripts\ShellAmmo.cs" />
