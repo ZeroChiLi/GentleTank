@@ -30,18 +30,17 @@ namespace Item.Ammo
         protected override void OnCollision(Collider other)
         {
             arrowHitPool.GetNextObject(true, transform);
+        }
+
+        protected override void OnCrashed(Collider other)
+        {
             targetHealth = other.GetComponentInParent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage, launcher);
-        }
 
-        /// <summary>
-        /// 要被摧毁该弓箭前，如果碰到别的弹药直接消失，否则一段时间后消失
-        /// </summary>
-        protected override void OnCrashed(Collider other)
-        {
+            // 要被摧毁该弓箭前，如果碰到别的弹药直接消失，否则一段时间后消失
             if (otherAmmo != null)
-                base.OnCrashed(other);
+                gameObject.SetActive(false);
             else
                 StartCoroutine(DelayInactive(other));
             return;
@@ -68,7 +67,7 @@ namespace Item.Ammo
                 transform.SetParent(preParent);
                 preParent = null;
             }
-            base.OnCrashed(other);
+            gameObject.SetActive(false);
             ammoRb.isKinematic = false;
             ammoCollider.enabled = true;
         }

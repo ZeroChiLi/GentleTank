@@ -77,7 +77,7 @@ namespace Item.Ammo
         /// </summary>
         /// <param name="other">另一个碰撞体</param>
         /// <returns>耐久值是否小于等于0</returns>
-        protected bool DruabilityLowerThanZero(Collider other)
+        public bool DruabilityLowerThanZero(Collider other)
         {
             otherAmmo = other.GetComponent<AmmoBase>();
             if (otherAmmo == null)
@@ -100,9 +100,6 @@ namespace Item.Ammo
         /// 耐久值小于等于0时响应
         /// </summary>
         /// <returns></returns>
-        protected virtual void OnCrashed(Collider other)
-        {
-            gameObject.SetActive(false);
-        }
+        protected abstract void OnCrashed(Collider other);
     }
 }

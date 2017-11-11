@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Item.Ammo
@@ -22,10 +23,12 @@ namespace Item.Ammo
         protected override void OnCollision(Collider other)
         {
             needTurnBack = true;
-            effectPool.GetNextObject(true,transform);
+            effectPool.GetNextObject(true, transform);
             targetHealth = other.GetComponentInParent<HealthManager>();
             if (targetHealth != null)
-                targetHealth.SetHealthAmount(-damage,launcher);
+                targetHealth.SetHealthAmount(-damage, launcher);
         }
+
+        protected override void OnCrashed(Collider other) { }
     }
 }
