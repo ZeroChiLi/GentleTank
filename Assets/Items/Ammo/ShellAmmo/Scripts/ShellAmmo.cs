@@ -11,22 +11,17 @@ namespace Item.Ammo
         public float explosionRadius = 5f;                  // 爆炸半径
 
         private HealthManager targetHealth;                 // 目标血量
-        private List<HealthManager> validTargets;           // 临时有效玩家列表        
-
-        protected new void Awake()
-        {
-            base.Awake();
-            validTargets = new List<HealthManager>();
-        }
+        private List<HealthManager> validTargets = new List<HealthManager>();          // 临时有效玩家列表        
 
         protected override void OnCollision(Collider other)
         {
-            // 从爆炸池中获取对象，并设置位置，显示之
-            shellExplosionPool.GetNextObject(true,transform);
         }
 
         protected override void OnCrashed(Collider other)
         {
+            // 从爆炸池中获取对象，并设置位置，显示之
+            shellExplosionPool.GetNextObject(true, transform);
+
             // 获取爆炸范围内所有碰撞体
             ComponentUtility.GetUniquelyComponentInParent(Physics.OverlapSphere(transform.position, explosionRadius), ref validTargets);
 
