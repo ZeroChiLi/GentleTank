@@ -33,7 +33,7 @@ namespace Item.Ammo
                 mesh.material.color = Color.Lerp(normalColor, blinkColor, Mathf.PingPong(Mathf.Repeat(blinkSpeed.Evaluate(timer.GetPercent()), blinkLength), blinkLength / 2f) * (2 * blinkTimes));
                 yield return null;
             }
-            base.OnCrashed(null);
+            base.OnCollision(null);
         }
     }
 

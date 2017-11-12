@@ -30,10 +30,6 @@ namespace Item.Ammo
         protected override void OnCollision(Collider other)
         {
             arrowHitPool.GetNextObject(true, transform);
-        }
-
-        protected override void OnCrashed(Collider other)
-        {
             targetHealth = other.GetComponentInParent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage, launcher);

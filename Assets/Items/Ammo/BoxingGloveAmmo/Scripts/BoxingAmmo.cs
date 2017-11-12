@@ -29,6 +29,5 @@ namespace Item.Ammo
                 targetHealth.SetHealthAmount(-damage, launcher);
         }
 
-        protected override void OnCrashed(Collider other) { }
     }
 }

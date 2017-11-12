@@ -67,9 +67,8 @@ namespace Item.Ammo
             // 如果已经失活了，或者碰到自己，或者标记无视弹药层、就跳过
             if (!gameObject.activeInHierarchy || (launcher != null && launcher == other.GetComponentInParent<PlayerManager>()) || other.gameObject.layer == LayerMask.NameToLayer("IgnoreAmmo"))
                 return;
-            OnCollision(other);
-            if (!IsIndestructible && DruabilityLowerThanZero(other))
-                OnCrashed(other);
+            if (IsIndestructible || DruabilityLowerThanZero(other))
+                OnCollision(other);
         }
 
         /// <summary>
@@ -95,11 +94,5 @@ namespace Item.Ammo
         /// <param name="other">碰撞到的别的物体</param>
         /// <returns></returns>
         protected abstract void OnCollision(Collider other);
-
-        /// <summary>
-        /// 耐久值小于等于0时响应
-        /// </summary>
-        /// <returns></returns>
-        protected abstract void OnCrashed(Collider other);
     }
 }

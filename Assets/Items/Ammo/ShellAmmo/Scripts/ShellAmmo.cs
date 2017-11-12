@@ -15,10 +15,6 @@ namespace Item.Ammo
 
         protected override void OnCollision(Collider other)
         {
-        }
-
-        protected override void OnCrashed(Collider other)
-        {
             // 从爆炸池中获取对象，并设置位置，显示之
             shellExplosionPool.GetNextObject(true, transform);
 
