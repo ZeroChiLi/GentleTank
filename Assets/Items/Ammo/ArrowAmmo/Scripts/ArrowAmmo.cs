@@ -24,6 +24,7 @@ namespace Item.Ammo
         private new void OnDisable()
         {
             base.OnDisable();
+            OpenClosePhysics(true);
             gameObject.SetActive(false);
         }
 
@@ -47,9 +48,8 @@ namespace Item.Ammo
         /// </summary>
         private IEnumerator DelayInactive(Collider other)
         {
-            ammoCollider.enabled = false;
             ammoRb.Sleep();
-            ammoRb.isKinematic = true;
+            OpenClosePhysics(false);
             if (other.gameObject.activeInHierarchy)
             {
                 preParent = transform.parent;
@@ -64,8 +64,15 @@ namespace Item.Ammo
                 preParent = null;
             }
             gameObject.SetActive(false);
-            ammoRb.isKinematic = false;
-            ammoCollider.enabled = true;
+        }
+
+        /// <summary>
+        /// 开关物理效果
+        /// </summary>
+        private void OpenClosePhysics(bool open)
+        {
+            ammoRb.isKinematic = !open;
+            ammoCollider.enabled = open;
         }
 
     }

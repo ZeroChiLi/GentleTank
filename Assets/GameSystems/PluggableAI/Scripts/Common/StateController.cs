@@ -57,6 +57,14 @@ namespace GameSystem.AI
         }
 
         /// <summary>
+        /// 失效时同时清除状态信息
+        /// </summary>
+        private void OnDisable()
+        {
+            OnExitState();
+        }
+
+        /// <summary>
         /// 更新状态
         /// </summary>
         private void Update()
