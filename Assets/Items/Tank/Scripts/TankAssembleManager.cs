@@ -207,6 +207,7 @@ public class TankAssembleManager : ScriptableObject
     private void AdjustHeadToBody(Bounds body)
     {
         BoxCollider head = headObj.GetComponent<BoxCollider>();
+        head.tag = "Player";
         float diff = body.max.y - head.bounds.min.y;
         if (diff < 0.05f)
             return;

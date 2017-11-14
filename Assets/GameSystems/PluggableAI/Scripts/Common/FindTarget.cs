@@ -47,7 +47,7 @@ namespace GameSystem.AI
         /// <returns>是否是敌人</returns>
         static public bool HitEnemy(RaycastHit hit, PlayerManager player)
         {
-            if (hit.collider.CompareTag("Player") && !player.IsTeammate(hit.collider.GetComponent<PlayerManager>()))
+            if (hit.collider.CompareTag("Player") && !player.IsTeammate(hit.collider.GetComponentInParent<PlayerManager>()))
                 return true;
             return false;
         }
