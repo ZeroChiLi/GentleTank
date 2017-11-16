@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CoolDownButtonManager : MonoBehaviour
+public class CoolDownButton : MonoBehaviour
 {
     public Button button;                       // 按钮
     public Image buttonFullImg;                 // 按钮滑动条图片
@@ -42,10 +42,26 @@ public class CoolDownButtonManager : MonoBehaviour
     /// <summary>
     /// 点击按钮时响应
     /// </summary>
-    public void OnClick()
+    public virtual void OnClick()
     {
         if (!coolDownTimer.IsTimeUp)
             return;
+        OnClickSuccessed();
+    }
+
+    /// <summary>
+    /// 点击成功时响应
+    /// </summary>
+    public virtual void OnClickSuccessed()
+    {
+        EnableButtonAndResetCDTimer();
+    }
+
+    /// <summary>
+    /// 激活按钮并且重启CD
+    /// </summary>
+    public void EnableButtonAndResetCDTimer()
+    {
         button.interactable = false;
         coolDownTimer.Start();
     }

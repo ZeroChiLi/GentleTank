@@ -134,10 +134,10 @@
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\AutoFollowCamareRig.cs" />
     <Compile Include="Assets\CameraRigs\StandardCameraRig\Scripts\PivotBasedCameraRig.cs" />
     <Compile Include="Assets\Common\Scripts\ActiveForSeconds.cs" />
-    <Compile Include="Assets\Common\Scripts\ChargeButtonMananger.cs" />
+    <Compile Include="Assets\Common\Scripts\ChargeButton.cs" />
     <Compile Include="Assets\Common\Scripts\ColorTool.cs" />
     <Compile Include="Assets\Common\Scripts\ComponentUtility.cs" />
-    <Compile Include="Assets\Common\Scripts\CoolDownButtonManager.cs" />
+    <Compile Include="Assets\Common\Scripts\CoolDownButton.cs" />
     <Compile Include="Assets\Common\Scripts\CountDownTimer.cs" />
     <Compile Include="Assets\Common\Scripts\DebugDistance.cs" />
     <Compile Include="Assets\Common\Scripts\EdgeDetectNormalsAndDepth.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="Assets\GameSystems\Skill\Scripts\Aim\Aim.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\Aim\AimMode.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\AllSkillManager.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\DoubleClickCDButton.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\Effects\WarnningArea.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\HealSkill.cs" />

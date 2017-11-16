@@ -3,7 +3,7 @@ namespace CrossPlatformInput
 {
     public class ChargeButtonInput : ButtonInput
     {
-        public ChargeButtonMananger chargeButtonManager;
+        public ChargeButton chargeButtonManager;
         public new float Value { get { return chargeButtonManager.CurrentValue; } }
 
         /// <summary>

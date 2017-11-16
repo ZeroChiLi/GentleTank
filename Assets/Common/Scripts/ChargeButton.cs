@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ChargeButtonMananger : CoolDownButtonManager
+public class ChargeButton : CoolDownButton
 {
     public Image sliderFullImg;             // 蓄力变化的图片
     public float minValue = 50f;            // 最小值
