@@ -54,13 +54,13 @@ public class CoolDownButton : MonoBehaviour
     /// </summary>
     public virtual void OnClickSuccessed()
     {
-        EnableButtonAndResetCDTimer();
+        DisableButtonAndResetCDTimer();
     }
 
     /// <summary>
-    /// 激活按钮并且重启CD
+    /// 失效按钮并且重启CD
     /// </summary>
-    public void EnableButtonAndResetCDTimer()
+    public void DisableButtonAndResetCDTimer()
     {
         button.interactable = false;
         coolDownTimer.Start();

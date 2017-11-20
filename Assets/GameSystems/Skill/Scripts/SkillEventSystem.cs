@@ -10,21 +10,32 @@ public class SkillEventSystem : MonoBehaviour
     public EventSystem eventSystem;
 
     public bool skillButtonClicked;
-    public CoolDownButton firstClick;
+    public SkillButton firstClick;
 
     private void Awake() { Instance = this; }
 
-    private void OnGUI()
+    private void Update()
     {
-        //if ()
-        //{
-
-        //}
+        if (firstClick != null)
+        {
+            if (firstClick.OnSecondClickedCanceled())
+            {
+                firstClick = null;
+            }
+            else if (firstClick.OnSecondClicked())
+            {
+                firstClick.OnSecondClickedSuccessed();
+            }
+            
+        }
     }
 
-    public void SkillButtonClicked(CoolDownButton target)
+    public void SkillButtonClicked(SkillButton target)
     {
-
+        if (firstClick == null)
+        {
+            firstClick = target;
+        }
     }
 
 }
