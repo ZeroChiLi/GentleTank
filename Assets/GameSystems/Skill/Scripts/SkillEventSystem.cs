@@ -16,18 +16,6 @@ public class SkillEventSystem : MonoBehaviour
 
     private void Update()
     {
-        if (firstClick != null)
-        {
-            if (firstClick.OnSecondClickedCanceled())
-            {
-                firstClick = null;
-            }
-            else if (firstClick.OnSecondClicked())
-            {
-                firstClick.OnSecondClickedSuccessed();
-            }
-            
-        }
     }
 
     public void SkillButtonClicked(SkillButton target)
@@ -35,6 +23,12 @@ public class SkillEventSystem : MonoBehaviour
         if (firstClick == null)
         {
             firstClick = target;
+            firstClick.OnFristClickedSuccess();
+        }
+        else
+        {
+            firstClick = null;
+            firstClick.OnSecondClickedCanceled();
         }
     }
 

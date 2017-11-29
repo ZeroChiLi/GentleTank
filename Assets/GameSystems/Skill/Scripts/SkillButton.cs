@@ -20,6 +20,6 @@ public abstract class SkillButton : CoolDownButton
 
     public abstract void OnSecondClickedSuccessed();
 
-    public abstract bool OnSecondClickedCanceled();
+    public abstract void OnSecondClickedCanceled();
 
 }
