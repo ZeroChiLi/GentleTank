@@ -179,7 +179,7 @@
     <Compile Include="Assets\GameSystems\Skill\Scripts\AllSkillManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\DoubleClickCDButton.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\Effects\WarnningArea.cs" />
-    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillButtonTag.cs" />
+    <Compile Include="Assets\GameSystems\Skill\Scripts\SkillButton.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillEventSystem.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillManager.cs" />
     <Compile Include="Assets\GameSystems\Skill\Scripts\SkillObject\HealSkill.cs" />

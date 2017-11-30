@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SkillEventSystem : MonoBehaviour
@@ -10,25 +8,39 @@ public class SkillEventSystem : MonoBehaviour
     public EventSystem eventSystem;
 
     public bool skillButtonClicked;
-    public SkillButton firstClick;
+    public SkillButton skillButton;
 
     private void Awake() { Instance = this; }
 
     private void Update()
     {
+        if (skillButton != null && skillButton.OnSecondClicked())
+        {
+            if (skillButton.isSecondClickSuccess)
+                skillButton.OnSecondClickedSuccessed();
+            else
+                skillButton.OnSecondClickedCanceled();
+            skillButton = null;
+        }
     }
 
     public void SkillButtonClicked(SkillButton target)
     {
-        if (firstClick == null)
+        if (skillButton == null)
         {
-            firstClick = target;
-            firstClick.OnFristClickedSuccess();
+            skillButton.OnFristClickedSuccess();
+            if (target.clickedTimes == SkillButton.ClickedTimes.Once)
+            {
+                skillButton.RelaseSkill();
+                skillButton = null;
+            }
+            else
+                skillButton = target;
         }
         else
         {
-            firstClick = null;
-            firstClick.OnSecondClickedCanceled();
+            skillButton = null;
+            skillButton.OnSecondClickedCanceled();
         }
     }
 
