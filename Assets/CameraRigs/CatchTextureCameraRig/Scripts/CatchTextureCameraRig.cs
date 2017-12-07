@@ -6,11 +6,8 @@ public class CatchTextureCameraRig : MonoBehaviour
     public float duration = 0.05f;
     public new Camera camera;
     public Transform stage;
+    public DrawOutline drawOutline;
 
-    public bool IsCatching { get { return isCatching; } }
-
-    private bool isCatching =false;
-    private Transform currentTarget;
     private Transform lastParent;
     private Vector3 lastPosision;
     private Quaternion lastRotation;
@@ -27,9 +24,10 @@ public class CatchTextureCameraRig : MonoBehaviour
         lastRotation = target.localRotation;
         SetParentLocalPositionAndRotation(target, stage, Vector3.zero, Quaternion.identity);
 
-        camera.targetTexture = targetTexture;
-        camera.Render();
-        camera.targetTexture = null;
+        drawOutline.RenderToTexture(target.gameObject, targetTexture);
+        //camera.targetTexture = targetTexture;
+        //camera.Render();
+        //camera.targetTexture = null;
 
         SetParentLocalPositionAndRotation(target, lastParent, lastPosision, lastRotation);
     }

@@ -4,22 +4,22 @@
 /// 屏幕后处理效果基类
 /// </summary>
 [ExecuteInEditMode]
-[RequireComponent(typeof(Camera))]
 public class PostEffectsBase : MonoBehaviour
 {
+    private Camera mainCamera;
+    public Camera MainCamera { get { return mainCamera = mainCamera == null ? GetComponent<Camera>() : mainCamera; } }
 
-    protected void Start()
-    {
-        CheckResources();
-    }
+    public Shader targetShader;
+    private Material targetMaterial = null;
+    public Material TargetMaterial { get { return CheckShaderAndCreateMaterial(targetShader,ref targetMaterial); } }
 
     /// <summary>
-    /// 检测资源
+    /// 检测资源，如果不支持，关闭脚本活动
     /// </summary>
-    protected void CheckResources()
+    protected void Start()
     {
         if (CheckSupport() == false)
-            NotSupported();
+            enabled = false;
     }
 
     /// <summary>
@@ -33,16 +33,7 @@ public class PostEffectsBase : MonoBehaviour
             Debug.LogWarning("This platform does not support image effects or render textures.");
             return false;
         }
-
         return true;
-    }
-
-    /// <summary>
-    /// 不支持
-    /// </summary>
-    protected void NotSupported()
-    {
-        enabled = false;
     }
 
     /// <summary>
@@ -51,24 +42,16 @@ public class PostEffectsBase : MonoBehaviour
     /// <param name="shader">指定shader</param>
     /// <param name="material">创建的材质</param>
     /// <returns>得到指定shader的材质</returns>
-    protected Material CheckShaderAndCreateMaterial(Shader shader, Material material)
+    protected Material CheckShaderAndCreateMaterial(Shader shader, ref Material material)
     {
-        if (shader == null)
+        if (shader == null || !shader.isSupported)
             return null;
 
-        if (shader.isSupported && material && material.shader == shader)
+        if (material && material.shader == shader)
             return material;
 
-        if (!shader.isSupported)
-            return null;
-        else
-        {
-            material = new Material(shader);
-            material.hideFlags = HideFlags.DontSave;
-            if (material)
-                return material;
-            else
-                return null;
-        }
+        material = new Material(shader);
+        material.hideFlags = HideFlags.DontSave;
+        return material;
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a49c4e031fa603f448e1e30130b995da
+timeCreated: 1512634410
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - targetShader: {fileID: 4800000, guid: 9c6885f74c085d74b9627d57842e26a7, type: 3}
+  - additionalCamera: {instanceID: 0}
+  - drawOccupied: {fileID: 4800000, guid: cf7f0043acf9a9c45b3c471602f0870d, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
