@@ -29,25 +29,20 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     {
         AllCustomTankManager.Instance.CreateAllTanks();
         AllCustomTankManager.Instance.SetupAllTanksPosition();
-        StartCoroutine(SetupAllTankTexture());
+        SetupAllTankTexture();
     }
 
     /// <summary>
     /// 配置所有坦克预览纹理
     /// </summary>
-    public IEnumerator SetupAllTankTexture()
+    public void SetupAllTankTexture()
     {
         for (int i = 0; i < textureList.Count; i++)
         {
             if (AllCustomTankManager.Instance[i] == null)
-            {
                 textureList[i].Release();
-                continue;
-            }
-
-            while (catchTextureCam.IsCatching)
-                yield return null;
-            catchTextureCam.SetCatchTarget(AllCustomTankManager.Instance[i].transform, textureList[i]);
+            else
+                catchTextureCam.RenderTarget(AllCustomTankManager.Instance[i].transform, textureList[i]);
         }
         OnAllTankSetupEvent.Invoke();
     }
@@ -67,7 +62,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public void CatchTankTexture(int index)
     {
         if (AllCustomTankManager.Instance[index] != null)
-            catchTextureCam.SetCatchTarget(AllCustomTankManager.Instance[index].transform, textureList[index]);
+            catchTextureCam.RenderTarget(AllCustomTankManager.Instance[index].transform, textureList[index]);
     }
 
     /// <summary>

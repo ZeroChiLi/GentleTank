@@ -45,7 +45,7 @@ public class CurrentTankPanelManager : MonoBehaviour
         if (allCustomTank.CurrentTank == null)
             return;
         allCustomTank.DeleteCurrentTank();
-        StartCoroutine(allCustomTankPreview.SetupAllTankTexture());
+        allCustomTankPreview.SetupAllTankTexture();
         OnTankSelected();
     }
 

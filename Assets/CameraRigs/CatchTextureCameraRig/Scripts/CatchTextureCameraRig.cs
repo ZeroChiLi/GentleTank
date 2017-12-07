@@ -16,42 +16,32 @@ public class CatchTextureCameraRig : MonoBehaviour
     private Quaternion lastRotation;
 
     /// <summary>
-    /// 设置要捕获到纹理的目标
+    /// 渲染目标到纹理
     /// </summary>
     /// <param name="target">捕获目标</param>
     /// <param name="targetTexture">捕获到的纹理</param>
-    /// <returns>是否设置成功（正在捕获为false）</returns>
-    public bool SetCatchTarget(Transform target,RenderTexture targetTexture)
+    public void RenderTarget(Transform target,RenderTexture targetTexture)
     {
-        if (isCatching)
-            return false;
-        isCatching = true;
-        camera.enabled = false;
-        currentTarget = target;
-        camera.targetTexture = targetTexture;
         lastParent = target.parent;
         lastPosision = target.localPosition;
         lastRotation = target.localRotation;
-        target.SetParent(stage);
-        GameMathf.ResetLocalTransform(target, true, true, false);
-        camera.enabled = true;
-        return true;
+        SetParentLocalPositionAndRotation(target, stage, Vector3.zero, Quaternion.identity);
+
+        camera.targetTexture = targetTexture;
+        camera.Render();
+        camera.targetTexture = null;
+
+        SetParentLocalPositionAndRotation(target, lastParent, lastPosision, lastRotation);
     }
 
     /// <summary>
-    /// 渲染
+    /// 设置父对象、相对父对象的位置和旋转值
     /// </summary>
-    private void OnGUI()
+    private void SetParentLocalPositionAndRotation(Transform target,Transform parent,Vector3 position,Quaternion rotation)
     {
-        if (currentTarget != null)
-        {
-            currentTarget.SetParent(lastParent);
-            currentTarget.localPosition = lastPosision;
-            currentTarget.localRotation = lastRotation;
-            currentTarget = null;
-            isCatching = false;
-            camera.enabled = false;
-        }   
+        target.SetParent(parent);
+        target.localPosition = position;
+        target.localRotation = rotation;
     }
 
 }
