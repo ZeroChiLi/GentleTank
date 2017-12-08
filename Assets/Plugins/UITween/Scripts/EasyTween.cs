@@ -46,6 +46,18 @@ public class EasyTween : MonoBehaviour
         TriggerOpenClose();
     }
 
+    public void OpenObjectAnimation()
+    {
+        rectTransform.gameObject.SetActive(true);
+        currentAnimationGoing.PlayOpenAnimations();
+    }
+
+    public void CloseObjectAnimation()
+    {
+        rectTransform.gameObject.SetActive(true);
+        currentAnimationGoing.PlayCloseAnimations();
+    }
+
     public bool IsObjectOpened()
     {
         return currentAnimationGoing.IsObjectOpened();
