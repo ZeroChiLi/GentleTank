@@ -60,11 +60,10 @@ Shader "Custom/DrawOutline"
 							ColorIntensityInRadius += tex2D(_MainTex, i.uv.xy + float2((k - r) * TX_x,(j - r) * TX_y));
 
 				// 如果该像素有颜色（原来所占面积），或者该像素不在外边范围内，直接渲染原场景。否则就渲染为外边颜色。
-				//if(tex2D(_MainTex,i.uv.xy).r > 0 || ColorIntensityInRadius == 0)
-				//	return tex2D(_SceneTex, i.uv);
-				//else
-				//	return _Color.a * _Color + (1 - _Color.a) * tex2D(_SceneTex, i.uv);
-				return _Color;
+				if(tex2D(_MainTex,i.uv.xy).r > 0 || ColorIntensityInRadius == 0)
+					return tex2D(_SceneTex, i.uv);
+				else
+					return _Color.a * _Color + (1 - _Color.a) * tex2D(_SceneTex, i.uv);
             }
             ENDCG
         }
