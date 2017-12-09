@@ -61,6 +61,10 @@ namespace GameSystem.Skill
         /// <returns>返回是否点击玩家</returns>
         public override bool ReleaseCondition()
         {
+            if (AllSkillManager.Instance.aim.HitGameObject != null)
+                Debug.Log(AllSkillManager.Instance.aim.HitGameObject);
+            if (AllSkillManager.Instance.aim.HitGameObject.GetComponent<HealthManager>())
+                Debug.Log("bbb");
             return AllSkillManager.Instance.aim.HitGameObject != null && AllSkillManager.Instance.aim.HitGameObject.GetComponent<HealthManager>() != null;
         }
     }

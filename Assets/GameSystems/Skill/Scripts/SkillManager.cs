@@ -32,7 +32,7 @@ namespace GameSystem.Skill
             slider.maxValue = skill.coolDownTime;
             remainReleaseTime = skill.coolDownTime;
             buttonImage.color = disableColor;
-            SetupButtonEvent();
+            //SetupButtonEvent();
         }
 
         /// <summary>
@@ -77,6 +77,11 @@ namespace GameSystem.Skill
                 buttonImage.color = hightLightColor;
             else
                 buttonImage.color = normalColor;
+        }
+
+        public void OnButtonClick()
+        {
+            AllSkillManager.Instance.SkillManangerClicked(this);
         }
 
         /// <summary>
