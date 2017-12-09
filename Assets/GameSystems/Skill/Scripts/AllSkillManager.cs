@@ -21,14 +21,11 @@ namespace GameSystem.Skill
         private void Awake()
         {
             Instance = this;
-            skillManagerList = new List<SkillManager>();
         }
 
-        ///// <summary>
-        ///// 创建技能列表到这个对象里面
-        ///// </summary>
         private void Start()
         {
+            skillManagerList = new List<SkillManager>();
             for (int i = 0; i < skillObjectList.Count; i++)
                 skillManagerList.Add(skillObjectList[i].CreateSkillButton(transform).GetComponent<SkillManager>());
         }
@@ -48,15 +45,6 @@ namespace GameSystem.Skill
 
             SetAllSkillEnable(true);
             UpdateAllSkillCoolDown();
-
-            //// 如果技能进入准备状态，随着鼠标位置是否在按钮上，若在，取消瞄准激活
-            //if (readySkillIndex != -1)
-            //{
-            //    if (OnSkillButton())
-            //        aim.SetEnable(false);
-            //    else
-            //        aim.SetEnable(true);
-            //}
 
             if (!clickedSkillSameFrame && currentSkill != null && Input.GetMouseButtonUp(0))
                 SceneOnClicked();

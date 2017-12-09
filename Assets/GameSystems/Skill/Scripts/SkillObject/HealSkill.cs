@@ -33,7 +33,7 @@ namespace GameSystem.Skill
         public override IEnumerator SkillEffect()
         {
             hitGameObject = AllSkillManager.Instance.aim.HitGameObject;
-            targetHealth = hitGameObject.GetComponent<HealthManager>();
+            targetHealth = hitGameObject.GetComponentInParent<HealthManager>();
             for (int i = 0; i < skillLevel; i++)
                 yield return HealPlayer(hitGameObject, targetHealth);
         }
@@ -61,11 +61,7 @@ namespace GameSystem.Skill
         /// <returns>返回是否点击玩家</returns>
         public override bool ReleaseCondition()
         {
-            if (AllSkillManager.Instance.aim.HitGameObject != null)
-                Debug.Log(AllSkillManager.Instance.aim.HitGameObject);
-            if (AllSkillManager.Instance.aim.HitGameObject.GetComponent<HealthManager>())
-                Debug.Log("bbb");
-            return AllSkillManager.Instance.aim.HitGameObject != null && AllSkillManager.Instance.aim.HitGameObject.GetComponent<HealthManager>() != null;
+            return AllSkillManager.Instance.aim.HitGameObject != null && AllSkillManager.Instance.aim.HitGameObject.GetComponentInParent<HealthManager>() != null;
         }
     }
 }

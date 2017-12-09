@@ -46,7 +46,7 @@ namespace GameSystem.Skill
         private void RaycastObject()
         {
             RaycastHit info;
-            if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200, LayerMask.GetMask("Level")))
+            if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200))
             {
                 inputHitPos = info.point;
                 inputHitGameObject = info.collider.gameObject;
