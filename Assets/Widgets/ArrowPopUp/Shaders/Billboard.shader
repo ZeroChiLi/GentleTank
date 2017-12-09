@@ -44,7 +44,8 @@ Shader "Custom/Billboard" {
 				
 				float3 center = float3(0, 0, 0);				// 模型空间的原点作为广告牌锚点
 				float3 viewer = mul(unity_WorldToObject,float4(_WorldSpaceCameraPos, 1));	// 获取模型空间下视角
-				
+
+				// center为原点等价 normalDir = UnityWorldToObjectDir(_WorldSpaceCameraPos);
 				float3 normalDir = viewer - center;
 				// _VerticalBillboarding 为1为法线固定。 
 				normalDir.y =normalDir.y * _VerticalBillboarding;
