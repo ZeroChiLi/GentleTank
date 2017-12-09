@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameSystem.Skill
 {
-    public class SkillManager : MonoBehaviour
+    public class SkillManager : AttackManager
     {
         public bool needReady = true;                   // 需要准备（两次点击后才释放技能），否则一次直接释放
         public Slider slider;                           // 滑动条
         public Image fullImage;                         // 滑动条图片
         public Image emptyImage;                        // 滑动条背景图片
-        public SkillObject skill;                             // 技能
+        public SkillObject skill;                       // 技能
 
-        protected float remainReleaseTime = 0f;         // 距离下一次可以释放技能的时间，为0就是可以释放技能
         protected bool isReady = false;                 // 是否准备释放技能（第一次点击）
         protected bool gamePlaying = false;             // 是否正在游戏中
 
@@ -22,6 +20,7 @@ namespace GameSystem.Skill
         private Color pressedColor = new Color(1, 0.27f, 0.27f);        // 点击颜色
         private Color disableColor = new Color(0.46f, 0.46f, 0.46f);    // 失效颜色
         private Coroutine currentSkillCoroutine;                         // 当前技能释放时的协程
+        private bool lastFrameIsCooling;
 
         /// <summary>
         /// 初始化
@@ -30,9 +29,8 @@ namespace GameSystem.Skill
         {
             buttonImage = GetComponent<Image>();
             slider.maxValue = skill.coolDownTime;
-            remainReleaseTime = skill.coolDownTime;
+            coolDownTime = skill.coolDownTime;
             buttonImage.color = disableColor;
-            //SetupButtonEvent();
         }
 
         /// <summary>
@@ -46,61 +44,56 @@ namespace GameSystem.Skill
         }
 
         /// <summary>
-        /// 配置按钮事件（鼠标进入，离开）
+        /// 鼠标移入按钮时响应
         /// </summary>
-        public void SetupButtonEvent()
+        public void OnPointerEnter()
         {
-            EventTrigger eventTrigger = GetComponent<EventTrigger>();
-
-            EventTrigger.Entry entryEnter = new EventTrigger.Entry();               // 鼠标进入事件
-            entryEnter.eventID = EventTriggerType.PointerEnter;
-            entryEnter.callback.AddListener((data) => { MouseOnButton(true); });
-            eventTrigger.triggers.Add(entryEnter);
-
-            EventTrigger.Entry entryExit = new EventTrigger.Entry();                // 鼠标离开事件
-            entryExit.eventID = EventTriggerType.PointerExit;
-            entryExit.callback.AddListener((data) => { MouseOnButton(false); });
-            eventTrigger.triggers.Add(entryExit);
+            if (!IsTimeUp || isReady)       //如果还在冷却时间，保持灰色；如果还在准备状态，保持高亮。
+                return;
+            buttonImage.color = hightLightColor;
         }
 
         /// <summary>
-        /// 鼠标移动到按钮或移出按钮时响应
+        /// 鼠标移出按钮时响应
         /// </summary>
-        /// <param name="enter">true进入，否则是移出</param>
-        public void MouseOnButton(bool enter)
+        public void OnPointerExit()
         {
-            if (remainReleaseTime > 0 || isReady)       //如果还在冷却时间，保持灰色；如果还在准备状态，保持高亮。
+            if (!IsTimeUp || isReady)
                 return;
-
-            // 进入高亮，出去正常
-            if (enter)
-                buttonImage.color = hightLightColor;
-            else
-                buttonImage.color = normalColor;
+            buttonImage.color = normalColor;
         }
 
-        public void OnButtonClick()
+        /// <summary>
+        /// 鼠标点击按钮时通知AllSkillManager
+        /// </summary>
+        public void OnPointerClick()
         {
             AllSkillManager.Instance.SkillManangerClicked(this);
         }
 
         /// <summary>
-        /// 更新冷却时间，通过Time.deltaTime改变。同时改变按钮颜色和滑动条长度
+        /// 更新冷却时间，同时改变按钮颜色和滑动条长度
         /// </summary>
-        public void UpdateCoolDown()
+        protected void Update()
         {
-            if (remainReleaseTime == 0)
+            if (GameRound.Instance.CurrentGameState != GameState.Playing)
                 return;
-            if (remainReleaseTime < 0)
+
+            if (!IsTimeUp)
             {
-                buttonImage.color = normalColor;
-                remainReleaseTime = 0;
-                slider.value = slider.maxValue;
-                return;
+                buttonImage.color = disableColor;
+                slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, CDTimer.GetPercent());
+                lastFrameIsCooling = true;
             }
-            slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, remainReleaseTime / (slider.maxValue - slider.minValue));
-            remainReleaseTime -= Time.deltaTime;
-            buttonImage.color = disableColor;
+            else
+            {
+                if (lastFrameIsCooling)
+                {
+                    buttonImage.color = normalColor;
+                    slider.value = slider.maxValue;
+                }
+                lastFrameIsCooling = false;
+            }
         }
 
         /// <summary>
@@ -109,7 +102,7 @@ namespace GameSystem.Skill
         /// <returns></returns>
         public bool CanReady()
         {
-            return remainReleaseTime == 0;
+            return IsTimeUp;
         }
 
         /// <summary>
@@ -138,11 +131,14 @@ namespace GameSystem.Skill
         public void SetSkillEnable(bool enable)
         {
             if (enable)
+            {
                 buttonImage.color = normalColor;
+                CDTimer.Start();
+            }
             else if (!enable)
             {
                 slider.value = slider.minValue;
-                remainReleaseTime = skill.coolDownTime;
+                CDTimer.Reset(coolDownTime, true);
                 buttonImage.color = disableColor;
                 isReady = false;
                 Stop();             // 停止掉技能协程
@@ -157,7 +153,7 @@ namespace GameSystem.Skill
         {
             if (!needReady)     // 如果不需要准备，那就自动设置为准备状态
                 Ready();
-            return remainReleaseTime <= 0f && isReady && skill.ReleaseCondition();
+            return IsTimeUp && isReady && skill.ReleaseCondition();
         }
 
         /// <summary>
@@ -165,8 +161,8 @@ namespace GameSystem.Skill
         /// </summary>
         public void Release()
         {
-            remainReleaseTime = slider.maxValue;
             isReady = false;
+            CDTimer.Start();
             Cancel();
             if (skill != null)
                 currentSkillCoroutine = StartCoroutine(skill.SkillEffect());
@@ -179,6 +175,11 @@ namespace GameSystem.Skill
         {
             if (currentSkillCoroutine != null)
                 StopCoroutine(currentSkillCoroutine);
+        }
+
+        protected override void OnAttack(params object[] values)
+        {
+            Release();
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Item.Tank
         /// </summary>
         protected void Update()
         {
-            if (playerManager.IsAI || IsCoolDown)
+            if (playerManager.IsAI || !IsTimeUp)
                 return;
             if (usingInputButton)
                 StateChangeByInput();

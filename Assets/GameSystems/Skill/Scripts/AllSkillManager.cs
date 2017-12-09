@@ -44,8 +44,8 @@ namespace GameSystem.Skill
             }
 
             SetAllSkillEnable(true);
-            UpdateAllSkillCoolDown();
 
+            // clickedSkillSameFrame避免同一帧在点击按钮时同时释放了技能
             if (!clickedSkillSameFrame && currentSkill != null && Input.GetMouseButtonUp(0))
                 SceneOnClicked();
             clickedSkillSameFrame = false;
@@ -62,15 +62,6 @@ namespace GameSystem.Skill
             allSkillEnable = enable;
             for (int i = 0; i < skillManagerList.Count; i++)
                 skillManagerList[i].SetSkillEnable(enable);
-        }
-
-        /// <summary>
-        /// 更新所有技能冷却时间
-        /// </summary>
-        private void UpdateAllSkillCoolDown()
-        {
-            for (int i = 0; i < skillManagerList.Count; i++)
-                skillManagerList[i].UpdateCoolDown();
         }
 
         /// <summary>
