@@ -54,7 +54,7 @@ namespace Item.Tank
             tankExplosionPool.GetNextObject(true,gameObject.transform);
             gameObject.SetActive(false);
             tankBustedPool.GetNextObject().GetComponent<BustedTankMananger>().SetupBustedTank(transform, playerManager.RepresentColor);
-            if (AllKillMessageManager.Instance != null && from != null)
+            if (AllKillMessageManager.Instance != null)
                 AllKillMessageManager.Instance.AddKillMessage(from, playerManager);
         }
 

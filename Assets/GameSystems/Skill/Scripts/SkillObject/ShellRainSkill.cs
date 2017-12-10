@@ -33,13 +33,13 @@ namespace GameSystem.Skill
         /// <summary>
         /// 技能效果
         /// </summary>
-        public override IEnumerator SkillEffect()
+        public override IEnumerator SkillEffect(PlayerManager launcher)
         {
             Vector3 position = AllSkillManager.Instance.aim.HitPosition;
             ShowWarnningArea(position);             // 显示警告区域，在一段时间后再发起攻击
             yield return new WaitForSeconds(skillDelay);
             for (int i = 0; i < skillLevel; i++)                // 根据技能等级改变攻击波数
-                yield return CreateShell(position, Random.insideUnitCircle * attackRadius);
+                yield return CreateShell(position, Random.insideUnitCircle * attackRadius, launcher);
         }
 
         /// <summary>
@@ -47,12 +47,13 @@ namespace GameSystem.Skill
         /// </summary>
         /// <param name="randomCircle">创建的XZ坐标</param>
         /// <returns></returns>
-        private IEnumerator CreateShell(Vector3 inputPosition, Vector2 randomCircle)
+        private IEnumerator CreateShell(Vector3 inputPosition, Vector2 randomCircle, PlayerManager launcher)
         {
             //if (gamePlaying == false)               //不在游戏进行中就终结他，暂未解决使用StopCoroutine无效的问题 'Skill' 175行
             //    yield break;            
             //创建炮弹 从上而下
-            GameObject shell = shellPool.GetNextObject();
+            ShellAmmo shell = shellPool.GetNextObject().GetComponent<ShellAmmo>();
+            shell.Init(launcher, attackDamage);
             shell.transform.position = new Vector3(inputPosition.x + randomCircle.x, 20f, inputPosition.z + randomCircle.y);
             shell.transform.rotation = Quaternion.Euler(new Vector3(90f, 0, 0));
             shell.GetComponent<Rigidbody>().velocity = new Vector3(0, -20f, 0);

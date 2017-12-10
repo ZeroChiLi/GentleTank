@@ -11,6 +11,7 @@ public class KillMessageManager : MonoBehaviour
     public AnimationCurve colorCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
     private CountDownTimer timer;
+    private string temStr;
 
     private void Awake()
     {
@@ -43,7 +44,8 @@ public class KillMessageManager : MonoBehaviour
     /// <param name="killed">被害者</param>
     public void Setup(PlayerManager murderer, PlayerManager killed)
     {
-        textMesh.text = string.Format("{0} {1} {2}", murderer.ColoredPlayerNameByTeam, killSprite, killed.ColoredPlayerNameByTeam);
+        temStr = murderer == null ? "未知力量" : murderer.ColoredPlayerNameByTeam ;
+        textMesh.text = string.Format("{0} {1} {2}", temStr, killSprite, killed.ColoredPlayerNameByTeam);
     }
 
 }

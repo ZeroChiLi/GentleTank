@@ -5,6 +5,7 @@ namespace GameSystem.Skill
 {
     public class SkillManager : AttackManager
     {
+        public PlayerManager launcher;                  // 发起该技能的玩家
         public bool needReady = true;                   // 需要准备（两次点击后才释放技能），否则一次直接释放
         public Slider slider;                           // 滑动条
         public Image fullImage;                         // 滑动条图片

@@ -30,7 +30,7 @@ namespace GameSystem.Skill
         /// 技能效果
         /// </summary>
         /// <returns></returns>
-        public override IEnumerator SkillEffect()
+        public override IEnumerator SkillEffect(PlayerManager launcher)
         {
             hitGameObject = AllSkillManager.Instance.aim.HitGameObject;
             targetHealth = hitGameObject.GetComponentInParent<HealthManager>();

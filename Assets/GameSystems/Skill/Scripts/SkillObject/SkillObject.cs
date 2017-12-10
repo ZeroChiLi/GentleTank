@@ -33,7 +33,7 @@ namespace GameSystem.Skill
         /// <summary>
         /// 技能效果
         /// </summary>
-        abstract public IEnumerator SkillEffect();
+        abstract public IEnumerator SkillEffect(PlayerManager launcher = null);
 
         /// <summary>
         /// 自定义条件判断是否释放技能
