@@ -2,6 +2,7 @@
 
 public class DrawOutline : PostEffectsBase
 {
+    public bool autoPostEffect;
     public Camera additionalCamera;
 
     public Shader drawOccupied;
@@ -20,7 +21,61 @@ public class DrawOutline : PostEffectsBase
     private RenderTexture temRT1;
     private RenderTexture temRT2;
 
-    public void RenderToTexture(GameObject target,RenderTexture texture)
+    /// <summary>
+    /// 脚本激活时配置相机
+    /// </summary>
+    private void OnEnable()
+    {
+        SetupAddtionalCamera();
+    }
+
+    /// <summary>
+    /// 额外相机的初始化
+    /// </summary>
+    private void SetupAddtionalCamera()
+    {
+        additionalCamera.CopyFrom(MainCamera);
+        additionalCamera.clearFlags = CameraClearFlags.Color;
+        additionalCamera.backgroundColor = Color.black;
+        additionalCamera.cullingMask = 1 << LayerMask.NameToLayer("PostEffect");       // 标记渲染"PostEffect"层的物体
+    }
+
+    /// <summary>
+    /// 渲染当前相机后处理的描边效果
+    /// </summary>
+    void OnRenderImage(RenderTexture source, RenderTexture destination)
+    {
+        if (autoPostEffect && TargetMaterial != null && drawOccupied != null && additionalCamera != null && targets != null && targets.Length != 0)
+        {
+            temRT1 = RenderTexture.GetTemporary(source.width, source.height, 0);
+            additionalCamera.targetTexture = temRT1;
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                if (targets[i] == null)
+                    continue;
+                meshFilters = targets[i].GetComponentsInChildren<MeshFilter>();
+                for (int j = 0; j < meshFilters.Length; j++)
+                    if ((MainCamera.cullingMask & (1 << meshFilters[j].gameObject.layer)) != 0) // 把主相机没渲染的也不加入渲染队列
+                        Graphics.DrawMesh(meshFilters[j].sharedMesh, meshFilters[j].transform.localToWorldMatrix, OccupiedMaterial, LayerMask.NameToLayer("PostEffect"), additionalCamera); // 描绘选中物体的所占面积
+            }
+            additionalCamera.Render();  // 需要调用渲染函数，才能及时把描绘物体渲染到纹理中
+
+            TargetMaterial.SetTexture("_SceneTex", source);
+            TargetMaterial.SetColor("_Color", outlineColor);
+            TargetMaterial.SetInt("_Width", outlineWidth);
+            TargetMaterial.SetInt("_Iterations", iterations);
+
+            // 使用描边混合材质实现描边效果
+            Graphics.Blit(temRT1, destination, TargetMaterial);
+
+            temRT1.Release();
+        }
+        else
+            Graphics.Blit(source, destination);
+    }
+
+    public void RenderToTexture(GameObject target, RenderTexture texture)
     {
         // 第一步：把渲染的物体渲染进纹理先
         additionalCamera.cullingMask = 1;

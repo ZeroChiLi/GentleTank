@@ -10,15 +10,14 @@ public class AllCameraRigManager : MonoBehaviour
 
     public enum CameraRigType
     {
-        AutoFollow, MultiTarget, CMFollow, CMMultiTarget
+        AutoFollow, MultiTarget
     }
 
     public AutoFollowCamareRig autoCameraRig;
     public MultiCameraRig multiCameraRig;
-    public CinemachineBrain cmCameraBrain;
-    public CMFollowCameraRig cmFollowCameraRig;
-    public CMMultiTargetCameraRig cmMultiTargetCameraRig;
-    public CameraRigType currentCameraRigType = CameraRigType.CMMultiTarget;
+    public CameraRigType currentCameraRigType = CameraRigType.MultiTarget;
+
+    public Camera CurrentCamera { get { return GetCurrentCamera(); } }
 
     /// <summary>
     /// 初始单例
@@ -78,12 +77,25 @@ public class AllCameraRigManager : MonoBehaviour
         }
 
     }
+
     /// <summary>
     /// 方便动画后的事件调用，转换到跟踪相机
     /// </summary>
     public void ChangeToAutoFollowCameraRig()
     {
         ChangeCameraRig(CameraRigType.AutoFollow);
+    }
+
+    public Camera GetCurrentCamera()
+    {
+        switch (currentCameraRigType)
+        {
+            case CameraRigType.AutoFollow:
+                return autoCameraRig.controlCamera;
+            case CameraRigType.MultiTarget:
+                return multiCameraRig.controlCamera;
+        }
+        return null;
     }
 
 }
