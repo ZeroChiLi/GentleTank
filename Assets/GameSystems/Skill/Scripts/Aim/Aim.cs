@@ -10,6 +10,7 @@ namespace GameSystem.Skill
 
         public Vector3 HitPosition { get { return inputHitPos; } }                  //获取指中目标位置
         public GameObject HitGameObject { get { return inputHitGameObject; } }      //获取指中对象
+        public PlayerManager HitPlayer { get { return inputHitGameObject == null ? null : inputHitGameObject.GetComponentInParent<PlayerManager>(); } }
 
         protected bool aimEnable = true;                // 瞄准是否有效
 
@@ -18,6 +19,8 @@ namespace GameSystem.Skill
         private Vector3 inputHitPos;                    // 鼠标射线射到的点
         private GameObject inputHitGameObject;          // 射线射到的物体
         private TagWithColor tagWithColor;              // 射到物体的标签对应瞄准模型
+
+        private DrawOutline currentOutline;             // 当前相机对应描边特效
 
         /// <summary>
         /// 获取图片组件
@@ -31,6 +34,21 @@ namespace GameSystem.Skill
         }
 
         /// <summary>
+        /// 在相机转换时，更换描边相机
+        /// </summary>
+        private void Start()
+        {
+            // 先初始化一次
+            currentOutline = AllCameraRigManager.Instance.CurrentCamera.GetComponentInChildren<DrawOutline>();
+
+            AllCameraRigManager.Instance.OnCameraChangeEvent.AddListener(() => 
+            {
+                gameCamera = AllCameraRigManager.Instance.CurrentCamera;
+                currentOutline = AllCameraRigManager.Instance.CurrentCamera.GetComponentInChildren<DrawOutline>();
+            });
+        }
+
+        /// <summary>
         /// 更新瞄准获取的对象值
         /// </summary>
         private void Update()
@@ -38,6 +56,14 @@ namespace GameSystem.Skill
             SetPosition(Input.mousePosition);
             RaycastObject();
             UpdateAimColor();
+        }
+
+        /// <summary>
+        /// 在消失时顺便把描边效果清除掉
+        /// </summary>
+        private void OnDisable()
+        {
+            currentOutline.targets.Clear();
         }
 
         /// <summary>
@@ -67,9 +93,16 @@ namespace GameSystem.Skill
             if (tagWithColor != null)
             {
                 aimImage.color = tagWithColor.color;
-                return;
+                currentOutline.outlineColor = aimImage.color;
+
+                if (!currentOutline.targets.Contains(HitPlayer.gameObject))
+                    currentOutline.targets.Add(HitPlayer.gameObject);
             }
-            aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
+            else
+            {
+                aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
+                currentOutline.targets.Clear();
+            }
         }
 
         /// <summary>

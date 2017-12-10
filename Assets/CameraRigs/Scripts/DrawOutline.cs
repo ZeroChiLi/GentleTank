@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class DrawOutline : PostEffectsBase
 {
@@ -15,7 +16,7 @@ public class DrawOutline : PostEffectsBase
     [Range(0, 9)]
     public int iterations = 1;
 
-    public GameObject[] targets;
+    public List<GameObject> targets;
 
     private MeshFilter[] meshFilters;
     private RenderTexture temRT1;
@@ -34,6 +35,7 @@ public class DrawOutline : PostEffectsBase
     /// </summary>
     private void SetupAddtionalCamera()
     {
+        additionalCamera.enabled = false;
         additionalCamera.CopyFrom(MainCamera);
         additionalCamera.clearFlags = CameraClearFlags.Color;
         additionalCamera.backgroundColor = Color.black;
@@ -45,12 +47,14 @@ public class DrawOutline : PostEffectsBase
     /// </summary>
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (autoPostEffect && TargetMaterial != null && drawOccupied != null && additionalCamera != null && targets != null && targets.Length != 0)
+        if (autoPostEffect && TargetMaterial != null && drawOccupied != null && additionalCamera != null && targets != null && targets.Count != 0)
         {
+            SetupAddtionalCamera();
+
             temRT1 = RenderTexture.GetTemporary(source.width, source.height, 0);
             additionalCamera.targetTexture = temRT1;
 
-            for (int i = 0; i < targets.Length; i++)
+            for (int i = 0; i < targets.Count; i++)
             {
                 if (targets[i] == null)
                     continue;
