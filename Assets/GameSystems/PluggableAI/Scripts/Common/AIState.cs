@@ -16,7 +16,7 @@ namespace GameSystem.AI
 
         //攻击控制
         public MinMaxValue attackRate = new MinMaxValue(0f, 5f, 0.8f, 1.2f);            //攻击周期
-        public MinMaxValue attackForce = new MinMaxValue(0f, 1f, 0.4f, 1f);             //攻击力度
+        public MinMaxValue attackForce = new MinMaxValue(0f, 100f, 20f, 50f);           //攻击力度
         public MinMaxValue attackDamage = new MinMaxValue(0f, 200f, 45f, 55f);          //攻击伤害
     }
 }

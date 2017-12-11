@@ -23,7 +23,7 @@ namespace GameSystem.AI
         [HideInInspector]
         public HealthManager healthManager;                     // 玩家血量管理器
         [HideInInspector]
-        public TankAttack attackManager;                     // 玩家攻击管理器
+        public AttackManager attackManager;                     // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
@@ -40,7 +40,7 @@ namespace GameSystem.AI
         {
             playerManager = GetComponent<PlayerManager>();
             healthManager = GetComponent<HealthManager>();
-            attackManager = GetComponent<TankAttack>();
+            attackManager = GetComponent<AttackManager>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -142,8 +142,7 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            //forceSlider.minValue + (float)values[0] * ForceSliderLength
-            attackManager.Attack(attackManager.minLaunchForce + defaultStats.attackForce.GetRandomValue() *attackManager.ForceSliderLength, defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
+            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
         }
 
         /// <summary>
