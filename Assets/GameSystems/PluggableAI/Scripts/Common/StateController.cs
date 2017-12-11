@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Item.Tank;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace GameSystem.AI
@@ -22,7 +23,7 @@ namespace GameSystem.AI
         [HideInInspector]
         public HealthManager healthManager;                     // 玩家血量管理器
         [HideInInspector]
-        public AttackManager attackManager;                     // 玩家攻击管理器
+        public TankAttack attackManager;                     // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
         private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
@@ -39,7 +40,7 @@ namespace GameSystem.AI
         {
             playerManager = GetComponent<PlayerManager>();
             healthManager = GetComponent<HealthManager>();
-            attackManager = GetComponent<AttackManager>();
+            attackManager = GetComponent<TankAttack>();
             rigidbodySelf = GetComponent<Rigidbody>();
             colliderSelf = GetComponent<Collider>();
             startState = currentState;
@@ -141,7 +142,8 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
+            //forceSlider.minValue + (float)values[0] * ForceSliderLength
+            attackManager.Attack(attackManager.minLaunchForce + defaultStats.attackForce.GetRandomValue() *attackManager.ForceSliderLength, defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
         }
 
         /// <summary>

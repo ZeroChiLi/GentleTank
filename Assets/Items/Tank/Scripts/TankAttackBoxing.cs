@@ -36,7 +36,7 @@ namespace Item.Tank
             else if (values.Length == 1)
                 Launch((float)values[0], damage, coolDownTime);
             else if (values.Length == 3)
-                Launch(forceSlider.minValue + (float)values[0] * ForceSliderLength, (float)values[1], (float)values[2]);
+                Launch((float)values[0], (float)values[1], (float)values[2]);
         }
 
         /// <summary>
