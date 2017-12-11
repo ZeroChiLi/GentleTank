@@ -36,6 +36,8 @@ public class DrawOutline : PostEffectsBase
     private void SetupAddtionalCamera()
     {
         additionalCamera.enabled = false;
+        if (!autoPostEffect)
+            return;
         additionalCamera.CopyFrom(MainCamera);
         additionalCamera.clearFlags = CameraClearFlags.Color;
         additionalCamera.backgroundColor = Color.black;
