@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class ChargeButton : CoolDownButton
 {
+    public AttackManager targetAttack;
     public Image sliderFullImg;             // 蓄力变化的图片
     public float minValue = 50f;            // 最小值
     public float maxValue = 100f;           // 最大值
@@ -67,6 +68,8 @@ public class ChargeButton : CoolDownButton
         if (!coolDownTimer.IsTimeUp)
             return;
         isCharging = false;
+        if (targetAttack.gameObject.activeInHierarchy)
+            targetAttack.Attack(CurrentValue);
         ResetChargeValue();
     }
 
@@ -80,5 +83,4 @@ public class ChargeButton : CoolDownButton
         isCharging = false;
         ResetChargeValue();
     }
-
 }

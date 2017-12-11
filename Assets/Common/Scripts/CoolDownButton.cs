@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CoolDownButton : MonoBehaviour
@@ -7,6 +8,8 @@ public class CoolDownButton : MonoBehaviour
     public Image buttonFullImg;                 // 按钮滑动条图片
     public bool coolDownAtStart = true;         // 是否在开始时先冷却
     public float coolDownTime = 1f;             // 冷却时间
+
+    public UnityEvent OnClickedSuccessedEvent;
 
     protected CountDownTimer coolDownTimer;     // 冷却时间计时器
 
@@ -46,14 +49,7 @@ public class CoolDownButton : MonoBehaviour
     {
         if (!coolDownTimer.IsTimeUp)
             return;
-        OnClickSuccessed();
-    }
-
-    /// <summary>
-    /// 点击成功时响应
-    /// </summary>
-    public virtual void OnClickSuccessed()
-    {
+        OnClickedSuccessedEvent.Invoke();
         DisableButtonAndResetCDTimer();
     }
 

@@ -22,8 +22,9 @@ namespace CrossPlatformInput
         /// <param name="min">最小值</param>
         /// <param name="max">最大值</param>
         /// <param name="rate">数值变化量</param>
-        public void Setup(float coolDown, float min, float max, float rate)
+        public void Setup(AttackManager attack,float coolDown, float min, float max, float rate)
         {
+            chargeButtonManager.targetAttack = attack;
             chargeButtonManager.coolDownTime = coolDown;
             chargeButtonManager.minValue = min;
             chargeButtonManager.maxValue = max;

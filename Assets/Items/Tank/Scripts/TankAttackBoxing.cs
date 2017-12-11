@@ -33,6 +33,8 @@ namespace Item.Tank
         {
             if (values == null || values.Length == 0)
                 Launch(forceSlider.value, damage, coolDownTime);
+            else if (values.Length == 1)
+                Launch((float)values[0], damage, coolDownTime);
             else if (values.Length == 3)
                 Launch(forceSlider.minValue + (float)values[0] * ForceSliderLength, (float)values[1], (float)values[2]);
         }
