@@ -15,8 +15,11 @@ namespace GameSystem.AI
 
         public override bool Decide(StateController controller)
         {
+            // 设置随机旋转方向
+            controller.statePrefs.AddIfNotContains(CommonCode.Clockwise, Random.value < 0.5 ? -1 : 1);
+
             controller.navMeshAgent.isStopped = true;
-            controller.transform.Rotate(0, rotatePerSecond * Time.deltaTime, 0);
+            controller.transform.Rotate(0, (int)controller.statePrefs[CommonCode.Clockwise] * rotatePerSecond * Time.deltaTime, 0);
 
             controller.statePrefs.AddIfNotContains(CommonCode.ScanDecisionCD, new CountDownTimer(searchDuration, true));
 

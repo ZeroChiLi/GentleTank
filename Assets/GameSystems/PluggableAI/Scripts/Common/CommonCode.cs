@@ -11,6 +11,10 @@ namespace GameSystem.AI
         CatchEnemy,
         #endregion
 
+        #region int
+        Clockwise,
+        #endregion
+
         #region string
         BroadcastMessage,
         #endregion
