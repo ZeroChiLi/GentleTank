@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class CustomTankMenuManager : MonoBehaviour 
 {
     static private CustomTankMenuManager instance;
-    [HideInInspector]
     static public CustomTankMenuManager Instance { get { return instance; } }
 
     public AllCustomTankManager allCustomTank;
     public TextMeshProUGUI menuText;
     public Button changeBtn;
+    public ScrollRect scrollRect;
     public List<TankModulesTableManager> moduleTables;
 
     private int currentIndex;
@@ -46,6 +46,7 @@ public class CustomTankMenuManager : MonoBehaviour
         currentIndex %= moduleTables.Count;
         menuText.text = moduleTables[currentIndex].tableName;
         moduleTables[currentIndex].gameObject.SetActive(true);
+        scrollRect.content = moduleTables[currentIndex].rectTransform;
     }
 
 }
