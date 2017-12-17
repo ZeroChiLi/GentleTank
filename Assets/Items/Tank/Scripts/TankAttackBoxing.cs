@@ -14,6 +14,7 @@ namespace Item.Tank
 
         protected new void OnEnable()
         {
+            springBoxingGlove.ammo.launcher = playerManager;
             base.OnEnable();
             if (springBoxingGlove)
                 springBoxingGlove.fillAmount = 0;
