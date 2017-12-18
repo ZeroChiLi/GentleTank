@@ -11,6 +11,7 @@ public class CurrentTankPanelManager : MonoBehaviour
     public AllCustomTankManager allCustomTank;                      // 所有坦克管理器
     public AllCustomTankPreviewManager allCustomTankPreview;        // 所有自定义坦克预览管理器
     public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
+    public UnityEvent createdSuccessedEvent;                        // 创建成功事件
     public UnityEvent selectSuccessedEvent;                         // 选择成功事件
 
     private TankAssembleManager newTankAssemble;                    // 新建的坦克组装
@@ -34,7 +35,10 @@ public class CurrentTankPanelManager : MonoBehaviour
         newTankAssemble.CopyFrom(defaultTankAssemble);
         allCustomTank.AddNewTank(newTankAssemble);
         allCustomTankPreview.CatchTankTexture(allCustomTank.Count - 1);
-        OnTankSelected();
+        allCustomTank.SelectCurrentTank(allCustomTank.Count - 1);
+        allCustomTankPreview.OnTankPreviewClicked();
+        createdSuccessedEvent.Invoke();
+        //OnTankSelected();
     }
 
     /// <summary>
