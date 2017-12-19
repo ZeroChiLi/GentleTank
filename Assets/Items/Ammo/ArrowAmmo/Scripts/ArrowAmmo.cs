@@ -18,6 +18,7 @@ namespace Item.Ammo
             {
                 transform.SetParent(preParent);
                 preParent = null;
+                gameObject.SetActive(false);
             }
         }
 
