@@ -2,6 +2,7 @@
 
 public class BlinkPostEffect : PostEffectsBase 
 {
+    public Camera targetCamera;
     public bool blinkAtAwake = true;
     public float blinkTime = 1f;
     [Range(0f, 1f)]
@@ -11,25 +12,25 @@ public class BlinkPostEffect : PostEffectsBase
     public MeshFilter[] meshFilters;
     public bool isOpen;
     public CountDownTimer timer;
+    public CountDownTimer Timer { get { return timer = timer == null ? timer = new CountDownTimer(blinkTime, true, true) : timer; } private set { timer = value; } }
 
     private void Awake()
     {
-        timer = new CountDownTimer(blinkTime, true, true);
         if (blinkAtAwake)
             isOpen = true;
     }
 
-    // 也可以在OnPostRender()中更新
     private void Update()
     {
         if (isOpen && TargetMaterial != null )
         {
-            if (timer.Duration != blinkTime)
-                timer.Reset(blinkTime);
-            TargetMaterial.SetColor("_Color", new Color(color.r,color.g,color.b, maxColorAlpha * blinkCurve.Evaluate(Mathf.PingPong(timer.GetPercent() * 2F,1))));
+            if (Timer.Duration != blinkTime)
+                Timer.Reset(blinkTime);
+            TargetMaterial.SetColor("_Color", new Color(color.r,color.g,color.b, maxColorAlpha * blinkCurve.Evaluate(Mathf.PingPong(Timer.GetPercent() * 2F,1))));
 
             for (int j = 0; j < meshFilters.Length; j++)
-                Graphics.DrawMesh(meshFilters[j].sharedMesh, meshFilters[j].transform.localToWorldMatrix, TargetMaterial, 0);   // 对选中物体再次渲染。
+                for (int k = 0; k < meshFilters[j].sharedMesh.subMeshCount; k++)
+                    Graphics.DrawMesh(meshFilters[j].sharedMesh, meshFilters[j].transform.localToWorldMatrix, TargetMaterial, 0, null, k);
         }
     }
 }
