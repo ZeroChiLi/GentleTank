@@ -2,14 +2,13 @@
 
 public class BlinkPostEffect : PostEffectsBase 
 {
-    public Camera targetCamera;
     public bool blinkAtAwake = true;
     public float blinkTime = 1f;
     [Range(0f, 1f)]
     public float maxColorAlpha = 0.5f;
     public AnimationCurve blinkCurve;
     public Color color = Color.green;
-    public MeshFilter[] meshFilters;
+    public MeshFilter meshFilter;
     public bool isOpen;
     public CountDownTimer timer;
     public CountDownTimer Timer { get { return timer = timer == null ? timer = new CountDownTimer(blinkTime, true, true) : timer; } private set { timer = value; } }
@@ -22,15 +21,16 @@ public class BlinkPostEffect : PostEffectsBase
 
     private void Update()
     {
-        if (isOpen && TargetMaterial != null )
+        if (isOpen && TargetMaterial != null && meshFilter != null)
         {
             if (Timer.Duration != blinkTime)
                 Timer.Reset(blinkTime);
+
+            // 颜色透明度变化：指定事件的周期，根据曲线变化透明度。
             TargetMaterial.SetColor("_Color", new Color(color.r,color.g,color.b, maxColorAlpha * blinkCurve.Evaluate(Mathf.PingPong(Timer.GetPercent() * 2F,1))));
 
-            for (int j = 0; j < meshFilters.Length; j++)
-                for (int k = 0; k < meshFilters[j].sharedMesh.subMeshCount; k++)
-                    Graphics.DrawMesh(meshFilters[j].sharedMesh, meshFilters[j].transform.localToWorldMatrix, TargetMaterial, 0, null, k);
+            for (int k = 0; k < meshFilter.sharedMesh.subMeshCount; k++)
+                Graphics.DrawMesh(meshFilter.sharedMesh, meshFilter.transform.localToWorldMatrix, TargetMaterial, 0, null, k);
         }
     }
 }
