@@ -25,13 +25,12 @@ namespace GameSystem.AI
         [HideInInspector]
         public AttackManager attackManager;                     // 玩家攻击管理器
         private State startState;                               // 初始状态，每次复活后重置
-        private RaycastHit hit;                                 // 射线捕获
         private Transform target;                               // 追踪目标
 
         private int nextWaypointIndex;                          // 下一个巡逻点
         public Point NextWaypoint { get { return waypoints[nextWaypointIndex]; } }
 
-        public TeamManager Team { get{ return playerManager.Team; } }
+        public TeamManager Team { get { return playerManager.Team; } }
 
         /// <summary>
         /// 获取组件
@@ -180,10 +179,11 @@ namespace GameSystem.AI
         /// <returns>是否查找到敌人</returns>
         public bool FindEnemy(Quaternion anger, float radius, Color debugColor, bool isFromEyes = true)
         {
+            RaycastHit hit;
             if (isFromEyes)
-                target = FindTarget.FindEnemy(out hit, eyesPoint.GetWorldPosition(transform),eyesPoint.GetWorldForward(transform), playerManager, anger, radius, debugColor);
+                target = FindTarget.FindEnemy(out hit, eyesPoint.GetWorldPosition(transform), eyesPoint.GetWorldForward(transform), playerManager, anger, radius, debugColor);
             else
-                target = FindTarget.FindEnemy(out hit, transform.position,transform.forward, playerManager, anger, radius, debugColor);
+                target = FindTarget.FindEnemy(out hit, transform.position, transform.forward, playerManager, anger, radius, debugColor);
             if (target != null)
             {
                 instancePrefs.AddOrModifyValue(CommonCode.ChaseEnemy, target);

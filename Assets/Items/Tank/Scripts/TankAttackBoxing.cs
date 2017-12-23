@@ -14,10 +14,12 @@ namespace Item.Tank
 
         protected new void OnEnable()
         {
-            springBoxingGlove.ammo.launcher = playerManager;
             base.OnEnable();
             if (springBoxingGlove)
+            {
                 springBoxingGlove.fillAmount = 0;
+                springBoxingGlove.ammo.launcher = playerManager;
+            }
         }
 
         protected new void OnDisable()

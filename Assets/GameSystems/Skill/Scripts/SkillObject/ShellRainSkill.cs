@@ -26,7 +26,7 @@ namespace GameSystem.Skill
         /// </summary>
         public override void Init()
         {
-            warnningPool.poolParent.transform.parent = GameObject.FindGameObjectWithTag("GroundCanvas").transform;
+            warnningPool.CreateObjectPool(GameObject.FindGameObjectWithTag("GroundCanvas"));
             aimMode.groundSpriteRadius = attackRadius;
         }
 

@@ -12,18 +12,24 @@ public class ObjectPool : ScriptableObject
     public int objectCount = 10;                //数量
     public bool autoIncrease = true;            //如果需要自动增加
 
-    [HideInInspector]
-    public GameObject poolParent;               //对象池存放的父对象
+    private GameObject poolParent;              //对象池存放的父对象
+    public GameObject PoolParent { get { CheckObjeckPool(); return poolParent; } set { CheckObjeckPool(); poolParent = value; } }
+
+    public bool isCreated = false;
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
+    private GameObject allPoolParent;
 
-    public int Count { get { return objectPool.Count; } }
-    public List<GameObject> PoolList { get { return objectPool; } set { objectPool = value; } }
-
+    public int Count { get { CheckObjeckPool(); return objectPool.Count; } }
     public GameObject this[int index]
     {
-        get { return objectPool[index]; }
-        set { objectPool[index] = value; }
+        get { CheckObjeckPool(); return objectPool[index]; }
+        set { CheckObjeckPool(); objectPool[index] = value; }
+    }
+
+    private void OnEnable()
+    {
+        isCreated = false;
     }
 
     /// <summary>
@@ -43,16 +49,24 @@ public class ObjectPool : ScriptableObject
             objectPool.Add(obj);
             obj.SetActive(false);
         }
+        isCreated = true;
     }
 
     /// <summary>
-    /// 设置所有对象激活状态
+    /// 检测对象是否创建，如果没有，自动创建
     /// </summary>
-    /// <param name="active">是否激活</param>
-    public void SetAllActive(bool active)
+    private void CheckObjeckPool()
     {
-        for (int i = 0; i < objectPool.Count; i++)
-            objectPool[i].SetActive(active);
+        if (isCreated)
+            return;
+        CreateObjectPool();
+        allPoolParent = GameObject.FindWithTag("ObjectPools");
+        if (allPoolParent == null)
+        {
+            allPoolParent = new GameObject("AllObjectPools");
+            allPoolParent.tag = "ObjectPools";
+        }
+        poolParent.transform.SetParent(allPoolParent.transform);
     }
 
     /// <summary>
@@ -69,10 +83,11 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     public GameObject GetNextObject(bool active = true, Point point = null)
     {
+        CheckObjeckPool();
         for (int i = 0; i < objectPool.Count; i++)
         {
             int index = (currentIndex + 1 + i) % objectPool.Count;   //循环获取对象
-            if (!objectPool[index].activeInHierarchy)
+            if (!this[index].activeInHierarchy)
             {
                 currentIndex = index;
                 return SetupObject(objectPool[index], active, point);
@@ -105,7 +120,7 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     /// <param name="obj">新增对象</param>
     /// <returns>返回新增的对象</returns>
-    public GameObject AddOneMoreObject(GameObject obj = null)
+    private GameObject AddOneMoreObject(GameObject obj = null)
     {
         objectPool = objectPool ?? new List<GameObject>();  // 若没创建，那就先创建
         if (obj == null)
@@ -115,15 +130,6 @@ public class ObjectPool : ScriptableObject
         objectPool.Add(obj);
         currentIndex = -1;
         return obj;
-    }
-
-    /// <summary>
-    /// 清除所有对象
-    /// </summary>
-    public void CleanAll()
-    {
-        objectPool = null;
-        currentIndex = -1;
     }
 
 }

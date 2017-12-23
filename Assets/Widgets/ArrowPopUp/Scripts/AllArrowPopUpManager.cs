@@ -22,7 +22,7 @@ namespace Widget
                 if (AllPlayerManager.Instance[i].IsAI)        //是AI就不显示
                     continue;
                 //arrowPopUpPool.GetNextObject().GetComponent<ArrowPopUpManager>().Init(AllPlayerManager.Instance[i].transform.position + offset, AllPlayerManager.Instance[i].RepresentColor, "P" + i);
-                arrowBillboardPool.GetNextObject().GetComponent<ArrowBillboard>().SetColor(AllPlayerManager.Instance[i].transform.position + offset, AllPlayerManager.Instance[i].RepresentColor);
+                arrowBillboardPool.GetNextObject().GetComponent<ArrowBillboard>().Setup(AllPlayerManager.Instance[i].transform.position + offset, AllPlayerManager.Instance[i].RepresentColor);
             }
         }
     }

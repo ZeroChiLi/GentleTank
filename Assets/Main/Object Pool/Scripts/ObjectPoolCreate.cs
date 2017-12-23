@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 //对象池的集中初始化创建
-public class ObjectPoolCreate : MonoBehaviour 
+public class ObjectPoolCreate : MonoBehaviour
 {
     public ObjectPool[] objectPools;
 
@@ -15,7 +15,7 @@ public class ObjectPoolCreate : MonoBehaviour
             if (objectPools[i] == null)
                 continue;
             objectPools[i].CreateObjectPool();
-            objectPools[i].poolParent.transform.parent = allPoolParents.transform;
+            objectPools[i].PoolParent.transform.SetParent(allPoolParents.transform);
         }
     }
 }
