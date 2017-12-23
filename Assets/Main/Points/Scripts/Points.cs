@@ -22,9 +22,10 @@ public class Points : MonoBehaviour
     }
 
     public PointAppearance appearance = new PointAppearance();
-    public int currentIndex = -1;
     public bool looped = true;
     public List<Point> points = new List<Point>();
+    [HideInInspector]
+    public int currentIndex = -1;
 
     public int Count { get { return points.Count; } }
     public Point this[int index] { get { return points[index]; } set { points[index] = value; } }

@@ -12,9 +12,9 @@ public class Effect : MonoBehaviour
     private void Awake()
     {
         if (effectAudio == null)
-            effectAudio = GetComponent<AudioSource>();
+            effectAudio = GetComponentInChildren<AudioSource>();
         if (effectParticle == null)
-            effectParticle = GetComponent<ParticleSystem>();
+            effectParticle = GetComponentInChildren<ParticleSystem>();
     }
 
     /// <summary>
