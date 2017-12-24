@@ -21,6 +21,9 @@ public class ParachuteManager : MonoBehaviour
             Play();
     }
 
+    /// <summary>
+    /// 执行降落动画
+    /// </summary>
     public void Play()
     {
         StartCoroutine(AnimationCoroutine(startPos, endPos));
