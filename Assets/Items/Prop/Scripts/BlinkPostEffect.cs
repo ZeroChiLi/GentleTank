@@ -11,7 +11,7 @@ public class BlinkPostEffect : PostEffectsBase
     public MeshFilter meshFilter;
     public bool isOpen;
     public CountDownTimer timer;
-    public CountDownTimer Timer { get { return timer = timer == null ? timer = new CountDownTimer(blinkTime, true, true) : timer; } private set { timer = value; } }
+    public CountDownTimer Timer { get { return timer = timer ?? new CountDownTimer(blinkTime, true, true); } private set { timer = value; } }
 
     private void Awake()
     {

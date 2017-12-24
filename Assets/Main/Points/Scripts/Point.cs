@@ -47,5 +47,15 @@ public class Point
     {
         return rotation * parent.forward;
     }
+
+    /// <summary>
+    /// 将数值赋给目标转换
+    /// </summary>
+    /// <param name="target">目标</param>
+    public void SetToTransform(Transform target)
+    {
+        target.position = position;
+        target.rotation = rotation;
+    }
 }
 

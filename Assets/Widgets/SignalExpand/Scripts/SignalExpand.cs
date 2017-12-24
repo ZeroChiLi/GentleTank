@@ -12,7 +12,7 @@ public class SignalExpand : MonoBehaviour
     private CountDownTimer timer;
     public CountDownTimer Timer
     {
-        get { return timer = timer == null ? new CountDownTimer(changeTime, false, false) : timer; }
+        get { return timer = timer ?? new CountDownTimer(changeTime, false, false); }
         set { timer = value; }
     }
 

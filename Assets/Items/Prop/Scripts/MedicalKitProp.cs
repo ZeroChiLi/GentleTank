@@ -18,16 +18,17 @@ public class MedicalKitProp : PropBase
         healEffect.gameObject.SetActive(false);
     }
 
-    protected override void OnPlayerTouch(PlayerManager player)
+    protected override bool OnPlayerTouch(PlayerManager player)
     {
         targetHealth = player.GetComponent<HealthManager>();
         if (targetHealth == null)
-            return;
+            return false;
         targetHealth.SetHealthAmount(healAmount);
-        StartCoroutine(TouchSuccessed());
+        StartCoroutine(InactiveAndShowEffect());
+        return true;
     }
 
-    private IEnumerator TouchSuccessed()
+    private IEnumerator InactiveAndShowEffect()
     {
         if (healEffect != null)
         {
