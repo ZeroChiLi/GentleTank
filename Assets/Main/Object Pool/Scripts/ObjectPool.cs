@@ -9,13 +9,13 @@ public class ObjectPool : ScriptableObject
     [Header("Please Call 'CrateObjectPool()' Function.")]
     [Space(20)]
     public GameObject objectPerfab;             //预设
-    public int objectCount = 10;                //数量
+    public int objectCount = 3;                 //数量
     public bool autoIncrease = true;            //如果需要自动增加
 
     private GameObject poolParent;              //对象池存放的父对象
     public GameObject PoolParent { get { CheckObjeckPool(); return poolParent; } set { CheckObjeckPool(); poolParent = value; } }
 
-    public bool isCreated = false;
+    private bool isCreated = false;
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
     private GameObject allPoolParent;

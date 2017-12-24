@@ -7,6 +7,7 @@ public class AllPropsManager : MonoBehaviour
     public float period = 10f;
     public int maxPropCount = 3;
     public bool randomProp = true;
+    public ObjectPool parachutePool;
     public ObjectPool[] propPools;
 
 
