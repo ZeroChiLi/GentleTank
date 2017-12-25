@@ -33,7 +33,7 @@ public class AllPropsManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameRound.Instance.CurrentGameState != GameState.Playing)
+        if (!GameRound.Instance.IsGamePlaying)
         {
             // 非游戏回合进行时，不做道具产生
             isStart = false;
@@ -128,6 +128,9 @@ public class AllPropsManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 清除信息
+    /// </summary>
     private void Clean()
     {
         timer = null;

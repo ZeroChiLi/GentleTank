@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         SetupGame();                                // 配置游戏
         //CreateMasterTank();
 
-        new GameRound(numRoundsToWin);             // 创建一个游戏纪录实例
+        GameRound.Instance.maxRound = numRoundsToWin;             // 设置局数
         GameRound.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
         StartCoroutine(GameLoop());
     }
@@ -151,9 +151,9 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameLoop()
     {
         yield return StartCoroutine(RoundStarting());           //回合开始，有一段延时
-
+        GameRound.Instance.OnGameRoundStartEvent.Invoke();
         yield return StartCoroutine(RoundPlaying());            //回合中
-
+        GameRound.Instance.OnGameRoundEndEvent.Invoke();
         yield return StartCoroutine(RoundEnding());             //回合结束
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合

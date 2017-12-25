@@ -26,7 +26,7 @@ namespace GameSystem.Skill
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Start()
+        public void Awake()
         {
             buttonImage = GetComponent<Image>();
             slider.maxValue = skill.coolDownTime;
@@ -77,7 +77,7 @@ namespace GameSystem.Skill
         /// </summary>
         protected void Update()
         {
-            if (GameRound.Instance.CurrentGameState != GameState.Playing)
+            if (!GameRound.Instance.IsGamePlaying)
                 return;
 
             if (!IsTimeUp)

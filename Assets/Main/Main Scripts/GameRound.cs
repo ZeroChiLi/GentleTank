@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 游戏状态
@@ -13,38 +13,30 @@ public enum GameState
 public class GameRound
 {
     private static GameRound instance;
-    public static GameRound Instance { get { return instance; } }
+    public static GameRound Instance { get { return instance = instance ?? new GameRound(); } }
+
+    public int maxRound;                                        // 最大回合数
+    public UnityEvent OnGameRoundStartEvent = new UnityEvent(); // 游戏回合开始时响应
+    public UnityEvent OnGameRoundEndEvent = new UnityEvent();   // 游戏回合结束时响应
 
     private GameState currentGameState;                         // 当前游戏状态
-    private int maxRound;                                       // 最大回合数
     private int currentRound = 0;                               // 当前回合数
     private PlayerManager winner;                               // 当前（最终）获胜团队
-    private Dictionary<PlayerManager, int> playerWonTimes;      // 玩家及其对应获胜次数
+    private Dictionary<PlayerManager, int> playerWonTimes = new Dictionary<PlayerManager, int>();      // 玩家及其对应获胜次数
     private bool haveWinner = false;                            // 临时判断获胜玩家变量
     private PlayerManager temPlayer;                            // 临时玩家变量
 
     public PlayerManager Winner { get { return winner; } }
-
     public int CurrentRound { get { return currentRound; } }
     public GameState CurrentGameState { get { return currentGameState; } }
-
-    /// <summary>
-    /// 初始化构造游戏记录
-    /// </summary>
-    /// <param name="maxRound">最大回合数</param>
-    public GameRound(int maxRound)
-    {
-        instance = this;
-        this.maxRound = maxRound;
-        playerWonTimes = new Dictionary<PlayerManager, int>();
-        InitTanksTeamsDic();
-    }
+    public bool IsGamePlaying { get { return currentGameState == GameState.Playing; } }
 
     /// <summary>
     /// 初始化坦克团队字典
     /// </summary>
-    private void InitTanksTeamsDic()
+    public void InitTanksTeamsDic()
     {
+        playerWonTimes.Clear();
         for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             playerWonTimes.Add(AllPlayerManager.Instance[i],0);
     }
@@ -54,6 +46,7 @@ public class GameRound
     /// </summary>
     public void StartGame()
     {
+        InitTanksTeamsDic();
         currentRound = 0;
     }
 
@@ -65,6 +58,7 @@ public class GameRound
         ++currentRound;
         winner = null;
         currentGameState = GameState.Start;
+        //OnGameRoundStartEvent.Invoke();
     }
 
     /// <summary>
@@ -92,6 +86,7 @@ public class GameRound
         //如果为空，说明平局（全死了，没有获胜玩家）
         winner = temPlayer;
         currentGameState = GameState.End;
+        //OnGameRoundEndEvent.Invoke();
         return true;
     }
 

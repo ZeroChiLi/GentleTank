@@ -21,6 +21,13 @@ namespace Widget.ChargeArea
             fillAreaObjectPool.CreateObjectPool(this.gameObject);
         }
 
+        private void Start()
+        {
+            // 注册回合监听
+            GameRound.Instance.OnGameRoundStartEvent.AddListener(() => { OpenChargeAreas(); });
+            GameRound.Instance.OnGameRoundEndEvent.AddListener(() => { ShutChargeAreas(); });
+        }
+
         /// <summary>
         /// 通过点列表创建充电区们
         /// </summary>
@@ -28,31 +35,6 @@ namespace Widget.ChargeArea
         {
             for (int i = 0; i < chargeAreaPoints.Count; i++)
                 chargeAreaList.Add(Instantiate(chargeAreaPerfab, chargeAreaPoints[i].position, chargeAreaPoints[i].rotation, transform).GetComponent<ChargeAreaManager>());
-        }
-
-        /// <summary>
-        /// 更新充电区状态
-        /// </summary>
-        private void Update()
-        {
-            ChangeChargeAreaStateWithGameRoundState();
-        }
-
-        /// <summary>
-        /// 通过游戏的回合状态改变充电区是否激活状态
-        /// </summary>
-        private void ChangeChargeAreaStateWithGameRoundState()
-        {
-            if (lastGameState != GameState.Playing && GameRound.Instance.CurrentGameState == GameState.Playing)
-            {
-                lastGameState = GameState.Playing;
-                OpenChargeAreas();
-            }
-            else if (lastGameState == GameState.Playing && GameRound.Instance.CurrentGameState != GameState.Playing)
-            {
-                lastGameState = GameState.None;
-                ShutChargeAreas();
-            }
         }
 
         /// <summary>

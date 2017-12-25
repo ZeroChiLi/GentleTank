@@ -25,6 +25,9 @@ namespace GameSystem.Skill
 
         private void Start()
         {
+            GameRound.Instance.OnGameRoundStartEvent.AddListener(() => { SetAllSkillEnable(true); });
+            GameRound.Instance.OnGameRoundEndEvent.AddListener(() => { aim.SetActive(false); SetAllSkillEnable(false); });
+
             skillManagerList = new List<SkillManager>();
             for (int i = 0; i < skillObjectList.Count; i++)
                 skillManagerList.Add(skillObjectList[i].CreateSkillButton(transform).GetComponent<SkillManager>());
@@ -36,14 +39,8 @@ namespace GameSystem.Skill
         private void Update()
         {
             //不在回合中就跳出
-            if (GameRound.Instance.CurrentGameState != GameState.Playing)
-            {
-                aim.SetActive(false);
-                SetAllSkillEnable(false);
+            if (!GameRound.Instance.IsGamePlaying)
                 return;
-            }
-
-            SetAllSkillEnable(true);
 
             // clickedSkillSameFrame避免同一帧在点击按钮时同时释放了技能
             if (!clickedSkillSameFrame && currentSkill != null && Input.GetMouseButtonUp(0))
