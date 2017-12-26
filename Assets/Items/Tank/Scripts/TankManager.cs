@@ -15,7 +15,7 @@ namespace Item.Tank
         public SignImageManager signImage;                      // 符号图标
         public ObjectPool signalExpandPool;                     // 信号扩展对象池
         [HideInInspector]
-        public TankMovement tankMovement;                       // 移动
+        public MoveManager tankMovement;                       // 移动
         [HideInInspector]
         public TankAttack tankAttack;                           // 攻击
         [HideInInspector]
@@ -30,7 +30,7 @@ namespace Item.Tank
         /// </summary>
         private void Awake()
         {
-            tankMovement = GetComponent<TankMovement>();
+            tankMovement = GetComponent<MoveManager>();
             tankAttack = GetComponent<TankAttack>();
             tankHealth = GetComponent<TankHealth>();
             stateController = GetComponent<StateController>();
