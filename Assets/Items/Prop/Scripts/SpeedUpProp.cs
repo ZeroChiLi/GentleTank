@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AccelerateProp : PropBase
+public class SpeedUpProp : PropBase
 {
     [Range(-1f, 1f)]
     public float accelerateRatio = 0.5f;        // 加速比例

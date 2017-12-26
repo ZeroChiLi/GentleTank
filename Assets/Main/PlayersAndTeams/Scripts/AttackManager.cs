@@ -2,12 +2,13 @@
 
 public abstract class AttackManager : MonoBehaviour 
 {
-    public string shortcutName = "Fire0";                           // 攻击键名称
-    public float coolDownTime = 1f;                               // 冷却时间
+    public string shortcutName = "Fire0";                       // 攻击键名称
+    public float coolDownTime = 1f;                             // 冷却时间
+    public float additionDamage = 0;                            // 附加给弹药的额外伤害值
 
-    public bool IsTimeUp { get { return CDTimer.IsTimeUp; } }    // 是否正在冷却
+    public bool IsTimeUp { get { return CDTimer.IsTimeUp; } }   // 是否正在冷却
 
-    protected CountDownTimer cdTimer;                               // 冷却时间计时器
+    protected CountDownTimer cdTimer;                           // 冷却时间计时器
     public CountDownTimer CDTimer
     {
         get

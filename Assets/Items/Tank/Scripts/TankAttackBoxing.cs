@@ -51,7 +51,7 @@ namespace Item.Tank
         private void Launch(float launchForce, float fireDamage, float coolDownTime)
         {
             springBoxingGlove.maxDistance = launchForce / 10f;
-            springBoxingGlove.ammo.damage = fireDamage;
+            springBoxingGlove.ammo.damage = fireDamage + additionDamage;
             springBoxingGlove.glove.enabled = true;
 
             StartCoroutine(LaunchBoxingGlove());

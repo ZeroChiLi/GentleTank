@@ -10,6 +10,16 @@ public abstract class PropBase : MonoBehaviour
     public delegate void PropEventHandle(PropBase prop);
     public event PropEventHandle OnTouchFinishedEvent;
 
+    protected void Awake()
+    {
+        if (collider == null)
+            collider = GetComponentInChildren<Collider>();
+        if (meshRenderer == null)
+            meshRenderer = GetComponentInChildren<MeshRenderer>();
+        if (touchEffect == null)
+            touchEffect = GetComponentInChildren<Effect>();
+    }
+
     /// <summary>
     /// 初始化：开启碰撞体、渲染网格、关掉碰撞特效
     /// </summary>

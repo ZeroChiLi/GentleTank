@@ -1,10 +1,7 @@
 ﻿
-using System.Collections;
-using UnityEngine;
-
 public class MedicalKitProp : PropBase
 {
-    public float healAmount = 150f;
+    public float healAmount = 150f;     // 增加的血量
 
     protected HealthManager targetHealth;
 
