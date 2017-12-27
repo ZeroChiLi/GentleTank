@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CameraRig
 {
+    [ExecuteInEditMode]
     public class MultiCameraRig : MonoBehaviour
     {
         public float dampTime = 0.2f;                   // 重新聚焦到的时间
@@ -13,7 +14,11 @@ namespace CameraRig
 
         private float zoomSpeed;                        // 缩放速度
         private Vector3 moveVelocity;                   // 移动速度
-        private Vector3 desiredPosition;                // 需要移到到地点
+        private Vector3 averagePos;                     // 需要移到到地点
+        private List<Transform> actualTargets = new List<Transform>();          // 实际目标
+        private Vector3 localAveragePos { get { return transform.InverseTransformPoint(averagePos); } } // 本地坐标的平均位置值
+        private float orthographicSize;
+        private Vector3 desiredPosToTarget;
 
         /// <summary>
         /// 设置初始位置和大小
@@ -23,62 +28,47 @@ namespace CameraRig
         {
             if (targets != null)
                 this.targets = targets;
-            FindAveragePosition();
-            transform.position = desiredPosition;
+            transform.position = FindAveragePosition();
             controlCamera.orthographicSize = FindRequiredSize();
         }
 
         /// <summary>
         /// 固定时间频率更新
         /// </summary>
-        private void FixedUpdate()
+        private void Update()
         {
-            if (targets == null)
+            if (targets == null || !UpdateActualTargets())
                 return;
-            Move();                                    // 移动
-            Zoom();                                    // 缩放
+            transform.position = Vector3.SmoothDamp(transform.position, FindAveragePosition(), ref moveVelocity, dampTime);
+            controlCamera.orthographicSize = Mathf.SmoothDamp(controlCamera.orthographicSize, FindRequiredSize(), ref zoomSpeed, dampTime);
         }
 
         /// <summary>
-        /// 移动相机
+        /// 更新实际目标（inactive的物体排除掉）
         /// </summary>
-        private void Move()
+        /// <returns>是否存在至少一个目标</returns>
+        private bool UpdateActualTargets()
         {
-            FindAveragePosition();
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, dampTime);
-        }
-
-        /// <summary>
-        /// 缩放镜头
-        /// </summary>
-        private void Zoom()
-        {
-            float requiredSize = FindRequiredSize();
-            controlCamera.orthographicSize = Mathf.SmoothDamp(controlCamera.orthographicSize, requiredSize, ref zoomSpeed, dampTime);
+            actualTargets.Clear();
+            for (int i = 0; i < targets.Count; i++)
+                if (targets[i].gameObject.activeSelf)
+                    actualTargets.Add(targets[i]);
+            return actualTargets.Count > 0;
         }
 
         /// <summary>
         /// 找到平均点放到desiredPosition
         /// </summary>
-        private void FindAveragePosition()
+        private Vector3 FindAveragePosition()
         {
-            Vector3 averagePos = new Vector3();
-            int numTargets = 0;
+            averagePos = Vector3.zero;
+            for (int i = 0; i < actualTargets.Count; i++)
+                averagePos += actualTargets[i].position;
 
-            for (int i = 0; i < targets.Count; i++)
-            {
-                // 死掉的不计算
-                if (!targets[i].gameObject.activeSelf)
-                    continue;
-
-                averagePos += targets[i].position;
-                numTargets++;
-            }
-
-            if (numTargets > 0)
-                averagePos /= numTargets;
+            if (actualTargets.Count > 0)
+                averagePos /= actualTargets.Count;
             averagePos.y = transform.position.y;
-            desiredPosition = averagePos;
+            return averagePos;
         }
 
         /// <summary>
@@ -87,27 +77,21 @@ namespace CameraRig
         /// <returns></returns>
         private float FindRequiredSize()
         {
-            // 世界坐标转到本地坐标
-            Vector3 desiredLocalPos = transform.InverseTransformPoint(desiredPosition);
-            float size = 0f;
+            orthographicSize = 0f;
 
             // 找到最大需要的修改尺寸
-            for (int i = 0; i < targets.Count; i++)
+            for (int i = 0; i < actualTargets.Count; i++)
             {
-                if (!targets[i].gameObject.activeSelf)
-                    continue;
-
-                Vector3 targetLocalPos = transform.InverseTransformPoint(targets[i].position);
-                Vector3 desiredPosToTarget = targetLocalPos - desiredLocalPos;
-
-                size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.y));
-                size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.x) / controlCamera.aspect);
+                //transform.InverseTransformVector
+                //desiredPosToTarget = transform.InverseTransformPoint(actualTargets[i].position) - localAveragePos;
+                desiredPosToTarget = transform.InverseTransformVector(actualTargets[i].position - averagePos);
+                orthographicSize = Mathf.Max(orthographicSize, Mathf.Abs(desiredPosToTarget.y), Mathf.Abs(desiredPosToTarget.x) / controlCamera.aspect);
             }
 
             // 加上边界
-            size += screenEdgeBuffer;
-            size = Mathf.Max(size, minSize);
-            return size;
+            orthographicSize += screenEdgeBuffer;
+            orthographicSize = Mathf.Max(orthographicSize, minSize);
+            return orthographicSize;
         }
     }
 }
