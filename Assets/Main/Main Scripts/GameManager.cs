@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Widget.Minimap;
 using System.Collections.Generic;
 using CrossPlatformInput;
+using CameraRig;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
     public float endDelay = 3f;                     // 结束延时时间
     public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    public AllCameraRigManager allCameraRig;        // 所有镜头控制器
+    //public AllCameraRigManager allCameraRig;        // 所有镜头控制器
     public MinimapWitchCamera minimap;              // 小地图管理
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
 
@@ -48,7 +49,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetupGame();                                // 配置游戏
-        //CreateMasterTank();
 
         GameRound.Instance.maxRound = numRoundsToWin;             // 设置局数
         GameRound.Instance.StartGame();            // 开始游戏循环（检测获胜者，重新回合，结束游戏等）
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             //    myTank = tankList[i];
         }
 
-        allCameraRig.Init(myTank?myTank.transform : null, AllPlayerManager.Instance.GetAllPlayerTransform());
+        MainCameraRig.Instance.Setup(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
 
         if (myTank != null)
         {
@@ -139,9 +139,7 @@ public class GameManager : MonoBehaviour
         if (myTank == null || myTank.isActiveAndEnabled)
             return;
         minimap.SetMinimapActive(false);
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
-        //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
-        //allCameraRig.ChangeCMFollowToCMMultiTrigger();
+        MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
     }
 
     /// <summary>
@@ -179,8 +177,8 @@ public class GameManager : MonoBehaviour
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
         if (myTank != null &&!myTank.IsAI)
-            //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMFollow);
-            allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.AutoFollow);
+            MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
+
         yield return startWait;                         // 延时一段时间再开始
     }
 
@@ -207,9 +205,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RoundEnding()
     {
-        allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.MultiTarget);
-        //allCameraRig.ChangeCameraRig(AllCameraRigManager.CameraRigType.CMMultiTarget);
-        //allCameraRig.ChangeCMFollowToCMMultiTrigger();
+        MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
 
         SetTanksControlEnable(false);                   // 锁定玩家控制权
 

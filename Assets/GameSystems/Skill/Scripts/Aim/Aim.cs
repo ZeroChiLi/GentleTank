@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CameraRig;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameSystem.Skill
@@ -15,12 +16,11 @@ namespace GameSystem.Skill
         protected bool aimEnable = true;                // 瞄准是否有效
 
         private Image aimImage;                         // 当前瞄准图片
-        private Camera gameCamera;                      // 游戏镜头
         private Vector3 inputHitPos;                    // 鼠标射线射到的点
         private GameObject inputHitGameObject;          // 射线射到的物体
         private TagWithColor tagWithColor;              // 射到物体的标签对应瞄准模型
 
-        private DrawOutline currentOutline;             // 当前相机对应描边特效
+        private DrawOutline outline;             // 当前相机对应描边特效
 
         /// <summary>
         /// 获取图片组件
@@ -28,24 +28,16 @@ namespace GameSystem.Skill
         private void Awake()
         {
             aimImage = GetComponent<Image>();
-            gameCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             aimImage.color = aimMode.normalColor;
             SetAimMode(aimMode);
         }
 
         /// <summary>
-        /// 在相机转换时，更换描边相机
+        /// 获取描边组件
         /// </summary>
         private void Start()
         {
-            // 先初始化一次
-            currentOutline = AllCameraRigManager.Instance.CurrentCamera.GetComponentInChildren<DrawOutline>();
-
-            AllCameraRigManager.Instance.OnCameraChangeEvent.AddListener(() => 
-            {
-                gameCamera = AllCameraRigManager.Instance.CurrentCamera;
-                currentOutline = AllCameraRigManager.Instance.CurrentCamera.GetComponentInChildren<DrawOutline>();
-            });
+            outline = MainCameraRig.Instance.camera.GetComponentInChildren<DrawOutline>();
         }
 
         /// <summary>
@@ -63,7 +55,7 @@ namespace GameSystem.Skill
         /// </summary>
         private void OnDisable()
         {
-            currentOutline.targets.Clear();
+            outline.targets.Clear();
         }
 
         /// <summary>
@@ -72,7 +64,7 @@ namespace GameSystem.Skill
         private void RaycastObject()
         {
             RaycastHit info;
-            if (Physics.Raycast(gameCamera.ScreenPointToRay(gameObject.transform.position), out info, 200))
+            if (Physics.Raycast(MainCameraRig.Instance.camera.ScreenPointToRay(gameObject.transform.position), out info, 200))
             {
                 inputHitPos = info.point;
                 inputHitGameObject = info.collider.gameObject;
@@ -93,15 +85,15 @@ namespace GameSystem.Skill
             if (tagWithColor != null)
             {
                 aimImage.color = tagWithColor.color;
-                currentOutline.outlineColor = aimImage.color;
+                outline.outlineColor = aimImage.color;
 
-                if (!currentOutline.targets.Contains(HitPlayer.gameObject))
-                    currentOutline.targets.Add(HitPlayer.gameObject);
+                if (!outline.targets.Contains(HitPlayer.gameObject))
+                    outline.targets.Add(HitPlayer.gameObject);
             }
             else
             {
                 aimImage.color = aimMode.normalColor;                   // 都没有就改成默认颜色
-                currentOutline.targets.Clear();
+                outline.targets.Clear();
             }
         }
 

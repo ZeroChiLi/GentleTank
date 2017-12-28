@@ -86,4 +86,23 @@ public static class GameMathf
         to.position = form.position;
         to.rotation = form.rotation;
     }
+
+    /// <summary>
+    /// 求向量每个分量的绝对值
+    /// </summary>
+    /// <param name="vec3">目标向量</param>
+    static public Vector3 Abs(Vector3 vec3)
+    {
+        return new Vector3(Mathf.Abs(vec3.x), Mathf.Abs(vec3.y), Mathf.Abs(vec3.z));
+    }
+
+    /// <summary>
+    /// 求向量每个分量的绝对值
+    /// </summary>
+    /// <param name="vec2">目标向量</param>
+    static public Vector2 Abs(Vector2 vec2)
+    {
+        return new Vector2(Mathf.Abs(vec2.x), Mathf.Abs(vec2.y));
+    }
+
 }

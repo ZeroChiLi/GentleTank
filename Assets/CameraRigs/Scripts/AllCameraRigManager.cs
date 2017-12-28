@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using CameraRig;
-using Cinemachine;
 using UnityEngine.Events;
 
 public class AllCameraRigManager : MonoBehaviour
@@ -17,7 +16,7 @@ public class AllCameraRigManager : MonoBehaviour
     public Camera CurrentCamera { get { return GetCurrentCamera(); } }
 
     public AutoFollowCamareRig autoCameraRig;
-    public MultiCameraRig multiCameraRig;
+    public MainCameraRig multiCameraRig;
     public CameraRigType currentCameraRigType = CameraRigType.MultiTarget;
     public UnityEvent OnCameraChangeEvent;
 
@@ -37,7 +36,7 @@ public class AllCameraRigManager : MonoBehaviour
     public void Init(Transform target, List<Transform> targets)
     {
         autoCameraRig.SetTarget(target);
-        multiCameraRig.targets = targets;
+        multiCameraRig.multiTargets = targets;
     }
 
     /// <summary>
@@ -95,7 +94,7 @@ public class AllCameraRigManager : MonoBehaviour
             case CameraRigType.AutoFollow:
                 return autoCameraRig.controlCamera;
             case CameraRigType.MultiTarget:
-                return multiCameraRig.controlCamera;
+                return multiCameraRig.camera;
         }
         return null;
     }
