@@ -10,7 +10,6 @@ namespace Widget.ChargeArea
         public ObjectPool fillAreaObjectPool;                       // 填充扇区池
 
         private List<ChargeAreaManager> chargeAreaList = new List<ChargeAreaManager>(); // 所有充电区
-        private GameState lastGameState = GameState.None;           // 上一次回合状态，通过这个来触发充电区状态变化
 
         /// <summary>
         /// 创建充电区们

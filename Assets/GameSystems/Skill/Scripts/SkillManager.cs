@@ -26,11 +26,12 @@ namespace GameSystem.Skill
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Awake()
+        public void Start()
         {
             buttonImage = GetComponent<Image>();
             slider.maxValue = skill.coolDownTime;
             coolDownTime = skill.coolDownTime;
+            //CDTimer.Reset(coolDownTime);
             buttonImage.color = disableColor;
         }
 

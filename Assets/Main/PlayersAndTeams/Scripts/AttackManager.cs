@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class AttackManager : MonoBehaviour 
+public abstract class AttackManager : MonoBehaviour
 {
     public string shortcutName = "Fire0";                       // 攻击键名称
     public float coolDownTime = 1f;                             // 冷却时间
@@ -9,15 +9,7 @@ public abstract class AttackManager : MonoBehaviour
     public bool IsTimeUp { get { return CDTimer.IsTimeUp; } }   // 是否正在冷却
 
     protected CountDownTimer cdTimer;                           // 冷却时间计时器
-    public CountDownTimer CDTimer
-    {
-        get
-        {
-            if (cdTimer == null)
-                cdTimer = new CountDownTimer(coolDownTime);
-            return cdTimer;
-        }
-    }      
+    public CountDownTimer CDTimer { get { return cdTimer = cdTimer ?? new CountDownTimer(coolDownTime); } }
 
     /// <summary>
     /// 设置快捷键名称
