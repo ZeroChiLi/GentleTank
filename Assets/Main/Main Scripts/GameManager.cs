@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public float endDelay = 3f;                     // 结束延时时间
     public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    //public AllCameraRigManager allCameraRig;        // 所有镜头控制器
     public MinimapWitchCamera minimap;              // 小地图管理
     public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
 
@@ -31,8 +30,9 @@ public class GameManager : MonoBehaviour
     private List<int> spawnIndexList = new List<int>();
     private TankManager myTank;                     // 自己的坦克
     private WaitForSeconds startWait;               // 开始回合延时
-    private WaitForSeconds changeCamWait;           // 转换镜头延时
     private WaitForSeconds endWait;                 // 结束回合延时
+    private WaitForSeconds changeCamWait;           // 转换镜头延时
+
 
     private void Awake()
     {
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
             minimap.SetTarget(myTank.transform);
             minimap.SetMinimapActive(true);
             if (VirtualInput.GetButton("Attack") != null)
-                ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack,myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
+                ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
         }
     }
 
@@ -96,10 +96,40 @@ public class GameManager : MonoBehaviour
         MasterManager.Instance.SelectedTank.InitTankComponents(manager);
 
         MasterData data = MasterManager.Instance.data;
-        manager.Information = new PlayerInformation(0, data.masterName,data.isAI, data.representColor, data.team);
+        manager.Information = new PlayerInformation(0, data.masterName, data.isAI, data.representColor, data.team);
         manager.stateController.defaultStats = data.aiState;
 
+        TankHealth health = tank.GetComponent<TankHealth>();
+        health.OnDeathEvent += MyTankBorkenEvent;
+
         return manager;
+    }
+
+    /// <summary>
+    /// 自己的坦克坏了，转换镜头
+    /// </summary>
+    private void MyTankBorkenEvent(HealthManager health, PlayerManager killer)
+    {
+        minimap.SetMinimapActive(false);
+        if (killer == null)
+            MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
+        else
+            StartCoroutine(MyTankDeathCameraBlend(health.transform, killer.transform));
+    }
+
+    /// <summary>
+    /// 主角死后先把镜头给杀主角的玩家，再转到多目标镜头
+    /// </summary>
+    /// <param name="master"></param>
+    /// <param name="killer"></param>
+    /// <returns></returns>
+    private IEnumerator MyTankDeathCameraBlend(Transform master, Transform killer)
+    {
+        MainCameraRig.Instance.oneTarget = killer;
+        MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
+        yield return changeCamWait;
+        MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
+        MainCameraRig.Instance.oneTarget = master;
     }
 
     /// <summary>
@@ -129,17 +159,6 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < tankList.Count; i++)
             tankList[i].SetControlEnable(enable);
-    }
-
-    /// <summary>
-    /// 自己的坦克坏了，转换镜头
-    /// </summary>
-    private void OnMyTankBroken()
-    {
-        if (myTank == null || myTank.isActiveAndEnabled)
-            return;
-        minimap.SetMinimapActive(false);
-        MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
     }
 
     /// <summary>
@@ -176,7 +195,7 @@ public class GameManager : MonoBehaviour
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
         yield return changeCamWait;                     // 延时一段时间转换成单独镜头
-        if (myTank != null &&!myTank.IsAI)
+        if (myTank != null && !myTank.IsAI)
             MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
 
         yield return startWait;                         // 延时一段时间再开始
@@ -193,10 +212,7 @@ public class GameManager : MonoBehaviour
         messageText.text = string.Empty;                // 清空显示信息
 
         while (!GameRound.Instance.IsEndOfTheRound())   // 回合没结束就继续
-        {
-            OnMyTankBroken();
             yield return null;
-        }
     }
 
     /// <summary>

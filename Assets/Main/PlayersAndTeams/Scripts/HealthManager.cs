@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class HealthManager : MonoBehaviour 
+public abstract class HealthManager : MonoBehaviour
 {
     public float minHealth = 0f;                        // 血量最小值
     public float maxHealth = 100f;                      // 血量最大值
@@ -11,6 +11,9 @@ public abstract class HealthManager : MonoBehaviour
     public Image sliderFillImage;                       // 代表血量的图片
     public Color fullHealthColor = Color.green;         // 满血颜色
     public Color zeroHealthColor = Color.red;           // 没血颜色
+
+    public delegate void DeathEventHandle(HealthManager health, PlayerManager killer);
+    public event DeathEventHandle OnDeathEvent;         // 提供外部的死亡时事件
 
     public float MinHealth { get { return minHealth; } }                // 血量最小值
     public float MaxHealth { get { return maxHealth; } }                // 血量最大值
@@ -77,7 +80,7 @@ public abstract class HealthManager : MonoBehaviour
     /// </summary>
     /// <param name="amount">变化值</param>
     /// <param name="from">哪个玩家要改的（谁打的）</param>
-    public void SetHealthAmount(float amount,PlayerManager from = null)
+    public void SetHealthAmount(float amount, PlayerManager from = null)
     {
         if (amount == 0 || lastPainFrame == Time.frameCount)        // 每一帧最多只接收一次伤害
             return;
@@ -91,7 +94,11 @@ public abstract class HealthManager : MonoBehaviour
         UpdateSlider();
         OnHealthChanged(from);
         if (IsDead)
+        {
             OnDead(from);
+            if (OnDeathEvent != null)
+                OnDeathEvent.Invoke(this,from);
+        }
     }
 
     /// <summary>
