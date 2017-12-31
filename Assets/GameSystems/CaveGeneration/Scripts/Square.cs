@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 public class Square
 {
     public ControlNode topLeft, topRight, bottomRight, bottomLeft;
