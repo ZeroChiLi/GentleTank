@@ -113,9 +113,7 @@ public sealed class CountDownTimer
     public float GetPercent()
     {
         UpdateCurrentTime();
-        if (currentTime <= 0 || Duration <= 0)
-            return 1f;
-        return 1f - currentTime / Duration;
+        return Mathf.InverseLerp(Duration, 0, currentTime);
     }
 
 }
