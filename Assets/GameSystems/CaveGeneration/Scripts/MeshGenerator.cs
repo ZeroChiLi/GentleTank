@@ -10,11 +10,9 @@ public class MeshGenerator : MonoBehaviour
     public float wallHeight = 5;
     public MeshCollider wallCollider;                       //墙体的Mesh Collider。
     public int tileAmount = 10;                             //渲染瓦片数量。
-
     public bool is2D;                                       //是否使用2D模式。
-
-    //表层的洞穴渲染。
-    public SquareGrid squareGrid;
+    public bool showGizmos;
+    public SquareGrid squareGrid;                           //表层的洞穴渲染。
 
     #endregion
 
@@ -56,7 +54,10 @@ public class MeshGenerator : MonoBehaviour
         if (is2D)
             Generate2DColliders();                              //生成2D轮廓碰撞框。
         else
+        {
             CreateWallMesh();                                   //渲染墙。
+            ResetMeshHeight();
+        }
     }
 
     //把立方体们划成一堆三角形。
@@ -338,46 +339,58 @@ public class MeshGenerator : MonoBehaviour
         wallCollider.sharedMesh = wallMesh;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Color wallColor = new Color(1, 181f / 255f, 21f / 255f);
-    //    Color emptyColor = wallColor;
-    //    //Color emptyColor = Color.white;
-    //    Color nodeColor = new Color(82f / 255f, 120f / 255f, 252f / 255f);
-    //    Color squareColor = new Color(0, 76f / 255f, 26f / 255f);
+    /// <summary>
+    /// 重置网格高度
+    /// </summary>
+    private void ResetMeshHeight()
+    {
+        cave.transform.position = Vector3.up * wallHeight;
+        walls.transform.position = Vector3.up * wallHeight;
+    }
 
-    //    if (squareGrid != null)
-    //    {
-    //        for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
-    //        {
-    //            for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
-    //            {
-    //                Gizmos.color = squareColor;
-    //                Gizmos.DrawWireCube((squareGrid.squares[x, y].centreLeft.position + squareGrid.squares[x, y].centreRight.position) / 2, Vector3.one);
+    void OnDrawGizmos()
+    {
+        if (!showGizmos)
+            return;
 
-    //                Gizmos.color = (squareGrid.squares[x, y].topLeft.active) ? wallColor : emptyColor;
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].topLeft.position, Vector3.one * .4f);
+        Color wallColor = new Color(1, 181f / 255f, 21f / 255f);
+        Color emptyColor = wallColor;
+        //Color emptyColor = Color.white;
+        Color nodeColor = new Color(82f / 255f, 120f / 255f, 252f / 255f);
+        Color squareColor = new Color(0, 76f / 255f, 26f / 255f);
 
-    //                Gizmos.color = (squareGrid.squares[x, y].topRight.active) ? wallColor : emptyColor;
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].topRight.position, Vector3.one * .4f);
+        if (squareGrid != null)
+        {
+            for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
+            {
+                for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
+                {
+                    Gizmos.color = squareColor;
+                    Gizmos.DrawWireCube((squareGrid.squares[x, y].centreLeft.position + squareGrid.squares[x, y].centreRight.position) / 2, Vector3.one);
 
-    //                Gizmos.color = (squareGrid.squares[x, y].bottomRight.active) ? wallColor : emptyColor;
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].bottomRight.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[x, y].topLeft.active) ? wallColor : emptyColor;
+                    Gizmos.DrawCube(squareGrid.squares[x, y].topLeft.position, Vector3.one * .4f);
 
-    //                Gizmos.color = (squareGrid.squares[x, y].bottomLeft.active) ? wallColor : emptyColor;
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].bottomLeft.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[x, y].topRight.active) ? wallColor : emptyColor;
+                    Gizmos.DrawCube(squareGrid.squares[x, y].topRight.position, Vector3.one * .4f);
+
+                    Gizmos.color = (squareGrid.squares[x, y].bottomRight.active) ? wallColor : emptyColor;
+                    Gizmos.DrawCube(squareGrid.squares[x, y].bottomRight.position, Vector3.one * .4f);
+
+                    Gizmos.color = (squareGrid.squares[x, y].bottomLeft.active) ? wallColor : emptyColor;
+                    Gizmos.DrawCube(squareGrid.squares[x, y].bottomLeft.position, Vector3.one * .4f);
 
 
-    //                Gizmos.color = nodeColor;
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].centreTop.position, Vector3.one * .15f);
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].centreRight.position, Vector3.one * .15f);
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].centreBottom.position, Vector3.one * .15f);
-    //                Gizmos.DrawCube(squareGrid.squares[x, y].centreLeft.position, Vector3.one * .15f);
+                    Gizmos.color = nodeColor;
+                    Gizmos.DrawCube(squareGrid.squares[x, y].centreTop.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[x, y].centreRight.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[x, y].centreBottom.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[x, y].centreLeft.position, Vector3.one * .15f);
 
 
-    //            }
-    //        }
-    //    }
-    //}
+                }
+            }
+        }
+    }
 
 }

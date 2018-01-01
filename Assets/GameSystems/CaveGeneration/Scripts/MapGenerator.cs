@@ -25,6 +25,8 @@ public class MapGenerator : MonoBehaviour
     public int passageWidth = 4;            //通道（房间与房间直接）宽度。
 
     public int borderSize = 1;
+
+    public bool showGizmos;
     #endregion
 
     private TileType[,] map;                     //地图集，Empty为空洞，Wall为实体墙。
@@ -386,22 +388,22 @@ public class MapGenerator : MonoBehaviour
         return borderedMap;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    if (map != null)
-    //    {
-    //        for (int x = 0; x < width; x++)
-    //        {
-    //            for (int y = 0; y < height; y++)
-    //            {
-    //                Gizmos.color = (map[x, y] == TileType.Wall) ? new Color(0, 0, 0, 1f) : new Color(1, 1, 1, 1f);
-    //                Vector3 pos = new Vector3(-width / 2 + x + .5f, 0, -height / 2 + y + .5f);
-    //                pos.y = pos.y + 2;
-    //                Gizmos.DrawCube(pos, Vector3.one);
-    //            }
-    //        }
-    //    }
-    //}
+    private void OnDrawGizmos()
+    {
+        if (showGizmos && map != null)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Gizmos.color = (map[x, y] == TileType.Wall) ? new Color(0, 0, 0, 1f) : new Color(1, 1, 1, 1f);
+                    Vector3 pos = new Vector3(-width / 2 + x + .5f, 0, -height / 2 + y + .5f);
+                    pos.y = pos.y + 2;
+                    Gizmos.DrawCube(pos, Vector3.one);
+                }
+            }
+        }
+    }
 
 
 }
