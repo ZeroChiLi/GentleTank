@@ -11,9 +11,12 @@ public class MeshGenerator : MonoBehaviour
     public MeshCollider wallCollider;                       //墙体的Mesh Collider。
     public int tileAmount = 10;                             //渲染瓦片数量。
     public bool is2D;                                       //是否使用2D模式。
+    public Texture2D noiseTexture;                          //噪声纹理做表面凹凸
+    [Range(0f,5f)]
+    public float noiseScale = 2f;
+
     public bool showGizmos;
     public SquareGrid squareGrid;                           //表层的洞穴渲染。
-
     #endregion
 
     #region Private Variables
@@ -180,18 +183,22 @@ public class MeshGenerator : MonoBehaviour
     private void SetCaveMesh(float meshSize)
     {
         cave.mesh = new Mesh();
-        cave.mesh.vertices = vertices.ToArray();
-        cave.mesh.triangles = triangles.ToArray();
-        cave.mesh.RecalculateNormals();                         //重新计算法线。
+        //cave.mesh.RecalculateNormals();                         //重新计算法线。
 
         Vector2[] uvs = new Vector2[vertices.Count];            //渲染坐标。
         for (int i = 0; i < vertices.Count; i++)
         {
             float percentX = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].x) * tileAmount;
             float percentY = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].z) * tileAmount;
+            float height = noiseTexture.GetPixel((int)(percentX * noiseTexture.width), (int)(percentY * noiseTexture.height)).grayscale;
+            vertices[i] += new Vector3(0, height * noiseScale, 0);
             uvs[i] = new Vector2(percentX, percentY);
         }
+        cave.mesh.vertices = vertices.ToArray();
+        cave.mesh.triangles = triangles.ToArray();
+        cave.mesh.RecalculateNormals();                         //重新计算法线。
         cave.mesh.uv = uvs;
+
     }
 
     //计算出所有外边。
