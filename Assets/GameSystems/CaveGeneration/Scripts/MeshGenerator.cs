@@ -30,6 +30,8 @@ public class MeshGenerator : MonoBehaviour
     private List<List<int>> outlines = new List<List<int>>();
 
     private HashSet<int> checkedVertices = new HashSet<int>();          //存放已经检查过的点。
+
+    private float fixedHeight;
     #endregion
 
     public void GenerateMesh(TileType[,] map, float squareSize)
@@ -190,8 +192,8 @@ public class MeshGenerator : MonoBehaviour
         {
             float percentX = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].x) * tileAmount;
             float percentY = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].z) * tileAmount;
-            float height = noiseTexture.GetPixel((int)(percentX * noiseTexture.width), (int)(percentY * noiseTexture.height)).grayscale;
-            vertices[i] += new Vector3(0, height * noiseScale, 0);
+            fixedHeight = noiseTexture != null ? noiseTexture.GetPixel((int)(percentX * noiseTexture.width), (int)(percentY * noiseTexture.height)).grayscale : 0;
+            vertices[i] -= new Vector3(0, fixedHeight * noiseScale, 0);
             uvs[i] = new Vector2(percentX, percentY);
         }
         cave.mesh.vertices = vertices.ToArray();
