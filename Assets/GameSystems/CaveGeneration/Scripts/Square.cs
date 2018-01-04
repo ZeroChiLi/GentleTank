@@ -4,6 +4,7 @@ public class Square
     public ControlNode topLeft, topRight, bottomRight, bottomLeft;
     public Node centreTop, centreRight, centreBottom, centreLeft;
     public int configuration;       //标志位
+    public bool isBorder;
 
     public Square(ControlNode _topLeft, ControlNode _topRight, ControlNode _bottomRight, ControlNode _bottomLeft)
     {

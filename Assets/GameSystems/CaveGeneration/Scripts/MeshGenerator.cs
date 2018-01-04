@@ -12,7 +12,7 @@ public class MeshGenerator : MonoBehaviour
     public int tileAmount = 10;                             //渲染瓦片数量。
     public bool is2D;                                       //是否使用2D模式。
     public Texture2D noiseTexture;                          //噪声纹理做表面凹凸
-    [Range(0f,5f)]
+    [Range(0f, 5f)]
     public float noiseScale = 2f;
 
     public bool showGizmos;
@@ -54,7 +54,7 @@ public class MeshGenerator : MonoBehaviour
 
         CalculateMeshOutlines();                                //计算所有需要渲染的外边。
 
-        AddBorderLine();                                        //添加最外边。
+        //AddBorderLine();                                        //添加最外边。
 
         if (is2D)
             Generate2DColliders();                              //生成2D轮廓碰撞框。
@@ -73,7 +73,7 @@ public class MeshGenerator : MonoBehaviour
             case 0:
                 break;
 
-            // 1 points:
+            #region 1 points:
             case 1:
                 MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft);
                 break;
@@ -86,8 +86,9 @@ public class MeshGenerator : MonoBehaviour
             case 8:
                 MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft);
                 break;
+            #endregion
 
-            // 2 points:
+            #region 2 points:
             case 3:
                 MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft);
                 break;
@@ -106,8 +107,9 @@ public class MeshGenerator : MonoBehaviour
             case 10:
                 MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft);
                 break;
+            #endregion
 
-            // 3 point:
+            #region 3 points:
             case 7:
                 MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft);
                 break;
@@ -120,15 +122,20 @@ public class MeshGenerator : MonoBehaviour
             case 14:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft);
                 break;
+            #endregion
 
-            // 4 point:
+            #region 4 points:
             case 15:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
-                checkedVertices.Add(square.topLeft.vertexIndex);        // 因为这格子是墙体，所以直接加到已检查顶点表里
-                checkedVertices.Add(square.topRight.vertexIndex);
-                checkedVertices.Add(square.bottomRight.vertexIndex);
-                checkedVertices.Add(square.bottomLeft.vertexIndex);
+                if (!square.isBorder)   // 如果是最外边，会添加到外边顶点列表，否则标记为实心墙体
+                {
+                    checkedVertices.Add(square.topLeft.vertexIndex);
+                    checkedVertices.Add(square.topRight.vertexIndex);
+                    checkedVertices.Add(square.bottomRight.vertexIndex);
+                    checkedVertices.Add(square.bottomLeft.vertexIndex);
+                }
                 break;
+                #endregion
         }
     }
 
@@ -319,26 +326,36 @@ public class MeshGenerator : MonoBehaviour
         List<int> wallTriangles = new List<int>();
         Mesh wallMesh = new Mesh();
 
-        foreach (List<int> outline in outlines)
+        //foreach (List<int> outline in outlines)
+        for (int i = 0; i < outlines.Count; i++)
         {
-            for (int i = 0; i < outline.Count - 1; i++)
+            for (int j = 0; j < outlines[i].Count - 1; j++)
             {
                 int startIndex = wallVertices.Count;
 
                 //一片墙的四个点。
-                wallVertices.Add(vertices[outline[i]]);                                 // left
-                wallVertices.Add(vertices[outline[i + 1]]);                             // right
-                wallVertices.Add(vertices[outline[i]] - Vector3.up * wallHeight);       // bottom left
-                wallVertices.Add(vertices[outline[i + 1]] - Vector3.up * wallHeight);   // bottom right
+                wallVertices.Add(vertices[outlines[i][j]]);                                 // left
+                // 第一条外边是整个洞穴的最外边矩形边
+                if (i == 0) 
+                {
+                    wallVertices.Add(vertices[outlines[i][j + 1]]);                             // right
+                    wallVertices.Add(vertices[outlines[i][j + 1]] - Vector3.up * wallHeight);   // bottom right
+                    wallVertices.Add(vertices[outlines[i][j]] - Vector3.up * wallHeight);       // bottom left
+                }
+                else
+                {
+                    wallVertices.Add(vertices[outlines[i][j]] - Vector3.up * wallHeight);       // bottom left
+                    wallVertices.Add(vertices[outlines[i][j + 1]] - Vector3.up * wallHeight);   // bottom right
+                    wallVertices.Add(vertices[outlines[i][j + 1]]);                             // right
+                }
 
-                //一片墙的两个三角形。
+                wallTriangles.Add(startIndex + 0);
+                wallTriangles.Add(startIndex + 1);
+                wallTriangles.Add(startIndex + 2);
+
                 wallTriangles.Add(startIndex + 0);
                 wallTriangles.Add(startIndex + 2);
                 wallTriangles.Add(startIndex + 3);
-
-                wallTriangles.Add(startIndex + 3);
-                wallTriangles.Add(startIndex + 1);
-                wallTriangles.Add(startIndex + 0);
             }
         }
         wallMesh.vertices = wallVertices.ToArray();

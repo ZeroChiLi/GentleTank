@@ -24,6 +24,7 @@ public class MapGenerator : MonoBehaviour
 
     public int passageWidth = 4;            //通道（房间与房间直接）宽度。
 
+    [Range(1,10)]
     public int borderSize = 1;
 
     public bool showGizmos;

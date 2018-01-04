@@ -28,6 +28,8 @@ public class SquareGrid
             for (int y = 0; y < nodeCountY - 1; y++)
             {
                 squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x + 1, y], controlNodes[x, y]);
+                if (x == 0 || y == 0 || x == nodeCountX - 2 || y == nodeCountY - 2)
+                    squares[x, y].isBorder = true;
             }
         }
 
