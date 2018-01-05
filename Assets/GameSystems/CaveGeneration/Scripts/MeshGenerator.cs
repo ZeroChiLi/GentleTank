@@ -10,10 +10,11 @@ public class MeshGenerator : MonoBehaviour
     public float wallHeight = 5;
     public MeshCollider wallCollider;                       //墙体的Mesh Collider。
     public int tileAmount = 10;                             //渲染瓦片数量。
-    public bool is2D;                                       //是否使用2D模式。
+    //public bool is2D;                                       //是否使用2D模式。
     public Texture2D noiseTexture;                          //噪声纹理做表面凹凸
-    [Range(0f, 5f)]
+    public float noiseAmount = 3f;
     public float noiseScale = 2f;
+    public Texture2D heightTexture;                         //高度控制
 
     public bool showGizmos;
     public SquareGrid squareGrid;                           //表层的洞穴渲染。
@@ -56,13 +57,13 @@ public class MeshGenerator : MonoBehaviour
 
         //AddBorderLine();                                        //添加最外边。
 
-        if (is2D)
-            Generate2DColliders();                              //生成2D轮廓碰撞框。
-        else
-        {
+        //if (is2D)
+        //    Generate2DColliders();                              //生成2D轮廓碰撞框。
+        //else
+        //{
             CreateWallMesh();                                   //渲染墙。
             ResetMeshHeight();
-        }
+        //}
     }
 
     //把立方体们划成一堆三角形。
@@ -197,11 +198,13 @@ public class MeshGenerator : MonoBehaviour
         Vector2[] uvs = new Vector2[vertices.Count];            //渲染坐标。
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].x) * tileAmount;
-            float percentY = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].z) * tileAmount;
-            fixedHeight = noiseTexture != null ? noiseTexture.GetPixel((int)(percentX * noiseTexture.width), (int)(percentY * noiseTexture.height)).grayscale : 0;
-            vertices[i] -= new Vector3(0, fixedHeight * noiseScale, 0);
-            uvs[i] = new Vector2(percentX, percentY);
+            float percentX = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].x);
+            float percentY = Mathf.InverseLerp(-meshSize / 2, meshSize / 2, vertices[i].z);
+            fixedHeight = noiseTexture != null ? noiseTexture.GetPixel((int)(percentX * noiseTexture.width * noiseAmount), (int)(percentY * noiseTexture.height * noiseAmount)).grayscale : 0;
+            fixedHeight *= noiseScale;
+            fixedHeight += heightTexture != null ? heightTexture.GetPixel((int)(percentX * heightTexture.width), (int)(percentY * heightTexture.height)).grayscale * wallHeight : 0;
+            vertices[i] -= new Vector3(0, fixedHeight, 0);
+            uvs[i] = new Vector2(percentX * tileAmount, percentY * tileAmount);
         }
         cave.mesh.vertices = vertices.ToArray();
         cave.mesh.triangles = triangles.ToArray();
@@ -335,6 +338,7 @@ public class MeshGenerator : MonoBehaviour
 
                 //一片墙的四个点。
                 wallVertices.Add(vertices[outlines[i][j]]);                                 // left
+
                 // 第一条外边是整个洞穴的最外边矩形边
                 if (i == 0) 
                 {

@@ -79,7 +79,7 @@ namespace Item.Tank
             if (usingInputButton)
                 StateChangeByInput();
             // 优先选择键盘输入，若无，则再判断虚拟按钮输入
-            if (shootState == AttackState.None && playerManager == AllPlayerManager.Instance.MyPlayer)
+            if (shootState == AttackState.None && AllPlayerManager.Instance && playerManager == AllPlayerManager.Instance.MyPlayer)
                 StateChangeByChargeButton();
             if (!playerManager.IsAI)         //不是AI才更新
                 ChargeToFire();
