@@ -7,6 +7,7 @@ public class MeshGenerator : MonoBehaviour
     public MeshFilter cave;                                 //渲染表层。
     public MeshFilter walls;                                //渲染墙的网格。
 
+    public MeshCollider caveCollider;                       //表层碰撞
     public float wallHeight = 5;
     public MeshCollider wallCollider;                       //墙体的Mesh Collider。
     public int tileAmount = 10;                             //渲染瓦片数量。
@@ -32,7 +33,6 @@ public class MeshGenerator : MonoBehaviour
 
     private HashSet<int> checkedVertices = new HashSet<int>();          //存放已经检查过的点。
 
-    private float fixedHeight;
     #endregion
 
     public void GenerateMesh(TileType[,] map, float squareSize)
@@ -61,8 +61,8 @@ public class MeshGenerator : MonoBehaviour
         //    Generate2DColliders();                              //生成2D轮廓碰撞框。
         //else
         //{
-            CreateWallMesh();                                   //渲染墙。
-            ResetMeshHeight();
+        CreateWallMesh();                                   //渲染墙。
+        ResetMeshHeight();
         //}
     }
 
@@ -193,8 +193,8 @@ public class MeshGenerator : MonoBehaviour
     private void SetCaveMesh(float meshSize)
     {
         cave.mesh = new Mesh();
-        //cave.mesh.RecalculateNormals();                         //重新计算法线。
-
+ 
+        float fixedHeight;
         Vector2[] uvs = new Vector2[vertices.Count];            //渲染坐标。
         for (int i = 0; i < vertices.Count; i++)
         {
@@ -210,7 +210,7 @@ public class MeshGenerator : MonoBehaviour
         cave.mesh.triangles = triangles.ToArray();
         cave.mesh.RecalculateNormals();                         //重新计算法线。
         cave.mesh.uv = uvs;
-
+        caveCollider.sharedMesh = cave.mesh;
     }
 
     //计算出所有外边。
@@ -340,7 +340,7 @@ public class MeshGenerator : MonoBehaviour
                 wallVertices.Add(vertices[outlines[i][j]]);                                 // left
 
                 // 第一条外边是整个洞穴的最外边矩形边
-                if (i == 0) 
+                if (i == 0)
                 {
                     wallVertices.Add(vertices[outlines[i][j + 1]]);                             // right
                     wallVertices.Add(vertices[outlines[i][j + 1]] - Vector3.up * wallHeight);   // bottom right

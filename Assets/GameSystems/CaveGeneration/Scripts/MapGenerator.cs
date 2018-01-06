@@ -24,7 +24,7 @@ public class MapGenerator : MonoBehaviour
 
     public int passageWidth = 4;            //通道（房间与房间直接）宽度。
 
-    [Range(1,10)]
+    [Range(1, 10)]
     public int borderSize = 1;
 
     public bool showGizmos;
@@ -32,7 +32,7 @@ public class MapGenerator : MonoBehaviour
 
     private TileType[,] map;                     //地图集，Empty为空洞，Wall为实体墙。
 
-    readonly int[,] upDownLeftRight = new int[4,2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
+    readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
 
     //存放最后实际有效的空洞房间。
     private List<Room> survivingRooms = new List<Room>();
@@ -176,7 +176,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //从这个点开始获取区域，广度优先算法。
-    private List<Coord> GetRegionTiles(int startX, int startY, TileType tileType,ref bool[,] mapFlags)
+    private List<Coord> GetRegionTiles(int startX, int startY, TileType tileType, ref bool[,] mapFlags)
     {
         List<Coord> tiles = new List<Coord>();
         Queue<Coord> queue = new Queue<Coord>();
