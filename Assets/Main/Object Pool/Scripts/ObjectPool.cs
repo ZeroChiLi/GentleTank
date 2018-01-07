@@ -68,6 +68,11 @@ public class ObjectPool : ScriptableObject
         poolParent.transform.SetParent(allPoolParent.transform);
     }
 
+    public GameObject GetNextObject(bool active, Vector3 position)
+    {
+        return GetNextObject(active, new Point(position, Quaternion.identity));
+    }
+
     /// <summary>
     /// 获取下一个可用对象。
     /// </summary>
@@ -96,7 +101,6 @@ public class ObjectPool : ScriptableObject
             return SetupObject(AddOneMoreObject(), active, point);
         return null;
     }
-
 
     /// <summary>
     /// 获取下一个可用对象同时激活，以及设置位置，并返回该对象
@@ -131,4 +135,13 @@ public class ObjectPool : ScriptableObject
         return obj;
     }
 
+    /// <summary>
+    /// 失效池所有对象
+    /// </summary>
+    public void InactiveAll()
+    {
+        CheckObjeckPool();
+        for (int i = 0; i < objectPool.Count; i++)
+            objectPool[i].SetActive(false);
+    }
 }

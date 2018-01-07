@@ -28,32 +28,19 @@ public class MapGenerator : MonoBehaviour
     public int borderSize = 1;
 
     public bool showGizmos;
+
+    //存放最后实际有效的空洞房间。
+    public List<CaveRoom> survivingRooms = new List<CaveRoom>();
     #endregion
 
     private TileType[,] map;                     //地图集，Empty为空洞，Wall为实体墙。
 
     readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
 
-    //存放最后实际有效的空洞房间。
-    private List<Room> survivingRooms = new List<Room>();
-
-    private void Start()
-    {
-        GenerateMap();
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            survivingRooms.Clear();
-            GenerateMap();
-        }
-    }
-
     //生成随机地图。
-    private void GenerateMap()
+    public void GenerateMap()
     {
+        survivingRooms.Clear();
         map = new TileType[width, height];
         RandomFillMap();
 
@@ -126,23 +113,23 @@ public class MapGenerator : MonoBehaviour
         //获取最大房间的索引
         int currentIndex = 0, maxIndex = 0, maxSize = 0;
         //获取墙区域
-        List<List<Coord>> wallRegions = GetRegions(TileType.Wall);
-        foreach (List<Coord> wallRegion in wallRegions)
+        List<List<CaveCoord>> wallRegions = GetRegions(TileType.Wall);
+        foreach (List<CaveCoord> wallRegion in wallRegions)
             if (wallRegion.Count < wallThresholdSize)
-                foreach (Coord tile in wallRegion)
+                foreach (CaveCoord tile in wallRegion)
                     map[tile.tileX, tile.tileY] = TileType.Empty;                //把小于阈值的都铲掉。
 
 
         //获取空洞区域
-        List<List<Coord>> roomRegions = GetRegions(TileType.Empty);
-        foreach (List<Coord> roomRegion in roomRegions)
+        List<List<CaveCoord>> roomRegions = GetRegions(TileType.Empty);
+        foreach (List<CaveCoord> roomRegion in roomRegions)
         {
             if (roomRegion.Count < roomThresholdSize)
-                foreach (Coord tile in roomRegion)
+                foreach (CaveCoord tile in roomRegion)
                     map[tile.tileX, tile.tileY] = TileType.Wall;                //把小于阈值的都填充。
             else
             {
-                survivingRooms.Add(new Room(roomRegion, map));      //添加到幸存房间列表里。
+                survivingRooms.Add(new CaveRoom(roomRegion, map));      //添加到幸存房间列表里。
                 if (maxSize < roomRegion.Count)
                 {
                     maxSize = roomRegion.Count;
@@ -162,9 +149,9 @@ public class MapGenerator : MonoBehaviour
     }
 
     //获取区域
-    private List<List<Coord>> GetRegions(TileType tileType)
+    private List<List<CaveCoord>> GetRegions(TileType tileType)
     {
-        List<List<Coord>> regions = new List<List<Coord>>();
+        List<List<CaveCoord>> regions = new List<List<CaveCoord>>();
         bool[,] mapFlags = new bool[width, height];
 
         for (int x = 0; x < width; x++)
@@ -176,16 +163,16 @@ public class MapGenerator : MonoBehaviour
     }
 
     //从这个点开始获取区域，广度优先算法。
-    private List<Coord> GetRegionTiles(int startX, int startY, TileType tileType, ref bool[,] mapFlags)
+    private List<CaveCoord> GetRegionTiles(int startX, int startY, TileType tileType, ref bool[,] mapFlags)
     {
-        List<Coord> tiles = new List<Coord>();
-        Queue<Coord> queue = new Queue<Coord>();
-        queue.Enqueue(new Coord(startX, startY));
+        List<CaveCoord> tiles = new List<CaveCoord>();
+        Queue<CaveCoord> queue = new Queue<CaveCoord>();
+        queue.Enqueue(new CaveCoord(startX, startY));
         mapFlags[startX, startY] = true;
 
         while (queue.Count > 0)
         {
-            Coord tile = queue.Dequeue();                       //弹出队列第一个，添加到要返回的列表里面。
+            CaveCoord tile = queue.Dequeue();                       //弹出队列第一个，添加到要返回的列表里面。
             tiles.Add(tile);
 
             // 遍历上下左右四格
@@ -196,7 +183,7 @@ public class MapGenerator : MonoBehaviour
                 if (IsInMapRange(x, y) && mapFlags[x, y] == false && map[x, y] == tileType)
                 {
                     mapFlags[x, y] = true;
-                    queue.Enqueue(new Coord(x, y));
+                    queue.Enqueue(new CaveCoord(x, y));
                 }
             }
         }
@@ -207,15 +194,15 @@ public class MapGenerator : MonoBehaviour
     //连接各个房间。每个房间两两比较，找到最近房间（相对前一个房间）连接之，对第二个房间来说不一定就是最近的。
     //第二个参数为False时，第一步操作：为所有房间都连接到最近房间。
     //第二个参数为True时，第二步操作：就是把所有房间都连接到主房间。
-    private void ConnectClosestRooms(List<Room> allRooms, bool forceAccessibilityFromMainRoom = false)
+    private void ConnectClosestRooms(List<CaveRoom> allRooms, bool forceAccessibilityFromMainRoom = false)
     {
         #region 属于第二步操作：roomListA 是还没连接到主房间的房间队列， roomListB 是已经连接到房间B的队列。
-        List<Room> roomListA = new List<Room>();
-        List<Room> roomListB = new List<Room>();
+        List<CaveRoom> roomListA = new List<CaveRoom>();
+        List<CaveRoom> roomListB = new List<CaveRoom>();
 
         if (forceAccessibilityFromMainRoom)                         //是否需要强制连接（直接或间接）到主房间。
         {
-            foreach (Room room in allRooms)
+            foreach (CaveRoom room in allRooms)
                 if (room.isAccessibleFromMainRoom)
                     roomListB.Add(room);                            //已经连接到主房间的加到ListB。
                 else
@@ -229,13 +216,13 @@ public class MapGenerator : MonoBehaviour
         #endregion
 
         int bestDistance = 0;
-        Coord bestTileA = new Coord();
-        Coord bestTileB = new Coord();
-        Room bestRoomA = new Room();
-        Room bestRoomB = new Room();
+        CaveCoord bestTileA = new CaveCoord();
+        CaveCoord bestTileB = new CaveCoord();
+        CaveRoom bestRoomA = new CaveRoom();
+        CaveRoom bestRoomB = new CaveRoom();
         bool possibleConnectionFound = false;
 
-        foreach (Room roomA in roomListA)                           //遍历没连接到主房间的ListA。
+        foreach (CaveRoom roomA in roomListA)                           //遍历没连接到主房间的ListA。
         {
             if (!forceAccessibilityFromMainRoom)                    //第一步：如果没有要求连到主房间。
             {
@@ -244,7 +231,7 @@ public class MapGenerator : MonoBehaviour
                     continue;
             }
             #region 遍历roomListB，找到距离当前roomA最近的roomB。
-            foreach (Room roomB in roomListB)
+            foreach (CaveRoom roomB in roomListB)
             {
                 if (roomA == roomB || roomA.IsConnected(roomB))
                     continue;
@@ -252,8 +239,8 @@ public class MapGenerator : MonoBehaviour
                 for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
                     for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
                     {
-                        Coord tileA = roomA.edgeTiles[tileIndexA];
-                        Coord tileB = roomB.edgeTiles[tileIndexB];
+                        CaveCoord tileA = roomA.edgeTiles[tileIndexA];
+                        CaveCoord tileB = roomB.edgeTiles[tileIndexB];
                         int distanceBetweenRooms = (int)tileA.SqrMagnitude(tileB);
 
                         //如果找到更近的（相对roomA）房间，更新最短路径。
@@ -287,20 +274,20 @@ public class MapGenerator : MonoBehaviour
     }
 
     //创建两个房间的通道。
-    private void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB)
+    private void CreatePassage(CaveRoom roomA, CaveRoom roomB, CaveCoord tileA, CaveCoord tileB)
     {
-        Room.ConnectRooms(roomA, roomB);
+        CaveRoom.ConnectRooms(roomA, roomB);
         //Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 100);
 
-        List<Coord> line = GetLine(tileA, tileB);
-        foreach (Coord coord in line)
-            DrawCircle(coord, passageWidth);
+        //List<CaveCoord> line = GetLine(tileA, tileB);
+        //foreach (CaveCoord coord in line)
+        //    DrawCircle(coord, passageWidth);
     }
 
     //获取两点直接线段经过的点。
-    private List<Coord> GetLine(Coord from, Coord to)
+    private List<CaveCoord> GetLine(CaveCoord from, CaveCoord to)
     {
-        List<Coord> line = new List<Coord>();
+        List<CaveCoord> line = new List<CaveCoord>();
 
         int x = from.tileX;
         int y = from.tileY;
@@ -328,7 +315,7 @@ public class MapGenerator : MonoBehaviour
         int gradientAccumulation = longest / 2;         //梯度积累，最长边的一半。
         for (int i = 0; i < longest; i++)
         {
-            line.Add(new Coord(x, y));
+            line.Add(new CaveCoord(x, y));
 
             if (inverted)
                 y += step;
@@ -350,7 +337,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //以点c为原点，r为半径，画圈（拆墙）。
-    private void DrawCircle(Coord c, int r)
+    private void DrawCircle(CaveCoord c, int r)
     {
         for (int x = -r; x <= r; x++)
             for (int y = -r; y <= r; y++)
@@ -364,7 +351,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //把xy坐标转换成实际坐标。
-    private Vector3 CoordToWorldPoint(Coord tile)
+    private Vector3 CoordToWorldPoint(CaveCoord tile)
     {
         return new Vector3(-width / 2 + .5f + tile.tileX, 2, -height / 2 + .5f + tile.tileY);
     }
