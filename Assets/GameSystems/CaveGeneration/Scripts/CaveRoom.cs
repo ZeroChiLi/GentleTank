@@ -12,8 +12,6 @@ public class CaveRoom : IComparable<CaveRoom>
     public bool isMainRoom;                             //是否主房间（最大的房间）。
     public CaveCoord averageCoord;                          //平均点
 
-    readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
-
     public CaveRoom() { }
 
     public CaveRoom(List<CaveCoord> roomTiles, TileType[,] map)
@@ -33,8 +31,8 @@ public class CaveRoom : IComparable<CaveRoom>
         foreach (CaveCoord tile in tiles)
             for (int i = 0; i < 4; i++)
             {
-                int x = tile.tileX + upDownLeftRight[i, 0];
-                int y = tile.tileY + upDownLeftRight[i, 1];
+                int x = tile.tileX + GameMathf.upDownLeftRight[i, 0];
+                int y = tile.tileY + GameMathf.upDownLeftRight[i, 1];
                 if (map[x, y] == TileType.Wall)
                 {
                     edgeTiles.Add(tile);

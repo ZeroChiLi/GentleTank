@@ -23,7 +23,7 @@ namespace Widget.ChargeArea
         private void FixedUpdate()
         {
             if (Camera.current != null)
-                flagPole.transform.rotation = Quaternion.Euler(0f, Camera.current.transform.rotation.eulerAngles.y,0f);
+                flagPole.transform.rotation = Quaternion.Euler(0f, Camera.current.transform.rotation.eulerAngles.y, 0f);
         }
 
         /// <summary>

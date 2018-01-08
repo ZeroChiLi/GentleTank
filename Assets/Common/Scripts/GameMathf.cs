@@ -7,6 +7,11 @@ using UnityEngine;
 public static class GameMathf
 {
     /// <summary>
+    /// 上下左右的整形偏移量，第一列为x，第二列为y
+    /// </summary>
+    static public readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
+
+    /// <summary>
     /// 判断value是否在min和max的闭区间内
     /// </summary>
     /// <param name="min">最小值</param>

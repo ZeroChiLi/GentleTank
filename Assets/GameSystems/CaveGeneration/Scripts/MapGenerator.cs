@@ -31,11 +31,11 @@ public class MapGenerator : MonoBehaviour
 
     //存放最后实际有效的空洞房间。
     public List<CaveRoom> survivingRooms = new List<CaveRoom>();
+    public List<CaveWall> survivingWalls = new List<CaveWall>();
+
     #endregion
 
     private TileType[,] map;                     //地图集，Empty为空洞，Wall为实体墙。
-
-    readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
 
     //生成随机地图。
     public void GenerateMap()
@@ -118,6 +118,8 @@ public class MapGenerator : MonoBehaviour
             if (wallRegion.Count < wallThresholdSize)
                 foreach (CaveCoord tile in wallRegion)
                     map[tile.tileX, tile.tileY] = TileType.Empty;                //把小于阈值的都铲掉。
+            else
+                survivingWalls.Add(new CaveWall(wallRegion) { });
 
 
         //获取空洞区域
@@ -178,8 +180,8 @@ public class MapGenerator : MonoBehaviour
             // 遍历上下左右四格
             for (int i = 0; i < 4; i++)
             {
-                int x = tile.tileX + upDownLeftRight[i, 0];
-                int y = tile.tileY + upDownLeftRight[i, 1];
+                int x = tile.tileX + GameMathf.upDownLeftRight[i, 0];
+                int y = tile.tileY + GameMathf.upDownLeftRight[i, 1];
                 if (IsInMapRange(x, y) && mapFlags[x, y] == false && map[x, y] == tileType)
                 {
                     mapFlags[x, y] = true;
@@ -279,9 +281,9 @@ public class MapGenerator : MonoBehaviour
         CaveRoom.ConnectRooms(roomA, roomB);
         //Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 100);
 
-        //List<CaveCoord> line = GetLine(tileA, tileB);
-        //foreach (CaveCoord coord in line)
-        //    DrawCircle(coord, passageWidth);
+        List<CaveCoord> line = GetLine(tileA, tileB);
+        foreach (CaveCoord coord in line)
+            DrawCircle(coord, passageWidth);
     }
 
     //获取两点直接线段经过的点。
