@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CaveRoom : IComparable<CaveRoom>
+public class CaveRoom : CaveRegion, IComparable<CaveRoom>
 {
-    public List<CaveCoord> tiles;                           //所有坐标。
     public List<CaveCoord> edgeTiles = new List<CaveCoord>();   //靠边的坐标。
     public List<CaveRoom> connectedRooms;                   //与其直接相连的房间。
-    public int roomSize;                                //就是tiles.Count。
     public bool isAccessibleFromMainRoom;               //是否能连接到主房间。
     public bool isMainRoom;                             //是否主房间（最大的房间）。
-    public CaveCoord averageCoord;                          //平均点
 
     public CaveRoom() { }
 
     public CaveRoom(List<CaveCoord> roomTiles, TileType[,] map)
     {
-        tiles = roomTiles;
-        roomSize = tiles.Count;
+        SetTiles(roomTiles);
         connectedRooms = new List<CaveRoom>();
         UpdateEdgeTiles(map);
     }
@@ -75,7 +71,7 @@ public class CaveRoom : IComparable<CaveRoom>
     // 比较房间大小
     public int CompareTo(CaveRoom otherRoom)
     {
-        return otherRoom.roomSize.CompareTo(roomSize);
+        return otherRoom.RegionSize.CompareTo(RegionSize);
     }
 
     // 更新房间平均点
