@@ -41,6 +41,7 @@ public class MapGenerator : MonoBehaviour
     public void GenerateMap()
     {
         survivingRooms.Clear();
+        survivingWalls.Clear();
         map = new TileType[width, height];
         RandomFillMap();
 
@@ -119,8 +120,16 @@ public class MapGenerator : MonoBehaviour
                 foreach (CaveCoord tile in wallRegion)
                     map[tile.tileX, tile.tileY] = TileType.Empty;                //把小于阈值的都铲掉。
             else
-                survivingWalls.Add(new CaveWall(wallRegion) { });
-
+            {
+                CaveWall walls = new CaveWall(wallRegion);
+                survivingWalls.Add(walls);
+                foreach (CaveCoord tile in wallRegion)
+                    if (tile.tileX == 0 || tile.tileY == 0 || tile.tileY == width || tile.tileY == height)
+                    {
+                        walls.isBorder = true;
+                        break;
+                    }
+            }
 
         //获取空洞区域
         List<List<CaveCoord>> roomRegions = GetRegions(TileType.Empty);

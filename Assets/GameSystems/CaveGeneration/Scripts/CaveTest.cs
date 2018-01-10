@@ -40,8 +40,8 @@ public class CaveTest : MonoBehaviour
     {
         for (int i = 0; i < walls.Count; i++)
         {
-            //Debug.Log(rooms[i].averageCoord.tileX + "  " + rooms[i].averageCoord.tileY);
-            flags.GetNextObject(true, new Vector3(-map.width / 2 + walls[i].averageCoord.tileX + 1f / 2f, 0, -map.height / 2 + walls[i].averageCoord.tileY + 1f / 2f));
+            if (!walls[i].isBorder)
+                flags.GetNextObject(true, new Vector3(-map.width / 2 + walls[i].averageCoord.tileX + 1f / 2f, 0, -map.height / 2 + walls[i].averageCoord.tileY + 1f / 2f));
         }
     }
 }
