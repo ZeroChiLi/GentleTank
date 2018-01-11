@@ -4,8 +4,5 @@ public class CaveWall : CaveRegion
 {
     public bool isBorder;
 
-    public CaveWall(List<CaveCoord> tiles)
-    {
-        SetTiles(tiles);
-    }
+    public CaveWall(List<CaveCoord> tiles) : base(tiles) { }
 }

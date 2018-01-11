@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CaveRegion 
+public class CaveRegion
 {
     public CaveCoord averageCoord;                              // 平均点
 
     public int RegionSize { get { return tiles.Count; } }       // 区域大小
     protected List<CaveCoord> tiles = new List<CaveCoord>();    // 所有坐标
 
+    public CaveRegion() { }
+
+    public CaveRegion(List<CaveCoord> tiles)
+    {
+        SetTiles(tiles);
+    }
     /// <summary>
     /// 设置坐标列表
     /// </summary>
@@ -25,7 +31,7 @@ public abstract class CaveRegion
         if (tiles.Count == 0)
         {
             Debug.LogWarning("CaveRegion tiles Count Is Zero.");
-            averageCoord = new CaveCoord(0,0);
+            averageCoord = new CaveCoord(0, 0);
             return;
         }
         float x = 0, y = 0;

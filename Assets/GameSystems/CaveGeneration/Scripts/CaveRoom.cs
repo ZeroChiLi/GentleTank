@@ -11,6 +11,8 @@ public class CaveRoom : CaveRegion, IComparable<CaveRoom>
 
     public CaveRoom() { }
 
+    public CaveRoom(List<CaveCoord> roomTiles) : base(roomTiles) { }
+
     public CaveRoom(List<CaveCoord> roomTiles, TileType[,] map)
     {
         SetTiles(roomTiles);
