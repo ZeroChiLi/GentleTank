@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class CaveRegion
 {
-    public CaveCoord averageCoord;                              // 平均点
-
     public int RegionSize { get { return tiles.Count; } }       // 区域大小
     protected List<CaveCoord> tiles = new List<CaveCoord>();    // 所有坐标
+
+    public CaveCoord averageCoord;                              // 平均点
+    public Vector2 variance;
 
     public CaveRegion() { }
 
@@ -24,7 +25,7 @@ public class CaveRegion
     }
 
     /// <summary>
-    /// 更新墙体平均点
+    /// 更新区域平均点
     /// </summary>
     private void UpdateAverageCoord()
     {
@@ -41,5 +42,21 @@ public class CaveRegion
             y += tiles[i].tileY;
         }
         averageCoord = new CaveCoord(Mathf.RoundToInt(x / tiles.Count), Mathf.RoundToInt(y / tiles.Count));
+    }
+
+    /// <summary>
+    /// 更新区域所有点的方差，需要确保更新了平均点
+    /// </summary>
+    public Vector2 UpdateVariance()
+    {
+        float x = 0, y = 0;
+
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            x += GameMathf.Pow2(tiles[i].tileX - averageCoord.tileX);
+            y += GameMathf.Pow2(tiles[i].tileY - averageCoord.tileY);
+        }
+
+        return variance = new Vector2(x / tiles.Count, y / tiles.Count);
     }
 }

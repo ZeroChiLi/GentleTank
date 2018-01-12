@@ -7,9 +7,9 @@ using UnityEngine;
 public static class GameMathf
 {
     /// <summary>
-    /// 上下左右的整形偏移量，第一列为x，第二列为y
+    /// 上下左右的整形偏移量，int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } }
     /// </summary>
-    static public readonly int[,] upDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
+    static public readonly int[,] UpDownLeftRight = new int[4, 2] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
 
     /// <summary>
     /// 判断value是否在min和max的闭区间内
@@ -110,4 +110,11 @@ public static class GameMathf
         return new Vector2(Mathf.Abs(vec2.x), Mathf.Abs(vec2.y));
     }
 
+    /// <summary>
+    /// 取value的二次幂
+    /// </summary>
+    static public float Pow2(float value)
+    {
+        return value * value;
+    }
 }

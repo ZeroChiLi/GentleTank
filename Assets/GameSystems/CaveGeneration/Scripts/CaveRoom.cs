@@ -29,8 +29,8 @@ public class CaveRoom : CaveRegion, IComparable<CaveRoom>
         foreach (CaveCoord tile in tiles)
             for (int i = 0; i < 4; i++)
             {
-                int x = tile.tileX + GameMathf.upDownLeftRight[i, 0];
-                int y = tile.tileY + GameMathf.upDownLeftRight[i, 1];
+                int x = tile.tileX + GameMathf.UpDownLeftRight[i, 0];
+                int y = tile.tileY + GameMathf.UpDownLeftRight[i, 1];
                 if (map[x, y] == TileType.Wall)
                 {
                     edgeTiles.Add(tile);
@@ -74,19 +74,5 @@ public class CaveRoom : CaveRegion, IComparable<CaveRoom>
     public int CompareTo(CaveRoom otherRoom)
     {
         return otherRoom.RegionSize.CompareTo(RegionSize);
-    }
-
-    // 更新房间平均点
-    public void UpdateAverageCoord()
-    {
-        if (tiles == null || tiles.Count == 0)
-            return;
-        float x = 0, y = 0;
-        for (int i = 0; i < tiles.Count; i++)
-        {
-            x += tiles[i].tileX;
-            y += tiles[i].tileY;
-        }
-        averageCoord = new CaveCoord(Mathf.RoundToInt(x / tiles.Count), Mathf.RoundToInt(y / tiles.Count));
     }
 }

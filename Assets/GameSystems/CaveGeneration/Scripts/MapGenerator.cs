@@ -189,8 +189,8 @@ public class MapGenerator : MonoBehaviour
             // 遍历上下左右四格
             for (int i = 0; i < 4; i++)
             {
-                int x = tile.tileX + GameMathf.upDownLeftRight[i, 0];
-                int y = tile.tileY + GameMathf.upDownLeftRight[i, 1];
+                int x = tile.tileX + GameMathf.UpDownLeftRight[i, 0];
+                int y = tile.tileY + GameMathf.UpDownLeftRight[i, 1];
                 if (IsInMapRange(x, y) && mapFlags[x, y] == false && map[x, y] == tileType)
                 {
                     mapFlags[x, y] = true;
