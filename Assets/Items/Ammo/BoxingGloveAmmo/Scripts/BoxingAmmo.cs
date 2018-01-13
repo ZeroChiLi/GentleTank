@@ -23,7 +23,7 @@ namespace Item.Ammo
         protected override void OnCollision(Collider other)
         {
             needTurnBack = true;
-            effectPool.GetNextObject(true, transform);
+            effectPool.GetNextObject(transform);
             targetHealth = other.GetComponentInParent<HealthManager>();
             if (targetHealth != null)
                 targetHealth.SetHealthAmount(-damage, launcher);

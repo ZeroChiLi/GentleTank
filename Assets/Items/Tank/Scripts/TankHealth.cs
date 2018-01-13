@@ -51,7 +51,7 @@ namespace Item.Tank
         /// </summary>
         protected override void OnDead(PlayerManager from = null)
         {
-            tankExplosionPool.GetNextObject(true,gameObject.transform);
+            tankExplosionPool.GetNextObject(gameObject.transform);
             gameObject.SetActive(false);
             tankBustedPool.GetNextObject().GetComponent<BustedTankMananger>().SetupBustedTank(transform, playerManager.RepresentColor);
             if (AllKillMessageManager.Instance != null)

@@ -73,7 +73,7 @@ public class MoveManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        //FixTransform();
+        FixTransform();
     }
 
     /// <summary>

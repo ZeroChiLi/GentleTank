@@ -32,7 +32,7 @@ namespace Item.Tank
         private void Launch(float launchForce, float fireDamage, float coolDownTime)
         {
             //获取炮弹，并发射
-            ammo = ammoPool.GetNextObject(false, ammoSpawnPoint.GetWorldPoint(transform));
+            ammo = ammoPool.GetNextObject(ammoSpawnPoint.GetWorldPoint(transform),false);
             ammo.GetComponent<AmmoBase>().Init(playerManager,fireDamage + additionDamage);
             ammo.GetComponent<Rigidbody>().velocity = launchForce * transform.forward;
             ammo.SetActive(true);

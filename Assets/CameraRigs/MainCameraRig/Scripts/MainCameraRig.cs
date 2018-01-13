@@ -88,7 +88,6 @@ namespace CameraRig
                 averagePos += actualTargets[i].position;
 
             averagePos /= actualTargets.Count;
-            averagePos.y = transform.position.y;
             return averagePos;
         }
 

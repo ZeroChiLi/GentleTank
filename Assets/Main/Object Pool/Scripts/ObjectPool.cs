@@ -12,18 +12,18 @@ public class ObjectPool : ScriptableObject
     public bool autoIncrease = true;            //如果需要自动增加
 
     private GameObject poolParent;              //对象池存放的父对象
-    public GameObject PoolParent { get { CheckObjeckPool(); return poolParent; } set { CheckObjeckPool(); poolParent = value; } }
+    public GameObject PoolParent { get { CheckObjectPool(); return poolParent; } set { CheckObjectPool(); poolParent = value; } }
 
     private bool isCreated = false;
     private List<GameObject> objectPool;        //对象池
     private int currentIndex = -1;              //当前索引
     private GameObject allPoolParent;
 
-    public int Count { get { CheckObjeckPool(); return objectPool.Count; } }
+    public int Count { get { CheckObjectPool(); return objectPool.Count; } }
     public GameObject this[int index]
     {
-        get { CheckObjeckPool(); return objectPool[index]; }
-        set { CheckObjeckPool(); objectPool[index] = value; }
+        get { CheckObjectPool(); return objectPool[index]; }
+        set { CheckObjectPool(); objectPool[index] = value; }
     }
 
     private void OnEnable()
@@ -54,7 +54,7 @@ public class ObjectPool : ScriptableObject
     /// <summary>
     /// 检测对象是否创建，如果没有，自动创建
     /// </summary>
-    private void CheckObjeckPool()
+    private void CheckObjectPool()
     {
         if (isCreated)
             return;
@@ -68,53 +68,59 @@ public class ObjectPool : ScriptableObject
         poolParent.transform.SetParent(allPoolParent.transform);
     }
 
-    public GameObject GetNextObject(bool active, Vector3 position)
-    {
-        return GetNextObject(active, new Point(position, Quaternion.identity));
-    }
-
     /// <summary>
     /// 获取下一个可用对象。
     /// </summary>
-    /// <returns>返回有可用对象</returns>
-    public GameObject GetNextObject(bool active, Transform transform)
+    public GameObject GetNextObject(bool active = true)
     {
-        return GetNextObject(active,new Point(transform.position,transform.rotation));
-    }
-
-    /// <summary>
-    /// 获取下一个可用对象。
-    /// </summary>
-    public GameObject GetNextObject(bool active = true, Point point = null)
-    {
-        CheckObjeckPool();
+        CheckObjectPool();
         for (int i = 0; i < objectPool.Count; i++)
         {
             int index = (currentIndex + 1 + i) % objectPool.Count;   //循环获取对象
             if (!this[index].activeInHierarchy)
             {
                 currentIndex = index;
-                return SetupObject(objectPool[index], active, point);
+                return SetupObject(objectPool[index], active);
             }
         }
-        if (autoIncrease)
-            return SetupObject(AddOneMoreObject(), active, point);
-        return null;
+        return autoIncrease ? SetupObject(AddOneMoreObject(), active) : null;
+    }
+
+    public GameObject GetNextObject(Vector3 position, Quaternion rotation, bool active = true)
+    {
+        GameObject obj = GetNextObject(active);
+        if (obj)
+        {
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
+        }
+        return obj;
+    }
+
+    public GameObject GetNextObject(Vector3 position, bool active = true)
+    {
+        GameObject obj = GetNextObject(active);
+        if (obj)
+            obj.transform.position = position;
+        return obj;
+    }
+
+    public GameObject GetNextObject(Transform transform, bool active = true)
+    {
+        return GetNextObject(transform.position, transform.rotation, active);
+    }
+
+    public GameObject GetNextObject(Point point, bool active = true)
+    {
+        return GetNextObject(point.position, point.rotation, active);
     }
 
     /// <summary>
     /// 获取下一个可用对象同时激活，以及设置位置，并返回该对象
     /// </summary>
-    /// <param name="point">位置</param>
-    /// <returns>放回这个对象</returns>
-    private GameObject SetupObject(GameObject obj, bool active, Point point)
+    private GameObject SetupObject(GameObject obj, bool active)
     {
         obj.SetActive(active);
-        if (point != null)
-        {
-            obj.transform.position = point.position;
-            obj.transform.rotation = point.rotation;
-        }
         return obj;
     }
 
@@ -140,7 +146,7 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     public void InactiveAll()
     {
-        CheckObjeckPool();
+        CheckObjectPool();
         for (int i = 0; i < objectPool.Count; i++)
             objectPool[i].SetActive(false);
     }

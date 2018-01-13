@@ -33,8 +33,8 @@ namespace GameSystem.AI
         /// </summary>
         public void PlaySignalExpand(StateController controller, float radius, float time)
         {
-            SignalExpand signal = signalExpandPool.GetNextObject(true).GetComponent<SignalExpand>();
-            signal.transform.position = controller.transform.position;
+            SignalExpand signal = signalExpandPool.GetNextObject(controller.transform.position).GetComponent<SignalExpand>();
+            //signal.transform.position = controller.transform.position;
             signal.Play(Vector3.one, Vector3.one * radius * 2f, time, controller.playerManager.Team == null ? Color.white : controller.playerManager.Team.TeamColor);
             controller.StartCoroutine(FindAndSend(controller, signal));
         }

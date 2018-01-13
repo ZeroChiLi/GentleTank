@@ -127,8 +127,7 @@ namespace Item.Tank
         /// </summary>
         public void PlaySignalExpand(float radius,float time)
         {
-            SignalExpand signal = signalExpandPool.GetNextObject(true).GetComponent<SignalExpand>();
-            signal.transform.position = transform.position;
+            SignalExpand signal = signalExpandPool.GetNextObject(transform.position).GetComponent<SignalExpand>();
             signal.Play(Vector3.one, Vector3.one * radius, time,Team == null? Color.white : Team.TeamColor);
         }
     }

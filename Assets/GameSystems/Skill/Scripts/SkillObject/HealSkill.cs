@@ -49,7 +49,7 @@ namespace GameSystem.Skill
             if (!player.activeInHierarchy || playerHealth.enabled == false)
                 yield break;
             //显示治愈特效
-            healPool.GetNextObject().transform.position = player.transform.position;
+            healPool.GetNextObject(player.transform.position);
             //加血
             playerHealth.SetHealthAmount(healVolume);
             yield return healWaitTime;

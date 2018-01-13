@@ -83,19 +83,19 @@ namespace Widget.ChargeArea
             switch (effect)
             {
                 case EffectState.Absorb:
-                    effectObject = AbsorbEffectPool.GetNextObject(false, transform);
+                    effectObject = AbsorbEffectPool.GetNextObject(transform, false);
                     break;
                 case EffectState.Chaos:
-                    effectObject = ChaosEffectPool.GetNextObject(false, transform);
+                    effectObject = ChaosEffectPool.GetNextObject(transform, false);
                     break;
                 case EffectState.Release:
-                    effectObject = ReleaseEffectPool.GetNextObject(false, transform);
+                    effectObject = ReleaseEffectPool.GetNextObject(transform, false);
                     break;
                 case EffectState.Completed:
-                    effectObject = CompletedEffectPool.GetNextObject(false, transform);
+                    effectObject = CompletedEffectPool.GetNextObject(transform, false);
                     break;
                 case EffectState.Crack:
-                    effectObject = CrackEffectPool.GetNextObject(false, transform);
+                    effectObject = CrackEffectPool.GetNextObject(transform, false);
                     break;
             }
             if (effectObject != null)
