@@ -117,4 +117,12 @@ public static class GameMathf
     {
         return value * value;
     }
+
+    /// <summary>
+    /// 转换Vector2向量到Vector3的x、z分量中，即Vector3(vec2.x, 0, vec2.y)。
+    /// </summary>
+    static public Vector3 Vec2ToVec3XZ(Vector2 vec2)
+    {
+        return new Vector3(vec2.x, 0, vec2.y);
+    }
 }

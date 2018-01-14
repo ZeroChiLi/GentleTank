@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CaveTest : MonoBehaviour 
+public class CaveTest : MonoBehaviour
 {
     public MapGenerator map;
     public ObjectPool flags;
+    public bool showGizmos;
+
+    private Vector3 offset;
 
     private void Start()
     {
@@ -20,6 +23,7 @@ public class CaveTest : MonoBehaviour
     public void ReBuildMap()
     {
         map.GenerateMap();
+        offset = new Vector3((1 - map.width) / 2, 0, (1 - map.height) / 2);
         flags.InactiveAll();
         //MarkFlagToRooms(map.survivingRooms);
         MarkFlagToWalls(map.survivingWalls);
@@ -32,7 +36,7 @@ public class CaveTest : MonoBehaviour
             //rooms[i].UpdateAverageCoord();
             //Debug.Log(rooms[i].averageCoord.tileX + "  " + rooms[i].averageCoord.tileY);
 
-            flags.GetNextObject(new Vector3(-map.width / 2 +rooms[i].averageCoord.tileX + 1f/2f,0, -map.height / 2 + rooms[i].averageCoord.tileY + 1f / 2f));
+            flags.GetNextObject(new Vector3(-map.width / 2 + rooms[i].averageCoord.tileX + 1f / 2f, 0, -map.height / 2 + rooms[i].averageCoord.tileY + 1f / 2f));
         }
     }
 
@@ -40,8 +44,26 @@ public class CaveTest : MonoBehaviour
     {
         for (int i = 0; i < walls.Count; i++)
         {
-            if (!walls[i].isBorder)
-                flags.GetNextObject(new Vector3(-map.width / 2 + walls[i].averageCoord.tileX + 1f / 2f, 0, -map.height / 2 + walls[i].averageCoord.tileY + 1f / 2f));
+            if (walls[i].isBorder)
+                continue;
+            walls[i].UpdateVariance();
+            flags.GetNextObject(offset + new Vector3(walls[i].averageCoord.tileX, 0, walls[i].averageCoord.tileY));
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!showGizmos || map == null)
+            return;
+
+        Gizmos.color = Color.red;
+        for (int i = 0; i < map.survivingWalls.Count; i++)
+        {
+            if (map.survivingWalls[i].isBorder)
+                continue;
+            Vector3 pos = offset + new Vector3(map.survivingWalls[i].averageCoord.tileX, 0, map.survivingWalls[i].averageCoord.tileY);
+            Vector3 len = new Vector3(map.survivingWalls[i].variance.x, 0, map.survivingWalls[i].variance.y);
+            Gizmos.DrawLine(pos - len / 2, pos + len / 2);
         }
     }
 }
