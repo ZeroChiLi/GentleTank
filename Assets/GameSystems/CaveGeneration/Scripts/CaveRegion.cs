@@ -7,7 +7,8 @@ public class CaveRegion
     protected List<CaveCoord> tiles = new List<CaveCoord>();    // 所有坐标
 
     public CaveCoord averageCoord;                              // 平均点
-    public Vector2 variance;
+    public Vector2 variance;                                    // 所有点的方差
+    public Vector2 deviation;                                   // 所有点的标准差
 
     public CaveRegion() { }
 
@@ -45,9 +46,9 @@ public class CaveRegion
     }
 
     /// <summary>
-    /// 更新区域所有点的方差，需要确保更新了平均点
+    /// 更新区域所有点的方差和标准差，需要确保更新了平均点
     /// </summary>
-    public Vector2 UpdateVariance()
+    public void UpdateVarianceAndDeviation()
     {
         float x = 0, y = 0;
 
@@ -56,7 +57,8 @@ public class CaveRegion
             x += GameMathf.Pow2(tiles[i].tileX - averageCoord.tileX);
             y += GameMathf.Pow2(tiles[i].tileY - averageCoord.tileY);
         }
-
-        return variance = new Vector2(x / tiles.Count, y / tiles.Count);
+        variance = new Vector2(x / tiles.Count, y / tiles.Count);
+        deviation.x = Mathf.Sqrt(variance.x);
+        deviation.y = Mathf.Sqrt(variance.y);
     }
 }

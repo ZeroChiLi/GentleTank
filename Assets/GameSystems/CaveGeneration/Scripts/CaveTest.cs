@@ -46,7 +46,7 @@ public class CaveTest : MonoBehaviour
         {
             if (walls[i].isBorder)
                 continue;
-            walls[i].UpdateVariance();
+            walls[i].UpdateVarianceAndDeviation();
             flags.GetNextObject(offset + new Vector3(walls[i].averageCoord.tileX, 0, walls[i].averageCoord.tileY));
         }
     }
@@ -62,7 +62,7 @@ public class CaveTest : MonoBehaviour
             if (map.survivingWalls[i].isBorder)
                 continue;
             Vector3 pos = offset + new Vector3(map.survivingWalls[i].averageCoord.tileX, 0, map.survivingWalls[i].averageCoord.tileY);
-            Vector3 len = new Vector3(map.survivingWalls[i].variance.x, 0, map.survivingWalls[i].variance.y);
+            Vector3 len = new Vector3(map.survivingWalls[i].deviation.x, 0, map.survivingWalls[i].deviation.y);
             Gizmos.DrawLine(pos - len / 2, pos + len / 2);
         }
     }
