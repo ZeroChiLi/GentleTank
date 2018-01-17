@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "GameSystem/CaveItemSizeList")]
-public class CaveItemSizeList : ScriptableObject 
+public class CaveItemList : ScriptableObject 
 {
     [System.Serializable]
     public struct CaveItem
