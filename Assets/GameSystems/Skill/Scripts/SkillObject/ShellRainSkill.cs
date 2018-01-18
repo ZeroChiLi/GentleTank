@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameSystem.Skill
 {
-    [CreateAssetMenu(menuName = "Skill/Shell Rain Skill")]
+    [CreateAssetMenu(menuName = "GameSystem/Skill/Shell Rain Skill")]
     public class ShellRainSkill : SkillObject
     {
         public ObjectPool shellPool;            //炮弹池

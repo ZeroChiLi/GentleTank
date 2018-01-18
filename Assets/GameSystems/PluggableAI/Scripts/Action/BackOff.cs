@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 相对目标，后退一直到超过指定距离
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/BackOff")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/BackOff")]
     public class BackOff : Action
     {
         [Range(0, 10f)]

@@ -2,7 +2,7 @@
 
 namespace GameSystem.AI
 {
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/BroadcastIfHurt")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/BroadcastIfHurt")]
     public class BroadcastIfHurtAction : BroadcastAction
     {
         public override void Act(StateController controller)

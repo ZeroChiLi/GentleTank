@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameSystem.Skill
 {
-    [CreateAssetMenu(menuName = "Skill/Heal Skill")]
+    [CreateAssetMenu(menuName = "GameSystem/Skill/Heal Skill")]
     public class HealSkill : SkillObject
     {
         public ObjectPool healPool;                     // 治愈特效池

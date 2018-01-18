@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 判断是否超过延时时间
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Decisions/Delay")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Decisions/Delay")]
     public class DelayDecision : Decision
     {
         [Range(0, 60)]

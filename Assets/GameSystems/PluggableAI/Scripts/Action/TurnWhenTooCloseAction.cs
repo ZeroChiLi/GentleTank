@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 如果当前距离在停止距离内，自动旋转到目标（避免导航抵达目标后没有面向目标）
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/TurnWhenTooClose")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/TurnWhenTooClose")]
     public class TurnWhenTooCloseAction : Action
     {
         [Range(0, 30f)]

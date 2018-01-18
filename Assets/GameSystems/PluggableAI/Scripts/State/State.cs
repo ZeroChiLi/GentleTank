@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 包含要执行动作，下一个动作的决定
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/State")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/State")]
     public class State : ScriptableObject
     {
         public Color sceneGizmoColor = Color.gray;      //拿来渲染eyes的Gizmos颜色

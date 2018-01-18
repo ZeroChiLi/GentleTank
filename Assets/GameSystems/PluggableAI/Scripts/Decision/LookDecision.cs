@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 检测敌人
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Decisions/Look")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Decisions/Look")]
     public class LookDecision : Decision
     {
         public Color debugColor = Color.green;          // 调试颜色

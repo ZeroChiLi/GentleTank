@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 攻击动作
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/Attack")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/Attack")]
     public class AttackAction : Action
     {
         [ColorUsage(false)]

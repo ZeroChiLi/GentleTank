@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "GameSystem/CaveItemSizeList")]
+[CreateAssetMenu(menuName = "GameSystem/Cave/CaveItemSizeList")]
 public class CaveItemList : ScriptableObject 
 {
     [System.Serializable]

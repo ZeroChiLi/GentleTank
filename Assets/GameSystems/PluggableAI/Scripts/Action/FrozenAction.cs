@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 判断一段时间后，是否还在原来位置的半径范围内
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/Frozen")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/Frozen")]
     public class FrozenAction : Action
     {
         [Range(0.1f,60f)]

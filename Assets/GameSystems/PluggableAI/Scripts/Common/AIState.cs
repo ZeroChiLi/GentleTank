@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// AI状态信息设置
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/AI State")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/AI State")]
     public class AIState : ScriptableObject
     {
         //导航控制

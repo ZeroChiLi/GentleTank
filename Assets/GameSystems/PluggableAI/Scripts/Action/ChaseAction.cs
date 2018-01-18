@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 追踪目标
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/Chase")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/Chase")]
     public class ChaseAction : Action
     {
         public override void Act(StateController controller)

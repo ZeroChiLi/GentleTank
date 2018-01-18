@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 超过追逐距离,改变下一个巡逻点（用来避免AI卡死）
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Decisions/StopChase")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Decisions/StopChase")]
     public class StopChaseDecision : Decision
     {
         [Range(0, 100)]

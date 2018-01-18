@@ -11,7 +11,7 @@ namespace GameSystem.Skill
     }
 
     [System.Serializable]
-    [CreateAssetMenu(menuName = "Skill/Aim Mode")]
+    [CreateAssetMenu(menuName = "GameSystem/Skill/Aim Mode")]
     public class AimMode : ScriptableObject
     {
         public bool showInGround = false;                   // 是否显示在世界空间

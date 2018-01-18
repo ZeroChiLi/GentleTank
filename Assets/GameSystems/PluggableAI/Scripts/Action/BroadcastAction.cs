@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameSystem.AI
 {
-    [CreateAssetMenu(menuName = "PluggableAI/Actions/Broadcast")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Actions/Broadcast")]
     public class BroadcastAction : Action
     {
         public enum AcceptType { All, Teammates, Enemy }

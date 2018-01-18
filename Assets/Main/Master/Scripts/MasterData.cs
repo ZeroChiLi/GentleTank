@@ -2,7 +2,7 @@
 using UnityEngine;
 using GameSystem.AI;
 
-[CreateAssetMenu(menuName = "MasterData")]
+[CreateAssetMenu(menuName = "Game Configure/MasterData")]
 public class MasterData : ScriptableObject
 {
     public string masterName = "Master";

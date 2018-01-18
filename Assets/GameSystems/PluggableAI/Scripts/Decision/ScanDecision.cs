@@ -5,7 +5,7 @@ namespace GameSystem.AI
     /// <summary>
     /// 停止导航，自己转圈圈（扫描敌人）
     /// </summary>
-    [CreateAssetMenu(menuName = "PluggableAI/Decisions/Scan")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Decisions/Scan")]
     public class ScanDecision : Decision
     {
         [Range(0, 1800)]

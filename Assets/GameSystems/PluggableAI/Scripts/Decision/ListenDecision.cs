@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameSystem.AI
 {
-    [CreateAssetMenu(menuName = "PluggableAI/Decisions/Listen")]
+    [CreateAssetMenu(menuName = "GameSystem/PluggableAI/Decisions/Listen")]
     public class ListenDecision : Decision
     {
         public string message;
