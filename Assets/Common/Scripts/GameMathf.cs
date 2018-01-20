@@ -86,7 +86,7 @@ public static class GameMathf
     /// </summary>
     /// <param name="form">复制源</param>
     /// <param name="to">目标转换</param>
-    static public void CopyPositionAndRotation(Transform form,Transform to)
+    static public void CopyPositionAndRotation(Transform form, Transform to)
     {
         to.position = form.position;
         to.rotation = form.rotation;
@@ -124,5 +124,16 @@ public static class GameMathf
     static public Vector3 Vec2ToVec3XZ(Vector2 vec2)
     {
         return new Vector3(vec2.x, 0, vec2.y);
+    }
+
+    /// <summary>
+    /// 随机Vector3向量，每个分量在a和b对应分量之间。即返回的x为a.x到b.x的范围内。
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    static public Vector3 RandomVector3(Vector3 a, Vector3 b)
+    {
+        return new Vector3(UnityEngine.Random.Range(a.x, b.x), UnityEngine.Random.Range(a.y, b.y), UnityEngine.Random.Range(a.z, b.z));
     }
 }
