@@ -9,6 +9,7 @@ public class CaveItem
     public Vector3 minScale = Vector3.one;          // 最小缩放大小
     public Vector3 maxScale = Vector3.one;          // 最大缩放大小
     public bool inverse = false;                    // 是否翻转
+    public bool isRandomRotationY = false;          // 是否随机旋转Y轴
 
     public float Aspect { get { return size.z / size.x; } } // 宽高比
 

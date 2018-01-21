@@ -11,7 +11,6 @@ public class MeshGenerator : MonoBehaviour
     public float wallHeight = 5;
     public MeshCollider wallCollider;                       //墙体的Mesh Collider。
     public int tileAmount = 10;                             //渲染瓦片数量。
-    //public bool is2D;                                       //是否使用2D模式。
     public Texture2D noiseTexture;                          //噪声纹理做表面凹凸
     public float noiseAmount = 3f;
     public float noiseScale = 2f;
@@ -55,15 +54,8 @@ public class MeshGenerator : MonoBehaviour
 
         CalculateMeshOutlines();                                //计算所有需要渲染的外边。
 
-        //AddBorderLine();                                        //添加最外边。
-
-        //if (is2D)
-        //    Generate2DColliders();                              //生成2D轮廓碰撞框。
-        //else
-        //{
         CreateWallMesh();                                   //渲染墙。
         ResetMeshHeight();
-        //}
     }
 
     //把立方体们划成一堆三角形。
@@ -302,24 +294,6 @@ public class MeshGenerator : MonoBehaviour
             borderline.Add(verticeIndex + i);
         borderline.Add(verticeIndex);
         outlines.Add(borderline);
-    }
-
-    //生成2D碰撞框架。
-    private void Generate2DColliders()
-    {
-        EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
-        for (int i = 0; i < currentColliders.Length; i++)
-            Destroy(currentColliders[i]);
-
-        foreach (List<int> outline in outlines)
-        {
-            EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
-            Vector2[] edgePoints = new Vector2[outline.Count];
-
-            for (int i = 0; i < outline.Count; i++)
-                edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
-            edgeCollider.points = edgePoints;
-        }
     }
 
     //创建墙网格。

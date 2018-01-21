@@ -108,7 +108,7 @@ public class MapGenerator : MonoBehaviour
         return wallCount;
     }
 
-    //加工地图，清除小洞，小墙，连接房间。
+    //加工地图，清除小洞，小墙。获取生成的小墙体和房间。
     private void ProcessMap()
     {
         //获取最大房间的索引
@@ -403,6 +403,5 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-
 
 }
