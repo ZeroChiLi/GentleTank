@@ -4,6 +4,7 @@ using UnityEngine;
 public class CaveTest : MonoBehaviour
 {
     public MapGenerator map;
+    public CaveItemFillManager caveItemFill;
     public ObjectPool flags;
     public bool showGizmos;
 
@@ -12,6 +13,7 @@ public class CaveTest : MonoBehaviour
     private void Start()
     {
         ReBuildMap();
+        caveItemFill.groundItemList.UpdateAscendingItemList();
     }
 
     private void Update()

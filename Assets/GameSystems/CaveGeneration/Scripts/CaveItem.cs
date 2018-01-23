@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 [System.Serializable]
 public class CaveItem
@@ -12,6 +14,7 @@ public class CaveItem
     public bool isRandomRotationY = false;          // 是否随机旋转Y轴
 
     public float Aspect { get { return size.z / size.x; } } // 宽高比
+    public float Area { get { return size.x * size.z; } }   // 占地面积
 
     /// <summary>
     /// 获取随机缩放值
@@ -19,5 +22,13 @@ public class CaveItem
     public Vector3 GetRandomScale()
     {
         return GameMathf.RandomVector3(minScale, maxScale);
+    }
+
+    /// <summary>
+    /// 比较两个洞穴物体的占地面积大小：x.Area - y.Area
+    /// </summary>
+    static public int CompareArea(CaveItem x, CaveItem y)
+    {
+        return (int)(x.Area - y.Area);
     }
 }
