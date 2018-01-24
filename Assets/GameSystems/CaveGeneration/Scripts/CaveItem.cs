@@ -14,7 +14,7 @@ public class CaveItem
     public bool isRandomRotationY = false;          // 是否随机旋转Y轴
 
     public float Aspect { get { return size.z / size.x; } } // 宽高比
-    public float Area { get { return size.x * size.z; } }   // 占地面积
+    public float AreaSize { get { return size.x * size.z; } }   // 占地面积
 
     /// <summary>
     /// 获取随机缩放值
@@ -29,6 +29,6 @@ public class CaveItem
     /// </summary>
     static public int CompareArea(CaveItem x, CaveItem y)
     {
-        return (int)(x.Area - y.Area);
+        return (int)(x.AreaSize - y.AreaSize);
     }
 }
