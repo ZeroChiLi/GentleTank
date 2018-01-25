@@ -9,33 +9,27 @@ public class MapGenerator : MonoBehaviour
     #region Public Variables
     public int width = 64;
     public int height = 36;
-
     public string seed;                     //随机种子。
     public bool useRandomSeed;
-
     [Range(0, 100)]
     public int randomFillPercent = 45;      //随机填充百分比，越大洞越小。
-
     [Range(0, 20)]
     public int smoothLevel = 4;             //平滑程度。
-
     public int wallThresholdSize = 50;      //清除小墙体的阈值。
     public int roomThresholdSize = 50;      //清除小孔的的阈值。
-
     public int passageWidth = 4;            //通道（房间与房间直接）宽度。
-
     [Range(1, 10)]
     public int borderSize = 1;
-
     public bool showGizmos;
 
     //存放最后实际有效的空洞房间。
     public List<CaveRoom> survivingRooms = new List<CaveRoom>();
     public List<CaveWall> survivingWalls = new List<CaveWall>();
+    public TileType[,] borderedMap;             //地图集和附加外边。
 
     #endregion
 
-    private TileType[,] map;                     //地图集，Empty为空洞，Wall为实体墙。
+    private TileType[,] map;                    //地图集，Empty为空洞，Wall为实体墙。
 
     //生成随机地图。
     public void GenerateMap()
@@ -54,9 +48,11 @@ public class MapGenerator : MonoBehaviour
         //连接各个幸存房间。
         ConnectClosestRooms(survivingRooms);
 
-        //渲染地图。
-        MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenerateMesh(CrateStaticBorder(), 1);
+        //创建外边
+        CrateStaticBorder();
+        ////渲染地图。
+        //MeshGenerator meshGen = GetComponent<MeshGenerator>();
+        //meshGen.GenerateMesh(CrateStaticBorder(), 1);
     }
 
     //随机填充地图。
@@ -374,9 +370,9 @@ public class MapGenerator : MonoBehaviour
     }
 
     //创建额外边界，这边界不参与任何地图计算
-    private TileType[,] CrateStaticBorder()
+    private void CrateStaticBorder()
     {
-        TileType[,] borderedMap = new TileType[width + borderSize * 2, height + borderSize * 2];
+        borderedMap = new TileType[width + borderSize * 2, height + borderSize * 2];
 
         for (int x = 0; x < borderedMap.GetLength(0); x++)
             for (int y = 0; y < borderedMap.GetLength(1); y++)
@@ -384,7 +380,6 @@ public class MapGenerator : MonoBehaviour
                     borderedMap[x, y] = map[x - borderSize, y - borderSize];
                 else
                     borderedMap[x, y] = TileType.Wall;
-        return borderedMap;
     }
 
     private void OnDrawGizmos()

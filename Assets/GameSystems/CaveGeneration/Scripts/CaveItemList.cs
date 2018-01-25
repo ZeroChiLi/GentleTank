@@ -31,8 +31,6 @@ public class CaveItemList : ScriptableObject
         int j = 0;
         for (int i = 0; i < ascendingItemList.Count; i++)
         {
-            if (gradientCaveItem[j] == null)
-                gradientCaveItem[j] = new List<CaveItem>();
             if (ascendingItemList[i].AreaSize < minSize + j * spacing)
             {
                 gradientCaveItem[j].Add(ascendingItemList[i]);
@@ -48,7 +46,7 @@ public class CaveItemList : ScriptableObject
     /// <summary>
     /// 依据物体占地面积升序排序所有物体。
     /// </summary>
-    public void UpdateAscendingItemList()
+    private void UpdateAscendingItemList()
     {
         ascendingItemList = new List<CaveItem>(caveItemList);
         ascendingItemList.Sort(CaveItem.CompareArea);
