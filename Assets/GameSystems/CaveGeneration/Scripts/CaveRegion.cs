@@ -9,6 +9,7 @@ public class CaveRegion
     public CaveCoord averageCoord;                              // 平均点
     public Vector2 variance;                                    // 所有点的方差
     public Vector2 deviation;                                   // 所有点的标准差
+    public Vector2 Aspect { get { return deviation.normalized; } }  // 归一化的标准差
 
     public CaveRegion() { }
 
@@ -23,6 +24,7 @@ public class CaveRegion
     {
         this.tiles = tiles;
         UpdateAverageCoord();
+        UpdateVarianceAndDeviation();
     }
 
     /// <summary>
@@ -48,7 +50,7 @@ public class CaveRegion
     /// <summary>
     /// 更新区域所有点的方差和标准差，需要确保更新了平均点
     /// </summary>
-    public void UpdateVarianceAndDeviation()
+    private void UpdateVarianceAndDeviation()
     {
         float x = 0, y = 0;
 

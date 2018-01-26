@@ -26,7 +26,7 @@ public class CaveTest : MonoBehaviour
     public void ReBuildMap()
     {
         mapGenerator.GenerateMap();
-        meshGenerator.GenerateMesh(mapGenerator.borderedMap, 1);
+        meshGenerator.GenerateMesh(mapGenerator.borderedMap);
         offset = new Vector3((1 - mapGenerator.width) / 2, 0, (1 - mapGenerator.height) / 2);
         flags.InactiveAll();
         //MarkFlagToRooms(map.survivingRooms);
@@ -50,7 +50,7 @@ public class CaveTest : MonoBehaviour
         {
             if (walls[i].isBorder)
                 continue;
-            walls[i].UpdateVarianceAndDeviation();
+            //walls[i].UpdateVarianceAndDeviation();
             flags.GetNextObject(offset + new Vector3(walls[i].averageCoord.tileX, 0, walls[i].averageCoord.tileY));
         }
     }

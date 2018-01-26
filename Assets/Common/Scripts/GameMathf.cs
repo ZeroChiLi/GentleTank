@@ -136,4 +136,5 @@ public static class GameMathf
     {
         return new Vector3(UnityEngine.Random.Range(a.x, b.x), UnityEngine.Random.Range(a.y, b.y), UnityEngine.Random.Range(a.z, b.z));
     }
+
 }

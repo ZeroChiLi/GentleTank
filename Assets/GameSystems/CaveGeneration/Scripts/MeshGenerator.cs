@@ -34,7 +34,7 @@ public class MeshGenerator : MonoBehaviour
 
     #endregion
 
-    public void GenerateMesh(TileType[,] map, float squareSize)
+    public void GenerateMesh(TileType[,] map)
     {
         #region 每次生成新地图都要清空所有队列，字典，哈希表
         vertices.Clear();
@@ -44,13 +44,13 @@ public class MeshGenerator : MonoBehaviour
         checkedVertices.Clear();
         #endregion
 
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(map);
 
         for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
             for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
                 TriangulateSquare(squareGrid.squares[x, y]);    //把所有方形细分成多个三角形
 
-        SetCaveMesh(map.GetLength(0) * squareSize);             //给Cave添加mesh。
+        SetCaveMesh(map.GetLength(0));             //给Cave添加mesh。
 
         CalculateMeshOutlines();                                //计算所有需要渲染的外边。
 
