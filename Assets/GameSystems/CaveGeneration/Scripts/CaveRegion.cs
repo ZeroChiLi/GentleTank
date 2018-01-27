@@ -11,6 +11,8 @@ public class CaveRegion
     public Vector2 deviation;                                   // 所有点的标准差
     public Vector2 Aspect { get { return deviation.normalized; } }  // 归一化的标准差
 
+    public CaveCoord this[int index] { get { return tiles[index]; } }
+
     public CaveRegion() { }
 
     public CaveRegion(List<CaveCoord> tiles)

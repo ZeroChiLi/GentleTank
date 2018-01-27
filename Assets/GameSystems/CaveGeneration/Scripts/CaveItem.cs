@@ -15,6 +15,7 @@ public class CaveItem
 
     public float Aspect { get { return size.z / size.x; } } // 宽高比
     public float AreaSize { get { return size.x * size.z; } }   // 占地面积
+    public int InverseInt { get { return inverse ? -1 : 1; } }
 
     /// <summary>
     /// 获取随机缩放值

@@ -399,4 +399,12 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 修改区域的类型（全部墙或洞）
+    /// </summary>
+    public void SetRegion(CaveRegion region,TileType type)
+    {
+        for (int i = 0; i < region.RegionSize; i++)
+            map[region[i].tileX, region[i].tileY] = type;
+    }
 }
