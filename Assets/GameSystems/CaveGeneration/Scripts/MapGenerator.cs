@@ -402,9 +402,15 @@ public class MapGenerator : MonoBehaviour
     /// <summary>
     /// 修改区域的类型（全部墙或洞）
     /// </summary>
-    public void SetRegion(CaveRegion region,TileType type)
+    public void SetRegion(CaveRegion region, TileType type)
     {
+        int x, y;
         for (int i = 0; i < region.RegionSize; i++)
-            map[region[i].tileX, region[i].tileY] = type;
+        {
+            x = region[i].tileX;
+            y = region[i].tileY;
+            map[x, y] = type;
+            borderedMap[x + borderSize, y + borderSize] = map[x, y];
+        }
     }
 }
