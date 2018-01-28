@@ -21,7 +21,7 @@ public class CaveItemList : ScriptableObject
     /// <summary>
     /// 更新梯度物体列表
     /// </summary>
-    public void UpdateGrandientCaveItem()
+    private void UpdateGrandientCaveItem()
     {
         UpdateAscendingItemList();
         gradientCaveItem = new List<List<CaveItem>>();
@@ -50,6 +50,12 @@ public class CaveItemList : ScriptableObject
     {
         ascendingItemList = new List<CaveItem>(caveItemList);
         ascendingItemList.Sort(CaveItem.CompareArea);
+    }
+
+    public GameObject GetRandomItem(float size,ref Vector3 scale, int approximate = 1)
+    {
+
+        return null;
     }
 
 }

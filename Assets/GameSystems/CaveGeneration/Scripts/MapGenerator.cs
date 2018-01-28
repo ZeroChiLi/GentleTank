@@ -23,8 +23,8 @@ public class MapGenerator : MonoBehaviour
     public bool showGizmos;
 
     //存放最后实际有效的空洞房间。
-    public List<CaveRoom> survivingRooms = new List<CaveRoom>();
-    public List<CaveWall> survivingWalls = new List<CaveWall>();
+    public List<CaveRoom> caveRooms = new List<CaveRoom>();
+    public List<CaveWall> caveWalls = new List<CaveWall>();
     public TileType[,] borderedMap;             //地图集和附加外边。
 
     #endregion
@@ -34,8 +34,8 @@ public class MapGenerator : MonoBehaviour
     //生成随机地图。
     public void GenerateMap()
     {
-        survivingRooms.Clear();
-        survivingWalls.Clear();
+        caveRooms.Clear();
+        caveWalls.Clear();
         map = new TileType[width, height];
         RandomFillMap();
 
@@ -46,7 +46,7 @@ public class MapGenerator : MonoBehaviour
         ProcessMap();
 
         //连接各个幸存房间。
-        ConnectClosestRooms(survivingRooms);
+        ConnectClosestRooms(caveRooms);
 
         //创建外边
         CrateStaticBorder();
@@ -118,7 +118,7 @@ public class MapGenerator : MonoBehaviour
             else
             {
                 CaveWall walls = new CaveWall(wallRegion);
-                survivingWalls.Add(walls);
+                caveWalls.Add(walls);
                 foreach (CaveCoord tile in wallRegion)
                     if (tile.tileX == 0 || tile.tileY == 0 || tile.tileY == width || tile.tileY == height)
                     {
@@ -136,7 +136,7 @@ public class MapGenerator : MonoBehaviour
                     map[tile.tileX, tile.tileY] = TileType.Wall;                //把小于阈值的都填充。
             else
             {
-                survivingRooms.Add(new CaveRoom(roomRegion, map));      //添加到幸存房间列表里。
+                caveRooms.Add(new CaveRoom(roomRegion, map));      //添加到幸存房间列表里。
                 if (maxSize < roomRegion.Count)
                 {
                     maxSize = roomRegion.Count;
@@ -146,12 +146,12 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        if (survivingRooms.Count == 0)
+        if (caveRooms.Count == 0)
             Debug.LogError("No Survived Rooms Here!!");
         else
         {
-            survivingRooms[maxIndex].isMainRoom = true;                 //最大房间就是主房间。
-            survivingRooms[maxIndex].isAccessibleFromMainRoom = true;
+            caveRooms[maxIndex].isMainRoom = true;                 //最大房间就是主房间。
+            caveRooms[maxIndex].isAccessibleFromMainRoom = true;
         }
     }
 
