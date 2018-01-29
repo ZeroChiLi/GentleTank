@@ -4,10 +4,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "GameSystem/Cave/CaveItemSizeList")]
 public class CaveItemList : ScriptableObject
 {
-    public float minSize = 0.1f;            // 最小尺寸
+    public float minSize = 0f;            // 最小尺寸
     public float maxSize = 100f;            // 最大尺寸
     public int gradient = 10;               // 梯度变换次数
     public List<CaveItem> caveItemList;     // 物体列表
+
+    public float SizeLength { get { return maxSize - minSize; } }
+    public float Spacing { get { return SizeLength / gradient; } }
 
     private List<CaveItem> ascendingItemList;   // 物体占地面积的升序列表
     // 每个梯度之间包含的物体，小于最小尺寸在索引0，大于最大尺寸在索引gradient + 1。一共gradient + 2个列表。
@@ -58,4 +61,23 @@ public class CaveItemList : ScriptableObject
         return null;
     }
 
+    public List<GameObject> GetItemWithSize(float size,int approximate = 1)
+    {
+        List<GameObject> objs = new List<GameObject>();
+
+        return objs;
+    }
+
+    /// <summary>
+    /// 获取尺寸对应列表的索引
+    /// </summary>
+    private int GetSizeIndex(float size)
+    {
+        if (size <= minSize)
+            return 0;
+        if (size >= maxSize)
+            return gradient + 1;
+        return (int)((size - minSize) / Spacing) + 1;
+
+    }
 }
