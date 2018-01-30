@@ -28,22 +28,10 @@ public class CaveItemList : ScriptableObject
     {
         UpdateAscendingItemList();
         gradientCaveItem = new List<List<CaveItem>>();
-        float spacing = (maxSize - minSize) / gradient;
         for (int i = 0; i < gradient + 2; i++)
             gradientCaveItem.Add(new List<CaveItem>());
-        int j = 0;
         for (int i = 0; i < ascendingItemList.Count; i++)
-        {
-            if (ascendingItemList[i].AreaSize < minSize + j * spacing)
-            {
-                gradientCaveItem[j].Add(ascendingItemList[i]);
-                continue;
-            }
-            j = (int)((ascendingItemList[i].AreaSize - minSize) / spacing) + 1;
-            if (j > gradient + 1)
-                j = gradient + 1;
-            gradientCaveItem[j].Add(ascendingItemList[i]);
-        }
+            gradientCaveItem[GetSizeIndex(ascendingItemList[i].AreaSize)].Add(ascendingItemList[i]);
     }
 
     /// <summary>
@@ -55,16 +43,37 @@ public class CaveItemList : ScriptableObject
         ascendingItemList.Sort(CaveItem.CompareArea);
     }
 
-    public GameObject GetRandomItem(float size,ref Vector3 scale, int approximate = 1)
+    /// <summary>
+    /// 通过所需大小，获取合理物体
+    /// </summary>
+    /// <param name="size">所需大小</param>
+    /// <param name="scale">输出物体的缩放值</param>
+    /// <param name="approximate">索引的容差值</param>
+    public CaveItem GetRandomItem(float size,ref float scale, int approximate = 1)
     {
-
-        return null;
+        List<CaveItem> items = GetItemsWithSize(size,approximate);
+        if (items.Count == 0)
+            return null;
+        CaveItem item = items[Random.Range(0, items.Count)];
+        scale = size / item.AreaSize;
+        return item;
     }
 
-    public List<GameObject> GetItemWithSize(float size,int approximate = 1)
+    /// <summary>
+    /// 通过所需大小，获取对应相近的物体列表
+    /// </summary>
+    private List<CaveItem> GetItemsWithSize(float size,int approximate = 1)
     {
-        List<GameObject> objs = new List<GameObject>();
-
+        List<CaveItem> objs = new List<CaveItem>();
+        int currentIndex = GetSizeIndex(size);
+        CollectItemToList(objs, currentIndex);
+        for (int i = 1; i < approximate + 1; i++)
+        {
+            if (IndexIsInRange(currentIndex + i))
+                CollectItemToList(objs, currentIndex + i);
+            if (IndexIsInRange(currentIndex - i))
+                CollectItemToList(objs, currentIndex - i);
+        }
         return objs;
     }
 
@@ -78,6 +87,22 @@ public class CaveItemList : ScriptableObject
         if (size >= maxSize)
             return gradient + 1;
         return (int)((size - minSize) / Spacing) + 1;
+    }
 
+    /// <summary>
+    /// 判断索引是否合法
+    /// </summary>
+    private bool IndexIsInRange(int index)
+    {
+        return index >= 0 && index < gradient + 2;
+    }
+
+    /// <summary>
+    /// 收集指定索引的所有物体到列表中
+    /// </summary>
+    private void CollectItemToList(List<CaveItem> list,int index)
+    {
+        for (int i = 0; i < gradientCaveItem[index].Count; i++)
+            list.Add(gradientCaveItem[index][i]);
     }
 }
