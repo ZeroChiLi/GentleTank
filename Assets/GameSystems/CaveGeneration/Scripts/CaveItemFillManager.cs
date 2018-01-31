@@ -8,8 +8,7 @@ public class CaveItemFillManager : MonoBehaviour
 
     public void SetItems(CaveRegion region)
     {
-
+        
     }
-
 
 }

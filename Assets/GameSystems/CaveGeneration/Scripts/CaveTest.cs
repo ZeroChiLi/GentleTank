@@ -11,8 +11,6 @@ public class CaveTest : MonoBehaviour
     public bool setItems;
     public bool showGizmos;
 
-    private Vector3 offset;
-
     private void Start()
     {
         ReBuildMap();
@@ -32,7 +30,6 @@ public class CaveTest : MonoBehaviour
         if (setItems)
             SetItems();
         meshGenerator.GenerateMesh(mapGenerator.borderedMap);
-        offset = new Vector3((1 - mapGenerator.width) / 2, 0, (1 - mapGenerator.height) / 2);
         flags.InactiveAll();
         //MarkFlagToRooms(map.survivingRooms);
         MarkFlagToWalls(mapGenerator.caveWalls);
@@ -78,7 +75,7 @@ public class CaveTest : MonoBehaviour
             if (walls[i].isBorder)
                 continue;
             //walls[i].UpdateVarianceAndDeviation();
-            flags.GetNextObject(offset + new Vector3(walls[i].averageCoord.tileX, 0, walls[i].averageCoord.tileY));
+            flags.GetNextObject(mapGenerator.GetPosition(mapGenerator.caveWalls[i].averageCoord));
         }
     }
 
@@ -92,7 +89,7 @@ public class CaveTest : MonoBehaviour
         {
             if (mapGenerator.caveWalls[i].isBorder)
                 continue;
-            Vector3 pos = offset + new Vector3(mapGenerator.caveWalls[i].averageCoord.tileX, 0, mapGenerator.caveWalls[i].averageCoord.tileY);
+            Vector3 pos = mapGenerator.GetPosition(mapGenerator.caveWalls[i].averageCoord);
             Vector3 len = new Vector3(mapGenerator.caveWalls[i].deviation.x, 0, mapGenerator.caveWalls[i].deviation.y);
             Gizmos.DrawLine(pos - len / 2, pos + len / 2);
         }

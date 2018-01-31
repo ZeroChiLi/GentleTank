@@ -22,6 +22,9 @@ public class MapGenerator : MonoBehaviour
     public int borderSize = 1;
     public bool showGizmos;
 
+    private Vector3 offset;
+    public Vector3 Offset { get { return offset; } }
+
     //存放最后实际有效的空洞房间。
     public List<CaveRoom> caveRooms = new List<CaveRoom>();
     public List<CaveWall> caveWalls = new List<CaveWall>();
@@ -36,6 +39,7 @@ public class MapGenerator : MonoBehaviour
     {
         caveRooms.Clear();
         caveWalls.Clear();
+        offset = new Vector3((1 - width) / 2, 0, (1 - height) / 2);
         map = new TileType[width, height];
         RandomFillMap();
 
@@ -50,9 +54,6 @@ public class MapGenerator : MonoBehaviour
 
         //创建外边
         CrateStaticBorder();
-        ////渲染地图。
-        //MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        //meshGen.GenerateMesh(CrateStaticBorder(), 1);
     }
 
     //随机填充地图。
@@ -412,5 +413,13 @@ public class MapGenerator : MonoBehaviour
             map[x, y] = type;
             borderedMap[x + borderSize, y + borderSize] = map[x, y];
         }
+    }
+
+    /// <summary>
+    /// 获取坐标对应实际位置
+    /// </summary>
+    public Vector3 GetPosition(CaveCoord tile)
+    {
+        return offset + new Vector3(tile.tileX, 0, tile.tileY);
     }
 }
