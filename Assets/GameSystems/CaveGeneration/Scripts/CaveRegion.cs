@@ -9,7 +9,7 @@ public class CaveRegion
     public CaveCoord averageCoord;                              // 平均点
     public Vector2 variance;                                    // 所有点的方差
     public Vector2 deviation;                                   // 所有点的标准差
-    public Vector2 Aspect { get { return deviation.normalized; } }  // 归一化的标准差
+    public Vector2 NormalizedDeviation { get { return deviation.normalized; } }  // 归一化的标准差
 
     public CaveCoord this[int index] { get { return tiles[index]; } }
 

@@ -11,6 +11,8 @@ public class CaveTest : MonoBehaviour
     public bool setItems;
     public bool showGizmos;
 
+    private List<GameObject> artItems = new List<GameObject>();
+
     private void Start()
     {
         ReBuildMap();
@@ -24,6 +26,7 @@ public class CaveTest : MonoBehaviour
 
     public void ReBuildMap()
     {
+        CleanArtItem();
         mapGenerator.GenerateMap();
         if (cleanInnerWalls)
             CleanInnerWallRegion();
@@ -54,7 +57,7 @@ public class CaveTest : MonoBehaviour
     {
         for (int i = 0; i < mapGenerator.caveWalls.Count; i++)
             if (!mapGenerator.caveWalls[i].isBorder)
-                caveItemFill.SetItems(mapGenerator.caveWalls[i]);
+                artItems.Add(caveItemFill.SetItems(mapGenerator.caveWalls[i]));
     }
 
     public void MarkFlagToRooms(List<CaveRoom> rooms)
@@ -77,6 +80,13 @@ public class CaveTest : MonoBehaviour
             //walls[i].UpdateVarianceAndDeviation();
             flags.GetNextObject(mapGenerator.GetPosition(mapGenerator.caveWalls[i].averageCoord));
         }
+    }
+
+    private void CleanArtItem()
+    {
+        for (int i = 0; i < artItems.Count; i++)
+            Destroy(artItems[i]);
+        artItems.Clear();
     }
 
     private void OnDrawGizmos()
