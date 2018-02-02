@@ -137,4 +137,20 @@ public static class GameMathf
         return new Vector3(UnityEngine.Random.Range(a.x, b.x), UnityEngine.Random.Range(a.y, b.y), UnityEngine.Random.Range(a.z, b.z));
     }
 
+    /// <summary>
+    /// 弧度转换成角度
+    /// </summary>
+    static public float RadianToAngle(float value)
+    {
+        return (float)(value * 180 / Math.PI);
+    }
+
+    /// <summary>
+    /// 角度转换成弧度
+    /// </summary>
+    static public float AngleToRadian(float value)
+    {
+        return (float)(value / Math.PI * 180);
+    }
+
 }
