@@ -57,7 +57,7 @@ public class CaveTest : MonoBehaviour
     {
         for (int i = 0; i < mapGenerator.caveWalls.Count; i++)
             if (!mapGenerator.caveWalls[i].isBorder)
-                artItems.Add(caveItemFill.SetItems(mapGenerator.caveWalls[i]));
+                artItems.Add(caveItemFill.SetMainItems(mapGenerator.caveWalls[i]));
     }
 
     public void MarkFlagToRooms(List<CaveRoom> rooms)
