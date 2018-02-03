@@ -9,6 +9,7 @@ public class CaveTest : MonoBehaviour
     public ObjectPool flags;
     public bool cleanInnerWalls;
     public bool setItems;
+    public bool showFlags;
     public bool showGizmos;
 
     private List<GameObject> artItems = new List<GameObject>();
@@ -34,8 +35,11 @@ public class CaveTest : MonoBehaviour
             SetItems();
         meshGenerator.GenerateMesh(mapGenerator.borderedMap);
         flags.InactiveAll();
-        //MarkFlagToRooms(map.survivingRooms);
-        MarkFlagToWalls(mapGenerator.caveWalls);
+        if (showFlags)
+        {
+            //MarkFlagToRooms(map.survivingRooms);
+            MarkFlagToWalls(mapGenerator.caveWalls);
+        }
     }
 
     /// <summary>
