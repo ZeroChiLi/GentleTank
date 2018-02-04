@@ -65,4 +65,12 @@ public class CaveRegion
         deviation.x = Mathf.Sqrt(variance.x);
         deviation.y = Mathf.Sqrt(variance.y);
     }
+
+    /// <summary>
+    /// 获取区域内随机坐标
+    /// </summary>
+    public CaveCoord GetRandomCoord()
+    {
+        return tiles[Random.Range(0, tiles.Count)];
+    }
 }

@@ -25,6 +25,9 @@ public class CaveTest : MonoBehaviour
             ReBuildMap();
     }
 
+    /// <summary>
+    /// 重建地图
+    /// </summary>
     public void ReBuildMap()
     {
         CleanArtItem();
@@ -48,10 +51,8 @@ public class CaveTest : MonoBehaviour
     public void CleanInnerWallRegion()
     {
         for (int i = 0; i < mapGenerator.caveWalls.Count; i++)
-        {
             if (!mapGenerator.caveWalls[i].isBorder)
                 mapGenerator.SetRegion(mapGenerator.caveWalls[i], TileType.Empty);
-        }
     }
 
     /// <summary>
@@ -64,6 +65,9 @@ public class CaveTest : MonoBehaviour
                 artItems.Add(caveItemFill.SetMainItems(mapGenerator.caveWalls[i]));
     }
 
+    /// <summary>
+    /// 标记房间（平均点）
+    /// </summary>
     public void MarkFlagToRooms(List<CaveRoom> rooms)
     {
         for (int i = 0; i < rooms.Count; i++)
@@ -71,10 +75,14 @@ public class CaveTest : MonoBehaviour
             //rooms[i].UpdateAverageCoord();
             //Debug.Log(rooms[i].averageCoord.tileX + "  " + rooms[i].averageCoord.tileY);
 
-            flags.GetNextObject(new Vector3(-mapGenerator.width / 2 + rooms[i].averageCoord.tileX + 1f / 2f, 0, -mapGenerator.height / 2 + rooms[i].averageCoord.tileY + 1f / 2f));
+            flags.GetNextObject(mapGenerator.GetPosition(rooms[i].averageCoord));
         }
     }
 
+
+    /// <summary>
+    /// 标记墙体（平均点）
+    /// </summary>
     public void MarkFlagToWalls(List<CaveWall> walls)
     {
         for (int i = 0; i < walls.Count; i++)
@@ -82,10 +90,13 @@ public class CaveTest : MonoBehaviour
             if (walls[i].isBorder)
                 continue;
             //walls[i].UpdateVarianceAndDeviation();
-            flags.GetNextObject(mapGenerator.GetPosition(mapGenerator.caveWalls[i].averageCoord));
+            flags.GetNextObject(mapGenerator.GetPosition(walls[i].averageCoord));
         }
     }
 
+    /// <summary>
+    /// 清除场景物体
+    /// </summary>
     private void CleanArtItem()
     {
         for (int i = 0; i < artItems.Count; i++)
