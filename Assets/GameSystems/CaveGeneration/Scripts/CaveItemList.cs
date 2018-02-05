@@ -60,6 +60,14 @@ public class CaveItemList : ScriptableObject
     }
 
     /// <summary>
+    /// 获取随即物体
+    /// </summary>
+    public CaveItem GetRandomItem()
+    {
+        return caveItemList[Random.Range(0, caveItemList.Count)];
+    }
+
+    /// <summary>
     /// 通过所需大小，获取对应相近的物体列表
     /// </summary>
     private List<CaveItem> GetItemsWithSize(float size, int approximate = 1)
@@ -103,6 +111,7 @@ public class CaveItemList : ScriptableObject
     private void CollectItemToList(List<CaveItem> list, int index)
     {
         for (int i = 0; i < gradientCaveItem[index].Count; i++)
-            list.Add(gradientCaveItem[index][i]);
+            if (!list.Contains(gradientCaveItem[index][i]))
+                list.Add(gradientCaveItem[index][i]);
     }
 }

@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CaveItemFillManager : MonoBehaviour
 {
     public MapGenerator map;
     public CaveItemList mainItemList;
     public CaveItemList groundItemList;
-    public CaveItemList fillItemList;
-    public Transform caveMainItems;
-    public Transform caveGroundItems;
+    public Transform mainItemsParent;
+    public Transform groundItemsParent;
 
     private Vector3 pos;
     private float scale;
@@ -24,14 +24,25 @@ public class CaveItemFillManager : MonoBehaviour
         scale = 0f;
         item = mainItemList.GetRandomItem(region.RegionSize, ref scale, 2);
         quat = Quaternion.Euler(0, -GameMathf.RadianToAngle(Mathf.Atan2(region.deviation.y, region.deviation.x)), 0);
-        obj = Instantiate(item.prefab, pos, quat, caveMainItems);
+        obj = Instantiate(item.prefab, pos, quat, mainItemsParent);
         obj.transform.localScale = Vector3.one * scale;
         return obj;
     }
 
-    public GameObject SetGroundItems()
+    /// <summary>
+    /// 设置地板纹理物体
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> SetGroundItems(CaveRegion region, uint count)
     {
-        return null;
+        List<GameObject> objs = new List<GameObject>();
+        for (int i = 0; i < count; i++)
+        {
+            item = groundItemList.GetRandomItem();
+            obj = Instantiate(item.prefab, map.GetPosition(region.GetRandomCoord()), Quaternion.Euler(GameMathf.RandomY()),groundItemsParent);
+            objs.Add(obj);
+        }
+        return objs;
     }
 
 }

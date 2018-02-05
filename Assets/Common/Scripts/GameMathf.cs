@@ -153,4 +153,12 @@ public static class GameMathf
         return (float)(value / Math.PI * 180);
     }
 
+    /// <summary>
+    /// 返回随机Y值的Vector3，x和z值为0
+    /// </summary>
+    static public Vector3 RandomY()
+    {
+        return new Vector3(0, UnityEngine.Random.Range(-180, 180), 0);
+    }
+
 }

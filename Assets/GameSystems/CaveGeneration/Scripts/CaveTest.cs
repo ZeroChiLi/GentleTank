@@ -6,13 +6,15 @@ public class CaveTest : MonoBehaviour
     public MapGenerator mapGenerator;
     public MeshGenerator meshGenerator;
     public CaveItemFillManager caveItemFill;
+    public uint groundItemRatio = 200;
     public ObjectPool flags;
     public bool cleanInnerWalls;
     public bool setItems;
     public bool showFlags;
     public bool showGizmos;
 
-    private List<GameObject> artItems = new List<GameObject>();
+    private List<GameObject> mainItems = new List<GameObject>();
+    private List<GameObject> groundItems = new List<GameObject>();
 
     private void Start()
     {
@@ -56,13 +58,19 @@ public class CaveTest : MonoBehaviour
     }
 
     /// <summary>
-    /// 给小墙体
+    /// 添加物体
     /// </summary>
     public void SetItems()
     {
         for (int i = 0; i < mapGenerator.caveWalls.Count; i++)
             if (!mapGenerator.caveWalls[i].isBorder)
-                artItems.Add(caveItemFill.SetMainItems(mapGenerator.caveWalls[i]));
+                mainItems.Add(caveItemFill.SetMainItems(mapGenerator.caveWalls[i]));
+        CaveRoom room;
+        for (int i = 0; i < mapGenerator.caveRooms.Count; i++)
+        {
+            room = mapGenerator.caveRooms[i];
+            groundItems.AddRange(caveItemFill.SetGroundItems(room, (uint)(room.RegionSize / groundItemRatio)));
+        }
     }
 
     /// <summary>
@@ -99,9 +107,12 @@ public class CaveTest : MonoBehaviour
     /// </summary>
     private void CleanArtItem()
     {
-        for (int i = 0; i < artItems.Count; i++)
-            Destroy(artItems[i]);
-        artItems.Clear();
+        for (int i = 0; i < mainItems.Count; i++)
+            Destroy(mainItems[i]);
+        mainItems.Clear();
+        for (int i = 0; i < groundItems.Count; i++)
+            Destroy(groundItems[i]);
+        groundItems.Clear();
     }
 
     private void OnDrawGizmos()
