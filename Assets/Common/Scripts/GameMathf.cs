@@ -161,4 +161,12 @@ public static class GameMathf
         return new Vector3(0, UnityEngine.Random.Range(-180, 180), 0);
     }
 
+    /// <summary>
+    /// 随机返回正1或负1
+    /// </summary>
+    static public int RandomPlusOrMinus()
+    {
+        return UnityEngine.Random.value > 0.5f ? 1 : -1;
+    }
+
 }

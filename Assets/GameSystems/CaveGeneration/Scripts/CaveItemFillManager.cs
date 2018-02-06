@@ -40,6 +40,7 @@ public class CaveItemFillManager : MonoBehaviour
         {
             item = groundItemList.GetRandomItem();
             obj = Instantiate(item.prefab, map.GetPosition(region.GetRandomCoord()), Quaternion.Euler(GameMathf.RandomY()),groundItemsParent);
+            obj.transform.localScale = new Vector3(obj.transform.localScale.x * GameMathf.RandomPlusOrMinus(), obj.transform.localScale.y, obj.transform.localScale.z);
             objs.Add(obj);
         }
         return objs;
