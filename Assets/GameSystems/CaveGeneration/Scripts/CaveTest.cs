@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class CaveTest : MonoBehaviour
 {
-    public MapGenerator mapGenerator;
-    public MeshGenerator meshGenerator;
-    public CaveItemFillManager caveItemFill;
-    public uint groundItemRatio = 200;
+    public MapGenerator mapGenerator;           // 产生地图集
+    public MeshGenerator meshGenerator;         // 渲染渲染墙体网格
+    public CaveItemFillManager caveItemFill;    // 填充小物体
+    public Transform itemsParent;               // 所有填充物体的父类
+    public uint groundItemRatio = 500;          // 每多少面积填充一个物体
+
     public ObjectPool flags;
     public bool cleanInnerWalls;
     public bool setItems;
     public bool showFlags;
     public bool showGizmos;
 
-    private List<GameObject> mainItems = new List<GameObject>();
-    private List<GameObject> groundItems = new List<GameObject>();
+    private Transform mainItemsParent;          // 所有主物体父对象
+    private Transform groundItemsParent;        // 所有地面物体父对象
 
     private void Start()
     {
@@ -33,6 +35,7 @@ public class CaveTest : MonoBehaviour
     public void ReBuildMap()
     {
         CleanArtItem();
+        CreateItemsParent();
         mapGenerator.GenerateMap();
         if (cleanInnerWalls)
             CleanInnerWallRegion();
@@ -64,42 +67,43 @@ public class CaveTest : MonoBehaviour
     {
         for (int i = 0; i < mapGenerator.caveWalls.Count; i++)
             if (!mapGenerator.caveWalls[i].isBorder)
-                mainItems.Add(caveItemFill.SetMainItems(mapGenerator.caveWalls[i]));
+                caveItemFill.SetMainItems(mapGenerator.caveWalls[i], mainItemsParent);
         CaveRoom room;
         for (int i = 0; i < mapGenerator.caveRooms.Count; i++)
         {
             room = mapGenerator.caveRooms[i];
-            groundItems.AddRange(caveItemFill.SetGroundItems(room, (uint)(room.RegionSize / groundItemRatio)));
+            caveItemFill.SetGroundItems(room, (uint)(room.RegionSize / groundItemRatio), groundItemsParent);
         }
     }
 
     /// <summary>
     /// 标记房间（平均点）
     /// </summary>
-    public void MarkFlagToRooms(List<CaveRoom> rooms)
+    private void MarkFlagToRooms(List<CaveRoom> rooms)
     {
         for (int i = 0; i < rooms.Count; i++)
-        {
-            //rooms[i].UpdateAverageCoord();
-            //Debug.Log(rooms[i].averageCoord.tileX + "  " + rooms[i].averageCoord.tileY);
-
             flags.GetNextObject(mapGenerator.GetPosition(rooms[i].averageCoord));
-        }
     }
-
 
     /// <summary>
     /// 标记墙体（平均点）
     /// </summary>
-    public void MarkFlagToWalls(List<CaveWall> walls)
+    private void MarkFlagToWalls(List<CaveWall> walls)
     {
         for (int i = 0; i < walls.Count; i++)
-        {
-            if (walls[i].isBorder)
-                continue;
-            //walls[i].UpdateVarianceAndDeviation();
-            flags.GetNextObject(mapGenerator.GetPosition(walls[i].averageCoord));
-        }
+            if (!walls[i].isBorder)
+                flags.GetNextObject(mapGenerator.GetPosition(walls[i].averageCoord));
+    }
+
+    /// <summary>
+    /// 创建物体们的父类
+    /// </summary>
+    private void CreateItemsParent()
+    {
+        mainItemsParent = new GameObject("CaveMainItems").transform;
+        groundItemsParent = new GameObject("CaveGroundItems").transform;
+        mainItemsParent.SetParent(itemsParent);
+        groundItemsParent.SetParent(itemsParent);
     }
 
     /// <summary>
@@ -107,12 +111,10 @@ public class CaveTest : MonoBehaviour
     /// </summary>
     private void CleanArtItem()
     {
-        for (int i = 0; i < mainItems.Count; i++)
-            Destroy(mainItems[i]);
-        mainItems.Clear();
-        for (int i = 0; i < groundItems.Count; i++)
-            Destroy(groundItems[i]);
-        groundItems.Clear();
+        if (mainItemsParent)
+            Destroy(mainItemsParent.gameObject);
+        if (groundItemsParent)
+            Destroy(groundItemsParent.gameObject);
     }
 
     private void OnDrawGizmos()
