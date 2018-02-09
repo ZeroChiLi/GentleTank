@@ -49,7 +49,7 @@ public class CaveItemList : ScriptableObject
     /// <param name="size">所需大小</param>
     /// <param name="scale">输出物体的缩放值</param>
     /// <param name="approximate">索引的容差值</param>
-    public CaveItem GetRandomItem(float size, ref float scale, int approximate = 1)
+    public CaveItem GetRandomItem(float size, ref float scale, uint approximate = 1)
     {
         List<CaveItem> items = GetItemsWithSize(size, approximate);
         if (items.Count == 0)
@@ -70,7 +70,7 @@ public class CaveItemList : ScriptableObject
     /// <summary>
     /// 通过所需大小，获取对应相近的物体列表
     /// </summary>
-    private List<CaveItem> GetItemsWithSize(float size, int approximate = 1)
+    private List<CaveItem> GetItemsWithSize(float size, uint approximate = 1)
     {
         List<CaveItem> objs = new List<CaveItem>();
         int currentIndex = GetSizeIndex(size);

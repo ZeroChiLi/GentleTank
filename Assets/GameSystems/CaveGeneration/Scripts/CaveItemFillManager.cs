@@ -6,9 +6,9 @@ public class CaveItemFillManager : MonoBehaviour
     public MapGenerator map;
     public CaveItemList mainItemList;
     public CaveItemList groundItemList;
+    public uint approximate = 1;
 
     private Vector3 pos;
-    private float scale;
     private CaveItem item;
     private Quaternion quat;
     private GameObject obj;
@@ -18,9 +18,11 @@ public class CaveItemFillManager : MonoBehaviour
     /// </summary>
     public GameObject SetMainItems(CaveRegion region, Transform parent)
     {
-        pos = map.GetPosition(region.averageCoord);
-        scale = 0f;
-        item = mainItemList.GetRandomItem(region.RegionSize, ref scale, 2);
+        float scale = 0f;
+        item = mainItemList.GetRandomItem(region.RegionSize, ref scale, approximate);
+        if (item == null)
+            item = mainItemList.GetRandomItem(region.RegionSize, ref scale, approximate + 1);
+        pos = map.GetPosition(region.averageCoord) + item.offset;
         if (item.randomRotationY)
             quat = Quaternion.Euler(GameMathf.RandomY());
         else
