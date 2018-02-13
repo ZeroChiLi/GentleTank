@@ -5,7 +5,7 @@ using UnityEngine;
 public class CaveRoom : CaveRegion, IComparable<CaveRoom>
 {
     public List<CaveCoord> edgeTiles = new List<CaveCoord>();   //靠边的坐标。
-    public List<CaveRoom> connectedRooms;                   //与其直接相连的房间。
+    public List<CaveRoom> connectedRooms = new List<CaveRoom>();//与其直接相连的房间。
     public bool isAccessibleFromMainRoom;               //是否能连接到主房间。
     public bool isMainRoom;                             //是否主房间（最大的房间）。
 
@@ -13,10 +13,8 @@ public class CaveRoom : CaveRegion, IComparable<CaveRoom>
 
     public CaveRoom(List<CaveCoord> roomTiles) : base(roomTiles) { }
 
-    public CaveRoom(List<CaveCoord> roomTiles, TileType[,] map)
+    public CaveRoom(List<CaveCoord> roomTiles, TileType[,] map) : base(roomTiles)
     {
-        SetTiles(roomTiles);
-        connectedRooms = new List<CaveRoom>();
         UpdateEdgeTiles(map);
     }
 
