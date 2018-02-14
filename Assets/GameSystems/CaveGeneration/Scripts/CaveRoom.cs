@@ -29,7 +29,7 @@ public class CaveRoom : CaveRegion, IComparable<CaveRoom>
             {
                 int x = tile.tileX + GameMathf.UpDownLeftRight[i, 0];
                 int y = tile.tileY + GameMathf.UpDownLeftRight[i, 1];
-                if (map[x, y] == TileType.Wall)
+                if (GameMathf.XYIsInRange(x, y, map.GetLength(0), map.GetLength(1)) && map[x, y] == TileType.Wall)
                 {
                     edgeTiles.Add(tile);
                     continue;

@@ -169,4 +169,12 @@ public static class GameMathf
         return UnityEngine.Random.value > 0.5f ? 1 : -1;
     }
 
+    /// <summary>
+    /// 判断xy值是否在[0,maxX)和[0,maxY)区间
+    /// </summary>
+    static public bool XYIsInRange(int x, int y, int maxX, int maxY)
+    {
+        return x >= 0 && y >= 0 && x < maxX && y < maxY;
+    }
+
 }

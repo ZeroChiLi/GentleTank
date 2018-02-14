@@ -20,27 +20,35 @@ public class MapGenerator : MonoBehaviour
     public int passageWidth = 4;            //通道（房间与房间直接）宽度。
     [Range(1, 10)]
     public int borderSize = 1;
+    public StartCaveRooms startCaveRoom;
     public bool showGizmos;
-
-    private Vector3 offset;
-    public Vector3 Offset { get { return offset; } }
-
     //存放最后实际有效的空洞房间。
     public List<CaveRoom> caveRooms = new List<CaveRoom>();
+    public List<CaveRoom> startRooms = new List<CaveRoom>();
     public List<CaveWall> caveWalls = new List<CaveWall>();
     public TileType[,] borderedMap;             //地图集和附加外边。
 
     #endregion
 
+    private Vector3 offset;
+    public Vector3 Offset { get { return offset; } }
+
     private TileType[,] map;                    //地图集，Empty为空洞，Wall为实体墙。
+
+    //清除房间墙体列表
+    private void CleanMap()
+    {
+        caveRooms.Clear();
+        caveWalls.Clear();
+        startRooms.Clear();
+    }
 
     //生成随机地图。
     public void GenerateMap()
     {
-        caveRooms.Clear();
-        caveWalls.Clear();
         offset = new Vector3((1 - width) / 2, 0, (1 - height) / 2);
         map = new TileType[width, height];
+        CleanMap();
         RandomFillMap();
 
         for (int i = 0; i < smoothLevel; i++)
@@ -48,6 +56,10 @@ public class MapGenerator : MonoBehaviour
 
         //清除小洞，小墙。
         ProcessMap();
+
+        //初始化添加玩家出生房间
+        if (startCaveRoom)
+            AddStartRoom();
 
         //连接各个幸存房间。
         ConnectClosestRooms(caveRooms);
@@ -197,6 +209,24 @@ public class MapGenerator : MonoBehaviour
         }
 
         return tiles;
+    }
+
+    // 玩家初始房间
+    private void AddStartRoom()
+    {
+        startRooms = startCaveRoom.BuildCaveRooms();
+        for (int i = 0; i < startRooms.Count; i++)
+        {
+            Debug.Log("Build " + i + "  " + startRooms[i].Count + "  "+startRooms[i].averageCoord.tileX + "  " + startRooms[i].averageCoord.tileY);
+            for (int j = 0; j < startRooms[i].Count; j++)
+            {
+                Debug.Log(startRooms[i][j].tileX + " " + startRooms[i][j].tileY);
+                map[startRooms[i][j].tileX, startRooms[i][j].tileY] = TileType.Empty;
+            }
+            startRooms[i].UpdateEdgeTiles(map);
+            caveRooms.Add(startRooms[i]);
+        }
+
     }
 
     //连接各个房间。每个房间两两比较，找到最近房间（相对前一个房间）连接之，对第二个房间来说不一定就是最近的。
@@ -365,7 +395,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     //判断坐标是否在地图里，不管墙还是洞。
-    private bool IsInMapRange(int x, int y)
+    public bool IsInMapRange(int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
     }

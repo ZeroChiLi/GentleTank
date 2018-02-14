@@ -13,21 +13,21 @@ public class StartCaveRooms : MonoBehaviour
     /// <summary>
     /// 创建所有洞穴房间
     /// </summary>
-    public void BuildCaveRooms()
+    public List<CaveRoom> BuildCaveRooms()
     {
         caveRooms.Clear();
-        List<CaveCoord> coords = new List<CaveCoord>();
         for (int i = 0; i < rooms.Count; i++)
         {
-            coords.Clear();
+            List<CaveCoord> coords = new List<CaveCoord>();
             int size = (int)rooms[i].size.x * (int)rooms[i].size.y;
             if (size <= 0)
                 continue;
             for (int j = 0; j < rooms[i].size.x; j++)
                 for (int k = 0; k < rooms[i].size.y; k++)
                     coords.Add(GetCoord(rooms[i].pos, rooms[i].size, j, k));
-            caveRooms[i] = new CaveRoom(coords);
+            caveRooms.Add(new CaveRoom(coords));
         }
+        return caveRooms;
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ public class CaveRegion
     public Vector2 NormalizedDeviation { get { return deviation.normalized; } }  // 归一化的标准差
 
     public CaveCoord this[int index] { get { return tiles[index]; } }
+    public int Count { get { return tiles.Count; } }
 
     public CaveRegion() { }
 
