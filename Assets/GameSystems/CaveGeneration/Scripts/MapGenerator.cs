@@ -54,12 +54,12 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < smoothLevel; i++)
             SmoothMap();
 
-        //清除小洞，小墙。
-        ProcessMap();
-
         //初始化添加玩家出生房间
         if (startCaveRoom)
             AddStartRoom();
+
+        //清除小洞，小墙。
+        ProcessMap();
 
         //连接各个幸存房间。
         ConnectClosestRooms(caveRooms);
