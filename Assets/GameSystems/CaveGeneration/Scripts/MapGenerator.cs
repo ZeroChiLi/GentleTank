@@ -49,14 +49,16 @@ public class MapGenerator : MonoBehaviour
         offset = new Vector3((1 - width) / 2, 0, (1 - height) / 2);
         map = new TileType[width, height];
         CleanMap();
+        //随机填充
         RandomFillMap();
-
-        for (int i = 0; i < smoothLevel; i++)
-            SmoothMap();
 
         //初始化添加玩家出生房间
         if (startCaveRoom)
             AddStartRoom();
+
+        //平滑地图
+        for (int i = 0; i < smoothLevel; i++)
+            SmoothMap();
 
         //清除小洞，小墙。
         ProcessMap();
@@ -84,14 +86,27 @@ public class MapGenerator : MonoBehaviour
                     map[x, y] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? TileType.Wall : TileType.Empty;
     }
 
+    // 玩家初始房间
+    private void AddStartRoom()
+    {
+        startRooms = startCaveRoom.BuildCaveRooms();
+        for (int i = 0; i < startRooms.Count; i++)
+        {
+            for (int j = 0; j < startRooms[i].Count; j++)
+                map[startRooms[i][j].tileX, startRooms[i][j].tileY] = TileType.Empty;
+            startRooms[i].UpdateEdgeTiles(map);
+            caveRooms.Add(startRooms[i]);
+        }
+    }
+
     //平滑地图
     private void SmoothMap()
     {
+        int neighbourWallTiles = 4;
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
-                int neighbourWallTiles = GetSurroundingWallCount(x, y);
-
+                neighbourWallTiles = GetSurroundingWallCount(x, y);
                 if (neighbourWallTiles > 4)             //周围大于四个实体墙，那自己也实体墙了。
                     map[x, y] = TileType.Wall;
                 else if (neighbourWallTiles < 4)        //周围大于四个为空洞，那自己也空洞了。
@@ -100,19 +115,16 @@ public class MapGenerator : MonoBehaviour
             }
     }
 
-    //获取该点周围8个点为实体墙（map[x,y] == 1）的个数。
+    //获取该点周围8个点为实体墙（map[x,y] == TileType.Wall）的个数。
     private int GetSurroundingWallCount(int gridX, int gridY)
     {
         int wallCount = 0;
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++)
-                if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height)
-                {
-                    if (neighbourX != gridX || neighbourY != gridY)
-                        wallCount += map[neighbourX, neighbourY] == TileType.Wall ? 1 : 0;
-                }
-                else
+                if (!GameMathf.XYIsInRange(neighbourX, neighbourY, width, height))  // 如果不在地图范围内，直接假定为墙
                     wallCount++;
+                else if (!(neighbourX == gridX && neighbourY == gridY))     // 在范围内，且不是本身的点
+                    wallCount += map[neighbourX, neighbourY] == TileType.Wall ? 1 : 0;
 
         return wallCount;
     }
@@ -209,24 +221,6 @@ public class MapGenerator : MonoBehaviour
         }
 
         return tiles;
-    }
-
-    // 玩家初始房间
-    private void AddStartRoom()
-    {
-        startRooms = startCaveRoom.BuildCaveRooms();
-        for (int i = 0; i < startRooms.Count; i++)
-        {
-            Debug.Log("Build " + i + "  " + startRooms[i].Count + "  "+startRooms[i].averageCoord.tileX + "  " + startRooms[i].averageCoord.tileY);
-            for (int j = 0; j < startRooms[i].Count; j++)
-            {
-                Debug.Log(startRooms[i][j].tileX + " " + startRooms[i][j].tileY);
-                map[startRooms[i][j].tileX, startRooms[i][j].tileY] = TileType.Empty;
-            }
-            startRooms[i].UpdateEdgeTiles(map);
-            caveRooms.Add(startRooms[i]);
-        }
-
     }
 
     //连接各个房间。每个房间两两比较，找到最近房间（相对前一个房间）连接之，对第二个房间来说不一定就是最近的。
