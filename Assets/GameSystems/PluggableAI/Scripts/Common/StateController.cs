@@ -86,6 +86,11 @@ namespace GameSystem.AI
         private void SetupNavigation()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
+            if (navMeshAgent == null)
+            {
+                Debug.LogError("Get Componet NavMeshAgent Failed.");
+                return;
+            }
             navMeshAgent.enabled = true;
             navMeshAgent.speed = defaultStats.navSpeed.GetRandomValue();
             navMeshAgent.angularSpeed = defaultStats.navAngularSpeed.GetRandomValue();

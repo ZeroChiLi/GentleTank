@@ -53,7 +53,6 @@ public class CaveTest : MonoBehaviour
             MarkFlagToRooms(mapGenerator.caveRooms);
         if (caveDebug.showWallFlags)
             MarkFlagToWalls(mapGenerator.caveWalls);
-        Debug.Log("Room Count : "+mapGenerator.caveRooms.Count);
     }
 
     /// <summary>

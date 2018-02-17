@@ -2,9 +2,7 @@ using Item.Tank;
 using Widget;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Widget.Minimap;
 using System.Collections.Generic;
 using CrossPlatformInput;
 using CameraRig;
@@ -13,7 +11,8 @@ public class GameManager : MonoBehaviour
 {
     public GameManager Instance { get; private set; }
 
-    public Points spawnPoints;
+    public Points spawnPoints1;
+    public Points spawnPoints2;
     public Points wayPoints;
     public AllPlayerManager allPlayerManager;       // 所有玩家
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
@@ -27,12 +26,10 @@ public class GameManager : MonoBehaviour
     public TankManager MyTank { get { return myTank; } }
 
     private List<TankManager> tankList;             // 所有玩家坦克
-    private List<int> spawnIndexList = new List<int>();
     private TankManager myTank;                     // 自己的坦克
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
     private WaitForSeconds changeCamWait;           // 转换镜头延时
-
 
     private void Awake()
     {
@@ -69,8 +66,6 @@ public class GameManager : MonoBehaviour
         {
             tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
             tankList[i].Init(wayPoints);
-            //if (AllPlayerManager.Instance[i] == AllPlayerManager.Instance.MyPlayer)
-            //    myTank = tankList[i];
         }
 
         MainCameraRig.Instance.Setup(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
@@ -137,18 +132,27 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ResetAllTanksSpawnPoint()
     {
-        spawnIndexList.Clear();
-        for (int i = 0; i < spawnPoints.Count; i++)
-            spawnIndexList.Add(i);
-
-        int randomI = 0;
-        for (int i = 0; i < spawnPoints.Count; i++)
+        int t1 = 0, t2 = 0;
+        for (int i = 0; i < tankList.Count; i++)
         {
-            //randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
-            //tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
-            tankList[i].ResetToSpawnPoint(spawnPoints[(i + GameRound.Instance.CurrentRound * spawnPoints.Count / 2) % spawnPoints.Count]);
-            spawnIndexList.Remove(randomI);
+            if (tankList[i].Team.TeamID == (GameRound.Instance.CurrentRound % 2))
+                tankList[i].ResetToSpawnPoint(spawnPoints1.GetWorldSpacePoint(spawnPoints1[t1++]));
+            else
+                tankList[i].ResetToSpawnPoint(spawnPoints2.GetWorldSpacePoint(spawnPoints2[t2++]));
         }
+
+        //spawnIndexList.Clear();
+        //for (int i = 0; i < spawnPoints.Count; i++)
+        //    spawnIndexList.Add(i);
+
+        //int randomI = 0;
+        //for (int i = 0; i < spawnPoints.Count; i++)
+        //{
+        //    //randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
+        //    //tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
+        //    tankList[i].ResetToSpawnPoint(spawnPoints[(i + GameRound.Instance.CurrentRound * spawnPoints.Count / 2) % spawnPoints.Count]);
+        //    spawnIndexList.Remove(randomI);
+        //}
     }
 
     /// <summary>
