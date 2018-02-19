@@ -6,9 +6,20 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using CrossPlatformInput;
 using CameraRig;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [System.Serializable]
+    public struct GameEvent
+    {
+        public UnityEvent onBeforeRoundStartEvent;
+        public UnityEvent onAfterRoundStartEvent;
+        public UnityEvent onBeforeRoundEndEvent;
+        public UnityEvent onAfterRoundEndEvent;
+        public UnityEvent onMyPlayerCreatedEvent;
+        public UnityEvent onMyPlayerDeadEvent;
+    }
     public GameManager Instance { get; private set; }
 
     public Points spawnPoints1;
@@ -21,7 +32,7 @@ public class GameManager : MonoBehaviour
     public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
     public MinimapWitchCamera minimap;              // 小地图管理
-    public AllArrowPopUpManager spawnAllPopUpArrow; // 用来显示玩家箭头
+    public GameEvent gameEvent;
 
     public TankManager MyTank { get { return myTank; } }
 
@@ -72,6 +83,7 @@ public class GameManager : MonoBehaviour
 
         if (myTank != null)
         {
+            gameEvent.onMyPlayerCreatedEvent.Invoke();
             minimap.SetTarget(myTank.transform);
             minimap.SetMinimapActive(true);
             if (VirtualInput.GetButton("Attack") != null)
@@ -140,19 +152,6 @@ public class GameManager : MonoBehaviour
             else
                 tankList[i].ResetToSpawnPoint(spawnPoints2.GetWorldSpacePoint(spawnPoints2[t2++]));
         }
-
-        //spawnIndexList.Clear();
-        //for (int i = 0; i < spawnPoints.Count; i++)
-        //    spawnIndexList.Add(i);
-
-        //int randomI = 0;
-        //for (int i = 0; i < spawnPoints.Count; i++)
-        //{
-        //    //randomI = spawnIndexList[Random.Range(0, spawnIndexList.Count - 1)];
-        //    //tankList[i].ResetToSpawnPoint(spawnPoints[randomI]);
-        //    tankList[i].ResetToSpawnPoint(spawnPoints[(i + GameRound.Instance.CurrentRound * spawnPoints.Count / 2) % spawnPoints.Count]);
-        //    spawnIndexList.Remove(randomI);
-        //}
     }
 
     /// <summary>
@@ -192,8 +191,8 @@ public class GameManager : MonoBehaviour
     {
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
-        spawnAllPopUpArrow.Spawn();                     // 显示玩家箭头
         minimap.SetMinimapActive(true);
+        gameEvent.onBeforeRoundStartEvent.Invoke();
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
@@ -203,6 +202,7 @@ public class GameManager : MonoBehaviour
             MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
 
         yield return startWait;                         // 延时一段时间再开始
+        gameEvent.onAfterRoundStartEvent.Invoke();
     }
 
     /// <summary>
@@ -225,6 +225,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RoundEnding()
     {
+        gameEvent.onBeforeRoundEndEvent.Invoke();
         MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
 
         SetTanksControlEnable(false);                   // 锁定玩家控制权
@@ -234,6 +235,7 @@ public class GameManager : MonoBehaviour
         messageText.text = GameRound.Instance.GetEndingMessage();  // 获取结束信息并显示之
 
         yield return endWait;
+        gameEvent.onAfterRoundEndEvent.Invoke();
     }
 
     /// <summary>
