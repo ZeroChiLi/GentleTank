@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         public UnityEvent onMyPlayerCreatedEvent;
         public UnityEvent onMyPlayerDeadEvent;
     }
-    public GameManager Instance { get; private set; }
+    static public GameManager Instance { get; private set; }
 
     public Points spawnPoints1;
     public Points spawnPoints2;
@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     public float endDelay = 3f;                     // 结束延时时间
     public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
-    public MinimapWitchCamera minimap;              // 小地图管理
     public GameEvent gameEvent;
 
     public TankManager MyTank { get { return myTank; } }
@@ -84,8 +83,7 @@ public class GameManager : MonoBehaviour
         if (myTank != null)
         {
             gameEvent.onMyPlayerCreatedEvent.Invoke();
-            minimap.SetTarget(myTank.transform);
-            minimap.SetMinimapActive(true);
+            
             if (VirtualInput.GetButton("Attack") != null)
                 ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
         }
@@ -117,7 +115,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void MyTankBorkenEvent(HealthManager health, PlayerManager killer)
     {
-        minimap.SetMinimapActive(false);
+        gameEvent.onMyPlayerDeadEvent.Invoke();
         if (killer == null)
             MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
         else
@@ -191,7 +189,6 @@ public class GameManager : MonoBehaviour
     {
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
         ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
-        minimap.SetMinimapActive(true);
         gameEvent.onBeforeRoundStartEvent.Invoke();
         GameRound.Instance.StartRound();
 

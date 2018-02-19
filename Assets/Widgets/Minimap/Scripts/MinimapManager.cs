@@ -58,6 +58,15 @@ namespace Widget.Minimap
         }
 
         /// <summary>
+        /// 设置自己的玩家为目标
+        /// </summary>
+        public void SetMyTarget()
+        {
+            if (GameManager.Instance.MyTank)
+                target = GameManager.Instance.MyTank.transform;
+        }
+
+        /// <summary>
         /// 随机设置目标
         /// </summary>
         public void SetTargetRandomly()
