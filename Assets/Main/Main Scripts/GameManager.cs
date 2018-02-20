@@ -79,14 +79,6 @@ public class GameManager : MonoBehaviour
         }
 
         MainCameraRig.Instance.Setup(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
-
-        if (myTank != null)
-        {
-            gameEvent.onMyPlayerCreatedEvent.Invoke();
-            
-            if (VirtualInput.GetButton("Attack") != null)
-                ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
-        }
     }
 
     /// <summary>
@@ -106,6 +98,11 @@ public class GameManager : MonoBehaviour
 
         TankHealth health = tank.GetComponent<TankHealth>();
         health.OnDeathEvent += MyTankBorkenEvent;
+
+        if (VirtualInput.GetButton("Attack") != null)
+            ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
+
+        gameEvent.onMyPlayerCreatedEvent.Invoke();
 
         return manager;
     }
