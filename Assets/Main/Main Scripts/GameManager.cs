@@ -78,6 +78,9 @@ public class GameManager : MonoBehaviour
             tankList[i].Init(wayPoints);
         }
 
+        if (VirtualInput.GetButton("Attack") != null)
+            ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
+
         MainCameraRig.Instance.Setup(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
     }
 
@@ -98,10 +101,6 @@ public class GameManager : MonoBehaviour
 
         TankHealth health = tank.GetComponent<TankHealth>();
         health.OnDeathEvent += MyTankBorkenEvent;
-
-        if (VirtualInput.GetButton("Attack") != null)
-            ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
-
         gameEvent.onMyPlayerCreatedEvent.Invoke();
 
         return manager;
@@ -137,7 +136,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 重置所有坦克出生点
     /// </summary>
-    private void ResetAllTanksSpawnPoint()
+    private void ResetAllTanksToSpawnPoint()
     {
         int t1 = 0, t2 = 0;
         for (int i = 0; i < tankList.Count; i++)
@@ -166,9 +165,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameLoop()
     {
         yield return StartCoroutine(RoundStarting());           //回合开始，有一段延时
-        GameRound.Instance.OnGameRoundStartEvent.Invoke();
         yield return StartCoroutine(RoundPlaying());            //回合中
-        GameRound.Instance.OnGameRoundEndEvent.Invoke();
         yield return StartCoroutine(RoundEnding());             //回合结束
 
         // 如果结束了游戏，重新加载场景，否则进行下一回合
@@ -185,7 +182,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator RoundStarting()
     {
         SetTanksControlEnable(false);                   // 锁定坦克们的控制权
-        ResetAllTanksSpawnPoint();                      // 重置所有坦克位置
+        ResetAllTanksToSpawnPoint();                    // 重置所有坦克位置
         gameEvent.onBeforeRoundStartEvent.Invoke();
         GameRound.Instance.StartRound();
 

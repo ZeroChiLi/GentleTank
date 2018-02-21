@@ -16,8 +16,6 @@ public class GameRound
     public static GameRound Instance { get { return instance = instance ?? new GameRound(); } }
 
     public int maxRound;                                        // 最大回合数
-    public UnityEvent OnGameRoundStartEvent = new UnityEvent(); // 游戏回合开始时响应
-    public UnityEvent OnGameRoundEndEvent = new UnityEvent();   // 游戏回合结束时响应
 
     private GameState currentGameState;                         // 当前游戏状态
     private int currentRound = 0;                               // 当前回合数
@@ -58,7 +56,6 @@ public class GameRound
         ++currentRound;
         winner = null;
         currentGameState = GameState.Start;
-        //OnGameRoundStartEvent.Invoke();
     }
 
     /// <summary>
@@ -86,7 +83,6 @@ public class GameRound
         //如果为空，说明平局（全死了，没有获胜玩家）
         winner = temPlayer;
         currentGameState = GameState.End;
-        //OnGameRoundEndEvent.Invoke();
         return true;
     }
 

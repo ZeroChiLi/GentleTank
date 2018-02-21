@@ -81,6 +81,8 @@ namespace GameSystem.Skill
                 aimImage.color = aimMode.disableColor;
                 return;
             }
+            if (inputHitGameObject == null)
+                return;
             tagWithColor = aimMode.GetTagWithColorByTag(inputHitGameObject.tag); // 如果模型有定义该标签的颜色，修改之
             if (tagWithColor != null)
             {

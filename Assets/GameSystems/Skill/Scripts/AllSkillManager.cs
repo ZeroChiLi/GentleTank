@@ -25,9 +25,6 @@ namespace GameSystem.Skill
 
         private void Start()
         {
-            GameRound.Instance.OnGameRoundStartEvent.AddListener(() => { SetAllSkillEnable(true); });
-            GameRound.Instance.OnGameRoundEndEvent.AddListener(() => { aim.SetActive(false); SetAllSkillEnable(false); });
-
             skillManagerList = new List<SkillManager>();
             for (int i = 0; i < skillObjectList.Count; i++)
                 skillManagerList.Add(skillObjectList[i].CreateSkillButton(transform).GetComponent<SkillManager>());
@@ -52,7 +49,7 @@ namespace GameSystem.Skill
         /// 设置所有技能是否有效
         /// </summary>
         /// <param name="enable">是否有效</param>
-        private void SetAllSkillEnable(bool enable)
+        public void SetAllSkillEnable(bool enable)
         {
             if (allSkillEnable == enable)
                 return;
