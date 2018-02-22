@@ -1,101 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using CameraRig;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Widget.Minimap
+public class MinimapManager : MonoBehaviour 
 {
-    public class MinimapManager : MonoBehaviour
+    public Image rotatedBorder;                         // 小地图的可旋转外边
+    public FixedTargetFollower fixedTargetFollow;       // 跟随镜头
+
+    /// <summary>
+    /// 旋转小地图外边
+    /// </summary>
+    private void FixedUpdate()
     {
-        [Range(0, 5)]
-        public float zoom = 1;                                  // 缩放大小
-        public GameObject minimapContent;                       // 小地图内容
-        public GameObject playerIcon;                           // 代表玩家图标
-        public GameObject cameraRig;                            // 相机设备
+        if (fixedTargetFollow.Target == null)
+            return;
+        rotatedBorder.rectTransform.rotation = Quaternion.Euler(0, 0, fixedTargetFollow.Target.transform.eulerAngles.y);
+    }
 
-        private bool isSetup = false;                           // 是否已经配置好
-        private Dictionary<Transform, GameObject> allPlayerIcon; // 所有玩家位置及对应图标
-        private Transform target;                               // 追随目标
-        private Quaternion contentRotate;                       // 小地图旋转角
+    /// <summary>
+    /// 设置目标
+    /// </summary>
+    /// <param name="target"></param>
+    public void SetTarget(Transform target)
+    {
+        fixedTargetFollow.SetTarget(target);
+    }
 
-        /// <summary>
-        /// 更新目标，所有图标位置
-        /// </summary>
-        private void Update()
-        {
-            if (!isSetup)
-                return;
-            if (target == null)
-                SetTargetRandomly();
-            UpdateAllIconPosition();
-        }
-
-        /// <summary>
-        /// 初始化玩家图标列表
-        /// </summary>
-        public void SetupPlayerIconDic()
-        {
-            allPlayerIcon = new Dictionary<Transform, GameObject>();
-            for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
-            {
-                GameObject icon = Instantiate(playerIcon, minimapContent.transform);
-                if (AllPlayerManager.Instance[i].Team != null)
-                    icon.GetComponent<Image>().color = AllPlayerManager.Instance[i].Team.TeamColor;
-                allPlayerIcon[AllPlayerManager.Instance[i].transform] = icon;
-            }
-            // 旋转角，通过相机位置
-            contentRotate = Quaternion.Euler(new Vector3(0, 0, cameraRig.transform.rotation.eulerAngles.y));
-            isSetup = true;
-        }
-
-
-        /// <summary>
-        /// 设置小地图中心目标
-        /// </summary>
-        /// <param name="target">中心目标</param>
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
-        }
-
-        /// <summary>
-        /// 设置自己的玩家为目标
-        /// </summary>
-        public void SetMyTarget()
-        {
-            if (GameManager.Instance.MyTank)
-                target = GameManager.Instance.MyTank.transform;
-        }
-
-        /// <summary>
-        /// 随机设置目标
-        /// </summary>
-        public void SetTargetRandomly()
-        {
-            for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
-                if (AllPlayerManager.Instance[i].gameObject.activeSelf)
-                {
-                    SetTarget(AllPlayerManager.Instance[i].transform);
-                    return;
-                }
-            SetTarget(new GameObject().transform);
-        }
-
-        /// <summary>
-        /// 更新所有玩家对应小地图位置
-        /// </summary>
-        public void UpdateAllIconPosition()
-        {
-            foreach (var item in allPlayerIcon)
-            {
-                // 同步玩家生死状态到图标
-                item.Value.gameObject.SetActive(item.Key.gameObject.activeSelf);
-                if (!item.Key.gameObject.activeSelf)
-                    continue;
-
-                Vector3 realDistance = item.Key.transform.position - target.position;
-                Vector3 showDistance = contentRotate * new Vector3(realDistance.x, realDistance.z, 0) * zoom;
-                item.Value.transform.position = showDistance + allPlayerIcon[target].transform.position;
-            }
-        }
+    /// <summary>
+    /// 设置小地图激活状态
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetMinimapActive(bool active)
+    {
+        fixedTargetFollow.gameObject.SetActive(active);
+        gameObject.SetActive(active);
     }
 }
