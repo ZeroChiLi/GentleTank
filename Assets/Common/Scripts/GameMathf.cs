@@ -177,4 +177,13 @@ public static class GameMathf
         return x >= 0 && y >= 0 && x < maxX && y < maxY;
     }
 
+    /// <summary>
+    /// 从传入参数中的数中（不能为空），随机返回一个
+    /// </summary>
+    static public int RandomNumber(params int[] numbers)
+    {
+        if (numbers.Length == 0)
+            Debug.LogError("RandomNumber() args should not be empty.");
+        return numbers[UnityEngine.Random.Range(0,numbers.Length)];
+    }
 }

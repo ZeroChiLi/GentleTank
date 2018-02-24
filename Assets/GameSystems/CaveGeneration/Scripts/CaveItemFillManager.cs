@@ -26,7 +26,7 @@ public class CaveItemFillManager : MonoBehaviour
         if (item.randomRotationY)
             quat = Quaternion.Euler(GameMathf.RandomY());
         else
-            quat = Quaternion.Euler(0, -GameMathf.RadianToAngle(Mathf.Atan2(region.deviation.y, region.deviation.x)), 0);
+            quat = Quaternion.Euler(0, GameMathf.RandomNumber(0, 180) - GameMathf.RadianToAngle(Mathf.Atan2(region.deviation.y, region.deviation.x)), 0);
         obj = Instantiate(item.prefab, pos, quat, parent);
         obj.transform.localScale = Vector3.one * scale;
         return obj;
