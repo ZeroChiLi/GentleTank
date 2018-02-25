@@ -14,6 +14,7 @@ public class CaveTest : MonoBehaviour
     public struct CaveDebug
     {
         public ObjectPool flags;
+        public bool mouseClickToRebuild;
         public bool cleanInnerWalls;
         public bool setItems;
         public bool showRoomFlags;
@@ -26,19 +27,19 @@ public class CaveTest : MonoBehaviour
 
     private void Start()
     {
-        ReBuildMap();
+        RebuildMap();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            ReBuildMap();
+        if (caveDebug.mouseClickToRebuild && Input.GetMouseButtonDown(0))
+            RebuildMap();
     }
 
     /// <summary>
     /// 重建地图
     /// </summary>
-    public void ReBuildMap()
+    public void RebuildMap()
     {
         CleanArtItem();
         CreateItemsParent();
