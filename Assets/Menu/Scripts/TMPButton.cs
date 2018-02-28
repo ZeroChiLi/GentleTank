@@ -18,46 +18,52 @@ public class TMPButton : MonoBehaviour
     public Appearance apperance;
     public UnityEvent clickedEvent;
 
+    private bool isPressed = false;
     private TextMeshPro tmp;
-    private Collider colliderSelf;
 
     private void Awake()
     {
         tmp = GetComponent<TextMeshPro>();
-        colliderSelf = GetComponent<Collider>();
     }
 
-    private void Start()
-    {
-        if (Camera.main == null)
-        {
-            Debug.LogError("Need Camera With 'MainCamera' Tag.");
-            enabled = false;
-        }
-    }
 
-    private void Update()
+    private void OnMouseEnter()
     {
-        if (interactable == false)
-        {
-            tmp.color = apperance.disabledColor;
-            return;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            if (IsOnHit())
-                tmp.color = apperance.pressedColor;
-        }
-        else if (IsOnHit())
+        if (InteractableCheck() && isPressed == false)
             tmp.color = apperance.highlightedColor;
-        else
-            tmp.color = apperance.normalColor;
     }
 
-    private bool IsOnHit()
+    private void OnMouseUp()
     {
-        RaycastHit info;
-        return Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out info, 200) 
-            && info.collider == colliderSelf;
+        if (!InteractableCheck()) return;
+        if (isPressed)
+            clickedEvent.Invoke();
+        tmp.color = apperance.normalColor;
+        isPressed = false;
     }
+
+    private void OnMouseExit()
+    {
+        if (!InteractableCheck()) return;
+        tmp.color = apperance.normalColor;
+        isPressed = false;
+    }
+
+    private void OnMouseDown()
+    {
+        if (!InteractableCheck()) return;
+        tmp.color = apperance.pressedColor;
+        isPressed = true;
+    }
+
+    /// <summary>
+    /// 可交互性检测
+    /// </summary>
+    private bool InteractableCheck()
+    {
+        if (!interactable)
+            tmp.color = apperance.disabledColor;
+        return interactable;
+    }
+
 }
