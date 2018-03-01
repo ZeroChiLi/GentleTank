@@ -13,7 +13,6 @@ public class TMPButton : MonoBehaviour
         public Color highlightedColor = new Color(0.9f, 0.9f, 0.9f, 1f);
         public Color pressedColor = Color.gray;
         public Color disabledColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        public float fadeDuration = 0.5f;
     }
     public Appearance apperance;
     public UnityEvent clickedEvent;
