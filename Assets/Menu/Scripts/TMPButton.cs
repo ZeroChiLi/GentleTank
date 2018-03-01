@@ -37,8 +37,10 @@ public class TMPButton : MonoBehaviour
     {
         if (!InteractableCheck()) return;
         if (isPressed)
+        {
             clickedEvent.Invoke();
-        tmp.color = apperance.normalColor;
+            tmp.color = apperance.highlightedColor;
+        }
         isPressed = false;
     }
 
