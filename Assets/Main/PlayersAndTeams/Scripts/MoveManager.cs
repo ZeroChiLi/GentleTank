@@ -1,6 +1,7 @@
 ﻿using CrossPlatformInput;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class MoveManager : MonoBehaviour
 {
     public float speed = 12f;                   // 移动速度
@@ -26,6 +27,7 @@ public class MoveManager : MonoBehaviour
     private void Awake()
     {
         tankRigidbody = GetComponent<Rigidbody>();
+        particleSystems = GetComponentsInChildren<ParticleSystem>();
         originalPitch = movementAudio.pitch;
     }
 
@@ -37,7 +39,6 @@ public class MoveManager : MonoBehaviour
         movementInputValue = 0f;
         turnInputValue = 0f;
 
-        particleSystems = GetComponentsInChildren<ParticleSystem>();
         for (int i = 0; i < particleSystems.Length; ++i)
             particleSystems[i].Play();
     }
