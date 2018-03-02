@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider), typeof(TextMeshPro))]
 public class TMPButton : MonoBehaviour
 {
-    public bool interactable = true;
+    //public bool interactable = true;
     [System.Serializable]
     public class Appearance
     {
@@ -23,48 +23,59 @@ public class TMPButton : MonoBehaviour
     private void Awake()
     {
         tmp = GetComponent<TextMeshPro>();
+        if (!enabled)
+            tmp.color = apperance.disabledColor;
     }
 
+    private void OnEnable()
+    {
+        tmp.color = apperance.normalColor;
+    }
+
+    private void OnDisable()
+    {
+        tmp.color = apperance.disabledColor;
+    }
 
     private void OnMouseEnter()
     {
-        if (InteractableCheck() && isPressed == false)
+        if (enabled && isPressed == false)
             tmp.color = apperance.highlightedColor;
     }
 
     private void OnMouseUp()
     {
-        if (!InteractableCheck()) return;
+        if (!enabled) return;
         if (isPressed)
         {
-            clickedEvent.Invoke();
             tmp.color = apperance.highlightedColor;
+            clickedEvent.Invoke();
         }
         isPressed = false;
     }
 
     private void OnMouseExit()
     {
-        if (!InteractableCheck()) return;
+        if (!enabled) return;
         tmp.color = apperance.normalColor;
         isPressed = false;
     }
 
     private void OnMouseDown()
     {
-        if (!InteractableCheck()) return;
+        if (!enabled) return;
         tmp.color = apperance.pressedColor;
         isPressed = true;
     }
 
-    /// <summary>
-    /// 可交互性检测
-    /// </summary>
-    private bool InteractableCheck()
-    {
-        if (!interactable)
-            tmp.color = apperance.disabledColor;
-        return interactable;
-    }
+    ///// <summary>
+    ///// 可交互性检测
+    ///// </summary>
+    //private bool InteractableCheck()
+    //{
+    //    if (!interactable)
+    //        tmp.color = apperance.disabledColor;
+    //    return interactable;
+    //}
 
 }
