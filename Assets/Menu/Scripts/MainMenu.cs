@@ -4,18 +4,18 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour 
 {
-    public PlayableDirector director;
     public CinemachineVirtualCamera cmMainMenuCamera;
+    public CinemachineVirtualCamera cmArmsMenuCamera;
 
     public void MainToArms()
     {
-        director.time = 0;
-        director.Play();
+        cmMainMenuCamera.enabled = false;
+        cmArmsMenuCamera.enabled = true;
     }
 
     public void BackToMain()
     {
-        director.time = 0;
         cmMainMenuCamera.enabled = true;
+        cmArmsMenuCamera.enabled = false;
     }
 }
