@@ -23,7 +23,6 @@ public class MainMenu : MonoBehaviour
     {
         cmMainMenuCamera.enabled = false;
         cmArmsMenuCamera.enabled = true;
-        cmArmsMenuCamera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 8;
         EnableAllButtons(false);
     }
 

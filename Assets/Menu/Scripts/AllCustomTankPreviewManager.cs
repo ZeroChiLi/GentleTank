@@ -10,7 +10,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     static public AllCustomTankPreviewManager Instance { get; private set; }
 
     public CatchTextureCameraRig catchTextureCam;             // 捕获纹理相机设备
-    public IntervalOffsetCameraRig intervalCam;               // 间隔变化相机
+    //public IntervalOffsetCameraRig intervalCam;               // 间隔变化相机
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public SelectedImageManager selectedImage;
     public List<RenderTexture> textureList;             // 纹理列表
@@ -73,7 +73,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
         if (AllCustomTankManager.Instance.CurrentTank == null)
             return;
         selectedImage.SetTargetImmediately(AllCustomTankManager.Instance.CurrentIndex);
-        intervalCam.SetTargetImmediately(AllCustomTankManager.Instance.CurrentIndex);
+        //intervalCam.SetTargetImmediately(AllCustomTankManager.Instance.CurrentIndex);
     }
 
     /// <summary>
