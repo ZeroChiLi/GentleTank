@@ -7,13 +7,21 @@ public class MainMenu : MonoBehaviour
 {
     public CinemachineVirtualCamera cmMainMenuCamera;
     public CinemachineVirtualCamera cmArmsMenuCamera;
+    public float dollySmoothTime = 0.3f;                     // 平滑时间
     public TMPButton[] tmpButtons;
 
     private CinemachineTrackedDolly track;
+    private float dollyPos;
+    private float dollyVelocity;
 
     private void Awake()
     {
         track = cmArmsMenuCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+    }
+
+    private void Update()
+    {
+        track.m_PathPosition = Mathf.SmoothDamp(track.m_PathPosition, dollyPos, ref dollyVelocity, dollySmoothTime);
     }
 
     /// <summary>
@@ -52,7 +60,7 @@ public class MainMenu : MonoBehaviour
     /// <param name="pos"></param>
     public void SetPosition(float pos)
     {
-        track.m_PathPosition = pos;
+        dollyPos = pos;
     }
 
 }
