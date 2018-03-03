@@ -63,4 +63,9 @@ public class MainMenu : MonoBehaviour
         dollyPos = pos;
     }
 
+    public void SetToMasterTankPos()
+    {
+        dollyPos = AllCustomTankManager.Instance.CurrentIndex;
+    }
+
 }
