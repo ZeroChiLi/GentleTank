@@ -25,6 +25,14 @@ public class MainMenu : MonoBehaviour
     }
 
     /// <summary>
+    /// 加载单人模式场景
+    /// </summary>
+    public void LoadSoloScene()
+    {
+        AllSceneManager.LoadScene(AllSceneManager.GameSceneType.SoloScene);
+    }
+
+    /// <summary>
     /// 主菜单到装备菜单
     /// </summary>
     public void MainToArms()
