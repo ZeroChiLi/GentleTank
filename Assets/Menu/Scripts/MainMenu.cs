@@ -61,7 +61,6 @@ public class MainMenu : MonoBehaviour
             tmpButtons[i].enabled = enable;
     }
 
-
     /// <summary>
     /// 设置当前装备相机在轨道的位置
     /// </summary>
@@ -71,6 +70,9 @@ public class MainMenu : MonoBehaviour
         dollyPos = pos;
     }
 
+    /// <summary>
+    /// 设置装备相机到默认选中坦克位置
+    /// </summary>
     public void SetToMasterTankPos()
     {
         dollyPos = AllCustomTankManager.Instance.CurrentIndex;
