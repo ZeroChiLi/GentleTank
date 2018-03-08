@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public CinemachineVirtualCamera cmMainMenuCamera;
     public CinemachineVirtualCamera cmArmsMenuCamera;
+    public CinemachineVirtualCamera cmSettingsMenuCamera;
     public float dollySmoothTime = 0.3f;                     // 平滑时间
     public TMPButton[] tmpButtons;
 
@@ -33,23 +34,43 @@ public class MainMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// 主菜单到装备菜单
+    /// 到装备菜单
     /// </summary>
-    public void MainToArms()
+    public void GoToArmsMenu()
     {
-        cmMainMenuCamera.enabled = false;
+        DisableAllCMCameras();
         cmArmsMenuCamera.enabled = true;
         EnableAllButtons(false);
     }
 
     /// <summary>
-    /// 装备菜单到主菜单
+    /// 到设置菜单
     /// </summary>
-    public void ArmsToMain()
+    public void GoToSettingsMenu()
     {
+        DisableAllCMCameras();
+        cmSettingsMenuCamera.enabled = true;
+        EnableAllButtons(false);
+    }
+
+    /// <summary>
+    /// 回到主菜单
+    /// </summary>
+    public void BackToMainMenu()
+    {
+        DisableAllCMCameras();
         cmMainMenuCamera.enabled = true;
-        cmArmsMenuCamera.enabled = false;
         EnableAllButtons(true);
+    }
+
+    /// <summary>
+    /// 失效所有相机位
+    /// </summary>
+    private void DisableAllCMCameras()
+    {
+        cmMainMenuCamera.enabled = false;
+        cmArmsMenuCamera.enabled = false;
+        cmArmsMenuCamera.enabled = false;
     }
 
     /// <summary>
@@ -78,4 +99,11 @@ public class MainMenu : MonoBehaviour
         dollyPos = AllCustomTankManager.Instance.CurrentIndex;
     }
 
+    /// <summary>
+    /// 退出游戏
+    /// </summary>
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
