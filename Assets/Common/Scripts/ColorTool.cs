@@ -41,6 +41,6 @@ static public class ColorTool
     /// <returns>带指定颜色的字符串</returns>
     static public string GetColorString(Color color, string str)
     {
-        return string.Format("<#{0}>{1}</color>", ColorUtility.ToHtmlStringRGB(color), str);
+        return string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGB(color), str);
     }
 }
