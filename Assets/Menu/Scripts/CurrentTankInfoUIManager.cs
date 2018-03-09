@@ -24,16 +24,6 @@ public class CurrentTankInfoUIManager : MonoBehaviour
     {
         if (AllCustomTankManager.Instance.CurrentTankAssemble == null)
             return;
-        UpdateCurrentTankWeight();
-    }
-
-    /// <summary>
-    /// 更新当前坦克组合的总重量
-    /// </summary>
-    public void UpdateCurrentTankWeight()
-    {
-        if (AllCustomTankManager.Instance.CurrentTankAssemble == null)
-            return;
         weightText.text = weightPrefix + AllCustomTankManager.Instance.CurrentTankAssemble.GetTotalWeight();
     }
 

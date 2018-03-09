@@ -3,7 +3,7 @@ using UnityEngine.Playables;
 using Cinemachine;
 using System.Collections.Generic;
 
-public class MainMenu : MonoBehaviour 
+public class MainMenu : MonoBehaviour
 {
     public CinemachineVirtualCamera cmMainMenuCamera;
     public CinemachineVirtualCamera cmArmsMenuCamera;
@@ -94,7 +94,7 @@ public class MainMenu : MonoBehaviour
     /// <summary>
     /// 设置装备相机到默认选中坦克位置
     /// </summary>
-    public void SetToMasterTankPos()
+    public void SetToCurrentTankPos()
     {
         dollyPos = AllCustomTankManager.Instance.CurrentIndex;
     }
