@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-#if UNITY_EDITOR
+using System.Text;
 using UnityEditor;
-#endif
 using UnityEngine;
 
 public class AllCustomTankManager : MonoBehaviour
@@ -10,7 +9,7 @@ public class AllCustomTankManager : MonoBehaviour
     static public AllCustomTankManager Instance { get; private set; }
 
     public int maxSize = 10;                                                // 最大坦克数量
-    public string customTankPath = "/Items/Tank/TankAssemble/Custom";       // 自定义坦克相对路径
+    public string customTankPath = "/Items/Tank/Resources/TankAssemble/Custom";       // 自定义坦克相对路径
     public Animator tankExhibition;                                         // 坦克展台（自动旋转）
     public Vector3 tankOffset = new Vector3(10, 0, 0);                      // 坦克之间偏移量
     public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
@@ -58,24 +57,36 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     private void GetAllCustomTankAssemble()
     {
-        if (!Directory.Exists(fullCustomTankPath))
+        TankAssembleManager[] allTankAssembles = Resources.FindObjectsOfTypeAll<TankAssembleManager>();
+        for (int i = 0; i < allTankAssembles.Length; i++)
         {
-            Debug.LogError(fullCustomTankPath + " Doesn't Exists");
-            return;
+            tankAssembleList.Add(allTankAssembles[i]);
+            Debug.Log(allTankAssembles[i]);
         }
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    Debug.Log(Resources.Load<TankAssembleManager>("CustomTank" + i));
+        //}
 
-        FileInfo[] files = new DirectoryInfo(fullCustomTankPath).GetFiles("*.asset", SearchOption.AllDirectories);
-        TankAssembleManager tankAssemble;
+        //if (!Directory.Exists(fullCustomTankPath))
+        //{
+        //    Debug.LogError(fullCustomTankPath + " Doesn't Exists");
+        //    return;
+        //}
 
-        for (int i = 0; i < files.Length; i++)
-        {
-            tankAssemble = Resources.Load(files[i].Name) as TankAssembleManager;
-            //tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
-            if (tankAssemble != null)
-                tankAssembleList.Add(tankAssemble);
-            else
-                Debug.LogWarningFormat("Instantiate Failed. Assets{0}/{1}", customTankPath, files[i].Name);
-        }
+        //FileInfo[] files = new DirectoryInfo(fullCustomTankPath).GetFiles("*.asset", SearchOption.AllDirectories);
+        //TankAssembleManager tankAssemble;
+
+        //for (int i = 0; i < files.Length; i++)
+        //{
+        //    //Debug.Log("CustomTank" + i + "  " + (Resources.Load("CustomTank" + i) == null));
+        //    tankAssemble = Resources.Load("CustomTank" + i) as TankAssembleManager;
+        //    //tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
+        //    if (tankAssemble != null)
+        //        tankAssembleList.Add(tankAssemble);
+        //    else
+        //        Debug.LogWarningFormat("Instantiate Failed. Assets{0}/{1}", customTankPath, files[i].Name);
+        //}
     }
 
     /// <summary>

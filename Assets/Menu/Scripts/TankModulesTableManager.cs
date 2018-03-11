@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TankModulesTableManager : MonoBehaviour
 {
     public string tableName;                                    // 部件表名
-    public string path = "/Items/Tank/TankModule/";             // 部件相对地址
+    public string path = "/Items/Tank/Resources/";             // 部件相对地址
     public GameObject modulePreviewPrefab;                      // 部件预览图标
     public List<TankModulePreviewManager> modulePreviewList;    // 部件预览列表    
     public RectTransform rectTransform;                         // 对应转换

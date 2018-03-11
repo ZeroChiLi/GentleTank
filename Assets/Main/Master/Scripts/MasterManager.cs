@@ -1,6 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-#endif
+﻿using UnityEditor;
 using UnityEngine;
 
 public class MasterManager : MonoBehaviour
@@ -12,8 +10,8 @@ public class MasterManager : MonoBehaviour
         { 
             if (instance == null)
             {
-                MasterManager master = Instantiate(new GameObject("MasterManager")).AddComponent<MasterManager>();
-                master.data = Resources.Load("MasterData.asset") as MasterData;
+                MasterManager master = new GameObject("MasterManager").AddComponent<MasterManager>();
+                master.data = Resources.Load<MasterData>("MasterData");
                 //master.data = AssetDatabase.LoadAssetAtPath<MasterData>(string.Format("Assets/Main/Master/ScriptableObject/MasterData.asset"));
                 instance = master;
             }
