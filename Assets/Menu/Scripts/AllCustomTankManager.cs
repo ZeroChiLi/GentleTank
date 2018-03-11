@@ -69,7 +69,8 @@ public class AllCustomTankManager : MonoBehaviour
 
         for (int i = 0; i < files.Length; i++)
         {
-            tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
+            tankAssemble = Resources.Load(files[i].Name) as TankAssembleManager;
+            //tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
             if (tankAssemble != null)
                 tankAssembleList.Add(tankAssemble);
             else
@@ -244,7 +245,9 @@ public class AllCustomTankManager : MonoBehaviour
         CurrentTank = TemporaryTankObject;
         TemporaryTankObject = null;
         ResetTemTankAssemble();
+#if UNITY_EDITOR
         EditorUtility.SetDirty(CurrentTankAssemble);
+#endif
     }
 
     /// <summary>

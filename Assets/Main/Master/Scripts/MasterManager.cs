@@ -9,11 +9,12 @@ public class MasterManager : MonoBehaviour
     static public MasterManager Instance
     {
         get
-        {
+        { 
             if (instance == null)
             {
                 MasterManager master = Instantiate(new GameObject("MasterManager")).AddComponent<MasterManager>();
-                master.data = AssetDatabase.LoadAssetAtPath<MasterData>(string.Format("Assets/Main/Master/ScriptableObject/MasterData.asset"));
+                master.data = Resources.Load("MasterData.asset") as MasterData;
+                //master.data = AssetDatabase.LoadAssetAtPath<MasterData>(string.Format("Assets/Main/Master/ScriptableObject/MasterData.asset"));
                 instance = master;
             }
             return instance;
@@ -28,7 +29,9 @@ public class MasterManager : MonoBehaviour
         set
         {
             data.selectedTank = value;
+#if UNITY_EDITOR
             EditorUtility.SetDirty(data);
+#endif
         }
     }
 
