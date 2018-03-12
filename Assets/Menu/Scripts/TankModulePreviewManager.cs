@@ -1,8 +1,6 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-public class TankModulePreviewManager : ModulePreviewManager 
+public class TankModulePreviewManager : ModulePreviewManager
 {
 
     /// <summary>
@@ -14,7 +12,8 @@ public class TankModulePreviewManager : ModulePreviewManager
             return;
         AllCustomTankManager.Instance.PreviewNewModule(this);
         CustomTankMenuManager.Instance.changeBtn.interactable = true;
-        CurrentTankInfoUIManager.Instance.UpdateTemporaryTankInfo();
+        if (CurrentTankInfoUIManager.Instance)
+            CurrentTankInfoUIManager.Instance.UpdateTemporaryTankInfo();
     }
 
     /// <summary>
@@ -22,7 +21,7 @@ public class TankModulePreviewManager : ModulePreviewManager
     /// </summary>
     public override void OnEnter()
     {
-        ModulePropertyPanelManager.Instance.Show(Input.mousePosition,target.moduleName,target.GetProperties());
+        ModulePropertyPanelManager.Instance.Show(Input.mousePosition, target.moduleName, target.GetProperties());
     }
 
     /// <summary>
@@ -32,5 +31,4 @@ public class TankModulePreviewManager : ModulePreviewManager
     {
         ModulePropertyPanelManager.Instance.gameObject.SetActive(false);
     }
-
 }

@@ -10,7 +10,7 @@ namespace GameSystem.Skill
         public Aim aim;                                         // 瞄准光标
         public List<SkillObject> skillObjectList;               // 技能对象列表
 
-        private List<SkillManager> skillManagerList;            // 技能通常控制列表
+        private List<SkillManager> skillManagerList = new List<SkillManager>();            // 技能通常控制列表
         private bool allSkillEnable = false;                    // 所有技能是否有效
         private SkillManager currentSkill;
         private bool clickedSkillSameFrame;
@@ -25,7 +25,7 @@ namespace GameSystem.Skill
 
         private void Start()
         {
-            skillManagerList = new List<SkillManager>();
+            skillManagerList.Clear();
             for (int i = 0; i < skillObjectList.Count; i++)
                 skillManagerList.Add(skillObjectList[i].CreateSkillButton(transform).GetComponent<SkillManager>());
         }

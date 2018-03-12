@@ -56,7 +56,7 @@ public class ObjectPool : ScriptableObject
     /// </summary>
     private void CheckObjectPool()
     {
-        if (isCreated && objectPool == null)
+        if (isCreated && objectPool != null)
             return;
         CreateObjectPool();
         allPoolParent = GameObject.FindWithTag("ObjectPools");
