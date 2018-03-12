@@ -42,57 +42,26 @@ public class AllCustomTankManager : MonoBehaviour
             tankAssembleList = new List<TankAssembleManager>();
     }
 
+    private void Start()
+    {
+        CreateAllTanks();
+        SetupAllTanksPosition();
+    }
+
     /// <summary>
     /// 创建所有坦克（默认和自定义）
     /// </summary>
-    public void CreateAllTanks()
+    private void CreateAllTanks()
     {
-        GetAllCustomTankAssemble();
+        tankAssembleList = new List<TankAssembleManager>(Resources.LoadAll<TankAssembleManager>("TankAssemble/Custom"));
         for (int i = 0; i < tankAssembleList.Count; i++)
             customTankList.Add(tankAssembleList[i].CreateTank(transform));
     }
 
     /// <summary>
-    /// 通过路径获取所有自定义坦克
-    /// </summary>
-    private void GetAllCustomTankAssemble()
-    {
-        TankAssembleManager[] allTankAssembles = Resources.FindObjectsOfTypeAll<TankAssembleManager>();
-        for (int i = 0; i < allTankAssembles.Length; i++)
-        {
-            tankAssembleList.Add(allTankAssembles[i]);
-            Debug.Log(allTankAssembles[i]);
-        }
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    Debug.Log(Resources.Load<TankAssembleManager>("CustomTank" + i));
-        //}
-
-        //if (!Directory.Exists(fullCustomTankPath))
-        //{
-        //    Debug.LogError(fullCustomTankPath + " Doesn't Exists");
-        //    return;
-        //}
-
-        //FileInfo[] files = new DirectoryInfo(fullCustomTankPath).GetFiles("*.asset", SearchOption.AllDirectories);
-        //TankAssembleManager tankAssemble;
-
-        //for (int i = 0; i < files.Length; i++)
-        //{
-        //    //Debug.Log("CustomTank" + i + "  " + (Resources.Load("CustomTank" + i) == null));
-        //    tankAssemble = Resources.Load("CustomTank" + i) as TankAssembleManager;
-        //    //tankAssemble = AssetDatabase.LoadAssetAtPath<TankAssembleManager>(string.Format("{0}{1}{2}{3}", "Assets", customTankPath, "/", files[i].Name)) as TankAssembleManager;
-        //    if (tankAssemble != null)
-        //        tankAssembleList.Add(tankAssemble);
-        //    else
-        //        Debug.LogWarningFormat("Instantiate Failed. Assets{0}/{1}", customTankPath, files[i].Name);
-        //}
-    }
-
-    /// <summary>
     /// 设置所有坦克的位置
     /// </summary>
-    public void SetupAllTanksPosition()
+    private void SetupAllTanksPosition()
     {
         for (int i = 0; i < customTankList.Count; i++)
             SetupTankPos(customTankList[i].transform, i);
@@ -103,7 +72,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     /// <param name="tankTransform">坦克的转换信息</param>
     /// <param name="index">当前索引值</param>
-    public void SetupTankPos(Transform tankTransform, int index)
+    private void SetupTankPos(Transform tankTransform, int index)
     {
         tankTransform.localPosition = tankOffset * index;
         tankTransform.localRotation = Quaternion.Euler(tankStartRotation);
@@ -131,7 +100,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// <summary>
     /// 重置当前临时坦克组装
     /// </summary>
-    public void ResetTemTankAssemble()
+    private void ResetTemTankAssemble()
     {
         temTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
         temTankAssemble.CopyFrom(CurrentTankAssemble);
@@ -203,7 +172,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// <summary>
     /// 清除临时坦克对象
     /// </summary>
-    public void CleanTemTankObj(bool alsoAssemble = true)
+    private void CleanTemTankObj(bool alsoAssemble = true)
     {
         if (temTankObject != null)
         {
@@ -266,7 +235,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     /// <param name="index">坦克索引值</param>
     /// <returns>坦克组装资源路径</returns>
-    public string GetTankAssembleAssetPath(int index)
+    private string GetTankAssembleAssetPath(int index)
     {
         return string.Format("Assets{0}/CustomTank{1}.asset", customTankPath, index);
     }
@@ -276,7 +245,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     /// <param name="index">坦克索引值</param>
     /// <returns>坦克组装绝对路径</returns>
-    public string GetTankAssembleFullPath(int index)
+    private string GetTankAssembleFullPath(int index)
     {
         return string.Format("{0}{1}/CustomTank{2}.asset", Application.dataPath, customTankPath, index);
     }

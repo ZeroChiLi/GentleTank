@@ -27,8 +27,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
 
     private void Start()
     {
-        AllCustomTankManager.Instance.CreateAllTanks();
-        AllCustomTankManager.Instance.SetupAllTanksPosition();
         SetupAllTankTexture();
     }
 
