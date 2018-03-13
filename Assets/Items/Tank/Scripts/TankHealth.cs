@@ -1,6 +1,4 @@
 ﻿
-using UnityEngine;
-
 namespace Item.Tank
 {
     public class TankHealth : HealthManager

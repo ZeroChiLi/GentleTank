@@ -29,9 +29,13 @@
  - 包括对特定对象的技能效果，和范围技能效果。
  - 描边效果通过自行编写shader完成。
 
+![](http://oz99dhvw8.bkt.clouddn.com/18.png)
+> 样例：王冠。
+> Anchors为该模型各个关键地方的连接点，比如帽子Down点就是连接头部的Up点。
+
 ---
 ## 道具系统
-![](http://oz99dhvw8.bkt.clouddn.com/11.gif)
+![](http://oz99dhvw8.bkt.clouddn.com/17.gif)
  - 降落伞和道具方块均有自己建模完成。 :-D
  - 道具包括：补血、加速、加攻击等，属性相关的道具都是只会持续一段时间。
 
@@ -68,8 +72,15 @@
 ### 计时器工具
  - [Unity 封装 倒计时（计时器，CountDownTimer），实现周期更新、技能冷却等功能](http://blog.csdn.net/l773575310/article/details/77571916)
 
+### 对象池工具
+ - [Unity 对象池（Object Pooling）理解与简单应用](http://blog.csdn.net/l773575310/article/details/71601460)
+![](http://oz99dhvw8.bkt.clouddn.com/17.png)
+
 ### AI坦克的预设、团队、控制权等调试工具
 ![](http://oz99dhvw8.bkt.clouddn.com/15.png)
+
+### 坦克组合后的预设生成、预览工具
+![](http://oz99dhvw8.bkt.clouddn.com/16.png)
 
 ---
 ## 更多游戏画面

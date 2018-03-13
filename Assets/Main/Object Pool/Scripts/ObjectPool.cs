@@ -4,9 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Configure/Object Pool")]
 public class ObjectPool : ScriptableObject
 {
-    [Header("Before Using It.")]
-    [Header("Please Call 'CrateObjectPool()' Function.")]
-    [Space(20)]
     public GameObject objectPerfab;             //预设
     public int objectCount = 3;                 //数量
     public bool autoIncrease = true;            //如果需要自动增加

@@ -57,11 +57,11 @@ public class TankAssembleWindow : EditorWindow
             return;
         }
 
-        relativePath = string.Format("{0}{1}{2}", generatePath, tankAssemble.tankName, ".prefab");
+        relativePath = string.Format("{0}{1}{2}", generatePath, tankAssemble.name, ".prefab");
 
         if (createPrefab && System.IO.File.Exists(string.Format("{0}{1}{2}", Application.dataPath, "/", relativePath)))
         {
-            Debug.LogErrorFormat("{0} Already Existed : {1}", tankAssemble.tankName, relativePath);
+            Debug.LogErrorFormat("{0} Already Existed : {1}", tankAssemble.name, relativePath);
             return;
         }
 
@@ -78,7 +78,7 @@ public class TankAssembleWindow : EditorWindow
     /// <returns>是否创建成功</returns>
     public bool AssembleTank(ref GameObject newTank)
     {
-        newTank = new GameObject(tankAssemble.tankName);
+        newTank = new GameObject(tankAssemble.name);
         tankAssemble.InstantiateModules(newTank.transform);
         tankAssemble.AssembleTank();
         return true;

@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Module/TankAssemble")]
 public class TankAssembleManager : ScriptableObject
 {
-    public string tankName = "tank";
     public TankModuleHead head;
     public TankModuleBody body;
     public TankModuleWheel leftWheel;
@@ -46,7 +45,7 @@ public class TankAssembleManager : ScriptableObject
     /// <returns></returns>
     public bool IsValid()
     {
-        return !string.IsNullOrEmpty(tankName) && head && body && leftWheel;
+        return head && body && leftWheel;
     }
 
     /// <summary>
@@ -112,10 +111,10 @@ public class TankAssembleManager : ScriptableObject
     {
         if (!IsValid())
         {
-            Debug.LogErrorFormat("Cerate Tank Filed. TankName Or Head Or Body Or LeftWheel Should Not Be Null.");
+            Debug.LogErrorFormat("Cerate Tank Filed.Head Or Body Or LeftWheel Should Not Be Null.");
             return null;
         }
-        GameObject newTank = new GameObject(tankName);
+        GameObject newTank = new GameObject(name);
         newTank.transform.SetParent(parent);
         InstantiateModules(newTank.transform);
         AssembleTank();

@@ -26,7 +26,7 @@ public class CurrentTankPanelManager : MonoBehaviour
     /// </summary>
     public void CreateNewTank()
     {
-        if (allCustomTank.Count >= allCustomTank.maxSize)
+        if (allCustomTank.Count >= AllCustomTankManager.MaxSize)
         {
             toast.ShowToast("坦克库已满。");
             return;
