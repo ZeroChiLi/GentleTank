@@ -14,6 +14,7 @@ public class AllCustomTankManager : MonoBehaviour
     public Vector3 tankOffset = new Vector3(10, 0, 0);                      // 坦克之间偏移量
     public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
     public CurrentTankPanelManager tankPanel;
+    public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
@@ -22,8 +23,7 @@ public class AllCustomTankManager : MonoBehaviour
     public int CurrentIndex { get { return currentIndex; } }
     private int currentIndex;                           // 当前选中坦克索引
 
-    //public int Count { get { return tankAssembleList.Count; } }
-    public int Count { get; private set; }
+    public int Count { get { return customTankList.Count; } }
     public GameObject this[int index] { get { return index >= Count ? null : customTankList[index]; } set { customTankList[index] = value; } }
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
     public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : tankAssembleList[currentIndex]; } set { tankAssembleList[currentIndex] = value; } }
@@ -55,13 +55,9 @@ public class AllCustomTankManager : MonoBehaviour
     private void CreateAllTanks()
     {
         tankAssembleList = new List<TankAssembleManager>(Resources.LoadAll<TankAssembleManager>("TankAssemble/Custom"));
-        Count = 0;
         for (int i = 0; i < tankAssembleList.Count; i++)
             if (tankAssembleList[i].IsValid())
-            {
-                ++Count;
                 customTankList.Add(tankAssembleList[i].CreateTank(transform));
-            }
     }
 
     /// <summary>
@@ -261,14 +257,12 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     /// <param name="tankAssemble">目标坦克组装</param>
     /// <returns>返回新的坦克</returns>
-    public GameObject AddNewTank(TankAssembleManager tankAssemble)
+    public GameObject AddNewTank()
     {
-        tankAssemble.name = "CustomTank" + Count;
-        tankAssembleList.Add(tankAssemble);
-        newTank = tankAssemble.CreateTank(transform);
+        tankAssembleList[Count].CopyFrom(defaultTankAssemble);
+        newTank = tankAssembleList[Count].CreateTank(transform);
         customTankList.Add(newTank);
         SetupTankPos(newTank.transform, Count - 1);
-        AssetDatabase.CreateAsset(tankAssemble, GetTankAssembleAssetPath(Count - 1));
         return newTank;
     }
 
@@ -279,28 +273,15 @@ public class AllCustomTankManager : MonoBehaviour
     {
         if (CurrentTank == null)
             return;
+        CurrentTankAssemble.Clear();
         Destroy(CurrentTank);
         customTankList.Remove(CurrentTank);
-        tankAssembleList.Remove(CurrentTankAssemble);
-        AssetDatabase.DeleteAsset(GetTankAssembleAssetPath(currentIndex));
-        RenameTankAssembles(currentIndex + 1);
-        SetupAllTanksPosition();
-    }
-
-    /// <summary>
-    /// 重命名坦克组装（删除坦克后，后面的坦克名字尾数减一）
-    /// </summary>
-    /// <param name="startIndex">起始坦克组装索引</param>
-    private void RenameTankAssembles(int startIndex)
-    {
-        int j = startIndex;
-        for (int i = startIndex; i < MaxSize; i++)
+        for (int i = CurrentIndex; i < Count; i++)
         {
-            if (!File.Exists(GetTankAssembleFullPath(i)))
-                continue;
-            AssetDatabase.RenameAsset(GetTankAssembleAssetPath(i), "CustomTank" + (j - 1));
-            ++j;
+            tankAssembleList[i].CopyFrom(tankAssembleList[i + 1]);
+            tankAssembleList[i + 1].Clear();
         }
+        SetupAllTanksPosition();
     }
 
     /// <summary>

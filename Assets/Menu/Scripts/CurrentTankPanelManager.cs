@@ -31,9 +31,9 @@ public class CurrentTankPanelManager : MonoBehaviour
             toast.ShowToast("坦克库已满。");
             return;
         }
-        newTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
-        newTankAssemble.CopyFrom(defaultTankAssemble);
-        allCustomTank.AddNewTank(newTankAssemble);
+        //newTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
+        //newTankAssemble.CopyFrom(defaultTankAssemble);
+        allCustomTank.AddNewTank();
         allCustomTankPreview.CatchTankTexture(allCustomTank.Count - 1);
         allCustomTank.SelectCurrentTank(allCustomTank.Count - 1);
         allCustomTankPreview.OnTankPreviewClicked();

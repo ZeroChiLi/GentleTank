@@ -5,7 +5,6 @@ public class Toast : MonoBehaviour
 {
     static public Toast Instance { get; private set; }
     public Text toastText;          // 文本信息
-    //public EasyTween easyTween;
     public float duration = 3f;
 
     private CountDownTimer timer;
@@ -30,7 +29,7 @@ public class Toast : MonoBehaviour
         if (Timer.IsTimeUp)
         {
             Timer.Reset(duration, true);
-            //easyTween.OpenCloseObjectAnimation();
+            gameObject.SetActive(false);
         }
     }
 
@@ -45,8 +44,6 @@ public class Toast : MonoBehaviour
         toastText.text = content;
         Timer.Start();
         gameObject.SetActive(true);
-        //if (!easyTween.IsObjectOpened())
-        //    easyTween.OpenCloseObjectAnimation();
         Debug.Log(content);
     }
 

@@ -39,6 +39,17 @@ public class TankAssembleManager : ScriptableObject
         bodyBack = copySrc.bodyBack;
     }
 
+    public void Clear()
+    {
+        head = null;
+        body = null;
+        leftWheel = null;
+        cap = null;
+        face = null;
+        bodyForward = null;
+        bodyBack = null;
+    }
+
     /// <summary>
     /// 判断是否合格（可以组装成坦克）
     /// </summary>
