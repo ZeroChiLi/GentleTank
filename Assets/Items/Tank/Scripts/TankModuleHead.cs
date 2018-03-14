@@ -1,7 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankModule/Head")]
 public class TankModuleHead : TankModule 
@@ -9,7 +6,6 @@ public class TankModuleHead : TankModule
     [System.Serializable]
     public class AttackProperties
     {
-        //public MonoScript attackScript;
         public AudioClip chargingClip;
         public AudioClip fireClip;
 

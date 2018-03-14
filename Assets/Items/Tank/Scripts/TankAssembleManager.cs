@@ -1,5 +1,4 @@
 ﻿using Item.Tank;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankAssemble")]
@@ -153,7 +152,6 @@ public class TankAssembleManager : ScriptableObject
     private void InitTankAttack(TankManager tank, TankModuleHead head)
     {
         TankModuleHead.AttackProperties properties = head.attackProperties;
-        //tank.tankAttack = tank.gameObject.AddComponent(properties.attackScript.GetClass()) as TankAttack;
         tank.tankAttack = tank.GetComponentInChildren<TankAttack>();
         if (tank.tankAttack == null)
         {

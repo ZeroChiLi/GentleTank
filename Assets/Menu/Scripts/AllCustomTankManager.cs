@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 
 public class AllCustomTankManager : MonoBehaviour
 {
-    static public AllCustomTankManager Instance { get; private set; }
     public const int MaxSize = 10;                                          // 最大坦克数量
+    public const string ResourcesPath = "TankAssemble/Custom";              // 自定义坦克组合的资源路径
 
-    public string customTankPath = "/Items/Tank/Resources/TankAssemble/Custom";       // 自定义坦克相对路径
+    static public AllCustomTankManager Instance { get; private set; }
+
     public Animator tankExhibition;                                         // 坦克展台（自动旋转）
     public Vector3 tankOffset = new Vector3(10, 0, 0);                      // 坦克之间偏移量
     public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
@@ -30,7 +26,6 @@ public class AllCustomTankManager : MonoBehaviour
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
     public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : tankAssembleList[currentIndex]; } set { tankAssembleList[currentIndex] = value; } }
 
-    private string fullCustomTankPath { get { return Application.dataPath + customTankPath; } }
     private List<TankAssembleManager> tankAssembleList = new List<TankAssembleManager>();
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private GameObject newTank;
@@ -56,7 +51,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// </summary>
     private void CreateAllTanks()
     {
-        tankAssembleList = new List<TankAssembleManager>(Resources.LoadAll<TankAssembleManager>("TankAssemble/Custom"));
+        tankAssembleList = new List<TankAssembleManager>(Resources.LoadAll<TankAssembleManager>(ResourcesPath));
         for (int i = 0; i < tankAssembleList.Count; i++)
             if (tankAssembleList[i].IsValid())
                 customTankList.Add(tankAssembleList[i].CreateTank(transform));
@@ -229,29 +224,6 @@ public class AllCustomTankManager : MonoBehaviour
         CurrentTank = TemporaryTankObject;
         TemporaryTankObject = null;
         ResetTemTankAssemble();
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(CurrentTankAssemble);
-#endif
-    }
-
-    /// <summary>
-    /// 获取坦克组装资源路径
-    /// </summary>
-    /// <param name="index">坦克索引值</param>
-    /// <returns>坦克组装资源路径</returns>
-    private string GetTankAssembleAssetPath(int index)
-    {
-        return string.Format("Assets{0}/CustomTank{1}.asset", customTankPath, index);
-    }
-
-    /// <summary>
-    /// 获取坦克组装绝对路径
-    /// </summary>
-    /// <param name="index">坦克索引值</param>
-    /// <returns>坦克组装绝对路径</returns>
-    private string GetTankAssembleFullPath(int index)
-    {
-        return string.Format("{0}{1}/CustomTank{2}.asset", Application.dataPath, customTankPath, index);
     }
 
     /// <summary>

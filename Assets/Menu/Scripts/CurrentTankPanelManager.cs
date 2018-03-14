@@ -16,11 +16,6 @@ public class CurrentTankPanelManager : MonoBehaviour
 
     private TankAssembleManager newTankAssemble;                    // 新建的坦克组装
 
-    private void Start()
-    {
-        OnTankSelected();
-    }
-
     /// <summary>
     /// 创建新的坦克
     /// </summary>
@@ -31,14 +26,11 @@ public class CurrentTankPanelManager : MonoBehaviour
             toast.ShowToast("坦克库已满。");
             return;
         }
-        //newTankAssemble = ScriptableObject.CreateInstance<TankAssembleManager>();
-        //newTankAssemble.CopyFrom(defaultTankAssemble);
         allCustomTank.AddNewTank();
         allCustomTankPreview.CatchTankTexture(allCustomTank.Count - 1);
         allCustomTank.SelectCurrentTank(allCustomTank.Count - 1);
         allCustomTankPreview.OnTankPreviewClicked();
         createdSuccessedEvent.Invoke();
-        //OnTankSelected();
     }
 
     /// <summary>
@@ -66,7 +58,6 @@ public class CurrentTankPanelManager : MonoBehaviour
             return;
         }
         selectSuccessedEvent.Invoke();
-
     }
 
     /// <summary>

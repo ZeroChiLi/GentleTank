@@ -1,7 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MasterManager : MonoBehaviour
 {
@@ -29,13 +26,7 @@ public class MasterManager : MonoBehaviour
     public TankAssembleManager SelectedTank
     {
         get { return data.selectedTank; }
-        set
-        {
-            data.selectedTank = value;
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(data);
-#endif
-        }
+        set { data.selectedTank = value; }
     }
 
     public GameObject StandardPrefab { get { return data.standardPerfab; } set { data.standardPerfab = value; } }

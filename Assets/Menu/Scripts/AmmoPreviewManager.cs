@@ -1,7 +1,4 @@
-﻿using System;
-using Item.Ammo;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class AmmoPreviewManager : ModulePreviewManager 
 {
