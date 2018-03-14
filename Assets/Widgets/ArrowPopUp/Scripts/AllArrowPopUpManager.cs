@@ -7,6 +7,12 @@ namespace Widget
         public ObjectPool arrowPopUpPool;               // 箭头弹出池
         public ObjectPool arrowBillboardPool;
         public Vector3 offset = new Vector3(0, 10, 0);  // 偏移量
+
+        private void Awake()
+        {
+            arrowBillboardPool.CreateObjectPool();
+        }
+
         /// <summary>
         /// 产生箭头们
         /// </summary>

@@ -28,6 +28,11 @@ public class ObjectPool : ScriptableObject
         isCreated = false;
     }
 
+    private void OnDisable()
+    {
+        isCreated = false;
+    }
+
     /// <summary>
     /// 创建对象池
     /// </summary>

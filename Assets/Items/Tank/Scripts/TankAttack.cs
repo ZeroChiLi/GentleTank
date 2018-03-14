@@ -34,7 +34,7 @@ namespace Item.Tank
         /// </summary>
         protected void Awake()
         {
-            playerManager = GetComponent<PlayerManager>();
+            playerManager = GetComponentInParent<PlayerManager>();
             attackAudio = GetComponent<AudioSource>();
         }
 
@@ -74,7 +74,7 @@ namespace Item.Tank
         /// </summary>
         protected void Update()
         {
-            if (playerManager.IsAI || !IsTimeUp)
+            if (playerManager == null || playerManager.IsAI || !IsTimeUp)
                 return;
             if (usingInputButton)
                 StateChangeByInput();

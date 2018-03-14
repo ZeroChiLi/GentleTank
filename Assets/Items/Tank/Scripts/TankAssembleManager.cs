@@ -140,7 +140,7 @@ public class TankAssembleManager : ScriptableObject
     {
         if (tank == null)
             return;
-        InitTankAttack(tank, head.attackProperties);
+        InitTankAttack(tank, head);
         InitTankHealth(tank, body.healthProperties);
         InitTankMove(tank, leftWheel.moveProperties);
         EncapsulateBodyAndWheel(ref tank.boxCollider);
@@ -150,9 +150,16 @@ public class TankAssembleManager : ScriptableObject
     /// <summary>
     /// 初始化坦克攻击组件
     /// </summary>
-    private void InitTankAttack(TankManager tank, TankModuleHead.AttackProperties properties)
+    private void InitTankAttack(TankManager tank, TankModuleHead head)
     {
-        tank.tankAttack = tank.gameObject.AddComponent(properties.attackScript.GetClass()) as TankAttack;
+        TankModuleHead.AttackProperties properties = head.attackProperties;
+        //tank.tankAttack = tank.gameObject.AddComponent(properties.attackScript.GetClass()) as TankAttack;
+        tank.tankAttack = tank.GetComponentInChildren<TankAttack>();
+        if (tank.tankAttack == null)
+        {
+            Debug.LogError("Tank Head Need 'TankAttack' Component!");
+            return;
+        }
         tank.stateController.attackManager = tank.tankAttack;
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
         tank.tankAttack.chargingClip = properties.chargingClip;

@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class MasterManager : MonoBehaviour
@@ -7,12 +9,15 @@ public class MasterManager : MonoBehaviour
     static public MasterManager Instance
     {
         get
-        { 
+        {
             if (instance == null)
             {
-                MasterManager master = new GameObject("MasterManager").AddComponent<MasterManager>();
-                master.data = Resources.Load<MasterData>("MasterData");
-                //master.data = AssetDatabase.LoadAssetAtPath<MasterData>(string.Format("Assets/Main/Master/ScriptableObject/MasterData.asset"));
+                MasterManager master = FindObjectOfType<MasterManager>();
+                if (master == null)
+                {
+                    master = new GameObject("MasterManager").AddComponent<MasterManager>();
+                    master.data = Resources.Load<MasterData>("MasterData");
+                }
                 instance = master;
             }
             return instance;
@@ -37,7 +42,7 @@ public class MasterManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
         DontDestroyOnLoad(this);
     }
 

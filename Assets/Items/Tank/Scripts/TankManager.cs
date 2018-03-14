@@ -31,7 +31,7 @@ namespace Item.Tank
         private void Awake()
         {
             tankMovement = GetComponent<MoveManager>();
-            tankAttack = GetComponent<TankAttack>();
+            tankAttack = GetComponentInChildren<TankAttack>();
             tankHealth = GetComponent<TankHealth>();
             stateController = GetComponent<StateController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
