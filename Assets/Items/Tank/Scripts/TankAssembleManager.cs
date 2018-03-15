@@ -170,7 +170,7 @@ public class TankAssembleManager : ScriptableObject
         if (type == typeof(TankAttackShooting))
         {
             TankAttackShooting attack = tank.tankAttack as TankAttackShooting;
-            attack.ammoPool = head.attackProperties.ammoPool;
+            //attack.ammoPool = head.attackProperties.ammoPool;
             attack.ammoSpawnPoint = new Point(head.ammoSpawnPoint);
         }
         else if (type == typeof(TankAttackBoxing))

@@ -15,8 +15,8 @@ public class TankModuleHead : TankModule
         public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
         public float damage = 50;                   // 伤害值
 
-        [HideInInspector]
-        public ObjectPool ammoPool;
+        //[HideInInspector]
+        //public ObjectPool ammoPool;
     }
 
     public Vector3 forwardUp;
