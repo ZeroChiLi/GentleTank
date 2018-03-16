@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.Playables;
 using Cinemachine;
 using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour
 {
     public CinemachineVirtualCamera cmMainMenuCamera;
+    public CinemachineVirtualCamera cmStartMenuCamera;
     public CinemachineVirtualCamera cmArmsMenuCamera;
     public CinemachineVirtualCamera cmSettingsMenuCamera;
     public float dollySmoothTime = 0.3f;                     // 平滑时间
@@ -34,6 +34,16 @@ public class MainMenu : MonoBehaviour
     }
 
     /// <summary>
+    /// 到开始菜单
+    /// </summary>
+    public void GoToStartMenu()
+    {
+        DisableAllCMCameras();
+        cmStartMenuCamera.enabled = true;
+        EnableAllButtons(false);
+    }
+
+    /// <summary>
     /// 到装备菜单
     /// </summary>
     public void GoToArmsMenu()
@@ -56,7 +66,7 @@ public class MainMenu : MonoBehaviour
     /// <summary>
     /// 回到主菜单
     /// </summary>
-    public void BackToMainMenu()
+    public void GoToMainMenu()
     {
         DisableAllCMCameras();
         cmMainMenuCamera.enabled = true;
@@ -69,8 +79,9 @@ public class MainMenu : MonoBehaviour
     private void DisableAllCMCameras()
     {
         cmMainMenuCamera.enabled = false;
+        cmStartMenuCamera.enabled = false;
         cmArmsMenuCamera.enabled = false;
-        cmArmsMenuCamera.enabled = false;
+        cmSettingsMenuCamera.enabled = false;
     }
 
     /// <summary>
