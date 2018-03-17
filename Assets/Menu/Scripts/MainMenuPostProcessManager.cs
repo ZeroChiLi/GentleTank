@@ -1,61 +1,80 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.PostProcessing;
 
 public class MainMenuPostProcessManager : MonoBehaviour
 {
-    public PostProcessingBehaviour postProcess;
+    public PostProcessingBehaviour postProcess;     // 特效对象
+
+    public float smoothTime = 1f;           // 变换持续时间
+    /// <summary>
+    /// 深度模糊特效控制
+    /// </summary>
     [System.Serializable]
-    public class DepthOfFieldEffect
-    {
-        public AnimationCurve changeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        public int minFocalLength = 10;
-        public int maxFocalLength = 30;
-        public float duration = 2f;
-    }
-    public DepthOfFieldEffect dofEffect;
+    public class EffectSetting { public float focusDistance = 0.1f, aperture = 2f, focalLength = 10f; }
+    public EffectSetting defaultEffect;
+    public EffectSetting startEffect;
+    public EffectSetting armsEffect;
+    public EffectSetting settingEffect;
 
     private DepthOfFieldModel dofModel;
     private DepthOfFieldModel.Settings dofSetting;
-    private CountDownTimer dofTimer;
-    private Coroutine lastCoroutine;
+    private Vector3 current = new Vector3(0.1f, 2f, 10f);
+    private Vector3 target = new Vector3(0.1f, 2f, 10f);
+    private Vector3 velocity;
 
-    public void SetPostProcessEnable(bool enable)
+    private void Awake()
     {
-        postProcess.enabled = enable;
-    }
-
-    public void SetDepthOfFieldEnable(bool enable)
-    {
-        postProcess.profile.depthOfField.enabled = enabled;
-    }
-
-    public void PlayDepthOfFieldEffect(bool ascend = true)
-    {
-        if (lastCoroutine != null)
-        {
-            StopCoroutine(lastCoroutine);
-            lastCoroutine = null;
-        }
-        lastCoroutine = StartCoroutine(DepthOfFieldCoroutine(ascend));
-    }
-
-    private IEnumerator DepthOfFieldCoroutine(bool ascend)
-    {
-        dofTimer = new CountDownTimer(dofEffect.duration);
         dofModel = postProcess.profile.depthOfField;
         dofSetting = dofModel.settings;
-        float focalLength = dofEffect.maxFocalLength - dofEffect.minFocalLength;
-        float evaluate;
-        while (!dofTimer.IsTimeUp)
-        {
-            evaluate = dofEffect.changeCurve.Evaluate(ascend ? dofTimer.GetPercent() : 1 - dofTimer.GetPercent());
-            dofSetting.focalLength = dofEffect.minFocalLength + focalLength * (evaluate);
-            dofModel.settings = dofSetting;
-            yield return null;
-        }
-        dofSetting.focalLength = ascend ? dofEffect.maxFocalLength : dofEffect.minFocalLength;
+    }
+
+    private void Update()
+    {
+        current = Vector3.SmoothDamp(current, target, ref velocity, smoothTime);
+        dofSetting.focusDistance = current.x;
+        dofSetting.aperture = current.y;
+        dofSetting.focalLength = current.z;
         dofModel.settings = dofSetting;
+    }
+
+    /// <summary>
+    /// 切换到默认效果
+    /// </summary>
+    public void ToDefaultEffect()
+    {
+        target = EffectToVector3(defaultEffect);
+    }
+
+    /// <summary>
+    /// 切换到开始菜单效果
+    /// </summary>
+    public void ToStartEffect()
+    {
+        target = EffectToVector3(startEffect);
+    }
+
+    /// <summary>
+    /// 切换到装备菜单效果
+    /// </summary>
+    public void ToArmsEffect()
+    {
+        target = EffectToVector3(armsEffect);
+    }
+
+    /// <summary>
+    /// 切换到设置菜单效果
+    /// </summary>
+    public void ToSettingEffect()
+    {
+        target = EffectToVector3(settingEffect);
+    }
+
+    /// <summary>
+    /// 将特效转换成Vector3
+    /// </summary>
+    public Vector3 EffectToVector3(EffectSetting effect)
+    {
+        return new Vector3(effect.focusDistance, effect.aperture, effect.focalLength);
     }
 
 }
