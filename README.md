@@ -18,6 +18,10 @@
  - 装备系统自己编写完成。
  - 不同装备有不同的属性，如不同的头部，会有不同的攻击方式。
 
+![](http://oz99dhvw8.bkt.clouddn.com/18.png)
+> 样例：王冠。
+> Anchors为该模型各个关键地方的连接点，比如帽子Down点就是连接头部的Up点。
+
 ---
 ## 设置菜单（未完成）
 ![](http://oz99dhvw8.bkt.clouddn.com/16.gif)
@@ -28,10 +32,6 @@
 ![](http://oz99dhvw8.bkt.clouddn.com/10.gif)
  - 包括对特定对象的技能效果，和范围技能效果。
  - 描边效果通过自行编写shader完成。
-
-![](http://oz99dhvw8.bkt.clouddn.com/18.png)
-> 样例：王冠。
-> Anchors为该模型各个关键地方的连接点，比如帽子Down点就是连接头部的Up点。
 
 ---
 ## 道具系统
