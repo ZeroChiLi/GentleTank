@@ -58,8 +58,8 @@ namespace Item.Tank
                 playerNameText.color = Team.TeamColor;
                 playerIconMesh.material.color = Team.TeamColor;     // 图标颜色
             }
-            tankMovement.SetupPlayerInput(PlayerID);                // 配置坦克移动输入
-            tankAttack.SetShortcutName("Fire" + PlayerID);        // 配置坦克攻击输入
+            tankMovement.SetupPlayerInput(PlayerID + 1);                // 配置坦克移动输入
+            tankAttack.SetShortcutName("Fire" + (PlayerID + 1));        // 配置坦克攻击输入
             stateController.SetWaypoints(waypoints);
         }
 

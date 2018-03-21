@@ -2,7 +2,7 @@
 
 public abstract class AttackManager : MonoBehaviour
 {
-    public string shortcutName = "Fire0";                       // 攻击键名称
+    public string shortcutName = "Fire1";                       // 攻击键名称
     public float coolDownTime = 1f;                             // 冷却时间
     public float additionDamage = 0;                            // 附加给弹药的额外伤害值
 
