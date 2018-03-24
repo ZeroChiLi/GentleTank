@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AllCustomTankManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class AllCustomTankManager : MonoBehaviour
     public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
     public CurrentTankPanelManager tankPanel;
     public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
+    public UnityEvent OnAllTankSetupEvent;              // 所有坦克配置好后响应
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
@@ -44,6 +46,7 @@ public class AllCustomTankManager : MonoBehaviour
     {
         CreateAllTanks();
         SetupAllTanksPosition();
+        OnAllTankSetupEvent.Invoke();
     }
 
     /// <summary>

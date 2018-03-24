@@ -10,7 +10,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     public RenderTexture selectedTexture;               // 选中的预览纹理
     public SelectedImageManager selectedImage;
     public List<RenderTexture> textureList;             // 纹理列表
-    public UnityEvent OnAllTankSetupEvent;              // 所有坦克配置好后响应
     public UnityEvent OnTankPreviewClickedEvent;
 
     /// <summary>
@@ -19,11 +18,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        SetupAllTankTexture();
     }
 
     /// <summary>
@@ -38,7 +32,6 @@ public class AllCustomTankPreviewManager : MonoBehaviour
             else
                 catchTextureCam.RenderTarget(AllCustomTankManager.Instance[i].transform, textureList[i]);
         }
-        OnAllTankSetupEvent.Invoke();
         OnTankPreviewClickedEvent.Invoke(); // 对默认坦克模拟先选中
     }
 
