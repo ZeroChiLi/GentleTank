@@ -14,7 +14,19 @@ public class PlayerPanelManager : MonoBehaviour
     public bool isEnter;
     public Text enterText;
     public InputButtons inputsButton;
+    public RawImage selectedTankImage;
+    public AllCustomTankManager tanksManager;
+    public AllCustomTankPreviewManager tanksPreview;
     public UnityEvent OnPlayerEnter;
+
+    public int CurrentTankIndex
+    {
+        get { return currentIndex; }
+        set { currentIndex = (int)Mathf.Repeat(value, tanksManager.Count - 1); }
+    }
+    private int currentIndex = 0;
+
+    private int horizontalMove;
 
     public void Awake()
     {
@@ -27,6 +39,11 @@ public class PlayerPanelManager : MonoBehaviour
         {
             isEnter = true;
             OnPlayerEnter.Invoke();
+        }
+        if (isEnter && Input.GetButtonDown(inputsButton.horizontalButton))
+        {
+            CurrentTankIndex += (int)Input.GetAxisRaw(inputsButton.horizontalButton);
+            selectedTankImage.texture = tanksPreview.textureList[CurrentTankIndex];
         }
     }
 
