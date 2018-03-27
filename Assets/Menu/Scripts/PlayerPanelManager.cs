@@ -40,7 +40,9 @@ public class PlayerPanelManager : MonoBehaviour
             isEnter = true;
             OnPlayerEnter.Invoke();
         }
-        if (isEnter && Input.GetButtonDown(inputsButton.horizontalButton))
+        if (!isEnter)
+            return;
+        if (Input.GetButtonDown(inputsButton.horizontalButton))
         {
             CurrentTankIndex += (int)Input.GetAxisRaw(inputsButton.horizontalButton);
             selectedTankImage.texture = tanksPreview.textureList[CurrentTankIndex];

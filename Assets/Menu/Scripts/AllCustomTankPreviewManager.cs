@@ -32,7 +32,7 @@ public class AllCustomTankPreviewManager : MonoBehaviour
             else
                 catchTextureCam.RenderTarget(AllCustomTankManager.Instance[i].transform, textureList[i]);
         }
-        OnTankPreviewClickedEvent.Invoke(); // 对默认坦克模拟先选中
+        //OnTankPreviewClickedEvent.Invoke(); // 对默认坦克模拟先选中
     }
 
     /// <summary>
