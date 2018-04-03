@@ -4,17 +4,23 @@ using UnityEngine.Events;
 
 public class AllCustomTankManager : MonoBehaviour
 {
-    public const int MaxSize = 10;                                          // 最大坦克数量
-    public const string ResourcesPath = "TankAssemble/Custom";              // 自定义坦克组合的资源路径
+    public const int MaxSize = 10;                                      // 最大坦克数量
+    public const string ResourcesPath = "TankAssemble/Custom";          // 自定义坦克组合的资源路径
 
     static public AllCustomTankManager Instance { get; private set; }
 
-    public Animator tankExhibition;                                         // 坦克展台（自动旋转）
-    public Vector3 tankOffset = new Vector3(10, 0, 0);                      // 坦克之间偏移量
-    public Vector3 tankStartRotation = new Vector3(0, 150, 0);              // 坦克初始旋转角
+    public Animator tankExhibition;                                     // 坦克展台（自动旋转）
+    public Vector3 tankOffset = new Vector3(10, 0, 0);                  // 坦克之间偏移量
+    public Vector3 tankStartRotation = new Vector3(0, 150, 0);          // 坦克初始旋转角
     public CurrentTankPanelManager tankPanel;
-    public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
+    public TankAssembleManager defaultTankAssemble;                     // 默认坦克组装（用来创建）
+
+    public CatchTextureCameraRig catchTextureCam;       // 捕获纹理相机设备
+    public SelectedImageManager selectedImage;          // 显示选择的坦克的边框图片
+    public List<RenderTexture> textureList;             // 纹理列表
+
     public UnityEvent OnAllTankSetupEvent;              // 所有坦克配置好后响应
+    public UnityEvent OnTankPreviewClickedEvent;        // 坦克预览选项点击后事件
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
     private TankAssembleManager temTankAssemble;
@@ -285,6 +291,9 @@ public class AllCustomTankManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// 选中主角坦克
+    /// </summary>
     public void SelectedMasterTank()
     {
         if (MasterManager.Instance.SelectedTank == null)
@@ -292,5 +301,54 @@ public class AllCustomTankManager : MonoBehaviour
         for (int i = 0; i < tankAssembleList.Count; i++)
             if (MasterManager.Instance.SelectedTank == tankAssembleList[i])
                 SelectCurrentTank(i);
+    }
+
+    /// <summary>
+    /// 配置所有坦克预览纹理
+    /// </summary>
+    public void SetupAllTankTexture()
+    {
+        for (int i = 0; i < textureList.Count; i++)
+        {
+            if (this[i] == null)
+                textureList[i].Release();
+            else
+                catchTextureCam.RenderTarget(this[i].transform, textureList[i]);
+        }
+    }
+
+    /// <summary>
+    /// 捕获当前坦克的纹理
+    /// </summary>
+    public void CatchCurrentTankTexture()
+    {
+        CatchTankTexture(CurrentIndex);
+    }
+
+    /// <summary>
+    /// 捕获新的纹理
+    /// </summary>
+    /// <param name="index">指定索引值</param>
+    public void CatchTankTexture(int index)
+    {
+        if (this[index] != null)
+            catchTextureCam.RenderTarget(this[index].transform, textureList[index]);
+    }
+
+    /// <summary>
+    /// 选择当前坦克的UI效果
+    /// </summary>
+    public void SelectedCurrentTankUI()
+    {
+        if (CurrentTank != null)
+            selectedImage.SetTargetImmediately(CurrentIndex);
+    }
+
+    /// <summary>
+    /// 当坦克预览点击时响应
+    /// </summary>
+    public void OnTankPreviewClicked()
+    {
+        OnTankPreviewClickedEvent.Invoke();
     }
 }

@@ -9,7 +9,6 @@ public class CurrentTankPanelManager : MonoBehaviour
     public Button deleteButton;                                     // 删除按钮
     public Button selectButton;                                     // 选择按钮
     public AllCustomTankManager allCustomTank;                      // 所有坦克管理器
-    public AllCustomTankPreviewManager allCustomTankPreview;        // 所有自定义坦克预览管理器
     public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
     public UnityEvent createdSuccessedEvent;                        // 创建成功事件
     public UnityEvent selectSuccessedEvent;                         // 选择成功事件
@@ -27,9 +26,9 @@ public class CurrentTankPanelManager : MonoBehaviour
             return;
         }
         allCustomTank.AddNewTank();
-        allCustomTankPreview.CatchTankTexture(allCustomTank.Count - 1);
+        allCustomTank.CatchTankTexture(allCustomTank.Count - 1);
         allCustomTank.SelectCurrentTank(allCustomTank.Count - 1);
-        allCustomTankPreview.OnTankPreviewClicked();
+        allCustomTank.OnTankPreviewClicked();
         createdSuccessedEvent.Invoke();
     }
 
@@ -41,7 +40,7 @@ public class CurrentTankPanelManager : MonoBehaviour
         if (allCustomTank.CurrentTank == null)
             return;
         allCustomTank.DeleteCurrentTank();
-        allCustomTankPreview.SetupAllTankTexture();
+        allCustomTank.SetupAllTankTexture();
         OnTankSelected();
     }
 

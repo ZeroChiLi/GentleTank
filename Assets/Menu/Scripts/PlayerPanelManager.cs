@@ -16,7 +16,6 @@ public class PlayerPanelManager : MonoBehaviour
     public InputButtons inputsButton;
     public RawImage selectedTankImage;
     public AllCustomTankManager tanksManager;
-    public AllCustomTankPreviewManager tanksPreview;
     public UnityEvent OnPlayerEnter;
 
     public int CurrentTankIndex
@@ -45,7 +44,7 @@ public class PlayerPanelManager : MonoBehaviour
         if (Input.GetButtonDown(inputsButton.horizontalButton))
         {
             CurrentTankIndex += (int)Input.GetAxisRaw(inputsButton.horizontalButton);
-            selectedTankImage.texture = tanksPreview.textureList[CurrentTankIndex];
+            selectedTankImage.texture = tanksManager.textureList[CurrentTankIndex];
         }
     }
 
