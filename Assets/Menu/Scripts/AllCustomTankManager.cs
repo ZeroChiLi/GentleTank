@@ -16,10 +16,9 @@ public class AllCustomTankManager : MonoBehaviour
     public TankAssembleManager defaultTankAssemble;                     // 默认坦克组装（用来创建）
 
     public CatchTextureCameraRig catchTextureCam;       // 捕获纹理相机设备
-    public SelectedImageManager selectedImage;          // 显示选择的坦克的边框图片
     public List<RenderTexture> textureList;             // 纹理列表
 
-    public UnityEvent OnAllTankSetupEvent;              // 所有坦克配置好后响应
+    //public UnityEvent OnAllTankSetupEvent;              // 所有坦克配置好后响应
     public UnityEvent OnTankPreviewClickedEvent;        // 坦克预览选项点击后事件
 
     public TankAssembleManager TemporaryAssemble { get { return temTankAssemble; } }
@@ -52,7 +51,10 @@ public class AllCustomTankManager : MonoBehaviour
     {
         CreateAllTanks();
         SetupAllTanksPosition();
-        OnAllTankSetupEvent.Invoke();
+        //OnAllTankSetupEvent.Invoke();
+        SetupAllTankTexture();
+        SelectMasterTank();
+        OnTankPreviewClickedEvent.Invoke();
     }
 
     /// <summary>
@@ -294,7 +296,7 @@ public class AllCustomTankManager : MonoBehaviour
     /// <summary>
     /// 选中主角坦克
     /// </summary>
-    public void SelectedMasterTank()
+    public void SelectMasterTank()
     {
         if (MasterManager.Instance.SelectedTank == null)
             SelectCurrentTank(0);
@@ -302,6 +304,8 @@ public class AllCustomTankManager : MonoBehaviour
             if (MasterManager.Instance.SelectedTank == tankAssembleList[i])
                 SelectCurrentTank(i);
     }
+
+    #region 坦克预览纹理相关
 
     /// <summary>
     /// 配置所有坦克预览纹理
@@ -336,19 +340,12 @@ public class AllCustomTankManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 选择当前坦克的UI效果
-    /// </summary>
-    public void SelectedCurrentTankUI()
-    {
-        if (CurrentTank != null)
-            selectedImage.SetTargetImmediately(CurrentIndex);
-    }
-
-    /// <summary>
     /// 当坦克预览点击时响应
     /// </summary>
     public void OnTankPreviewClicked()
     {
         OnTankPreviewClickedEvent.Invoke();
     }
+
+    #endregion
 }
