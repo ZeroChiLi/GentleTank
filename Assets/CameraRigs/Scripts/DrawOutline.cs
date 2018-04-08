@@ -15,6 +15,8 @@ public class DrawOutline : PostEffectsBase
     public int outlineWidth = 4;
     [Range(0, 9)]
     public int iterations = 1;
+    [Range(0, 1)]
+    public float gradient = 1;
 
     public List<GameObject> targets;
 
@@ -71,6 +73,7 @@ public class DrawOutline : PostEffectsBase
             TargetMaterial.SetColor("_Color", outlineColor);
             TargetMaterial.SetInt("_Width", outlineWidth);
             TargetMaterial.SetInt("_Iterations", iterations);
+            TargetMaterial.SetFloat("_Gradient", gradient);
 
             // 使用描边混合材质实现描边效果
             Graphics.Blit(temRT1, destination, TargetMaterial);
@@ -105,6 +108,7 @@ public class DrawOutline : PostEffectsBase
         TargetMaterial.SetColor("_Color", outlineColor);
         TargetMaterial.SetInt("_Width", outlineWidth);
         TargetMaterial.SetInt("_Iterations", iterations);
+        TargetMaterial.SetFloat("_Gradient", gradient);
         temRT2 = RenderTexture.GetTemporary(texture.width, texture.height);
         Graphics.Blit(additionalCamera.targetTexture, temRT2, TargetMaterial);
         Graphics.Blit(temRT2, additionalCamera.targetTexture);

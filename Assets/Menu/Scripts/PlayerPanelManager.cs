@@ -15,13 +15,12 @@ public class PlayerPanelManager : MonoBehaviour
     public Text enterText;
     public InputButtons inputsButton;
     public RawImage selectedTankImage;
-    public AllCustomTankManager tanksManager;
     public UnityEvent OnPlayerEnter;
 
     public int CurrentTankIndex
     {
         get { return currentIndex; }
-        set { currentIndex = (int)Mathf.Repeat(value, tanksManager.Count - 1); }
+        set { currentIndex = (int)Mathf.Repeat(value, AllCustomTankManager.Instance.Count); }
     }
     private int currentIndex = 0;
 
@@ -44,7 +43,7 @@ public class PlayerPanelManager : MonoBehaviour
         if (Input.GetButtonDown(inputsButton.horizontalButton))
         {
             CurrentTankIndex += (int)Input.GetAxisRaw(inputsButton.horizontalButton);
-            selectedTankImage.texture = tanksManager.textureList[CurrentTankIndex];
+            selectedTankImage.texture = AllCustomTankManager.Instance.textureList[CurrentTankIndex];
         }
     }
 
