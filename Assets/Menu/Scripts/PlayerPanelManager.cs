@@ -11,11 +11,11 @@ public class PlayerPanelManager : MonoBehaviour
         public string horizontalButton = "Horizontal";
         public string verticalButton = "Vertical";
     }
-    public bool isEnter;
-    public Text enterText;
-    public InputButtons inputsButton;
-    public RawImage selectedTankImage;
-    public UnityEvent OnPlayerEnter;
+    public bool isEnter;                // 是否已经点击参加
+    public Text enterText;              // 参加提示字符
+    public InputButtons inputsButton;   // 输入虚按钮名字
+    public RawImage selectedTankImage;  // 选择的坦克预览图片
+    public UnityEvent OnPlayerEnter;    // 玩家进入事件
 
     public int CurrentTankIndex
     {
