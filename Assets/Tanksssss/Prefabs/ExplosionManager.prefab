@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000012560449258}
+  m_IsPrefabParent: 1
+--- !u!1 &1000012560449258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013888772688}
+  - 114: {fileID: 114000012545023954}
+  - 114: {fileID: 114000012569019304}
+  m_Layer: 0
+  m_Name: ExplosionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000013888772688
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012560449258}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 452.71103, y: 371.72775, z: -66.81425}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &114000012545023954
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012560449258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 41
+    i1: 234
+    i2: 194
+    i3: 216
+    i4: 231
+    i5: 221
+    i6: 244
+    i7: 20
+    i8: 25
+    i9: 17
+    i10: 119
+    i11: 150
+    i12: 213
+    i13: 180
+    i14: 77
+    i15: 108
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114000012569019304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012560449258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41be21dcc6d8e447182fd9a449fb6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  largeExplosion: {fileID: 114000013783756612, guid: aaaa140ff709b9c4b9043f42666f59ee,
+    type: 2}
+  smallExplosion: {fileID: 114000010892159760, guid: 06adbdc837241444b8a953567f4864d9,
+    type: 2}
+  extraLargeExplosion: {fileID: 114000010879945296, guid: 1d1beed5971b8465e8adbf1166440cc8,
+    type: 2}
+  m_ExplosionScreenShakeDuration: 0.3

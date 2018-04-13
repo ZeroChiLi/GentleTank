@@ -1,96 +1,58 @@
 fileFormatVersion: 2
 guid: d7962f90116a5c94d9a7a2b2e4fbc1b2
-timeCreated: 1431512005
+timeCreated: 1473068379
 licenseType: Store
 ModelImporter:
-  serializedVersion: 18
+  serializedVersion: 19
   fileIDToRecycleName:
-    100000: ArmJoint
-    100002: DriveJoint
-    100004: EndJoint
-    100006: EndJointNub
-    100008: HingeJoint
-    100010: HoldJoint
-    100012: HoldJointNub
-    100014: //RootNode
-    100016: Pumpjack
-    400000: ArmJoint
-    400002: DriveJoint
-    400004: EndJoint
-    400006: EndJointNub
-    400008: HingeJoint
-    400010: HoldJoint
-    400012: HoldJointNub
-    400014: //RootNode
-    400016: Pumpjack
-    4300000: Pumpjack
-    7400000: Take 001
+    100000: Armature
+    100002: ArmJoint
+    100004: DriveJoint
+    100006: EndJoint
+    100008: EndJointNub
+    100010: HingeJoint
+    100012: //RootNode
+    100014: Pumpjack
+    100016: PumpJackBase
+    400000: Armature
+    400002: ArmJoint
+    400004: DriveJoint
+    400006: EndJoint
+    400008: EndJointNub
+    400010: HingeJoint
+    400012: //RootNode
+    400014: Pumpjack
+    400016: PumpJackBase
+    2300000: PumpJackBase
+    3300000: PumpJackBase
+    4300000: PumpJackBase
+    4300002: Pumpjack
+    7400000: Default Take
+    7400002: Armature_Take_001_BaseLayer
     9500000: //RootNode
+    11100000: //RootNode
     13700000: Pumpjack
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    optimizeGameObjects: 1
+    resampleCurves: 1
+    optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
-    animationWrapMode: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 2
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
-      firstFrame: 0
-      lastFrame: 100
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Pumpjack
-        weight: 1
-      - path: ArmJoint
-        weight: 1
-      - path: ArmJoint/HingeJoint
-        weight: 1
-      - path: ArmJoint/HingeJoint/DriveJoint
-        weight: 1
-      - path: ArmJoint/HingeJoint/DriveJoint/EndJoint
-        weight: 1
-      - path: ArmJoint/HingeJoint/DriveJoint/EndJoint/EndJointNub
-        weight: 1
-      - path: HoldJoint
-        weight: 1
-      - path: HoldJoint/HoldJointNub
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -99,7 +61,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -111,24 +73,25 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 1
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
