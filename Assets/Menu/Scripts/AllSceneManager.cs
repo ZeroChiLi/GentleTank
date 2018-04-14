@@ -11,8 +11,6 @@ static public class AllSceneManager
     {
         MainMenuScene = 0,
         SoloScene = 1,
-        LobbyScene = 2,
-        RoomScene = 3,
     }
 
     /// <summary>
