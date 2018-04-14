@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MinimapManager : MonoBehaviour 
+public class MinimapManager : MonoBehaviour
 {
     public Image rotatedBorder;                         // 小地图的可旋转外边
     public FixedTargetFollower fixedTargetFollow;       // 跟随镜头
@@ -32,7 +32,8 @@ public class MinimapManager : MonoBehaviour
     /// <param name="active"></param>
     public void SetMinimapActive(bool active)
     {
-        fixedTargetFollow.gameObject.SetActive(active);
+        if (fixedTargetFollow)
+            fixedTargetFollow.gameObject.SetActive(active);
         gameObject.SetActive(active);
     }
 }
