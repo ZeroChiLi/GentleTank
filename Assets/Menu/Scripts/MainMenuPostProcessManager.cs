@@ -22,7 +22,7 @@ public class MainMenuPostProcessManager : MonoBehaviour
     private Vector3 target = new Vector3(0.1f, 2f, 10f);
     private Vector3 velocity;
 
-    private void Awake()
+    private void OnEnable()
     {
         dofModel = postProcess.profile.depthOfField;
         dofSetting = dofModel.settings;

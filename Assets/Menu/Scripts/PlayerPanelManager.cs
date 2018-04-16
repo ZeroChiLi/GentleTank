@@ -12,9 +12,10 @@ public class PlayerPanelManager : MonoBehaviour
         public string verticalButton = "Vertical";
     }
     public bool isEnter;                // 是否已经点击参加
-    public Text enterText;              // 参加提示字符
-    public InputButtons inputsButton;   // 输入虚按钮名字
+    public GameObject enterKey;
+    public GameObject arrowsKey;
     public RawImage selectedTankImage;  // 选择的坦克预览图片
+    public InputButtons inputsButton;   // 输入虚按钮名字
     public UnityEvent OnPlayerEnter;    // 玩家进入事件
 
     public int CurrentTankIndex
@@ -26,9 +27,10 @@ public class PlayerPanelManager : MonoBehaviour
 
     private int horizontalMove;
 
-    public void Awake()
+    public void OnEnable()
     {
-        enterText.text = string.Format("按“{0}”加入\n按左右键切换坦克\n按上键切换颜色", inputsButton.enterButton);
+        isEnter = false;
+        OpenCloseEnterPanel(true);
     }
 
     public void Update()
@@ -45,6 +47,13 @@ public class PlayerPanelManager : MonoBehaviour
             CurrentTankIndex += (int)Input.GetAxisRaw(inputsButton.horizontalButton);
             selectedTankImage.texture = AllCustomTankManager.Instance.textureList[CurrentTankIndex];
         }
+    }
+
+    public void OpenCloseEnterPanel(bool open)
+    {
+        enterKey.SetActive(open);
+        arrowsKey.SetActive(!open);
+        selectedTankImage.gameObject.SetActive(!open);
     }
 
 }
