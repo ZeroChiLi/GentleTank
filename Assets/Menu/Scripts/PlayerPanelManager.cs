@@ -14,6 +14,7 @@ public class PlayerPanelManager : MonoBehaviour
     public bool isEnter;                // 是否已经点击参加
     public GameObject enterKey;
     public GameObject arrowsKey;
+    public Toggle aiToggle;
     public RawImage selectedTankImage;  // 选择的坦克预览图片
     public InputButtons inputsButton;   // 输入虚按钮名字
     public UnityEvent OnPlayerEnter;    // 玩家进入事件
@@ -53,6 +54,7 @@ public class PlayerPanelManager : MonoBehaviour
     {
         enterKey.SetActive(open);
         arrowsKey.SetActive(!open);
+        aiToggle.gameObject.SetActive(!open);
         selectedTankImage.gameObject.SetActive(!open);
     }
 
