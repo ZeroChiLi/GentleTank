@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Item.Tank;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game Configure/All Player Manager")]
@@ -17,7 +18,7 @@ public class AllPlayerManager : ScriptableObject
     /// <summary>
     /// 属于自己的玩家对象
     /// </summary>
-    public PlayerManager MyPlayer { get { return GameMathf.ValueInRange( 0, Count - 1, myPlayerIndex) ? playerManagerList[myPlayerIndex] : null; } }
+    public PlayerManager MyPlayer { get { return GameMathf.ValueInRange(0, Count - 1, myPlayerIndex) ? playerManagerList[myPlayerIndex] : null; } }
 
     /// <summary>
     /// 配置单例
@@ -30,13 +31,26 @@ public class AllPlayerManager : ScriptableObject
     /// <summary>
     /// 创建玩家对象们（playerManagerList）
     /// </summary>
-    public void CreatePlayerGameObjects(Transform parent = null,PlayerManager master = null)
+    public void CreatePlayerGameObjects(Transform parent = null, PlayerManager master = null)
     {
         playerManagerList = new List<PlayerManager>();
         if (master != null)
             playerManagerList.Add(master);
-        for (int i = master == null? 0 : 1; i < playerInfoList.Count; i++)
+        for (int i = master == null ? 0 : 1; i < playerInfoList.Count; i++)
             playerManagerList.Add(playerInfoList[i].CreateGameObjectWithPlayerManager(parent));
+    }
+
+    public void CreatePlayerGameObjects2(Transform parent = null)
+    {
+        playerManagerList = new List<PlayerManager>();
+        for (int i = 0; i < playerInfoList.Count; i++)
+            if (playerInfoList[i].isJoin)
+            {
+                TankManager tankManager = playerInfoList[i].Create(parent) as TankManager;
+                playerManagerList.Add(tankManager);
+                playerManagerList[i].Tank.CreateTank(tankManager.transform);
+                playerManagerList[i].Tank.InitTankComponents(tankManager);
+            }
     }
 
     /// <summary>

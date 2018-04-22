@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
         MasterManager.Instance.SelectedTank.InitTankComponents(manager);
 
         MasterData data = MasterManager.Instance.data;
-        manager.Information = new PlayerInformation(0, data.masterName, data.isAI, data.representColor, data.team);
+        manager.Information = new PlayerInformation(0, data.masterName,data.isJoin, data.isAI, data.representColor, data.team);
         manager.stateController.defaultStats = data.aiState;
 
         TankHealth health = tank.GetComponent<TankHealth>();

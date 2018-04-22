@@ -1,4 +1,5 @@
-﻿using Item.Tank;
+﻿using GameSystem.AI;
+using Item.Tank;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Module/TankAssemble")]
@@ -11,6 +12,7 @@ public class TankAssembleManager : ScriptableObject
     public TankModuleFace face;
     public TankModuleBodyForward bodyForward;
     public TankModuleBodyBack bodyBack;
+    public AIState defaultAIState;
 
     private GameObject headObj;
     private GameObject bodyObj;

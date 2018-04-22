@@ -10,6 +10,7 @@ public class MasterData : ScriptableObject
     public TankAssembleManager selectedTank;
     public GameObject standardPerfab;
     public Color representColor;
+    public bool isJoin;
     public bool isAI;
     public AIState aiState;
     public int level = 1;

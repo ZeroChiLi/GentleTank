@@ -5,6 +5,9 @@ public class PlayerInformation
 {
     public int id = -1;                     // 玩家ID
     public string name;                     // 玩家名称
+    public TankAssembleManager tank;        // 玩家选择的坦克
+    public GameObject standardPrefab;
+    public bool isJoin = false;             // 是否参加
     public bool isAI = false;               // 玩家是否是AI
     public GameObject perfab;               // 玩家预设
     public Color representColor;            // 玩家代表颜色
@@ -12,10 +15,11 @@ public class PlayerInformation
 
     public PlayerInformation() { }
 
-    public PlayerInformation(int id,string name,bool isAI,Color color,TeamManager team)
+    public PlayerInformation(int id,string name,bool isJoin,bool isAI,Color color,TeamManager team)
     {
         this.id = id;
         this.name = name;
+        this.isJoin = isJoin;
         this.isAI = isAI;
         this.representColor = color;
         this.team = team;
@@ -28,6 +32,16 @@ public class PlayerInformation
     public PlayerManager CreateGameObjectWithPlayerManager(Transform parent = null)
     {
         GameObject gameObject = Object.Instantiate(perfab);
+        if (parent != null)
+            gameObject.transform.parent = parent;
+        PlayerManager playerManager = gameObject.GetComponent<PlayerManager>() ?? gameObject.AddComponent<PlayerManager>();
+        playerManager.SetInformation(this);
+        return playerManager;
+    }
+
+    public PlayerManager Create(Transform parent = null)
+    {
+        GameObject gameObject = Object.Instantiate(standardPrefab);
         if (parent != null)
             gameObject.transform.parent = parent;
         PlayerManager playerManager = gameObject.GetComponent<PlayerManager>() ?? gameObject.AddComponent<PlayerManager>();
@@ -53,6 +67,9 @@ public class PlayerManager : MonoBehaviour
 
     public int PlayerID { get { return Information.id; } }
     public string PlayerName { get { return Information.name; } }
+    public TankAssembleManager Tank { get { return Information.tank; } }
+    public GameObject StandardPrefab { get { return information.standardPrefab; } }
+    public bool IsJoin { get { return information.isJoin; } }
     public bool IsAI { get { return Information.isAI; } }
     public GameObject Perfab { get { return Information.perfab; } }
     public Color RepresentColor { get { return Information.representColor; } }

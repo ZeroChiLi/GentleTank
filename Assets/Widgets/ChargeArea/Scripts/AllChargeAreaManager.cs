@@ -23,8 +23,11 @@ namespace Widget.ChargeArea
         private void Start()
         {
             // 注册回合监听
-            GameManager.Instance.gameEvent.onAfterRoundStartEvent.AddListener(() => { OpenChargeAreas(); });
-            GameManager.Instance.gameEvent.onBeforeRoundEndEvent.AddListener(() => { ShutChargeAreas(); });
+            if (GameManager.Instance)
+            {
+                GameManager.Instance.gameEvent.onAfterRoundStartEvent.AddListener(() => { OpenChargeAreas(); });
+                GameManager.Instance.gameEvent.onBeforeRoundEndEvent.AddListener(() => { ShutChargeAreas(); });
+            }
         }
 
         /// <summary>

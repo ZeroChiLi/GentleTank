@@ -31,6 +31,14 @@ namespace CameraRig
         /// <summary>
         /// 配置目标
         /// </summary>
+        public void Setup(List<Transform> multi)
+        {
+            Setup(null, multi);
+        }
+
+        /// <summary>
+        /// 配置目标
+        /// </summary>
         public void Setup(Transform one, List<Transform> multi)
         {
             if (one != null)
