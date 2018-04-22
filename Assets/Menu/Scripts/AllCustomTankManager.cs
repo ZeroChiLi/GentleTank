@@ -33,7 +33,7 @@ public class AllCustomTankManager : MonoBehaviour
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
     public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : tankAssembleList[currentIndex]; } set { tankAssembleList[currentIndex] = value; } }
 
-    private List<TankAssembleManager> tankAssembleList = new List<TankAssembleManager>();
+    public List<TankAssembleManager> tankAssembleList = new List<TankAssembleManager>();
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private GameObject newTank;
 

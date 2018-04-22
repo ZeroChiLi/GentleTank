@@ -48,8 +48,8 @@ public class AllPlayerManager : ScriptableObject
             {
                 TankManager tankManager = playerInfoList[i].Create(parent) as TankManager;
                 playerManagerList.Add(tankManager);
-                playerManagerList[i].Tank.CreateTank(tankManager.transform);
-                playerManagerList[i].Tank.InitTankComponents(tankManager);
+                tankManager.AssembleTank.CreateTank(tankManager.transform);
+                tankManager.AssembleTank.InitTankComponents(tankManager);
             }
     }
 

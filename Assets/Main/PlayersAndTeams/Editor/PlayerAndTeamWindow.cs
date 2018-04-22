@@ -146,17 +146,20 @@ public class PlayerAndTeamWindow : EditorWindow
     private void PlayerOperation(int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(" ID : " + playerInfoList[index].id, GUILayout.Width(80));
+        EditorGUILayout.LabelField(" ID : " + playerInfoList[index].id, GUILayout.Width(50));
 
-        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name, GUILayout.Width(150));
+        EditorGUILayout.LabelField(" Name : " + playerInfoList[index].name, GUILayout.Width(120));
+
+        EditorGUILayout.LabelField(" Join : ", GUILayout.Width(30));
+        playerInfoList[index].isJoin = EditorGUILayout.Toggle(playerInfoList[index].isJoin, GUILayout.Width(50));
 
         EditorGUILayout.LabelField(" AI : ", GUILayout.Width(30));
         playerInfoList[index].isAI = EditorGUILayout.Toggle(playerInfoList[index].isAI, GUILayout.Width(50));
 
         EditorGUILayout.LabelField(" Perfab : ", GUILayout.Width(55));
-        playerInfoList[index].perfab = EditorGUILayout.ObjectField(playerInfoList[index].perfab, typeof(GameObject), false, GUILayout.Width(125)) as GameObject;
+        playerInfoList[index].assembleTank = EditorGUILayout.ObjectField(playerInfoList[index].assembleTank, typeof(TankAssembleManager), false, GUILayout.Width(125)) as TankAssembleManager;
 
-        EditorGUILayout.LabelField(" Team : ", GUILayout.Width(50));
+        EditorGUILayout.LabelField(" Team : ", GUILayout.Width(30));
         TeamSelect(index);                                    //团队显示下拉菜单
 
         EditorGUILayout.EndHorizontal();

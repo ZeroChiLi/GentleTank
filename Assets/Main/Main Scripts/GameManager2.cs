@@ -23,18 +23,16 @@ public class GameManager2 : MonoBehaviour
 
     public Points spawnPoints;
     public Points wayPoints;
-    public AllPlayerManager allPlayerManager;       // 所有玩家
+    //public AllPlayerManager allPlayerManager;       // 所有玩家
     public int numRoundsToWin = 5;                  // 赢得游戏需要赢的回合数
     public float startDelay = 3f;                   // 开始延时时间
     public float endDelay = 3f;                     // 结束延时时间
-    public float changeCamDelay = 2f;               // 转换镜头延时时间
     public Text messageText;                        // UI文本（玩家获胜等）
     public GameEvent gameEvent;
 
     private List<TankManager> tankList;             // 所有玩家坦克
     private WaitForSeconds startWait;               // 开始回合延时
     private WaitForSeconds endWait;                 // 结束回合延时
-    private WaitForSeconds changeCamWait;           // 转换镜头延时
 
     private void Awake()
     {
@@ -42,7 +40,6 @@ public class GameManager2 : MonoBehaviour
         tankList = new List<TankManager>();
         startWait = new WaitForSeconds(startDelay);         // 游戏回合开始延时
         endWait = new WaitForSeconds(endDelay);             // 游戏回合结束延时
-        changeCamWait = new WaitForSeconds(changeCamDelay); // 镜头转换延时
     }
 
     /// <summary>
@@ -62,7 +59,7 @@ public class GameManager2 : MonoBehaviour
     /// </summary>
     private void SetupGame()
     {
-        allPlayerManager.SetupInstance();
+        //allPlayerManager.SetupInstance();
         AllPlayerManager.Instance.CreatePlayerGameObjects2(new GameObject("Tanks").transform);
         for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             if (AllPlayerManager.Instance[i].IsJoin)
@@ -129,10 +126,6 @@ public class GameManager2 : MonoBehaviour
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
-
-        //yield return changeCamWait;                     // 延时一段时间转换成单独镜头
-        //if (myTank != null && !myTank.IsAI)
-        //    MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
 
         yield return startWait;                         // 延时一段时间再开始
         gameEvent.onAfterRoundStartEvent.Invoke();

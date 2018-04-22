@@ -5,7 +5,7 @@ public class PlayerInformation
 {
     public int id = -1;                     // 玩家ID
     public string name;                     // 玩家名称
-    public TankAssembleManager tank;        // 玩家选择的坦克
+    public TankAssembleManager assembleTank;        // 玩家选择的坦克
     public GameObject standardPrefab;
     public bool isJoin = false;             // 是否参加
     public bool isAI = false;               // 玩家是否是AI
@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
 
     public int PlayerID { get { return Information.id; } }
     public string PlayerName { get { return Information.name; } }
-    public TankAssembleManager Tank { get { return Information.tank; } }
+    public TankAssembleManager AssembleTank { get { return Information.assembleTank; } }
     public GameObject StandardPrefab { get { return information.standardPrefab; } }
     public bool IsJoin { get { return information.isJoin; } }
     public bool IsAI { get { return Information.isAI; } }
