@@ -7,11 +7,11 @@ public class CurrentTankPanelManager : MonoBehaviour
     public GameObject deleteConfirmPanel;                           // 删除确认窗口
     public Toast toast;                                             // 提示吐司
     public Button deleteButton;                                     // 删除按钮
-    public Button selectButton;                                     // 选择按钮
+    public Button finishedButton;                                   // 完成按钮
     public AllCustomTankManager allCustomTank;                      // 所有坦克管理器
     public TankAssembleManager defaultTankAssemble;                 // 默认坦克组装（用来创建）
-    public UnityEvent createdSuccessedEvent;                        // 创建成功事件
-    public UnityEvent selectSuccessedEvent;                         // 选择成功事件
+    //public UnityEvent createdSuccessedEvent;                        // 创建成功事件
+    //public UnityEvent selectSuccessedEvent;                         // 选择成功事件
 
     private TankAssembleManager newTankAssemble;                    // 新建的坦克组装
 
@@ -29,7 +29,7 @@ public class CurrentTankPanelManager : MonoBehaviour
         allCustomTank.CatchTankTexture(allCustomTank.Count - 1);
         allCustomTank.SelectCurrentTank(allCustomTank.Count - 1);
         allCustomTank.OnTankPreviewClicked();
-        createdSuccessedEvent.Invoke();
+        //createdSuccessedEvent.Invoke();
     }
 
     /// <summary>
@@ -39,6 +39,11 @@ public class CurrentTankPanelManager : MonoBehaviour
     {
         if (allCustomTank.CurrentTank == null)
             return;
+        if (allCustomTank.Count <= 1)
+        {
+            toast.ShowToast("至少留下一部坦克。");
+            return;
+        }
         allCustomTank.DeleteCurrentTank();
         allCustomTank.SetupAllTankTexture();
         OnTankSelected();
@@ -51,12 +56,12 @@ public class CurrentTankPanelManager : MonoBehaviour
     {
         if (!allCustomTank.SetCurrentTankToMaster())
             return;
-        if (MasterManager.Instance.data.weightLimit < allCustomTank.CurrentTankAssemble.GetTotalWeight())
-        {
-            Toast.Instance.ShowToast("超出承重。");
-            return;
-        }
-        selectSuccessedEvent.Invoke();
+        //if (MasterManager.Instance.data.weightLimit < allCustomTank.CurrentTankAssemble.GetTotalWeight())
+        //{
+        //    Toast.Instance.ShowToast("超出承重。");
+        //    return;
+        //}
+        //selectSuccessedEvent.Invoke();
     }
 
     /// <summary>
@@ -65,7 +70,7 @@ public class CurrentTankPanelManager : MonoBehaviour
     public void OnTankSelected()
     {
         deleteButton.interactable = allCustomTank.CurrentTank == null ? false : true;
-        selectButton.interactable = allCustomTank.CurrentTank == null ? false : true;
+        //finishedButton.interactable = allCustomTank.CurrentTank == null ? false : true;
     }
 
 }

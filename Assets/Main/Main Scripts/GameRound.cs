@@ -159,7 +159,7 @@ public class GameRound
     /// <returns></returns>
     public string GetEndingMessage()
     {
-        StringBuilder message;
+        StringBuilder message = new StringBuilder();
 
         if (IsDraw())                                       // 平局，获取胜利者
         {
@@ -171,7 +171,7 @@ public class GameRound
             message = new StringBuilder(GetWinnerName() + " WINS THE GAME!");
         else
         {
-            message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
+            //message = new StringBuilder(GetWinnerName() + " WINS THE ROUND!\n\n");
             foreach (var item in playerWonTimes)            // 获取所有玩家胜利信息
                 message.AppendFormat("{0} : {1} WINS\n", item.Key.ColoredPlayerNameByTeam, item.Value);
         }

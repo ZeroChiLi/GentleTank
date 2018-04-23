@@ -33,6 +33,7 @@ public class AllCustomTankManager : MonoBehaviour
     public GameObject CurrentTank { get { return this[currentIndex]; } set { this[currentIndex] = value; } }
     public TankAssembleManager CurrentTankAssemble { get { return currentIndex >= Count ? null : tankAssembleList[currentIndex]; } set { tankAssembleList[currentIndex] = value; } }
 
+    [HideInInspector]
     public List<TankAssembleManager> tankAssembleList = new List<TankAssembleManager>();
     private List<GameObject> customTankList = new List<GameObject>();            // 自定义坦克列表
     private GameObject newTank;
@@ -286,7 +287,7 @@ public class AllCustomTankManager : MonoBehaviour
     {
         if (CurrentTankAssemble == null)
         {
-            Toast.Instance.ShowToast("选择失败。");
+            //Toast.Instance.ShowToast("选择失败。");
             return false;
         }
         MasterManager.Instance.SelectedTank = CurrentTankAssemble;
