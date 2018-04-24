@@ -14,7 +14,7 @@ public class GameInformation : MonoBehaviour
                 if (gameInformation == null)
                 {
                     gameInformation = new GameObject("GameInformation").AddComponent<GameInformation>();
-                    gameInformation.players = Resources.Load<AllPlayerManager>("AllPlayerManager");
+                    //gameInformation.players = Resources.Load<AllPlayerManager>("AllPlayerManager");
                 }
                 instance = gameInformation;
             }
@@ -23,13 +23,21 @@ public class GameInformation : MonoBehaviour
         private set { instance = value; }
     }
 
-    public AllPlayerManager players;
+    //public AllPlayerManager players;
 
     private void Awake()
     {
+        if (instance != null)
+            Destroy(instance.gameObject);
+
         Instance = this;
-        players.SetupInstance();
-        DontDestroyOnLoad(this);
+        //players.SetupInstance();
+        DontDestroyOnLoad(gameObject);
     }
 
+    private void OnDestroy()
+    {
+        if (instance == this)
+            instance = null;
+    }
 }

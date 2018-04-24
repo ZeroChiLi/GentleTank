@@ -1,5 +1,4 @@
-using Item.Tank;
-using Widget;
+ï»¿using Item.Tank;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,136 +21,76 @@ public class GameManager : MonoBehaviour
     }
     static public GameManager Instance { get; private set; }
 
-    public Points spawnPoints1;
-    public Points spawnPoints2;
+    public Points spawnPoints;
     public Points wayPoints;
-    public AllPlayerManager allPlayerManager;       // ËùÓĞÍæ¼Ò
-    public int numRoundsToWin = 5;                  // Ó®µÃÓÎÏ·ĞèÒªÓ®µÄ»ØºÏÊı
-    public float startDelay = 3f;                   // ¿ªÊ¼ÑÓÊ±Ê±¼ä
-    public float endDelay = 3f;                     // ½áÊøÑÓÊ±Ê±¼ä
-    public float changeCamDelay = 2f;               // ×ª»»¾µÍ·ÑÓÊ±Ê±¼ä
-    public Text messageText;                        // UIÎÄ±¾£¨Íæ¼Ò»ñÊ¤µÈ£©
+    //public AllPlayerManager allPlayerManager;       // æ‰€æœ‰ç©å®¶
+    public int numRoundsToWin = 5;                  // èµ¢å¾—æ¸¸æˆéœ€è¦èµ¢çš„å›åˆæ•°
+    public float startDelay = 3f;                   // å¼€å§‹å»¶æ—¶æ—¶é—´
+    public float endDelay = 3f;                     // ç»“æŸå»¶æ—¶æ—¶é—´
+    public Text messageText;                        // UIæ–‡æœ¬ï¼ˆç©å®¶è·èƒœç­‰ï¼‰
     public GameEvent gameEvent;
 
-    public TankManager MyTank { get { return myTank; } }
-
-    private List<TankManager> tankList;             // ËùÓĞÍæ¼ÒÌ¹¿Ë
-    private TankManager myTank;                     // ×Ô¼ºµÄÌ¹¿Ë
-    private WaitForSeconds startWait;               // ¿ªÊ¼»ØºÏÑÓÊ±
-    private WaitForSeconds endWait;                 // ½áÊø»ØºÏÑÓÊ±
-    private WaitForSeconds changeCamWait;           // ×ª»»¾µÍ·ÑÓÊ±
+    private List<TankManager> tankList;             // æ‰€æœ‰ç©å®¶å¦å…‹
+    private WaitForSeconds startWait;               // å¼€å§‹å›åˆå»¶æ—¶
+    private WaitForSeconds endWait;                 // ç»“æŸå›åˆå»¶æ—¶
 
     private void Awake()
     {
         Instance = this;
         tankList = new List<TankManager>();
-        startWait = new WaitForSeconds(startDelay);         // ÓÎÏ·»ØºÏ¿ªÊ¼ÑÓÊ±
-        endWait = new WaitForSeconds(endDelay);             // ÓÎÏ·»ØºÏ½áÊøÑÓÊ±
-        changeCamWait = new WaitForSeconds(changeCamDelay); // ¾µÍ·×ª»»ÑÓÊ±
+        startWait = new WaitForSeconds(startDelay);         // æ¸¸æˆå›åˆå¼€å§‹å»¶æ—¶
+        endWait = new WaitForSeconds(endDelay);             // æ¸¸æˆå›åˆç»“æŸå»¶æ—¶
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ÓÎÏ·¼ÇÂ¼ÊµÀı¡¢²úÉúËùÓĞÌ¹¿Ë¡¢ÉèÖÃÏà»úÄ¿±ê¡¢Ğ¡µØÍ¼³õÊ¼»¯¡¢¿ªÊ¼ÓÎÏ·Ñ­»·
+    /// åˆå§‹åŒ–æ¸¸æˆè®°å½•å®ä¾‹ã€äº§ç”Ÿæ‰€æœ‰å¦å…‹ã€è®¾ç½®ç›¸æœºç›®æ ‡ã€å°åœ°å›¾åˆå§‹åŒ–ã€å¼€å§‹æ¸¸æˆå¾ªç¯
     /// </summary>
     private void Start()
     {
-        SetupGame();                                // ÅäÖÃÓÎÏ·
+        SetupGame();                                // é…ç½®æ¸¸æˆ
 
-        GameRound.Instance.maxRound = numRoundsToWin;             // ÉèÖÃ¾ÖÊı
-        GameRound.Instance.StartGame();            // ¿ªÊ¼ÓÎÏ·Ñ­»·£¨¼ì²â»ñÊ¤Õß£¬ÖØĞÂ»ØºÏ£¬½áÊøÓÎÏ·µÈ£©
+        GameRound.Instance.maxRound = numRoundsToWin;             // è®¾ç½®å±€æ•°
+        GameRound.Instance.StartGame();            // å¼€å§‹æ¸¸æˆå¾ªç¯ï¼ˆæ£€æµ‹è·èƒœè€…ï¼Œé‡æ–°å›åˆï¼Œç»“æŸæ¸¸æˆç­‰ï¼‰
         StartCoroutine(GameLoop());
     }
 
     /// <summary>
-    /// ²úÉúËùÓĞÌ¹¿Ë£¨°üÀ¨Íæ¼ÒºÍAI£©¡¢ÉèÖÃ¾µÍ·ËùÓĞ×·×ÙÄ¿±ê¡¢Ğ¡µØÍ¼³õÊ¼»¯
+    /// äº§ç”Ÿæ‰€æœ‰å¦å…‹ï¼ˆåŒ…æ‹¬ç©å®¶å’ŒAIï¼‰ã€è®¾ç½®é•œå¤´æ‰€æœ‰è¿½è¸ªç›®æ ‡ã€å°åœ°å›¾åˆå§‹åŒ–
     /// </summary>
     private void SetupGame()
     {
-        myTank = CreateMasterTank();
-        allPlayerManager.SetupInstance();
-        AllPlayerManager.Instance.CreatePlayerGameObjects(new GameObject("Tanks").transform, myTank);
-        tankList.Add(myTank);
-        myTank.Init(wayPoints);
-        for (int i = 1; i < AllPlayerManager.Instance.Count; i++)
-        {
-            tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
-            tankList[i].Init(wayPoints);
-        }
+        //allPlayerManager.SetupInstance();
+        AllPlayerManager.Instance.CreatePlayerGameObjects2(new GameObject("Tanks").transform);
+        for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
+            if (AllPlayerManager.Instance[i].IsJoin)
+            {
+                tankList.Add(AllPlayerManager.Instance[i].GetComponent<TankManager>());
+                tankList[i].Init(wayPoints);
+            }
 
-        if (VirtualInput.GetButton("Attack") != null)
-            ((ChargeButtonInput)VirtualInput.GetButton("Attack")).Setup(myTank.tankAttack, myTank.tankAttack.coolDownTime, myTank.tankAttack.minLaunchForce, myTank.tankAttack.maxLaunchForce, myTank.tankAttack.ChargeRate);
-
-        MainCameraRig.Instance.Setup(myTank.transform, AllPlayerManager.Instance.GetAllPlayerTransform());
+        MainCameraRig.Instance.Setup(AllPlayerManager.Instance.GetAllPlayerTransform());
     }
 
     /// <summary>
-    /// ´´½¨Íæ¼ÒÌ¹¿Ë
-    /// </summary>
-    private TankManager CreateMasterTank()
-    {
-        GameObject tank = Instantiate(MasterManager.Instance.StandardPrefab);
-        MasterManager.Instance.SelectedTank.CreateTank(tank.transform);
-
-        TankManager manager = tank.GetComponent<TankManager>();
-        MasterManager.Instance.SelectedTank.InitTankComponents(manager);
-
-        MasterData data = MasterManager.Instance.data;
-        manager.Information = new PlayerInformation(0, data.masterName,data.isJoin, data.isAI, data.representColor, data.team);
-        manager.stateController.defaultStats = data.aiState;
-
-        TankHealth health = tank.GetComponent<TankHealth>();
-        health.OnDeathEvent += MyTankBorkenEvent;
-        gameEvent.onMyPlayerCreatedEvent.Invoke();
-
-        return manager;
-    }
-
-    /// <summary>
-    /// ×Ô¼ºµÄÌ¹¿Ë»µÁË£¬×ª»»¾µÍ·
-    /// </summary>
-    private void MyTankBorkenEvent(HealthManager health, PlayerManager killer)
-    {
-        gameEvent.onMyPlayerDeadEvent.Invoke();
-        if (killer == null)
-            MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
-        else
-            StartCoroutine(MyTankDeathCameraBlend(health.transform, killer.transform));
-    }
-
-    /// <summary>
-    /// Ö÷½ÇËÀºóÏÈ°Ñ¾µÍ·¸øÉ±Ö÷½ÇµÄÍæ¼Ò£¬ÔÙ×ªµ½¶àÄ¿±ê¾µÍ·
-    /// </summary>
-    /// <param name="master"></param>
-    /// <param name="killer"></param>
-    /// <returns></returns>
-    private IEnumerator MyTankDeathCameraBlend(Transform master, Transform killer)
-    {
-        MainCameraRig.Instance.oneTarget = killer;
-        MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
-        yield return changeCamWait;
-        MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
-        MainCameraRig.Instance.oneTarget = master;
-    }
-
-    /// <summary>
-    /// ÖØÖÃËùÓĞÌ¹¿Ë³öÉúµã
+    /// é‡ç½®æ‰€æœ‰å¦å…‹å‡ºç”Ÿç‚¹
     /// </summary>
     private void ResetAllTanksToSpawnPoint()
     {
-        int t1 = 0, t2 = 0;
+        List<int> indexList = new List<int>();
+        for (int i = 0; i < spawnPoints.Count; i++)
+            indexList.Add(i);
         for (int i = 0; i < tankList.Count; i++)
         {
-            if (tankList[i].Team.TeamID == (GameRound.Instance.CurrentRound % 2))
-                tankList[i].ResetToSpawnPoint(spawnPoints1.GetWorldSpacePoint(spawnPoints1[t1++]));
-            else
-                tankList[i].ResetToSpawnPoint(spawnPoints2.GetWorldSpacePoint(spawnPoints2[t2++]));
+            int index = Random.Range(0, indexList.Count);
+            tankList[i].ResetToSpawnPoint(spawnPoints.GetWorldSpacePoint(spawnPoints[indexList[index]]));
+            indexList.RemoveAt(index);
         }
     }
 
     /// <summary>
-    /// ÉèÖÃËùÓĞÍæ¼Ò¿ØÖÆÈ¨
+    /// è®¾ç½®æ‰€æœ‰ç©å®¶æ§åˆ¶æƒ
     /// </summary>
-    /// <param name="enable">¼¤»î×´Ì¬</param>
+    /// <param name="enable">æ¿€æ´»çŠ¶æ€</param>
     private void SetTanksControlEnable(bool enable)
     {
         for (int i = 0; i < tankList.Count; i++)
@@ -159,16 +98,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÓÎÏ·µÄÑ­»·Ğ­³Ì
+    /// æ¸¸æˆçš„å¾ªç¯åç¨‹
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameLoop()
     {
-        yield return StartCoroutine(RoundStarting());           //»ØºÏ¿ªÊ¼£¬ÓĞÒ»¶ÎÑÓÊ±
-        yield return StartCoroutine(RoundPlaying());            //»ØºÏÖĞ
-        yield return StartCoroutine(RoundEnding());             //»ØºÏ½áÊø
+        yield return StartCoroutine(RoundStarting());           //å›åˆå¼€å§‹ï¼Œæœ‰ä¸€æ®µå»¶æ—¶
+        yield return StartCoroutine(RoundPlaying());            //å›åˆä¸­
+        yield return StartCoroutine(RoundEnding());             //å›åˆç»“æŸ
 
-        // Èç¹û½áÊøÁËÓÎÏ·£¬ÖØĞÂ¼ÓÔØ³¡¾°£¬·ñÔò½øĞĞÏÂÒ»»ØºÏ
+        // å¦‚æœç»“æŸäº†æ¸¸æˆï¼Œé‡æ–°åŠ è½½åœºæ™¯ï¼Œå¦åˆ™è¿›è¡Œä¸‹ä¸€å›åˆ
         if (GameRound.Instance.IsEndOfTheGame())
             BackToMainScene();
         else
@@ -176,42 +115,38 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// »ØºÏ¿ªÊ¼
+    /// å›åˆå¼€å§‹
     /// </summary>
     /// <returns></returns>
     private IEnumerator RoundStarting()
     {
-        SetTanksControlEnable(false);                   // Ëø¶¨Ì¹¿ËÃÇµÄ¿ØÖÆÈ¨
-        ResetAllTanksToSpawnPoint();                    // ÖØÖÃËùÓĞÌ¹¿ËÎ»ÖÃ
+        SetTanksControlEnable(false);                   // é”å®šå¦å…‹ä»¬çš„æ§åˆ¶æƒ
+        ResetAllTanksToSpawnPoint();                    // é‡ç½®æ‰€æœ‰å¦å…‹ä½ç½®
         gameEvent.onBeforeRoundStartEvent.Invoke();
         GameRound.Instance.StartRound();
 
         messageText.text = "ROUND " + GameRound.Instance.CurrentRound;
 
-        yield return changeCamWait;                     // ÑÓÊ±Ò»¶ÎÊ±¼ä×ª»»³Éµ¥¶À¾µÍ·
-        if (myTank != null && !myTank.IsAI)
-            MainCameraRig.Instance.currentType = MainCameraRig.Type.OneTarget;
-
-        yield return startWait;                         // ÑÓÊ±Ò»¶ÎÊ±¼äÔÙ¿ªÊ¼
+        yield return startWait;                         // å»¶æ—¶ä¸€æ®µæ—¶é—´å†å¼€å§‹
         gameEvent.onAfterRoundStartEvent.Invoke();
     }
 
     /// <summary>
-    /// »ØºÏÖĞ
+    /// å›åˆä¸­
     /// </summary>
     /// <returns></returns>
     private IEnumerator RoundPlaying()
     {
-        SetTanksControlEnable(true);                    // ½âËøÍæ¼Ò¿ØÖÆÈ¨
+        SetTanksControlEnable(true);                    // è§£é”ç©å®¶æ§åˆ¶æƒ
 
-        messageText.text = string.Empty;                // Çå¿ÕÏÔÊ¾ĞÅÏ¢
+        messageText.text = string.Empty;                // æ¸…ç©ºæ˜¾ç¤ºä¿¡æ¯
 
-        while (!GameRound.Instance.IsEndOfTheRound())   // »ØºÏÃ»½áÊø¾Í¼ÌĞø
+        while (!GameRound.Instance.IsEndOfTheRound())   // å›åˆæ²¡ç»“æŸå°±ç»§ç»­
             yield return null;
     }
 
     /// <summary>
-    /// »ØºÏ½áÊø
+    /// å›åˆç»“æŸ
     /// </summary>
     /// <returns></returns>
     private IEnumerator RoundEnding()
@@ -219,18 +154,18 @@ public class GameManager : MonoBehaviour
         gameEvent.onBeforeRoundEndEvent.Invoke();
         MainCameraRig.Instance.currentType = MainCameraRig.Type.MultiTargets;
 
-        SetTanksControlEnable(false);                   // Ëø¶¨Íæ¼Ò¿ØÖÆÈ¨
+        SetTanksControlEnable(false);                   // é”å®šç©å®¶æ§åˆ¶æƒ
 
-        GameRound.Instance.UpdateWonData();             // ¸üĞÂ»ñÊ¤´ÎÊı
+        GameRound.Instance.UpdateWonData();             // æ›´æ–°è·èƒœæ¬¡æ•°
 
-        messageText.text = GameRound.Instance.GetEndingMessage();  // »ñÈ¡½áÊøĞÅÏ¢²¢ÏÔÊ¾Ö®
+        messageText.text = GameRound.Instance.GetEndingMessage();  // è·å–ç»“æŸä¿¡æ¯å¹¶æ˜¾ç¤ºä¹‹
 
         yield return endWait;
         gameEvent.onAfterRoundEndEvent.Invoke();
     }
 
     /// <summary>
-    /// »Øµ½Ö÷²Ëµ¥
+    /// å›åˆ°ä¸»èœå•
     /// </summary>
     public void BackToMainScene()
     {
