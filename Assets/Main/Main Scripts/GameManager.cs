@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     private void SetupGame()
     {
         //allPlayerManager.SetupInstance();
-        AllPlayerManager.Instance.CreatePlayerGameObjects2(new GameObject("Tanks").transform);
+        AllPlayerManager.Instance.CreatePlayerGameObjects(new GameObject("Tanks").transform);
         for (int i = 0; i < AllPlayerManager.Instance.Count; i++)
             if (AllPlayerManager.Instance[i].IsJoin)
             {

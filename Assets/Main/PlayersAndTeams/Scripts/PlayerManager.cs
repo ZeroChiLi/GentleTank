@@ -29,16 +29,21 @@ public class PlayerInformation
     /// 创建游戏对象实例，并把该玩家信息作为组件（PlayerManager）添加进去
     /// </summary>
     /// <returns>返回玩家信息管理</returns>
-    public PlayerManager CreateGameObjectWithPlayerManager(Transform parent = null)
-    {
-        GameObject gameObject = Object.Instantiate(perfab);
-        if (parent != null)
-            gameObject.transform.parent = parent;
-        PlayerManager playerManager = gameObject.GetComponent<PlayerManager>() ?? gameObject.AddComponent<PlayerManager>();
-        playerManager.SetInformation(this);
-        return playerManager;
-    }
+    //public PlayerManager CreateGameObjectWithPlayerManager(Transform parent = null)
+    //{
+    //    GameObject gameObject = Object.Instantiate(perfab);
+    //    if (parent != null)
+    //        gameObject.transform.parent = parent;
+    //    PlayerManager playerManager = gameObject.GetComponent<PlayerManager>() ?? gameObject.AddComponent<PlayerManager>();
+    //    playerManager.SetInformation(this);
+    //    return playerManager;
+    //}
 
+    /// <summary>
+    /// 创建游戏对象
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <returns></returns>
     public PlayerManager Create(Transform parent = null)
     {
         GameObject gameObject = Object.Instantiate(standardPrefab);
@@ -61,7 +66,6 @@ public class PlayerManager : MonoBehaviour
                 information = new PlayerInformation();
             return information;
         }
-
         set { information = value; }
     }
 

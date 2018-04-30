@@ -32,16 +32,16 @@ public class AllPlayerManager : ScriptableObject
     /// <summary>
     /// 创建玩家对象们（playerManagerList）
     /// </summary>
-    public void CreatePlayerGameObjects(Transform parent = null, PlayerManager master = null)
-    {
-        playerManagerList = new List<PlayerManager>();
-        if (master != null)
-            playerManagerList.Add(master);
-        for (int i = master == null ? 0 : 1; i < playerInfoList.Count; i++)
-            playerManagerList.Add(playerInfoList[i].CreateGameObjectWithPlayerManager(parent));
-    }
+    //public void CreatePlayerGameObjects(Transform parent = null, PlayerManager master = null)
+    //{
+    //    playerManagerList = new List<PlayerManager>();
+    //    if (master != null)
+    //        playerManagerList.Add(master);
+    //    for (int i = master == null ? 0 : 1; i < playerInfoList.Count; i++)
+    //        playerManagerList.Add(playerInfoList[i].CreateGameObjectWithPlayerManager(parent));
+    //}
 
-    public void CreatePlayerGameObjects2(Transform parent = null)
+    public void CreatePlayerGameObjects(Transform parent = null)
     {
         playerManagerList = new List<PlayerManager>();
         for (int i = 0; i < playerInfoList.Count; i++)
