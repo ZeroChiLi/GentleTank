@@ -161,6 +161,7 @@ public class TankAssembleManager : ScriptableObject
             return;
         }
         tank.stateController.attackManager = tank.tankAttack;
+        tank.stateController.defaultConfig = properties.aiConfig;
         tank.tankAttack.forceSlider = tank.GetComponent<TankManager>().aimSlider;
         tank.tankAttack.chargingClip = properties.chargingClip;
         tank.tankAttack.fireClip = properties.fireClip;

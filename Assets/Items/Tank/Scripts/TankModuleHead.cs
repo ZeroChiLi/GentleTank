@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using GameSystem.AI;
 
 [CreateAssetMenu(menuName = "Module/TankModule/Head")]
 public class TankModuleHead : TankModule 
@@ -14,7 +15,7 @@ public class TankModuleHead : TankModule
         public float maxLaunchForce = 30f;          // 最大发射力度
         public float maxChargeTime = 0.75f;         // 最大发射蓄力时间
         public float damage = 50;                   // 伤害值
-
+        public AIState aiConfig;
         //[HideInInspector]
         //public ObjectPool ammoPool;
     }

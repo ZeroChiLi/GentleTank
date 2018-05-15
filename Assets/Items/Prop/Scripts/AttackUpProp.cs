@@ -10,7 +10,7 @@ public class AttackUpProp : PropBase
 
     protected override bool OnPlayerTouch(PlayerManager player)
     {
-        targetAttack = player.GetComponent<AttackManager>();
+        targetAttack = player.GetComponentInChildren<AttackManager>();
         if (targetAttack == null)
             return false;
         player.StartCoroutine(AttackUpForSceconds(targetAttack, damage));

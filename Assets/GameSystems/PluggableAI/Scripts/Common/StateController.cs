@@ -8,7 +8,7 @@ namespace GameSystem.AI
     {
         public State currentState;                              // 当前状态
         public State remainState;                               // 保持当前状态
-        public AIState defaultStats;                            // 默认状态信息
+        public AIState defaultConfig;                            // 默认状态信息
         public Point eyesPoint;                                 // 眼睛：拿来观察状态变化
         public Rigidbody rigidbodySelf;                         // 自己的刚体
         public Collider colliderSelf;                           // 自己的Collider
@@ -92,10 +92,10 @@ namespace GameSystem.AI
                 return;
             }
             navMeshAgent.enabled = true;
-            navMeshAgent.speed = defaultStats.navSpeed.GetRandomValue();
-            navMeshAgent.angularSpeed = defaultStats.navAngularSpeed.GetRandomValue();
-            navMeshAgent.acceleration = defaultStats.navAcceleration.GetRandomValue();
-            navMeshAgent.stoppingDistance = defaultStats.navStopDistance.GetRandomValue();
+            navMeshAgent.speed = defaultConfig.navSpeed.GetRandomValue();
+            navMeshAgent.angularSpeed = defaultConfig.navAngularSpeed.GetRandomValue();
+            navMeshAgent.acceleration = defaultConfig.navAcceleration.GetRandomValue();
+            navMeshAgent.stoppingDistance = defaultConfig.navStopDistance.GetRandomValue();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace GameSystem.AI
         /// </summary>
         public void Attack()
         {
-            attackManager.Attack(defaultStats.attackForce.GetRandomValue(), defaultStats.attackDamage.GetRandomValue(), defaultStats.attackRate.GetRandomValue());
+            attackManager.Attack(defaultConfig.attackForce.GetRandomValue(), defaultConfig.attackDamage.GetRandomValue(), defaultConfig.attackRate.GetRandomValue());
         }
 
         /// <summary>
